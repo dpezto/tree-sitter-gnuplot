@@ -1,0 +1,32 @@
+===============================================================================
+  plot command and options
+===============================================================================
+p foo u -$1+0.425:2 w p pt 13 ps 0.4 t Title, f(a,b,c,x) w l lw 2 lc 3 not
+-------------------------------------------------------------------------------
+(source_file
+      (c_plot
+        (plot_element
+          data: (identifier)
+          (datafile_modifiers
+            using: (binary_expression
+              (unary_expression
+                (unary_expression
+                  (integer)))
+              (float))
+            using: (integer))
+          (style)
+          (style_opts
+            pt: (integer)
+            ps: (float))
+          (identifier))
+        (plot_element
+          func: (function
+            name: (identifier)
+            argument: (identifier)
+            argument: (identifier)
+            argument: (identifier)
+            argument: (identifier))
+          (style)
+          (style_opts
+            lw: (integer)
+            lc: (integer)))))
