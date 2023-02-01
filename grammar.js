@@ -37,7 +37,9 @@ module.exports = grammar({
   conflicts: $ => [
     [$.label],
     [$._expression],
-    // [$.position]
+    [$.style_opts],
+    [$.palette],
+    [$.xdata],
   ],
 
   rules: {
@@ -143,20 +145,20 @@ module.exports = grammar({
     plot_element: $ => prec.left(1, seq(
       field('iteration', optional($.for_block)),
       choice(
-        seq(alias($._assignment, $.definition), repeat(seq(',', $._assignment)), ',',$.function),
-        seq(field('func', $.function)),
+        seq(alias($._assignment, $.definition), repeat(seq(',', $._assignment)), ',',$._function),
+        seq(field('func', $._function)),
         seq(alias($._expression, $.data), optional($.datafile_modifiers)), // data source
       ),
       repeat(choice(
         seq('axes',/(x1y1|x2y2|x1y2|x2y1)/),
-        choice(/not(it)?(tle)?/, seq(/t(it)?(le)?/, $._expression)), // TODO: p. 138-139
-        seq(/w(ith)?/, $.plot_style, optional($.style_opts)) // TODO: p. 139-140
+        choice(/not(it)?(tle)?/, field('title', seq(/t(it)?(le)?/, $._expression))), // TODO: p. 138-139
+        choice(seq(/w(ith)?/, $.plot_style, optional($.style_opts)), $.style_opts) // TODO: p. 139-140
       )),
     )),
 
     plot_style: $ => choice(/l(ines)?/, /p(oints)?/, /lp|linespoints/, /financebars/,
-      /dots/, /i(mpulses)?/, /lab(els)?/, /sur(face)?/, /steps/, /fsteps/, /histeps/,
-      /arr(ows)?/, /vec(tors)?/, /(x|y|xy)errorbar/, /(x|y|xy)errorlines/, /parallelaxes/,
+      /dots/, /i(mpulses)?/, /lab(els)?/ /*p. 88*/, /sur(face)?/, /steps/, /fsteps/, /histeps/,
+      /arr(ows)?/, /vec(tors)?/ /*p. 94*/, /(x|y|xy)errorbar/, /(x|y|xy)errorlines/, /parallelaxes/,
       // or
       /boxes/, /boxerrorbars/, /boxxyerror/, /isosurface/, /boxplot/, /candlesticks/,
       /circles/, /zerrorfill/, /ellipses/, /filledcurves/, /fillsteps/, /histograms/,
@@ -241,13 +243,13 @@ module.exports = grammar({
 
     angles: $ => seq(/an(gles)?/, optional(choice('degrees', 'radians'))),
 
-    arrow: $ => prec.left(1, seq(/ar(row)?/, optional(repeat1(choice(
+    arrow: $ => prec.left(1, seq(/ar(row)?/, optional(repeat1(choice( // WARN: errores con graph y demás
       seq(
         optional($._expression),
         optional(seq('from', field('from', optional(choice($._expression, $.position))))),
-        optional(prec.left(2, seq(optional(','), /first|second|graph|screen|character/, choice($._expression, $.position)))),
+        // optional(prec.right(2, seq(optional(','), choice($.position, $._expression)))),
         /(rto|to)/, field('to_rto', choice($._expression, $.position)),
-        optional(prec.left(2, seq(',', /first|second|graph|screen|character/, $._expression)))
+        // optional(prec.right(2, seq(',', choice($.position, $._expression))))
       ),
       seq(
         optional($._expression),
@@ -456,10 +458,10 @@ module.exports = grammar({
       /l(eft)?|r(ight)?|c(enter)?/, /t(op)?|b(ottom)?|c(enter)?/,
     ))),
 
-    label: $ => seq(/lab(el)?/, seq( // p. 168
-      field('tag', optional($._expression)),
-      field('text', optional($._expression)),
-      optional(seq('at', $.position)),
+    label: $ => prec.left(1, seq(/lab(el)?/, seq( // p. 168 WARN: error con el texto cuando es función
+      field('tag', optional(choice($.integer, $.identifier))),
+      prec(1, field('text', optional($._label_text))),
+      optional(field('position', seq('at', $.position))),
       optional(/l(eft)?|r(ight)?|c(enter)?/),
       optional(choice('norotate', seq('rotate', optional(seq('by', field('degrees', $._expression)))))),
       optional(/front|back/),
@@ -468,7 +470,7 @@ module.exports = grammar({
       optional(seq('offset', field('offset', $._expression))),
       optional(choice('nobox', seq('boxed', optional(field('bs', seq('bs', $._expression)))))),
       optional('hypertext'),
-    )),
+    ))),
 
     // linetype: $ =>
 
@@ -523,11 +525,11 @@ module.exports = grammar({
       /next|previous/,
     ))),
 
-    mxtics: $ => seq(/m(x|y|z|x2|y2|r|t|cb)tics/, choice( // p. 190
+    mxtics: $ => prec.left(1, seq(/m(x|y|z|x2|y2|r|t|cb)tics/, optional(choice( // p. 190
       field('freq', $._expression),
       'default',
       seq(field('N', $._expression), field('units', choice('seconds', 'minutes', 'hours', 'days', 'weeks', 'months', 'years'))),
-    )),
+    )))),
 
     // nonlinear: $ =>
 
@@ -658,7 +660,7 @@ module.exports = grammar({
       // $.t_dxf,
       // $.t_emf,
       // $.t_epscairo,
-      // $.t_epslatex,
+      $.t_epslatex,
       // $.t_fig,
       // $.t_gif,
       // $.t_hpgl,
@@ -700,6 +702,10 @@ module.exports = grammar({
       seq(/dl|dashlength/, field('dl', $._expression)),
       seq('size', field('xsize', $.dimension), ',', field('ysize', $.dimension)),
       seq('resolution', field('dpi', $._expression)),
+    ))),
+
+    t_epslatex: $ => seq(/epsl(atex)?/, repeat(choice( // TODO: finish it
+      seq('size', field('xsize', $.dimension), ',', field('ysize', $.dimension)),
     ))),
 
     // termoption: $ =>
@@ -841,7 +847,7 @@ module.exports = grammar({
       'for', '[',
       choice(
         seq($._expression, 'in', $._expression),
-        seq($.def_var, ':', $._expression, optional(seq(':', $._expression))),
+        seq(alias($.def_var, $.start), ':', alias($._expression, $.end), optional(seq(':', alias($._expression, $.incr)))),
       ),
       ']'
     ),
@@ -895,7 +901,7 @@ module.exports = grammar({
       $.def_array,
     ),
 
-    def_func: $ => seq($.function, '=', $._expression),
+    def_func: $ => seq($._function, '=', $._expression),
 
     def_var: $ => seq(alias($.identifier, $.var), '=', $._expression, repeat(seq('=', $._expression))),
 
@@ -922,9 +928,9 @@ module.exports = grammar({
         $._number,
         $._string_literal,
         $.array,
-        $.colorspec,
+        // $.colorspec,
         // $.position,
-        $.function,
+        $._function,
         $.sum_block,
         $.parenthesized_expression,
         $.unary_expression,
@@ -932,6 +938,12 @@ module.exports = grammar({
         $.ternary_expression,
         $.identifier,
     )),
+
+    _label_text: $ => choice(
+      $._string_literal,
+      $.identifier,
+      // p 67, 43, 166
+    ),
 
     _number: $ => choice($.integer, $.float, $.complex),
 
@@ -962,9 +974,44 @@ module.exports = grammar({
       'black'
     )),
 
-    position: $ => prec.right(1, seq(field('x', $._expression),',', field('y', $._expression), optional(seq(',', field('z', $._expression))))),
+    position: $ => prec.right(1, seq(
+      optional(/first|second|polar|graph|screen|character/),
+      field('x', $._expression),',', field('y', $._expression),
+      optional(seq(',', field('z', $._expression))))),
 
-    function: $ => seq(field('name', $.identifier), '(', field('argument', $._expression), repeat(seq(',', field('argument', $._expression))), ')'),
+    _function: $ => choice($.defined_func, $.builtin_func),
+
+    defined_func: $ => seq(field('name', $.identifier), $._arguments),
+
+    builtin_func: $ => seq($._gnuplot_builtin_func, $._arguments),
+
+    _arguments: $ => prec(14, seq(
+      '(', field('argument', alias($._expression, $.variable)), repeat(seq(',', field('argument', alias($._expression, $.variable)))), ')'
+    )),
+
+    _gnuplot_builtin_func: $ => prec(1, choice(
+      'abs', 'acos', 'acosh', 'airy', 'arg', 'asin', 'asinh', 'atan', 'atan2',
+      'atanh', 'besj0', 'besj1', 'besjn', 'besy0', 'besy1', 'besyn', 'besi0',
+      'besi1', 'besin', 'cbrt', 'ceil', 'conj', 'cos', 'cosh', 'EllipticK',
+      'EllipticE', 'EllipticPi', 'erf', 'erfc','exp', 'expint', 'floor', 'gamma',
+      'ibeta', 'inverf', 'igamma', 'imag', 'int', 'invnorm', 'invibeta', 'invigamma',
+      'LambertW', 'lambertw', 'lgamma', 'lnGamma', 'log', 'log10', 'norm', 'rand',
+      'real', 'round', 'sgn', 'sin', 'sinh', 'sqrt', 'SynchrotronF', 'tan', 'tanh',
+      'uigamma', 'voigt', 'zeta',
+      // libcerf library
+      'cerf', 'cdawson', 'faddeeva', 'erfi', 'FresnelC', 'FresnelS', 'VP', 'VP_fwhm',
+      // Amos library
+      'Ai', 'Bi', 'BesselH1', 'BesselH2', 'BesselJ', 'BesselY', 'BesselI', 'BesselK',
+      // string functions
+      'gprintf', 'sprintf', 'strlen', 'strstrt', 'substr', 'strptime',
+      'strftime', 'system', 'trim', 'word', 'words',
+      // time functions
+      'time', 'timecolumn', 'tm_hour', 'tm_mday', 'tm_min', 'tm_mon', 'tm_sec',
+      'tm_wday', 'tm_week', 'tm_yday', 'tm_year', 'weekday_iso', 'weekday_cdc',
+      // other gnuplot functions
+      'column', 'columnhead', 'exists', 'hsv2rgb', 'index', 'palette', 'rgbcolor',
+      'stringcolumn', 'valid', 'value', 'voxel',
+    )),
 
     parenthesized_expression: $ => prec(PREC.PAREN, seq('(', $._expression, ')')),
 
