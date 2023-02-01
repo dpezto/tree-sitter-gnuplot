@@ -104,7 +104,7 @@ module.exports = grammar({
     c_fit: $ => seq(
       'fit',
       optional($.range_block),
-      field('func', $._expression),
+      field('func', $._function),
       field('data', $._expression),
       optional($.datafile_modifiers),
       optional(
