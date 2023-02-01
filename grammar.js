@@ -175,6 +175,7 @@ module.exports = grammar({
       field('pt', seq(/pointtype|pt/, $._expression)),
       field('ps', seq(/pointsize|ps/, $._expression)),
       field('as', seq(/arrowstyle|as/, $._expression)),
+      field('dt', seq(/dashtype|dt/, $.dash_opts)),
       field('fs', seq(/fill|fs/, $._expression)),
       field('fc', seq(/fillcolor|fc/, $.colorspec)),
       'nohidden3d', 'nocontours', 'nosurface', 'palette'
@@ -195,7 +196,7 @@ module.exports = grammar({
       $.angles, $.arrow,
       $.border, $.boxwidth, $.boxdepth,
       $.color, $.colormap, $.colorsequence, $.clip, $.cntrlabel, $.cntrparam, $.colorbox, $.colornames, $.contour, $.cornerpoles,
-      // $.dashtype,
+      $.dashtype,
       $.datafile, $.decimalsign, $.dgrid3d,
       // $.dummy,
       $.encoding, $.errorbars,
@@ -338,7 +339,19 @@ module.exports = grammar({
 
     cornerpoles: $ => 'cornerpoles',
 
-    // dashtype: $ =>
+    dashtype: $ => seq(/dashtype|dt/, field('tag',$._expression), $.dash_opts),
+
+    dash_opts: $ => choice(
+      $.integer, $._string_literal,
+      seq(
+        '(',
+        alias($.integer, $.solid_lenght), ',', alias($.integer, $.empty_lenght),
+        optional(seq(',', alias($.integer, $.solid_lenght), ',', alias($.integer, $.empty_lenght))),
+        optional(seq(',', alias($.integer, $.solid_lenght), ',', alias($.integer, $.empty_lenght))),
+        optional(seq(',', alias($.integer, $.solid_lenght), ',', alias($.integer, $.empty_lenght))),
+        ')'
+      ),
+    ),
 
     datafile: $ => prec.left(1, seq(/dataf(ile)?/, optional(choice(
       'columnheaders',
