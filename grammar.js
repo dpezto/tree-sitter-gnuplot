@@ -40,6 +40,7 @@ module.exports = grammar({
     [$.style_opts],
     [$.palette],
     [$.xdata],
+    [$.datafile_modifiers],
   ],
 
   rules: {
@@ -778,7 +779,7 @@ module.exports = grammar({
 
     xmtics: $ => /(x|y|z|x2|y2|cb)mtics/,
 
-    xrange: $ => seq($.range_block, repeat(choice( // TODO: remove names from range_block and add here
+    xrange: $ => seq($.range_block, /(x|y|z|x2|y2|r|t|u|v|cb|vx|vy|vz)ran(ge)?/, repeat(choice(
       /(no)?reverse/,
       /(no)?writeback/,
       /(no)?extend/,
@@ -852,15 +853,16 @@ module.exports = grammar({
     //-------------------------------------------------------------------------
 
     range_block: $ => seq(
-      optional(choice(/(x|y|z|x2|y2|r|t|u|v|cb|vx|vy|vz)?ran(ge)?/, seq($.identifier, '='))),
-      '[', optional($._expression), ':', optional($._expression), ']'
+      '[', optional(seq(alias($.identifier, $.dummy_var), '=')),
+      optional($._expression), optional(':'),
+      optional($._expression), ']'
     ),
 
     for_block: $ => seq(
       'for', '[',
       choice(
         seq($._expression, 'in', $._expression),
-        seq(alias($.def_var, $.start), ':', alias($._expression, $.end), optional(seq(':', alias($._expression, $.incr)))),
+        seq(alias($.var_def, $.start), ':', alias($._expression, $.end), optional(seq(':', alias($._expression, $.incr)))),
       ),
       ']'
     ),
@@ -874,14 +876,14 @@ module.exports = grammar({
         field('binary', seq('binary')), // add binary list
         field('matrix', seq(/(nonuniform|sparce)/, 'matrix')),
         field('index', seq(/i(ndex)?/, choice(seq($._expression, optional(seq(':', $._expression)),optional(seq(':',$._expression))), $._expression))),
-        field('every', seq('every',
+        seq('every',
           optional(field('point_incr', $._expression)),
-          // optional(seq(':', optional(field('block_incr', $._expression)))), // TODO: finish
-          // optional(seq(':', optional(field('start_point', $._expression)))),
-          // optional(seq(':', optional(field('start_block', $._expression)))),
-          // optional(seq(':', optional(field('end_point', $._expression)))),
-          // optional(seq(':', optional(field('end_block', $._expression)))),
-        )),
+          optional(seq(':', optional(field('block_incr', $._expression)))),
+          optional(seq(':', optional(field('start_point', $._expression)))),
+          optional(seq(':', optional(field('start_block', $._expression)))),
+          optional(seq(':', optional(field('end_point', $._expression)))),
+          optional(seq(':', optional(field('end_block', $._expression)))),
+        ),
         field('skip', seq('skip', field('N_lines', $._expression))),
         field('using', seq(/u(sing)?/, $._expression, repeat(seq(':', $._expression)))),
         seq('smooth', optional($.smooth_options)),
@@ -895,7 +897,7 @@ module.exports = grammar({
       field('lt', seq(/linetype|lt/, $._expression)),
       field('lw', seq(/linewidth|lw/, $._expression)),
       field('lc', seq(/linecolor|lc/, $.colorspec)),
-      field('dt', seq(/dashtype|dt/, $._expression)),
+      field('dt', seq(/dashtype|dt/, $.dash_opts)),
     ))),
 
     smooth_options: $ => choice(
@@ -909,16 +911,16 @@ module.exports = grammar({
     position: $ => seq($._expression, ',', $._expression, optional(seq(',', $._expression))),
     //-------------------------------------------------------------------------
     _assignment: $ => choice(
-      $.def_func,
-      $.def_var,
-      $.def_array,
+      $.func_def,
+      $.var_def,
+      $.array_def,
     ),
 
-    def_func: $ => seq($._function, '=', $._expression),
+    func_def: $ => seq($._function, '=', $._expression),
 
-    def_var: $ => seq(alias($.identifier, $.var), '=', $._expression, repeat(seq('=', $._expression))),
+    var_def: $ => seq(alias($.identifier, $.var), '=', $._expression, repeat(seq('=', $._expression))),
 
-    def_array: $ => choice(
+    array_def: $ => choice(
       seq(
         'array',
         $.array,
