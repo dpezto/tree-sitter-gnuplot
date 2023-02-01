@@ -155,7 +155,7 @@ module.exports = grammar({
         choice(seq(/w(ith)?/, $.plot_style, optional($.style_opts)), $.style_opts) // p. 139-140
       )),
     )),
-
+    // p. 140
     plot_style: $ => choice(/l(ines)?/, /p(oints)?/, /lp|linespoints/, /financebars/,
       /dots/, /i(mpulses)?/, /lab(els)?/ /*p. 88*/, /sur(face)?/, /steps/, /fsteps/, /histeps/,
       /arr(ows)?/, /vec(tors)?/ /*p. 94*/, /(x|y|xy)errorbar/, /(x|y|xy)errorlines/, /parallelaxes/,
@@ -167,15 +167,16 @@ module.exports = grammar({
       /table/, /mask/
     ),
 
-    style_opts: $ => repeat1(choice(
-      field('ls', seq(/linestyle|ls/, $._expression)),
-      field('lt', seq(/linetype|lt/, $._expression)),
-      field('lw', seq(/linewidth|lw/, $._expression)),
-      field('lc', seq(/linecolor|lc/, $.colorspec)),
+    style_opts: $ => repeat1(choice( // p. 139
+      $.line_style,
+      // field('ls', seq(/linestyle|ls/, $._expression)),
+      // field('lt', seq(/linetype|lt/, $._expression)),
+      // field('lw', seq(/linewidth|lw/, $._expression)),
+      // field('lc', seq(/linecolor|lc/, $.colorspec)),
       field('pt', seq(/pointtype|pt/, $._expression)),
       field('ps', seq(/pointsize|ps/, $._expression)),
       field('as', seq(/arrowstyle|as/, $._expression)),
-      field('dt', seq(/dashtype|dt/, $.dash_opts)),
+      // field('dt', seq(/dashtype|dt/, $.dash_opts)),
       field('fs', seq(/fill|fs/, $._expression)),
       field('fc', seq(/fillcolor|fc/, $.colorspec)),
       'nohidden3d', 'nocontours', 'nosurface', 'palette'
@@ -261,12 +262,12 @@ module.exports = grammar({
       'fixed',
       /(filled|empty|nofilled|noborder)/,
       /front|back/,
-      $.line_properties,
+      $.line_style,
     ))))),
 
     border: $ => seq('border', optional(repeat1(choice(
       /(front|back|behind)/,
-      $.line_properties,
+      $.line_style,
       'polar',
     )))),
 
@@ -385,7 +386,7 @@ module.exports = grammar({
     errorbars: $ => prec.left(1, seq('errorbars', repeat(choice(
       choice('small', 'large', 'fullwidth', field('size', $._expression)),
       choice('front', 'back'),
-      $.line_properties
+      $.line_style
     )))),
 
     fit: $ => seq('fit', repeat1(choice(
@@ -411,7 +412,7 @@ module.exports = grammar({
       seq('polar', optional(field('angle', $._expression))),
       /layerdefault|front|back/,
       /(no)?vertical/,
-      // {<line-properties-major> {, <line-properties-minor>}}
+      seq(alias($.line_style, $.line_prop_major), optional(seq(',', alias($.line_style, $.line_prop_minor))))
     ))),
 
     hidden3d: $ => seq('hidden3d', optional(choice(
@@ -441,7 +442,7 @@ module.exports = grammar({
       'default',
       /(no)?enhanced/,
       seq(/(no)?autoti(tle)?/, optional('columnheader')),
-      seq(/(no)?box/, optional($.line_properties)),
+      seq(/(no)?box/, optional($.line_style)),
       seq(/(no)?opaque/, optional(seq('fc', $.colorspec))),
       seq('width', field('increment', $._expression)),
       seq('height', field('increment', $._expression)),
@@ -627,21 +628,14 @@ module.exports = grammar({
       seq('arrow'), // p. 213
       seq('boxplot'), // p. 214
       seq('data', $.plot_style),
-      seq('fill',
-        prec(1, optional(choice(
-          /empty/,
-          seq(optional(/trans(parent)?/), 'solid', optional(field('density', $._expression))),
-          seq(optional(/trans(parent)?/), 'pattern', field('pattern', $._expression), optional(field('n', $._expression))),
-        ))),
-        optional(choice(seq('border', optional('lt'), optional(seq('lc', $.colorspec))), 'noborder')) // colorspec
-      ),
+      seq('fill', $.fill_style),
       seq('function', $.plot_style),
-      seq('increment', optional(/default|userstyles/)),
+      seq('increment', alias(optional(/default|userstyles/), $.increment_style)),
       seq('line'), // p. 217
       seq('circle'), // p. 218
       seq('rectangle'), // p. 218
       seq('ellipse'), // p. 219
-      seq('parallelaxis', optional(/front|back/), optional($.line_properties)),
+      seq('parallelaxis', alias(seq(optional(/front|back/), optional($.line_style)), $.parallelaxis_style)),
       seq('spiderplot'), // p. 219
       seq('textbox') // p. 220
     )),
@@ -748,7 +742,7 @@ module.exports = grammar({
 
     walls: $ => seq('walls',
       optional(/(x0|y0|z0|x1|y1)/),
-      /*optional($.fillstyle),*/  // TODO: add fillstyle
+      optional($.fill_style),  // TODO: add fillstyle
       optional(seq(/fillcolor|fc/, $.colorspec)),
     ),
 
@@ -757,9 +751,9 @@ module.exports = grammar({
     xdtics: $ => /(x|y|z|z2|y2|cb)dtics/,
 
     xlabel: $ => seq(/(x|y|z|x2|y2|cb|r)lab(el)?/, repeat(choice( // BUG: same as label
-      field('label', $._label_text),
-      seq('offset', field('offset', $._expression)),
-      seq('font', field('font', $._expression)), // string with font name and optional size
+      // field('label', $._label_text),
+      // seq('offset', field('offset', $._expression)),
+      // seq('font', field('font', $._expression)), // string with font name and optional size
       seq(/textcolor|tc/, $.colorspec),
       /(no)?enhanced/,
       choice('norotate', seq('rotate', choice(seq('by', $._expression), 'parallel'))),
@@ -810,7 +804,7 @@ module.exports = grammar({
 
     xyplane: $ => seq('xyplane', optional(choice(seq('at', field('zval', $._expression)), seq('relative', field('val', $._expression))))),
 
-    zeroaxis: $ => seq(/(x|x2|y|y2|z)?zeroaxis/, optional($.line_properties)),
+    zeroaxis: $ => seq(/(x|x2|y|y2|z)?zeroaxis/, optional($.line_style)),
 
     c_show: $ => prec.left(1, seq(/sh(ow)?/, choice(
       $._argument_set_show,
@@ -874,7 +868,7 @@ module.exports = grammar({
       choice(
         field('binary', seq('binary')), // add binary list
         field('matrix', seq(/(nonuniform|sparce)/, 'matrix')),
-        field('index', seq(/i(ndex)?/, choice(seq($._expression, optional(seq(':', $._expression)),optional(seq(':',$._expression))), $._expression))),
+        field('index', seq(/i(ndex)?/, choice(seq($._expression, optional(seq(':', $._expression)),optional(seq(':',$._expression))), field('name', $._expression)))),
         seq('every',
           optional(field('point_incr', $._expression)),
           optional(seq(':', optional(field('block_incr', $._expression)))),
@@ -891,13 +885,22 @@ module.exports = grammar({
       ),
     ),
 
-    line_properties: $ => prec.left(1, repeat1(choice(
+    line_style: $ => prec.left(1, repeat1(choice(
       field('ls', seq(/linestyle|ls/, $._expression)),
       field('lt', seq(/linetype|lt/, $._expression)),
       field('lw', seq(/linewidth|lw/, $._expression)),
       field('lc', seq(/linecolor|lc/, $.colorspec)),
       field('dt', seq(/dashtype|dt/, $.dash_opts)),
     ))),
+
+    fill_style: $ => seq(
+      prec(1, choice(
+      /empty/,
+      seq(optional(/trans(parent)?/), 'solid', optional(field('density', $._expression))),
+      seq(optional(/trans(parent)?/), 'pattern', field('pattern', $._expression), optional(field('n', $._expression))),
+      )),
+      optional(choice(seq('border', optional('lt'), optional(seq('lc', $.colorspec))), 'noborder')) // colorspec
+    ),
 
     smooth_options: $ => choice(
       'unique', 'frequency', 'fnormal', 'cumulative', 'cnormal', 'csplines',
