@@ -17,7 +17,7 @@ const PREC = {
   PAREN: 13, // (a)
 };
 
-// TODO: add gnuplot constants and functions
+// TODO: add gnuplot constants and macros inside _statement options
 
 module.exports = grammar({
   name: 'gnuplot',
@@ -41,6 +41,7 @@ module.exports = grammar({
     [$.palette],
     [$.xdata],
     [$.datafile_modifiers],
+    // [$.xtics],
   ],
 
   rules: {
@@ -152,8 +153,8 @@ module.exports = grammar({
       ),
       repeat(choice(
         seq('axes',/(x1y1|x2y2|x1y2|x2y1)/),
-        choice(/not(it)?(tle)?/, field('title', seq(/t(it)?(le)?/, $._expression))), // TODO: p. 138-139
-        choice(seq(/w(ith)?/, $.plot_style, optional($.style_opts)), $.style_opts) // TODO: p. 139-140
+        choice(/not(it)?(tle)?/, field('title', seq(/t(it)?(le)?/, $._expression))), // p. 138-139
+        choice(seq(/w(ith)?/, $.plot_style, optional($.style_opts)), $.style_opts) // p. 139-140
       )),
     )),
 
@@ -245,7 +246,7 @@ module.exports = grammar({
 
     angles: $ => seq(/an(gles)?/, optional(choice('degrees', 'radians'))),
 
-    arrow: $ => prec.left(1, seq(/ar(row)?/, optional(repeat1(choice( // WARN: errores con graph y demás
+    arrow: $ => prec.left(1, seq(/ar(row)?/, optional(repeat1(choice( // BUG: errores con graph y demás
       seq(
         optional($._expression),
         optional(seq('from', field('from', optional(choice($._expression, $.position))))),
@@ -410,16 +411,13 @@ module.exports = grammar({
 
     format: $ => seq('format', optional(/(x|y|xy|x2|y2|z|cb)/), field('fmt_str', $._expression), /(numeric|timedate|geographic)/ ),
 
-    grid: $ => seq('grid'), // TODO: complete
-    /*
-      {{no}{m}xtics} {{no}{m}ytics} {{no}{m}ztics}
-      {{no}{m}x2tics} {{no}{m}y2tics} {{no}{m}rtics}
-      {{no}{m}cbtics}
-      {polar {<angle>}}
-      {layerdefault | front | back}
-      {{no}vertical}
-      {<line-properties-major> {, <line-properties-minor>}}
-    */
+    grid: $ => seq('grid', repeat(choice(
+      /(no)?m?(x|y|z|x2|y2|r|cb)tics/,
+      seq('polar', optional(field('angle', $._expression))),
+      /layerdefault|front|back/,
+      /(no)?vertical/,
+      // {<line-properties-major> {, <line-properties-minor>}}
+    ))),
 
     hidden3d: $ => seq('hidden3d', optional(choice(
       'defaults',
@@ -472,7 +470,7 @@ module.exports = grammar({
       /l(eft)?|r(ight)?|c(enter)?/, /t(op)?|b(ottom)?|c(enter)?/,
     ))),
 
-    label: $ => prec.left(1, seq(/lab(el)?/, seq( // p. 168 WARN: error con el texto cuando es función
+    label: $ => prec.left(1, seq(/lab(el)?/, seq( // p. 168 BUG: error con el texto cuando es función
       field('tag', optional(choice($.integer, $.identifier))),
       prec(1, field('text', optional($._label_text))),
       optional(field('position', seq('at', $.position))),
@@ -494,7 +492,7 @@ module.exports = grammar({
 
     locale: $ => prec.left(1, seq('locale', optional(field('locale', $._expression)))),
 
-    logscale: $ => seq('logscale', repeat(seq(/(x|y|z|x2|y2|cb|r)/, optional(field('base', $._expression))))),
+    logscale: $ => prec.left(1, seq('logscale', repeat1(/(x|y|z|x2|y2|cb|r)/), optional(field('base', $._expression)))),
 
     mapping: $ => seq('mapping', choice('cartesian', 'spherical', 'cylindrical')),
 
@@ -799,7 +797,17 @@ module.exports = grammar({
         'autofreq',
         $._expression,
         seq(field('start', $._expression), ',', field('incr', $._expression), optional(seq(',', field('end', $._expression)))),
-        // TODO: add ({"<label>"} <pos> {<level>} {,{"<label>"}...)
+        // seq(
+        //   '(', optional(field('label', $._expression)),
+        //   field('pos', $._expression),
+        //   optional(field('level', $._expression)),
+        //   repeat(seq(
+        //     ',', optional(field('label', $._expression)),
+        //     field('pos', $._expression),
+        //     optional(field('level', $._expression))
+        //   )),
+        //   ')'
+        // )
       ),
       seq('format', $._expression),
       seq('font', $._expression), // string with font name and optional size
