@@ -17,7 +17,7 @@ const PREC = {
   PAREN: 13, // (a)
 };
 
-// TODO: add gnuplot constants and macros inside _statement options
+// TODO: add gnuplot constants
 
 module.exports = grammar({
   name: 'gnuplot',
@@ -35,13 +35,11 @@ module.exports = grammar({
   word: $ => $.identifier,
 
   conflicts: $ => [
-    [$.label],
     [$._expression],
     [$.style_opts],
     [$.palette],
     [$.xdata],
     [$.datafile_modifiers],
-    // [$.xtics],
   ],
 
   rules: {
@@ -189,10 +187,7 @@ module.exports = grammar({
 
     c_reset: $ => seq('reset', optional(choice('bind', 'errors', 'session'))),
 
-    c_set: $ => seq(
-      choice(/se(t)?/, /uns(et)?/, /sh(ow)?/),
-      $._argument_set_show,
-    ),
+    c_set: $ => seq(choice(/se(t)?/, /uns(et)?/), $._argument_set_show),
 
     _argument_set_show: $ => choice(
       $.angles, $.arrow,
@@ -510,17 +505,15 @@ module.exports = grammar({
     ), // NOTE: p. 185
 
     mouse: $ => seq('mouse',
-      /*
-      {doubleclick <ms>} {nodoubleclick}
-      {{no}zoomcoordinates}
-      {zoomfactors <xmultiplier>, <ymultiplier>}
-      {noruler | ruler {at x,y}}
-      {polardistance{deg|tan} | nopolardistance}
-      {format <string>}
-      {mouseformat <int> | <string> | function <f(x,y)>}
-      {{no}labels {"labeloptions"}}
-      {{no}zoomjump} {{no}verbose}
-       */
+      // {doubleclick <ms>} {nodoubleclick}
+      // {{no}zoomcoordinates}
+      // {zoomfactors <xmultiplier>, <ymultiplier>}
+      // {noruler | ruler {at x,y}}
+      // {polardistance{deg|tan} | nopolardistance}
+      // {format <string>}
+      // {mouseformat <int> | <string> | function <f(x,y)>}
+      // {{no}labels {"labeloptions"}}
+      // {{no}zoomjump} {{no}verbose}
     ),
 
     multiplot: $ => seq('multiplot', repeat(choice(
@@ -581,34 +574,31 @@ module.exports = grammar({
     // paxis: $ =>
 
     // pixmap: $ =>
-    /*
-      <index> {"filename" | colormap <name>}
-              at <position>
-              {width <w> | height <h> | size <w>,<h>}
-              {front|back|behind} {center}
-    */
+      // <index> {"filename" | colormap <name>}
+      //         at <position>
+      //         {width <w> | height <h> | size <w>,<h>}
+      //         {front|back|behind} {center}
+
     // pm3d: $ =>
-    /*
-      {
-        { at <position> }
-        { interpolate <steps/points in scan, between scans> }
-        { scansautomatic | scansforward | scansbackward
-                        | depthorder {base} }
-        { flush { begin | center | end } }
-        { ftriangles | noftriangles }
-        { clip {z} | clip1in | clip4in }
-        { {no}clipcb }
-        { corners2color
-          { mean|geomean|harmean|rms|median|min|max|c1|c2|c3|c4 }
-        }
-        { {no}lighting
-          {primary <fraction>} {specular <fraction>} {spec2 <fraction>}
-        }
-        { {no}border {retrace} {<linestyle-options>}}
-        { implicit | explicit }
-        { map }
-      }
-    */
+      // {
+      //   { at <position> }
+      //   { interpolate <steps/points in scan, between scans> }
+      //   { scansautomatic | scansforward | scansbackward
+      //                   | depthorder {base} }
+      //   { flush { begin | center | end } }
+      //   { ftriangles | noftriangles }
+      //   { clip {z} | clip1in | clip4in }
+      //   { {no}clipcb }
+      //   { corners2color
+      //     { mean|geomean|harmean|rms|median|min|max|c1|c2|c3|c4 }
+      //   }
+      //   { {no}lighting
+      //     {primary <fraction>} {specular <fraction>} {spec2 <fraction>}
+      //   }
+      //   { {no}border {retrace} {<linestyle-options>}}
+      //   { implicit | explicit }
+      //   { map }
+      // }
 
     // pointintervalbox: $ =>
 
@@ -766,18 +756,18 @@ module.exports = grammar({
 
     xdtics: $ => /(x|y|z|z2|y2|cb)dtics/,
 
-    xlabel: $ => prec.left(1, seq(/(x|y|z|x2|y2|cb|r)lab(el)?/, repeat(choice(
-      field('label', $._expression),
+    xlabel: $ => seq(/(x|y|z|x2|y2|cb|r)lab(el)?/, repeat(choice( // BUG: same as label
+      field('label', $._label_text),
       seq('offset', field('offset', $._expression)),
       seq('font', field('font', $._expression)), // string with font name and optional size
       seq(/textcolor|tc/, $.colorspec),
       /(no)?enhanced/,
       choice('norotate', seq('rotate', choice(seq('by', $._expression), 'parallel'))),
-    )))),
+    ))),
 
     xmtics: $ => /(x|y|z|x2|y2|cb)mtics/,
 
-    xrange: $ => seq(/(x|y|z|x2|y2|r|t|u|v|cb|vx|vy|vz)ran(ge)?/, optional($.range_block), repeat(choice( // HACK: optional range_block for unset command
+    xrange: $ => seq(/(x|y|z|x2|y2|r|t|u|v|cb|vx|vy|vz)ran(ge)?/, optional($.range_block), repeat(choice( // HACK: optional(range_block) for unset command
       /(no)?reverse/,
       /(no)?writeback/,
       /(no)?extend/,
@@ -823,6 +813,7 @@ module.exports = grammar({
     zeroaxis: $ => seq(/(x|x2|y|y2|z)?zeroaxis/, optional($.line_properties)),
 
     c_show: $ => prec.left(1, seq(/sh(ow)?/, choice(
+      $._argument_set_show,
       'colornames', 'functions',
       seq('palette', optional(choice(
         seq('palette', optional($._expression), optional(choice($.float, $.integer/*, $.hexadecimal*/))),
@@ -951,8 +942,6 @@ module.exports = grammar({
         $._number,
         $._string_literal,
         $.array,
-        // $.colorspec,
-        // $.position,
         $._function,
         $.sum_block,
         $.parenthesized_expression,
@@ -960,13 +949,17 @@ module.exports = grammar({
         $.binary_expression,
         $.ternary_expression,
         $.identifier,
+        $.macro,
     )),
 
-    _label_text: $ => choice(
+    _label_text: $ => prec(2, choice(
       $._string_literal,
       $.identifier,
+      $.binary_expression,
+      $.array,
+      $._function,
       // p 67, 43, 166
-    ),
+    )),
 
     _number: $ => choice($.integer, $.float, $.complex),
 
@@ -1005,7 +998,7 @@ module.exports = grammar({
 
     _function: $ => choice($.defined_func, $.builtin_func),
 
-    defined_func: $ => seq(field('name', $.identifier), $._arguments),
+    defined_func: $ => prec(1, seq(field('name', $.identifier), $._arguments)),
 
     builtin_func: $ => seq($._gnuplot_builtin_func, $._arguments),
 
