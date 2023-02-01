@@ -779,7 +779,7 @@ module.exports = grammar({
 
     xmtics: $ => /(x|y|z|x2|y2|cb)mtics/,
 
-    xrange: $ => seq($.range_block, /(x|y|z|x2|y2|r|t|u|v|cb|vx|vy|vz)ran(ge)?/, repeat(choice(
+    xrange: $ => seq(/(x|y|z|x2|y2|r|t|u|v|cb|vx|vy|vz)ran(ge)?/, $.range_block,  repeat(choice(
       /(no)?reverse/,
       /(no)?writeback/,
       /(no)?extend/,
