@@ -977,6 +977,7 @@ module.exports = grammar({
     array: $ => prec.left(1, seq($.identifier, '[', $._expression, ']')),
 
     colorspec: $ => prec.left(0, choice(
+      alias($.integer, $.tag),
       seq(/rgb(color)?/, $._expression),
       seq('palette', choice(
         seq('frac', field('val', $._expression)),
