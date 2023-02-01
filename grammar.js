@@ -779,7 +779,7 @@ module.exports = grammar({
 
     xmtics: $ => /(x|y|z|x2|y2|cb)mtics/,
 
-    xrange: $ => seq(/(x|y|z|x2|y2|r|t|u|v|cb|vx|vy|vz)ran(ge)?/, $.range_block,  repeat(choice(
+    xrange: $ => seq(/(x|y|z|x2|y2|r|t|u|v|cb|vx|vy|vz)ran(ge)?/, optional($.range_block), repeat(choice( // HACK: optional range_block for unset command
       /(no)?reverse/,
       /(no)?writeback/,
       /(no)?extend/,
@@ -979,12 +979,12 @@ module.exports = grammar({
     colorspec: $ => prec.left(0, choice(
       alias($.integer, $.tag),
       seq(/rgb(color)?/, $._expression),
-      seq('palette', choice(
+      seq('palette', optional(choice(
         seq('frac', field('val', $._expression)),
         seq('cb', field('val', $._expression)),
         'z',
         // $.colormap // Named palette
-      )),
+      ))),
       'variable',
       'bgnd',
       'black'
