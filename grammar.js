@@ -42,7 +42,8 @@ module.exports = grammar({
     [$.xlabel],
     [$.datafile_modifiers],
     [$.arrow],
-    [$._label_opts, $._number]
+    [$._label_opts, $._number],
+    [$._i_e_u_directives],
   ],
 
   rules: {
@@ -824,19 +825,14 @@ module.exports = grammar({
     ),
 
     c_stats: $ => seq('stats', // p. 250
-      choice(
-        seq(
-          field('ranges', repeat($.range_block)),
-          field('filename', $._expression),
-          optional(choice(
-            'matrix',
-            seq(/u(sing)?/, $._expression, optional(seq(':', $._expression))),
-          )),
-          optional(seq('name', $._expression)),
-          optional(/(no)?o(ut)?(put)?/),
-        ),
+      field('ranges', repeat($.range_block)),
+      field('filename', $._expression),
+      choice('matrix', repeat1($._i_e_u_directives)), // TODO: add index, every, using directives
+      repeat(choice(
+        seq(choice('name', 'prefix'), $._expression),
+        /(no)?o(ut)?(put)?/,
         seq('$vgridname', optional(seq('name', $._expression))),
-      ),
+      )),
     ),
 
     c_while: $ => seq(
@@ -869,17 +865,8 @@ module.exports = grammar({
       choice(
         field('binary', seq('binary')), // add binary list
         field('matrix', seq(/(nonuniform|sparce)/, 'matrix')),
-        field('index', seq(/i(ndex)?/, choice(seq($._expression, optional(seq(':', $._expression)),optional(seq(':',$._expression))), field('name', $._expression)))),
-        seq('every',
-          optional(field('point_incr', $._expression)),
-          optional(seq(':', optional(field('block_incr', $._expression)))),
-          optional(seq(':', optional(field('start_point', $._expression)))),
-          optional(seq(':', optional(field('start_block', $._expression)))),
-          optional(seq(':', optional(field('end_point', $._expression)))),
-          optional(seq(':', optional(field('end_block', $._expression)))),
-        ),
+        $._i_e_u_directives,
         field('skip', seq('skip', field('N_lines', $._expression))),
-        field('using', seq(/u(sing)?/, $._expression, repeat(seq(':', $._expression)))),
         seq('smooth', optional($.smooth_options)),
         seq('bins'), // TODO: finish this p. 125
         'mask', 'convexhull', 'volatile', 'zsort', 'noautoscale',
@@ -930,6 +917,19 @@ module.exports = grammar({
       'bgnd',
       'black'
     )),
+
+    _i_e_u_directives: $ => choice(
+      field('index', seq(/i(ndex)?/, choice(seq($._expression, optional(seq(':', $._expression)),optional(seq(':',$._expression))), field('name', $._expression)))),
+      seq('every',
+        optional(field('point_incr', $._expression)),
+        optional(seq(':', optional(field('block_incr', $._expression)))),
+        optional(seq(':', optional(field('start_point', $._expression)))),
+        optional(seq(':', optional(field('start_block', $._expression)))),
+        optional(seq(':', optional(field('end_point', $._expression)))),
+        optional(seq(':', optional(field('end_block', $._expression)))),
+      ),
+      field('using', seq(/u(sing)?/, $._expression, repeat(seq(':', $._expression)))),
+    ),
 
     smooth_options: $ => choice(
       'unique', 'frequency', 'fnormal', 'cumulative', 'cnormal', 'csplines',
