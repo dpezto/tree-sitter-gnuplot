@@ -40,9 +40,11 @@ module.exports = grammar({
     [$.palette],
     [$.xdata],
     [$.xlabel],
+    // [$.xtics],
     [$.datafile_modifiers],
     [$.arrow],
     [$._label_opts, $._number],
+    [$._label_opts, $._expression],
     [$._i_e_u_directives],
   ],
 
@@ -142,7 +144,7 @@ module.exports = grammar({
         /p(lot)?/,
         repeat($.range_block),
         $.plot_element,
-        repeat(seq(',', $.plot_element)),
+        repeat(seq(choice(',', /,\s*\\/), $.plot_element)),
       ),
     ),
 
@@ -161,7 +163,7 @@ module.exports = grammar({
     )),
     // p. 140
     plot_style: $ => choice(/l(ines)?/, /p(oints)?/, /lp|linespoints/, /financebars/,
-      /dots/, /i(mpulses)?/, seq(/lab(els)?/, $._label_opts) /*p. 88*/, /sur(face)?/, /steps/, /fsteps/, /histeps/,
+      /dots/, /i(mpulses)?/, seq(/lab(els)?/, $._label_opts), /sur(face)?/, /steps/, /fsteps/, /histeps/,
       /arr(ows)?/, /vec(tors)?/ /*p. 94*/, /(x|y|xy)errorbar/, /(x|y|xy)errorlines/, /parallelaxes/,
       // or
       /boxes/, /boxerrorbars/, /boxxyerror/, /isosurface/, /boxplot/, /candlesticks/,
@@ -751,7 +753,7 @@ module.exports = grammar({
     xdtics: $ => /(x|y|z|z2|y2|cb)dtics/,
 
     xlabel: $ => seq(/(x|y|z|x2|y2|cb|r)lab(el)?/,
-      optional(field('label', $._label_text)),
+      optional(field('label', $._expression)),
       repeat(choice(
         seq('offset', field('offset', $._expression)),
         seq('font', field('font', $._expression)), // string with font name and optional size
@@ -783,17 +785,20 @@ module.exports = grammar({
         'autofreq',
         $._expression,
         seq(field('start', $._expression), ',', field('incr', $._expression), optional(seq(',', field('end', $._expression)))),
-        // seq(
-        //   '(', optional(field('label', $._expression)),
-        //   field('pos', $._expression),
-        //   optional(field('level', $._expression)),
-        //   repeat(seq(
-        //     ',', optional(field('label', $._expression)),
-        //     field('pos', $._expression),
-        //     optional(field('level', $._expression))
-        //   )),
-        //   ')'
-        // )
+        seq(
+          '(',
+          choice(
+            field('pos', $._expression),
+            seq(field('label', $._expression), field('pos', $._expression)),
+            seq(field('label', $._expression), field('pos', $._expression), field('level', $._expression)),
+          ),
+          repeat(seq(',', choice(
+            field('pos', $._expression),
+            seq(field('label', $._expression), field('pos', $._expression)),
+            seq(field('label', $._expression), field('pos', $._expression), field('level', $._expression)),
+          ))),
+          ')'
+        )
       ),
       seq('format', $._expression),
       seq('font', $._expression), // string with font name and optional size
@@ -827,7 +832,7 @@ module.exports = grammar({
     c_stats: $ => seq('stats', // p. 250
       field('ranges', repeat($.range_block)),
       field('filename', $._expression),
-      choice('matrix', repeat1($._i_e_u_directives)), // TODO: add index, every, using directives
+      optional(choice('matrix', repeat1($._i_e_u_directives))),
       repeat(choice(
         seq(choice('name', 'prefix'), $._expression),
         /(no)?o(ut)?(put)?/,
@@ -875,7 +880,7 @@ module.exports = grammar({
 
     _label_opts: $ => prec(1, repeat1(choice(
       field('tag', choice($.integer, $.identifier)),
-      prec(1, field('text', $._label_text)),
+      prec(1, field('text', $._expression)),
       field('position', seq('at', $.position)),
       /l(eft)?|r(ight)?|c(enter)?/,
       choice('norotate', seq('rotate', optional(seq('by', field('degrees', $._expression))))),
@@ -939,15 +944,12 @@ module.exports = grammar({
       'unwrap'
     ),
 
-    position: $ => choice(
-      field('x', $._pos_coord),
-      seq(
-        field('x', $._pos_coord),
-        optional(seq( ',',
-          field('y', $._pos_coord),
-          optional(seq(',', field('z', $._pos_coord)))
-        ))
-      )
+    position: $ => seq( // identifica primero ',z' que ',plot_element' 
+      field('x', $._pos_coord), optional(','),
+      optional(seq(
+        field('y', $._pos_coord), //optional(','),
+        optional(seq(',', field('z', $._pos_coord)))
+      ))
     ),
 
     _pos_coord: $ => choice($._number, $.identifier, $._function),
@@ -995,15 +997,6 @@ module.exports = grammar({
         $.ternary_expression,
         $.identifier,
         $.macro,
-    )),
-
-    _label_text: $ => prec(2, choice(
-      $._string_literal,
-      $.identifier,
-      $.array,
-      $._function,
-      $.binary_expression,
-      // p 67, 43, 166
     )),
 
     _number: $ => choice($.integer, $.float, $.complex),
