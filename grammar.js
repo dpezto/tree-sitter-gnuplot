@@ -931,10 +931,10 @@ module.exports = grammar({
       'unwrap'
     ),
 
-    position: $ => seq(
+    position: $ => prec.left(1,seq(
       optional($.system), field('x', $._expression), ',', optional($.system), field('y', $._expression),
       optional(seq(',', optional($.system), field('z', $._expression))),
-    ),
+    )),
 
     system: $ => choice('first', 'second', 'graph', 'screen', 'character'),
     //-------------------------------------------------------------------------
@@ -996,12 +996,6 @@ module.exports = grammar({
     double_quoted_string: $ => token(seq('"', repeat(/[^"]*/), '"')),
 
     array: $ => seq($.identifier, '[', $._expression, ']'),
-
-    position: $ => prec.right(1, seq(
-      optional(/first|second|polar|graph|screen|character/),
-      field('x', $._expression),',', field('y', $._expression),
-      optional(seq(',', field('z', $._expression)))
-    )),
 
     _function: $ => choice($.defined_func, $.builtin_func),
 
