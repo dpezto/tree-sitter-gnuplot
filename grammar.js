@@ -195,8 +195,7 @@ module.exports = grammar({
       $.encoding, $.errorbars,
       $.fit, $.format,
       $.grid,
-      $.hidden3d,
-      // $.history,
+      $.hidden3d, $.history,
       $.isosamples, $.isosurface, $.isotropic,
       // $.jitter,
       $.key,
@@ -296,20 +295,20 @@ module.exports = grammar({
       ),
     ))),
 
-    colorbox: $ => seq('colorbox', optional(repeat1(choice( // p. 155
-      /vertical|horizontal/,
-      /((no)?invert)/,
-      /default|user/,
-      /front|back/,
+    colorbox: $ => seq(/colorb(o(x)?)?/, optional(repeat1(choice( // p. 155
+      /v(e(r(t(i(c(a(l)?)?)?)?)?)?)?|h(o(r(i(z(o(n(t(a(l)?)?)?)?)?)?)?)?)?/,
+      /((no)?inv(e(r(t)?)?)?/,
+      /def(a(u(l(t)?)?)?)?|u(s(e(r)?)?)?/,
+      seq(/o(r(i(g(i(n)?)?)?)?)?/, $.position),
+      seq(/s(i(z(e)?)?)?/, $.position),
+      /fr(o(n(t)?)?)?|ba(c(k)?)?/,
       choice(
-        'noborder',
-        'bdefault',
-        seq('border', $._expression), //linestyle
+        /nobo(r(d(e(r)?)?)?)?/,
+        /bd(f(a(u(l(t)?)?)?)?)?/,
+        seq(/bo(r(d(e(r)?)?)?)?/, $._expression), //linestyle
       ),
       seq('cbtics', $._expression), //linestyle
     )))),
-
-    colornames: $ => 'colornames',
 
     contour: $ => seq('contour', optional(choice('base', 'surface', 'both'))),
 
@@ -330,18 +329,18 @@ module.exports = grammar({
     ),
 
     datafile: $ => prec.left(seq(/dataf(i(l(e)?)?)?/, optional(choice(
-      'columnheaders',
-      'fortran',
+      /columnhead(e(r(s)?)?)?/,
+      /fort(r(a(n)?)?)?/,
       'nofpe_trap',
-      seq('missing', choice(field('string', $._expression), 'NaN')),
-      seq(/sep(a(r(a(t(o(r)?)?)?)?)?)?/, choice('whitespace', 'tab', 'comma', $._expression)), // chars
+      seq(/miss(i(n(g)?)?)?/, choice(field('string', $._expression), 'NaN')),
+      seq(/sep(a(r(a(t(o(r)?)?)?)?)?)?/, choice(/white(s(p(a(c(e)?)?)?)?)?/, 'tab', 'comma', $._expression)), // chars
       seq('commentschars', optional(field('string', $._expression))),
       seq('binary', $._expression), // binary list pag 160 -> 118 -> 245
     )))),
 
     decimalsign: $ => prec.left(seq('decimalsign', choice($._expression, seq('locale', optional($._expression))))),
 
-    dgrid3d: $ => prec.left(seq('dgrid3d', repeat1(choice( // p. 161
+    dgrid3d: $ => prec.left(seq(/dg(r(i(d(3(d)?)?)?)?)?/, repeat1(choice( // p. 161
       seq(field('rows', $._expression), optional(seq(',', field('cols', $._expression)))),
       choice(
         'splines',
@@ -357,7 +356,7 @@ module.exports = grammar({
 
     // dummy: $ =>
 
-    encoding: $ => seq('encoding', choice(
+    encoding: $ => seq(/enc(o(d(i(n(g)?)?)?)?)?/, choice(
       'default', /iso_8859_(1|15|2|9)/, /koi8(r|u)/, /cp(437|85(0|2)|950|125(0|1|2|4))/, 'sjis', 'utf8', 'locale'
     )),
 
@@ -393,7 +392,7 @@ module.exports = grammar({
       seq(alias($._line_opts, $.line_prop_major), optional(seq(',', alias($._line_opts, $.line_prop_minor))))
     ))),
 
-    hidden3d: $ => seq('hidden3d', optional(choice(
+    hidden3d: $ => seq(/hid(d(e(n(3(d)?)?)?)?)?/, optional(choice(
       'defaults',
       repeat1(choice(
         /front|back/,
@@ -405,7 +404,12 @@ module.exports = grammar({
       ))
     ))),
 
-    // history: $ =>
+    history: $ => seq(/his(t(o(r(y)?)?)?)?/, repeat(choice(
+      seq('size', $._expression),
+      /quiet|num(b(e(r(s)?)?)?)?/,
+      /full|trip/,
+      /def(a(u(l(t)?)?)?)?/,
+    ))),
 
     isosamples: $ => seq(/iso(s(a(m(p(l(e(s)?)?)?)?)?)?)?/, $._expression, optional(seq(',', $._expression))),
 
@@ -1000,7 +1004,7 @@ module.exports = grammar({
 
     _function: $ => choice($.defined_func, $.builtin_func),
 
-    defined_func: $ => prec(1, seq(field('name', $.identifier), $._arguments)),
+    defined_func: $ => prec(1, seq(alias($.identifier, $.name), $._arguments)),
 
     builtin_func: $ => seq($._gnuplot_builtin_func, $._arguments),
 

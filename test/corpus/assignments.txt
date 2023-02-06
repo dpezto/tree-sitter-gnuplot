@@ -6,7 +6,7 @@ a = lolazo
 
 -------------------------------------------------------------------------------
 (source_file
-  (def_var
+  (var_def
     (var)
     (identifier)))
 
@@ -18,7 +18,7 @@ array b[4] = [a,2,3.5,{4,0.3}]
 
 -------------------------------------------------------------------------------
 (source_file
-  (def_array
+  (array_def
     (array
       (identifier)
       (integer))
@@ -37,10 +37,11 @@ f(x) = x**2
 
 -------------------------------------------------------------------------------
 (source_file
-      (def_func
-        (function
+      (func_def
+        (defined_func
           name: (identifier)
-          argument: (identifier))
+          argument: (variable
+            (identifier)))
         (binary_expression
           (identifier)
           (integer))))
