@@ -199,8 +199,7 @@ module.exports = grammar({
       $.isosamples, $.isosurface, $.isotropic,
       // $.jitter,
       $.key,
-      $.label,
-      // $.linetype,
+      $.label, $.linetype,
       // $.link,
       // $.loadpath,
       $.locale, $.logscale,
@@ -405,13 +404,13 @@ module.exports = grammar({
     ))),
 
     history: $ => seq(/his(t(o(r(y)?)?)?)?/, repeat(choice(
-      seq('size', $._expression),
+      field('size', seq('size', $._expression)),
       /quiet|num(b(e(r(s)?)?)?)?/,
       /full|trip/,
       /def(a(u(l(t)?)?)?)?/,
     ))),
 
-    isosamples: $ => seq(/iso(s(a(m(p(l(e(s)?)?)?)?)?)?)?/, $._expression, optional(seq(',', $._expression))),
+    isosamples: $ => prec.left(seq(/iso(s(a(m(p(l(e(s)?)?)?)?)?)?)?/, optional(seq($._expression, optional(seq(',', $._expression)))))),
 
     isosurface: $ => seq(/isosurf(a(c(e)?)?)?/, optional(choice('mixed', 'triangles')), optional(choice('noinsidecolor', seq('insidecolor', $._expression)))),
 
@@ -454,7 +453,7 @@ module.exports = grammar({
       repeat($._label_opts)
     ),
 
-    // linetype: $ =>
+    linetype: $ => seq('linetype', $._line_style),
 
     // link: $ =>
 
@@ -605,7 +604,7 @@ module.exports = grammar({
       seq('fill', $.fill_style),
       seq('function', $.plot_style),
       seq('increment', alias(optional(/default|userstyles/), $.increment_style)),
-      seq(/l(i(n(e)?)?)?/), // p. 217
+      seq(/l(i(n(e)?)?)?/, $._line_style),
       seq('circle'), // p. 218
       seq('rectangle'), // p. 218
       seq('ellipse'), // p. 219
@@ -891,6 +890,19 @@ module.exports = grammar({
       field('lw', seq(/linewidth|lw/, $._expression)),
       field('lc', seq(/linecolor|lc/, $.colorspec)),
       field('dt', seq(/dashtype|dt/, $._dash_opts)),
+    ))),
+
+    _line_style: $ => seq(field('tag', $._expression), repeat(choice(
+      /def(a(u(l(t)?)?)?)?/,
+      field('lt', seq(/linetype|lt/, $._expression)),
+      field('lw', seq(/linewidth|lw/, $._expression)),
+      field('lc', seq(/linecolor|lc/, $.colorspec)),
+      field('dt', seq(/dashtype|dt/, $._dash_opts)),
+      field('pt', seq(/pointtype|pt/, $._expression)),
+      field('ps', seq(/pointsize|ps/, $._expression)),
+      field('pi', seq(/pointinterval|pi/, $._expression)),
+      field('pn', seq(/pointnumber|pn/, $._expression)),
+      /pal(e(t(t(e)?)?)?)?/
     ))),
 
     fill_style: $ => seq(
