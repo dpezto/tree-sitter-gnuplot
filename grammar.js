@@ -189,7 +189,7 @@ module.exports = grammar({
     _argument_set_show: $ => choice(
       $.angles, $.arrow,
       $.border, $.boxwidth, $.boxdepth,
-      $.color, $.colormap, $.colorsequence, $.clip, $.cntrlabel, $.cntrparam, $.colorbox, $.colornames, $.contour, $.cornerpoles,
+      $.color, $.colormap, $.colorsequence, $.clip, $.cntrlabel, $.cntrparam, $.colorbox, $.contour, $.cornerpoles,
       $.dashtype, $.datafile, $.decimalsign, $.dgrid3d,
       // $.dummy,
       $.encoding, $.errorbars,
@@ -297,7 +297,7 @@ module.exports = grammar({
 
     colorbox: $ => seq(/colorb(o(x)?)?/, optional(repeat1(choice( // p. 155
       /v(e(r(t(i(c(a(l)?)?)?)?)?)?)?|h(o(r(i(z(o(n(t(a(l)?)?)?)?)?)?)?)?)?/,
-      /((no)?inv(e(r(t)?)?)?/,
+      /(no)?inv(e(r(t)?)?)?/,
       /def(a(u(l(t)?)?)?)?|u(s(e(r)?)?)?/,
       seq(/o(r(i(g(i(n)?)?)?)?)?/, $.position),
       seq(/s(i(z(e)?)?)?/, $.position),
