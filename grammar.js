@@ -162,8 +162,8 @@ module.exports = grammar({
       // or
       /boxes/, /boxerrorbars/, /boxxyerror/, /isosurface/, /boxplot/,
       /candlesticks/, /circles/, /zerrorfill/, /ellipses/, /filledcurves/,
-      seq(/fillsteps/, optional(/above|below/), optional($._expression)), /histograms/, /image/,
-      seq(/pm3d/, repeat(choice(/pal(e(t(t(e)?)?)?)?/, /dep(t(h(o(r(d(e(r)?)?)?)?)?)?)?/))), // FIX: p. 197, 206, 207
+      seq(/fillsteps/, optional(/above|below/), optional($._expression)), /histograms/, /ima(g(e)?)?/,
+      /pm3d/,
       /rgbalpha/, /rgbimage/, /polygons/,
       // or
       /table/, /mask/
@@ -176,7 +176,7 @@ module.exports = grammar({
       field('as', seq(/arrowstyle|as/, $._expression)),
       field('fs', seq(/fill|fs/, $._expression)),
       field('fc', seq(/fillcolor|fc/, $.colorspec)),
-      'nohidden3d', 'nocontours', 'nosurface', 'palette'
+      /nohidden3d/, /nocontours/, /nosurf(a(c(e)?)?)?/, /pal(e(t(t(e)?)?)?)?/
     )),
 
     c_print: $ => seq('print', $._expression, repeat(seq(',', $._expression))),
@@ -212,8 +212,7 @@ module.exports = grammar({
       $.pointsize, $.polar, $.print, $.psdir,
       $.raxis, $.rgbmax,
       $.samples, $.size, $.spiderplot, $.style, $.surface,
-      // $.table, // p. 220
-      $.terminal,
+      $.table, $.terminal,
       // $.termoption,
       $.theta, $.tics,
       // $.timestamp, // p. 224
@@ -275,12 +274,12 @@ module.exports = grammar({
       'bspline',
       seq('points', $._expression),
       seq('order', $._expression),
-      seq('levels',
+      seq(/le(v(e(l(s)?)?)?)?/,
         choice(
           $._expression,
           prec.left(1, seq('auto', optional($._expression))),
           prec.left(1, seq('discrete', $._expression, repeat(seq(',', $._expression)))),
-          prec.left(1, seq('incremental', $._expression, ',', $._expression, optional(seq(',', $._expression)))),
+          prec.left(1, seq(/in(c(r(e(m(e(n(t(a(l)?)?)?)?)?)?)?)?)?/, $._expression, ',', $._expression, optional(seq(',', $._expression)))),
         ),
         optional(/((un)?sorted)/),
         optional(seq('firstlinetype', $._expression)),
@@ -610,7 +609,11 @@ module.exports = grammar({
 
     surface: $ => seq(/su(r(f(a(c(e)?)?)?)?)?/, optional(choice('implicit', 'explicit'))),
 
-    // table: $ =>
+    table: $ => seq(/ta(b(l(e)?)?)?/, repeat(choice(
+      choice($._string_literal, ), // TODO: add $datablock p. 220
+      'append',
+      seq(/sep(a(r(a(t(o(r)?)?)?)?)?)?/, choice(/white(s(p(a(c(e)?)?)?)?)?/, 'tab', 'comma', $._expression))
+    ))),
 
     terminal: $ => seq(/t(e(r(m(i(n(a(l)?)?)?)?)?)?)?/, optional(choice($._terminal_type, 'push', 'pop'))),
 
@@ -843,7 +846,7 @@ module.exports = grammar({
       'for', '[',
       choice(
         seq($._expression, 'in', $._expression),
-        seq(alias($.identifier, $.start),'=', $._expression, ':', alias($._expression, $.end), optional(seq(':', alias($._expression, $.incr)))),
+        seq(alias($.var_def, $.start), $._expression, ':', alias($._expression, $.end), optional(seq(':', alias($._expression, $.incr)))),
       ),
       ']'
     ),
@@ -867,9 +870,10 @@ module.exports = grammar({
     _arrow_opts: $ => prec.left(choice(
       field('as', seq(/arrowstyle|as/, $._expression)),
       choice('nohead', 'head', 'backhead', 'heads'),
-      field('size', seq(
-        'size', optional($.position),
+      prec(2, seq( // FIX: precedence over plot_element
+        'size', $._expression, ',', $._expression, optional(seq(',', $._expression))
       )),
+      'fixed',
       choice('filled', 'empty', 'nofilled', 'noborder'),
       choice('front', 'back'),
       $._line_opts
@@ -882,7 +886,7 @@ module.exports = grammar({
       /front|back/,
       seq(/textcolor|tc/, $.colorspec),
       seq('offset', alias($.position, $.offset)),
-      /l(eft)?|r(ight)?|c(enter)?/,
+      /l(e(f(t)?)?)?|r(i(g(h(t)?)?)?)?|c(e(n(t(e(r)?)?)?)?)?/,
       field('position', seq('at', $.position)),
       choice(seq('point', field('point', $._expression)), 'nopoint'),
       choice('nobox', seq('boxed', optional(field('bs', seq('bs', $._expression))))),
@@ -922,7 +926,7 @@ module.exports = grammar({
     colorspec: $ => prec.left(choice(
       alias($.integer, $.tag),
       seq(/rgb(color)?/, $._expression),
-      seq('palette', optional(choice(
+      seq(/pal(e(t(t(e)?)?)?)?/, optional(choice(
         seq('frac', field('val', $._expression)),
         seq('cb', field('val', $._expression)),
         'z',

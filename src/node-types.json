@@ -1,5 +1,147 @@
 [
   {
+    "type": "Im",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "builtin_func",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "defined_func",
+          "named": true
+        },
+        {
+          "type": "double_quoted_string",
+          "named": true
+        },
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "single_quoted_string",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "Re",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "builtin_func",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "defined_func",
+          "named": true
+        },
+        {
+          "type": "double_quoted_string",
+          "named": true
+        },
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "single_quoted_string",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "angles",
     "named": true,
     "fields": {}
@@ -470,20 +612,6 @@
           {
             "type": "unary_expression",
             "named": true
-          }
-        ]
-      },
-      "size": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "position",
-            "named": true
-          },
-          {
-            "type": "size",
-            "named": false
           }
         ]
       }
@@ -1127,6 +1255,14 @@
           "named": true
         },
         {
+          "type": "c_test",
+          "named": true
+        },
+        {
+          "type": "c_undefine",
+          "named": true
+        },
+        {
           "type": "c_while",
           "named": true
         },
@@ -1593,6 +1729,14 @@
           "named": true
         },
         {
+          "type": "c_test",
+          "named": true
+        },
+        {
+          "type": "c_undefine",
+          "named": true
+        },
+        {
           "type": "c_while",
           "named": true
         },
@@ -1826,7 +1970,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
@@ -1874,10 +2018,6 @@
           "named": true
         },
         {
-          "type": "colornames",
-          "named": true
-        },
-        {
           "type": "colorsequence",
           "named": true
         },
@@ -1918,6 +2058,10 @@
           "named": true
         },
         {
+          "type": "for_block",
+          "named": true
+        },
+        {
           "type": "format",
           "named": true
         },
@@ -1927,6 +2071,10 @@
         },
         {
           "type": "hidden3d",
+          "named": true
+        },
+        {
+          "type": "history",
           "named": true
         },
         {
@@ -1947,6 +2095,10 @@
         },
         {
           "type": "label",
+          "named": true
+        },
+        {
+          "type": "linetype",
           "named": true
         },
         {
@@ -2006,6 +2158,10 @@
           "named": true
         },
         {
+          "type": "pm3d",
+          "named": true
+        },
+        {
           "type": "pointsize",
           "named": true
         },
@@ -2050,6 +2206,10 @@
           "named": true
         },
         {
+          "type": "table",
+          "named": true
+        },
+        {
           "type": "terminal",
           "named": true
         },
@@ -2075,6 +2235,10 @@
         },
         {
           "type": "vgrid",
+          "named": true
+        },
+        {
+          "type": "view",
           "named": true
         },
         {
@@ -2185,10 +2349,6 @@
           "named": true
         },
         {
-          "type": "colornames",
-          "named": true
-        },
-        {
           "type": "colorsequence",
           "named": true
         },
@@ -2257,6 +2417,10 @@
           "named": true
         },
         {
+          "type": "history",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -2282,6 +2446,10 @@
         },
         {
           "type": "label",
+          "named": true
+        },
+        {
+          "type": "linetype",
           "named": true
         },
         {
@@ -2349,6 +2517,10 @@
           "named": true
         },
         {
+          "type": "pm3d",
+          "named": true
+        },
+        {
           "type": "pointsize",
           "named": true
         },
@@ -2401,6 +2573,10 @@
           "named": true
         },
         {
+          "type": "table",
+          "named": true
+        },
+        {
           "type": "terminal",
           "named": true
         },
@@ -2434,6 +2610,10 @@
         },
         {
           "type": "vgrid",
+          "named": true
+        },
+        {
+          "type": "view",
           "named": true
         },
         {
@@ -3249,6 +3429,82 @@
     }
   },
   {
+    "type": "c_test",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "c_undefine",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "builtin_func",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "defined_func",
+          "named": true
+        },
+        {
+          "type": "double_quoted_string",
+          "named": true
+        },
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "single_quoted_string",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "c_while",
     "named": true,
     "fields": {},
@@ -3322,6 +3578,14 @@
         },
         {
           "type": "c_stats",
+          "named": true
+        },
+        {
+          "type": "c_test",
+          "named": true
+        },
+        {
+          "type": "c_undefine",
           "named": true
         },
         {
@@ -3592,6 +3856,10 @@
           "named": true
         },
         {
+          "type": "position",
+          "named": true
+        },
+        {
           "type": "single_quoted_string",
           "named": true
         },
@@ -3684,11 +3952,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "colornames",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "colorsequence",
@@ -3965,7 +4228,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "array",
@@ -4966,17 +5229,17 @@
             "named": true
           }
         ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -6534,6 +6797,82 @@
     }
   },
   {
+    "type": "history",
+    "named": true,
+    "fields": {
+      "size": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "size",
+            "named": false
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "incr",
     "named": true,
     "fields": {},
@@ -6610,7 +6949,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "array",
@@ -8209,6 +8548,522 @@
       "lw": {
         "multiple": true,
         "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "linetype",
+    "named": true,
+    "fields": {
+      "dt": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "empty_lenght",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "solid_lenght",
+            "named": true
+          }
+        ]
+      },
+      "lc": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "colorspec",
+            "named": true
+          }
+        ]
+      },
+      "lt": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "lw": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "pi": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "pn": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "ps": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "pt": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "tag": {
+        "multiple": false,
+        "required": true,
         "types": [
           {
             "type": "array",
@@ -11118,258 +11973,6 @@
     }
   },
   {
-    "type": "parallelaxis_style",
-    "named": true,
-    "fields": {
-      "dt": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "double_quoted_string",
-            "named": true
-          },
-          {
-            "type": "empty_lenght",
-            "named": true
-          },
-          {
-            "type": "integer",
-            "named": true
-          },
-          {
-            "type": "single_quoted_string",
-            "named": true
-          },
-          {
-            "type": "solid_lenght",
-            "named": true
-          }
-        ]
-      },
-      "lc": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "colorspec",
-            "named": true
-          }
-        ]
-      },
-      "ls": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "builtin_func",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "defined_func",
-            "named": true
-          },
-          {
-            "type": "double_quoted_string",
-            "named": true
-          },
-          {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "integer",
-            "named": true
-          },
-          {
-            "type": "macro",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "single_quoted_string",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "lt": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "builtin_func",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "defined_func",
-            "named": true
-          },
-          {
-            "type": "double_quoted_string",
-            "named": true
-          },
-          {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "integer",
-            "named": true
-          },
-          {
-            "type": "macro",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "single_quoted_string",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "lw": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "builtin_func",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "defined_func",
-            "named": true
-          },
-          {
-            "type": "double_quoted_string",
-            "named": true
-          },
-          {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "integer",
-            "named": true
-          },
-          {
-            "type": "macro",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "single_quoted_string",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "parenthesized_expression",
     "named": true,
     "fields": {},
@@ -12179,20 +12782,6 @@
             "named": true
           }
         ]
-      },
-      "size": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "position",
-            "named": true
-          },
-          {
-            "type": "size",
-            "named": false
-          }
-        ]
       }
     },
     "children": {
@@ -12265,6 +12854,488 @@
         },
         {
           "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "pm3d",
+    "named": true,
+    "fields": {
+      "dt": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "empty_lenght",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "solid_lenght",
+            "named": true
+          }
+        ]
+      },
+      "fraction": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "lc": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "colorspec",
+            "named": true
+          }
+        ]
+      },
+      "ls": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "lt": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "lw": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "scanorder": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "base",
+            "named": false
+          },
+          {
+            "type": "scansautomatic",
+            "named": false
+          },
+          {
+            "type": "scansbackward",
+            "named": false
+          },
+          {
+            "type": "scansforward",
+            "named": false
+          }
+        ]
+      },
+      "steps": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "z": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "position",
           "named": true
         }
       ]
@@ -13322,6 +14393,14 @@
           "named": true
         },
         {
+          "type": "c_test",
+          "named": true
+        },
+        {
+          "type": "c_undefine",
+          "named": true
+        },
+        {
           "type": "c_while",
           "named": true
         },
@@ -13423,25 +14502,706 @@
   {
     "type": "style",
     "named": true,
-    "fields": {},
+    "fields": {
+      "dt": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "empty_lenght",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "solid_lenght",
+            "named": true
+          }
+        ]
+      },
+      "lc": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "colorspec",
+            "named": true
+          }
+        ]
+      },
+      "ls": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "lt": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "lw": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "pi": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "pn": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "ps": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "pt": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "tag": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin_func",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "defined_func",
+            "named": true
+          },
+          {
+            "type": "double_quoted_string",
+            "named": true
+          },
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "single_quoted_string",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "arrow",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "boxplot",
+          "named": true
+        },
+        {
+          "type": "builtin_func",
+          "named": true
+        },
+        {
+          "type": "circle",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "data",
+          "named": true
+        },
+        {
+          "type": "defined_func",
+          "named": true
+        },
+        {
+          "type": "double_quoted_string",
+          "named": true
+        },
+        {
+          "type": "ellipse",
+          "named": true
+        },
+        {
+          "type": "fill",
+          "named": true
+        },
         {
           "type": "fill_style",
           "named": true
         },
         {
-          "type": "increment_style",
+          "type": "float",
           "named": true
         },
         {
-          "type": "parallelaxis_style",
+          "type": "func",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "line",
+          "named": true
+        },
+        {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "parallelaxis",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
           "named": true
         },
         {
           "type": "plot_style",
+          "named": true
+        },
+        {
+          "type": "rectangle",
+          "named": true
+        },
+        {
+          "type": "single_quoted_string",
+          "named": true
+        },
+        {
+          "type": "spiderplot",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "system",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "textbox",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
           "named": true
         }
       ]
@@ -14913,6 +16673,77 @@
     "fields": {}
   },
   {
+    "type": "table",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "builtin_func",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "defined_func",
+          "named": true
+        },
+        {
+          "type": "double_quoted_string",
+          "named": true
+        },
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "single_quoted_string",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "tag",
     "named": true,
     "fields": {},
@@ -15692,6 +17523,77 @@
     "children": {
       "multiple": true,
       "required": true,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "builtin_func",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "defined_func",
+          "named": true
+        },
+        {
+          "type": "double_quoted_string",
+          "named": true
+        },
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "single_quoted_string",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "view",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
       "types": [
         {
           "type": "array",
@@ -17183,10 +19085,6 @@
     "named": false
   },
   {
-    "type": "Im",
-    "named": true
-  },
-  {
     "type": "LambertW",
     "named": false
   },
@@ -17197,10 +19095,6 @@
   {
     "type": "RGB",
     "named": false
-  },
-  {
-    "type": "Re",
-    "named": true
   },
   {
     "type": "SynchrotronF",
@@ -17259,6 +19153,10 @@
     "named": true
   },
   {
+    "type": "append",
+    "named": false
+  },
+  {
     "type": "arg",
     "named": false
   },
@@ -17307,6 +19205,10 @@
     "named": false
   },
   {
+    "type": "azimuth",
+    "named": false
+  },
+  {
     "type": "back",
     "named": false
   },
@@ -17323,7 +19225,7 @@
     "named": false
   },
   {
-    "type": "bdefault",
+    "type": "begin",
     "named": false
   },
   {
@@ -17416,7 +19318,7 @@
   },
   {
     "type": "boxplot",
-    "named": false
+    "named": true
   },
   {
     "type": "boxwidth",
@@ -17440,6 +19342,22 @@
   },
   {
     "type": "by",
+    "named": false
+  },
+  {
+    "type": "c1",
+    "named": false
+  },
+  {
+    "type": "c2",
+    "named": false
+  },
+  {
+    "type": "c3",
+    "named": false
+  },
+  {
+    "type": "c4",
     "named": false
   },
   {
@@ -17479,16 +19397,16 @@
     "named": false
   },
   {
+    "type": "center",
+    "named": false
+  },
+  {
     "type": "cerf",
     "named": false
   },
   {
-    "type": "character",
-    "named": false
-  },
-  {
     "type": "circle",
-    "named": false
+    "named": true
   },
   {
     "type": "classic",
@@ -17496,6 +19414,18 @@
   },
   {
     "type": "clip",
+    "named": false
+  },
+  {
+    "type": "clip1in",
+    "named": false
+  },
+  {
+    "type": "clip4in",
+    "named": false
+  },
+  {
+    "type": "clipcb",
     "named": false
   },
   {
@@ -17516,10 +19446,6 @@
   },
   {
     "type": "color",
-    "named": false
-  },
-  {
-    "type": "colorbox",
     "named": false
   },
   {
@@ -17555,10 +19481,6 @@
     "named": false
   },
   {
-    "type": "columnheaders",
-    "named": false
-  },
-  {
     "type": "columns",
     "named": false
   },
@@ -17589,6 +19511,10 @@
   {
     "type": "cornerpoles",
     "named": true
+  },
+  {
+    "type": "corners2color",
+    "named": false
   },
   {
     "type": "cos",
@@ -17631,10 +19557,6 @@
     "named": false
   },
   {
-    "type": "data",
-    "named": false
-  },
-  {
     "type": "days",
     "named": false
   },
@@ -17659,10 +19581,6 @@
     "named": false
   },
   {
-    "type": "dgrid3d",
-    "named": false
-  },
-  {
     "type": "discrete",
     "named": false
   },
@@ -17680,7 +19598,7 @@
   },
   {
     "type": "ellipse",
-    "named": false
+    "named": true
   },
   {
     "type": "else",
@@ -17695,7 +19613,7 @@
     "named": true
   },
   {
-    "type": "encoding",
+    "type": "end",
     "named": false
   },
   {
@@ -17764,14 +19682,10 @@
   },
   {
     "type": "fill",
-    "named": false
+    "named": true
   },
   {
     "type": "filled",
-    "named": false
-  },
-  {
-    "type": "first",
     "named": false
   },
   {
@@ -17780,6 +19694,10 @@
   },
   {
     "type": "fit",
+    "named": false
+  },
+  {
+    "type": "fixed",
     "named": false
   },
   {
@@ -17792,6 +19710,10 @@
   },
   {
     "type": "floor",
+    "named": false
+  },
+  {
+    "type": "flush",
     "named": false
   },
   {
@@ -17815,10 +19737,6 @@
     "named": false
   },
   {
-    "type": "fortran",
-    "named": false
-  },
-  {
     "type": "frac",
     "named": false
   },
@@ -17835,12 +19753,16 @@
     "named": false
   },
   {
+    "type": "ftriangles",
+    "named": false
+  },
+  {
     "type": "fullwidth",
     "named": false
   },
   {
-    "type": "function",
-    "named": false
+    "type": "func",
+    "named": true
   },
   {
     "type": "functions",
@@ -17852,6 +19774,10 @@
   },
   {
     "type": "gauss",
+    "named": false
+  },
+  {
+    "type": "geomean",
     "named": false
   },
   {
@@ -17871,6 +19797,10 @@
     "named": false
   },
   {
+    "type": "harmean",
+    "named": false
+  },
+  {
     "type": "head",
     "named": false
   },
@@ -17884,10 +19814,6 @@
   },
   {
     "type": "height",
-    "named": false
-  },
-  {
-    "type": "hidden3d",
     "named": false
   },
   {
@@ -17928,18 +19854,6 @@
   },
   {
     "type": "in",
-    "named": false
-  },
-  {
-    "type": "increment",
-    "named": false
-  },
-  {
-    "type": "increment_style",
-    "named": true
-  },
-  {
-    "type": "incremental",
     "named": false
   },
   {
@@ -18023,10 +19937,6 @@
     "named": true
   },
   {
-    "type": "levels",
-    "named": false
-  },
-  {
     "type": "lgamma",
     "named": false
   },
@@ -18039,7 +19949,15 @@
     "named": false
   },
   {
+    "type": "line",
+    "named": true
+  },
+  {
     "type": "linear",
+    "named": false
+  },
+  {
+    "type": "linetype",
     "named": false
   },
   {
@@ -18079,6 +19997,10 @@
     "named": false
   },
   {
+    "type": "map",
+    "named": false
+  },
+  {
     "type": "mapping",
     "named": false
   },
@@ -18092,6 +20014,10 @@
   },
   {
     "type": "matrix",
+    "named": false
+  },
+  {
+    "type": "max",
     "named": false
   },
   {
@@ -18115,8 +20041,20 @@
     "named": false
   },
   {
+    "type": "mean",
+    "named": false
+  },
+  {
+    "type": "median",
+    "named": false
+  },
+  {
     "type": "micro",
     "named": true
+  },
+  {
+    "type": "min",
+    "named": false
   },
   {
     "type": "minussign",
@@ -18124,10 +20062,6 @@
   },
   {
     "type": "minutes",
-    "named": false
-  },
-  {
-    "type": "missing",
     "named": false
   },
   {
@@ -18160,6 +20094,10 @@
   },
   {
     "type": "name",
+    "named": true
+  },
+  {
+    "type": "name",
     "named": false
   },
   {
@@ -18187,7 +20125,7 @@
     "named": false
   },
   {
-    "type": "nocontours",
+    "type": "noclipcb",
     "named": false
   },
   {
@@ -18199,15 +20137,15 @@
     "named": false
   },
   {
+    "type": "noftriangles",
+    "named": false
+  },
+  {
     "type": "nohead",
     "named": false
   },
   {
     "type": "noheader",
-    "named": false
-  },
-  {
-    "type": "nohidden3d",
     "named": false
   },
   {
@@ -18240,10 +20178,6 @@
   },
   {
     "type": "norotate",
-    "named": false
-  },
-  {
-    "type": "nosurface",
     "named": false
   },
   {
@@ -18280,7 +20214,7 @@
   },
   {
     "type": "parallelaxis",
-    "named": false
+    "named": true
   },
   {
     "type": "parametric",
@@ -18296,6 +20230,10 @@
   },
   {
     "type": "pdf",
+    "named": false
+  },
+  {
+    "type": "pm3d",
     "named": false
   },
   {
@@ -18335,7 +20273,15 @@
     "named": false
   },
   {
+    "type": "primary",
+    "named": false
+  },
+  {
     "type": "print",
+    "named": false
+  },
+  {
+    "type": "projection",
     "named": false
   },
   {
@@ -18384,7 +20330,7 @@
   },
   {
     "type": "rectangle",
-    "named": false
+    "named": true
   },
   {
     "type": "relative",
@@ -18407,6 +20353,10 @@
     "named": false
   },
   {
+    "type": "retrace",
+    "named": false
+  },
+  {
     "type": "rgbcolor",
     "named": false
   },
@@ -18420,6 +20370,10 @@
   },
   {
     "type": "right",
+    "named": false
+  },
+  {
+    "type": "rms",
     "named": false
   },
   {
@@ -18451,15 +20405,23 @@
     "named": false
   },
   {
+    "type": "scansautomatic",
+    "named": false
+  },
+  {
+    "type": "scansbackward",
+    "named": false
+  },
+  {
+    "type": "scansforward",
+    "named": false
+  },
+  {
     "type": "screen",
     "named": false
   },
   {
     "type": "script",
-    "named": false
-  },
-  {
-    "type": "second",
     "named": false
   },
   {
@@ -18516,6 +20478,14 @@
   },
   {
     "type": "spacing",
+    "named": false
+  },
+  {
+    "type": "spec2",
+    "named": false
+  },
+  {
+    "type": "specular",
     "named": false
   },
   {
@@ -18607,8 +20577,16 @@
     "named": false
   },
   {
-    "type": "textbox",
+    "type": "terminal",
     "named": false
+  },
+  {
+    "type": "test",
+    "named": false
+  },
+  {
+    "type": "textbox",
+    "named": true
   },
   {
     "type": "textcolor",
@@ -18747,6 +20725,10 @@
     "named": false
   },
   {
+    "type": "view",
+    "named": false
+  },
+  {
     "type": "viridis",
     "named": false
   },
@@ -18783,10 +20765,6 @@
     "named": false
   },
   {
-    "type": "whitespace",
-    "named": false
-  },
-  {
     "type": "width",
     "named": false
   },
@@ -18807,11 +20785,27 @@
     "named": true
   },
   {
+    "type": "xy",
+    "named": false
+  },
+  {
     "type": "xyplane",
     "named": false
   },
   {
+    "type": "xyz",
+    "named": false
+  },
+  {
+    "type": "xz",
+    "named": false
+  },
+  {
     "type": "years",
+    "named": false
+  },
+  {
+    "type": "yz",
     "named": false
   },
   {

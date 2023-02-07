@@ -1,8 +1,12 @@
 {
   "name": "tree-sitter-gnuplot",
   "version": "1.0.0",
-  "description": "tree sitter support for gnuplot",
+  "description": "Gnuplot grammar for tree-sitter",
   "main": "bindings/node",
+  "keywords": [
+    "parser",
+    "lexer"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,5 +17,17 @@
   },
   "devDependencies": {
     "tree-sitter-cli": "^0.20.7"
-  }
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.gnuplot",
+      "file-types": [
+        "gnuplot",
+        "gp",
+        "plt",
+        "plot",
+        "gnu"
+      ]
+    }
+  ]
 }
