@@ -162,8 +162,9 @@ module.exports = grammar({
       // or
       /boxes/, /boxerrorbars/, /boxxyerror/, /isosurface/, /boxplot/,
       /candlesticks/, /circles/, /zerrorfill/, /ellipses/, /filledcurves/,
-      seq(/fillsteps/, optional(/above|below/), optional($._expression)), /histograms/, /image/, /pm3d/, /rgbalpha/, /rgbimage/,
-      /polygons/,
+      seq(/fillsteps/, optional(/above|below/), optional($._expression)), /histograms/, /image/,
+      seq(/pm3d/, repeat(choice(/pal(e(t(t(e)?)?)?)?/, /dep(t(h(o(r(d(e(r)?)?)?)?)?)?)?/))), // FIX: p. 197, 206, 207
+      /rgbalpha/, /rgbimage/, /polygons/,
       // or
       /table/, /mask/
     ),
@@ -184,7 +185,7 @@ module.exports = grammar({
 
     c_reset: $ => seq('reset', optional(choice('bind', 'errors', 'session'))),
 
-    c_set: $ => seq(choice(/set?/, /uns(e(t)?)?/), $._argument_set_show),
+    c_set: $ => seq(choice(seq(/set?/, optional($.for_block)), /uns(e(t)?)?/), $._argument_set_show),
 
     _argument_set_show: $ => choice(
       $.angles, $.arrow, $.border, $.boxwidth, $.boxdepth,
@@ -206,7 +207,7 @@ module.exports = grammar({
       $.output, $.overflow, $.palette, $.parametric,
       // $.paxis,
       // $.pixmap,
-      // $.pm3d, // p. 204
+      $.pm3d,
       // $.pointintervalbox,
       $.pointsize, $.polar, $.print, $.psdir,
       $.raxis, $.rgbmax,
@@ -218,8 +219,7 @@ module.exports = grammar({
       // $.timestamp, // p. 224
       $.timefmt, $.title,
       // $.ttics // p. 226
-      $.version, $.vgrid,
-      // $.view, // p. 227
+      $.version, $.vgrid, $.view,
       $.walls, $.xdata, $.xdtics, $.xlabel, $.xmtics, $.xrange, $.xtics, $.xyplane, $.zero, $.zeroaxis,
     ),
 
@@ -374,7 +374,7 @@ module.exports = grammar({
       /v4|v5/
     ))),
 
-    format: $ => seq('format', optional(/(x|y|xy|x2|y2|z|cb)/), field('fmt_str', $._expression), /(numeric|timedate|geographic)/ ),
+    format: $ => seq('format', optional(/(x|y|xy|x2|y2|z|cb)/), field('fmt_str', $._expression), optional(/(numeric|timedate|geographic)/)),
 
     grid: $ => seq('grid', repeat(choice(
       /(no)?m?(x|y|z|x2|y2|r|cb)tics/,
@@ -546,26 +546,26 @@ module.exports = grammar({
     //         {width <w> | height <h> | size <w>,<h>}
     //         {front|back|behind} {center}
 
-    // pm3d: $ =>
-    // {
-    //   { at <position> }
-    //   { interpolate <steps/points in scan, between scans> }
-    //   { scansautomatic | scansforward | scansbackward
-    //                   | depthorder {base} }
-    //   { flush { begin | center | end } }
-    //   { ftriangles | noftriangles }
-    //   { clip {z} | clip1in | clip4in }
-    //   { {no}clipcb }
-    //   { corners2color
-    //     { mean|geomean|harmean|rms|median|min|max|c1|c2|c3|c4 }
-    //   }
-    //   { {no}lighting
-    //     {primary <fraction>} {specular <fraction>} {spec2 <fraction>}
-    //   }
-    //   { {no}border {retrace} {<linestyle-options>}}
-    //   { implicit | explicit }
-    //   { map }
-    // }
+    pm3d: $ => seq('pm3d', repeat(choice(
+      seq('at', $.position), // TODO: p. 206
+      seq(/interpolate/, field('steps', $._expression)),
+      field('scanorder', choice(
+        'scansautomatic',
+        'scansforward',
+        'scansbackward',
+        seq(/dep(t(h(o(r(d(e(r)?)?)?)?)?)?)?/, optional('base')),
+        /hi(d(d(e(n(3(d)?)?)?)?)?)?/,
+      )),
+      seq('flush', choice('begin', 'center', 'end')),
+      choice('ftriangles', 'noftriangles'),
+      choice(seq('clip', field('z', $._expression)), 'clip1in', 'clip4in'),
+      choice('clipcb', 'noclipcb'),
+      seq('corners2color', choice('mean', 'geomean', 'harmean', 'rms', 'median', 'min', 'max', 'c1', 'c2', 'c3', 'c4')),
+      seq(/(no)?lighting/, optional(seq('primary', field('fraction', $._expression))), optional(seq('specular', field('fraction', $._expression))), optional(seq('spec2', field('fraction', $._expression)))),
+      seq(/(no)?border/, optional('retrace'), optional($._line_opts)),
+      choice('implicit', 'explicit'),
+      'map'
+    ))),
 
     // pointintervalbox: $ =>
 
@@ -713,7 +713,13 @@ module.exports = grammar({
 
     vgrid: $ => seq('vgrid', '$', $.identifier, optional(seq('size', $._expression))),
 
-    // view: $ =>
+    view: $ => prec.left(seq('view', repeat(choice(
+      seq($._expression, optional(seq(',', $._expression, optional(seq(',', $._expression, optional(seq(',', $._expression))))))),
+      seq('map', optional(seq('scale', $._expression))),
+      seq('projection', optional(choice('xy', 'xz', 'yz'))),
+      seq(/(no)?equal/, optional(choice('xy', 'xyz'))),
+      seq('azimuth', $._expression)
+    )))),
 
     walls: $ => seq('walls',
       optional(/(x0|y0|z0|x1|y1)/),
@@ -801,7 +807,7 @@ module.exports = grammar({
     c_splot: $ => seq(// TODO: p. 244
       /sp(lot)?/,
       repeat($.range_block),
-      $.plot_element, // voxelgrids to plot_element
+      $.plot_element, // add voxelgrids to plot_element
       repeat(seq(',', $.plot_element)),
     ),
 
@@ -816,9 +822,9 @@ module.exports = grammar({
       )),
     ),
 
-    c_test: $ => seq('test', optional(choice('test', 'terminal'))),
+    c_test: $ => prec.left(seq('test', optional(choice('test', 'terminal')))),
 
-    c_undefine: $ => seq(/und(e(f(i(n(e)?)?)?)?)?/, repeat($._expression)), // p. 253
+    c_undefine: $ => prec.left(seq(/und(e(f(i(n(e)?)?)?)?)?/, repeat($._expression))), // p. 253
 
     c_while: $ => seq(
       'while', '(', $._expression, ')',
@@ -837,7 +843,7 @@ module.exports = grammar({
       'for', '[',
       choice(
         seq($._expression, 'in', $._expression),
-        seq(alias($.var_def, $.start), ':', alias($._expression, $.end), optional(seq(':', alias($._expression, $.incr)))),
+        seq(alias($.identifier, $.start),'=', $._expression, ':', alias($._expression, $.end), optional(seq(':', alias($._expression, $.incr)))),
       ),
       ']'
     ),
