@@ -90,9 +90,9 @@ module.exports = grammar({
       $.c_splot,
       $.c_stats,
       // $.c_system,
-      // $.c_test,
+      $.c_test,
       // $.c_toggle,
-      // $.c_undefine,
+      $.c_undefine,
       // $.c_vclear,
       // $.c_vfill,
       $.c_while,
@@ -187,19 +187,14 @@ module.exports = grammar({
     c_set: $ => seq(choice(/set?/, /uns(e(t)?)?/), $._argument_set_show),
 
     _argument_set_show: $ => choice(
-      $.angles, $.arrow,
-      $.border, $.boxwidth, $.boxdepth,
+      $.angles, $.arrow, $.border, $.boxwidth, $.boxdepth,
       $.color, $.colormap, $.colorsequence, $.clip, $.cntrlabel, $.cntrparam, $.colorbox, $.contour, $.cornerpoles,
       $.dashtype, $.datafile, $.decimalsign, $.dgrid3d,
       // $.dummy,
-      $.encoding, $.errorbars,
-      $.fit, $.format,
-      $.grid,
-      $.hidden3d, $.history,
+      $.encoding, $.errorbars, $.fit, $.format, $.grid, $.hidden3d, $.history,
       $.isosamples, $.isosurface, $.isotropic,
       // $.jitter,
-      $.key,
-      $.label, $.linetype,
+      $.key, $.label, $.linetype,
       // $.link,
       // $.loadpath,
       $.locale, $.logscale,
@@ -225,9 +220,7 @@ module.exports = grammar({
       // $.ttics // p. 226
       $.version, $.vgrid,
       // $.view, // p. 227
-      $.walls,
-      $.xdata, $.xdtics, $.xlabel, $.xmtics, $.xrange, $.xtics, $.xyplane,
-      $.zero, $.zeroaxis,
+      $.walls, $.xdata, $.xdtics, $.xlabel, $.xmtics, $.xrange, $.xtics, $.xyplane, $.zero, $.zeroaxis,
     ),
 
     angles: $ => seq(/(an(g(l(e(s)?)?)?)?)/, optional(choice('degrees', 'radians'))),
@@ -597,21 +590,23 @@ module.exports = grammar({
 
     spiderplot: $ => 'spiderplot',
 
-    style: $ => seq(/st(y(l(e)?)?)?/, choice( // TODO: complete p. 212
-      seq(/arr(o(w)?)?/), // p. 213
-      seq('boxplot'), // p. 214
-      seq('data', $.plot_style),
-      seq('fill', $.fill_style),
-      seq('function', $.plot_style),
-      seq('increment', alias(optional(/default|userstyles/), $.increment_style)),
-      seq(/l(i(n(e)?)?)?/, $._line_style),
-      seq('circle'), // p. 218
-      seq('rectangle'), // p. 218
-      seq('ellipse'), // p. 219
-      seq('parallelaxis', alias(seq(optional(/front|back/), optional($._line_opts)), $.parallelaxis_style)),
-      seq('spiderplot'), // p. 219
-      seq('textbox') // p. 220
-    )),
+    style: $ => seq(/st(y(l(e)?)?)?/, choice(
+      seq(alias(/arr(o(w)?)?/, $.arrow, choice('default', $._arrow_opts))),
+      seq(alias('boxplot', $.boxplot)), // TODO: p. 214
+      seq(alias(/d(a(t(a)?)?)?/, $.data), $.plot_style),
+      seq(alias('fill', $.fill), $.fill_style),
+      seq(alias(/f(u(n(c(t(i(o(n)?)?)?)?)?)?)?/, $.func), $.plot_style),
+      seq(alias(/l(i(n(e)?)?)?/, $.line), $._line_style),
+      seq(alias(/circ(l(e)?)?/, $.circle), repeat(choice(
+        seq(/rad(i(u(s)?)?)?/, optional($.system), $._expression),
+        /(no)?wedge/, /(no)?clip/
+      ))),
+      seq(alias(/rect(a(n(g(l(e)?)?)?)?)?/, $.rectangle)), // TODO: p. 218
+      seq(alias('ellipse', $.ellipse)), // TODO: p. 219
+      seq(alias('parallelaxis', $.parallelaxis), seq(optional(/front|back/), optional($._line_opts)),
+      seq(alias('spiderplot', $.spiderplot)), // TODO: p. 219
+      seq(alias('textbox', $.textbox)) // TODO: p. 220
+    ))),
 
     surface: $ => seq(/su(r(f(a(c(e)?)?)?)?)?/, optional(choice('implicit', 'explicit'))),
 
@@ -810,7 +805,7 @@ module.exports = grammar({
       repeat(seq(',', $.plot_element)),
     ),
 
-    c_stats: $ => seq('stats', // p. 250
+    c_stats: $ => seq('stats',
       field('ranges', repeat($.range_block)),
       field('filename', $._expression),
       optional(choice('matrix', repeat1($._i_e_u_directives))),
@@ -820,6 +815,10 @@ module.exports = grammar({
         seq('$vgridname', optional(seq('name', $._expression))),
       )),
     ),
+
+    c_test: $ => seq('test', optional(choice('test', 'terminal'))),
+
+    c_undefine: $ => seq(/und(e(f(i(n(e)?)?)?)?)?/, repeat($._expression)), // p. 253
 
     c_while: $ => seq(
       'while', '(', $._expression, ')',
@@ -954,7 +953,7 @@ module.exports = grammar({
       optional(seq(',', optional($.system), field('z', $._expression))),
     )),
 
-    system: $ => choice('first', 'second', 'graph', 'screen', 'character'),
+    system: $ => choice(/fir(s(t)?)?/, /sec(o(n(d)?)?)?/, /gr(a(p(h)?)?)?/, /sc(r(e(e(n)?)?)?)?/, /char(a(c(t(e(r)?)?)?)?)?/),
     //-------------------------------------------------------------------------
     _assignment: $ => choice(
       $.func_def,
@@ -1004,7 +1003,7 @@ module.exports = grammar({
 
     float: $ =>  /\d*(\.\d+)((e|E)(-|\+)?\d+)?/,
 
-    complex: $ => seq('{', alias(choice($.integer, $.float), $.Re), ',', alias(choice($.integer, $.float), $.Im), '}'),
+    complex: $ => seq('{', alias($._expression, $.Re), ',', alias($._expression, $.Im), '}'),
 
     _string_literal: $ => choice($.single_quoted_string, $.double_quoted_string),
 
