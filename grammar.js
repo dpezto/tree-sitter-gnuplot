@@ -846,7 +846,7 @@ module.exports = grammar({
       'for', '[',
       choice(
         seq($._expression, 'in', $._expression),
-        seq(alias($.var_def, $.start), $._expression, ':', alias($._expression, $.end), optional(seq(':', alias($._expression, $.incr)))),
+        seq(alias($.var_def, $.start), ':', alias($._expression, $.end), optional(seq(':', alias($._expression, $.incr)))),
       ),
       ']'
     ),
