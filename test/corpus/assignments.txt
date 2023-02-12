@@ -26,9 +26,8 @@ array b[4] = [a,2,3.5,{4,0.3}]
     (integer)
     (float)
     (complex
-      (Re)
-      (Im))))
-
+      (integer)
+      (float))))
 ===============================================================================
   Functions
 ===============================================================================
@@ -39,7 +38,7 @@ f(x) = x**2
 (source_file
       (func_def
         (defined_func
-          name: (identifier)
+          (name)
           argument: (variable
             (identifier)))
         (binary_expression

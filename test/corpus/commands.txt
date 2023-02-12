@@ -43,6 +43,7 @@ set arrow 3 from graph 0,0 to -5,5,3
         (integer))
       (from)
       (position
+        (system)
         x: (integer)
         y: (integer))
       (to_rto)

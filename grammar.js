@@ -17,7 +17,7 @@ const PREC = {
   PAREN: 13, // (a)
 };
 
-// TODO: add gnuplot constants
+// TODO: add gnuplot constants or maybe just add them to the queries
 
 module.exports = grammar({
   name: 'gnuplot',
@@ -133,12 +133,12 @@ module.exports = grammar({
 
     c_load: $ => seq('load', $._expression),
 
-    c_plot: $ => choice(seq(
+    c_plot: $ => seq(
         /p(l(o(t)?)?)?/,
         repeat($.range_block),
         $.plot_element,
         repeat(seq(choice(',', /,\s*\\/), $.plot_element)),
-    )),
+    ),
 
     plot_element: $ => prec.left(1, seq(
       field('iteration', optional($.for_block)),
@@ -1013,7 +1013,7 @@ module.exports = grammar({
 
     float: $ =>  /\d*(\.\d+)((e|E)(-|\+)?\d+)?/,
 
-    complex: $ => seq('{', alias($._expression, $.Re), ',', alias($._expression, $.Im), '}'),
+    complex: $ => seq('{', field('Re', $._expression), ',', field('Im', $._expression), '}'),
 
     _string_literal: $ => choice($.single_quoted_string, $.double_quoted_string),
 
