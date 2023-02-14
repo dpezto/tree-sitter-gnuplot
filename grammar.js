@@ -212,7 +212,7 @@ module.exports = grammar({
 				/circles/,
 				/zerrorfill/,
 				/ellipses/,
-				/filledcurves/,
+				/filledc(u(r(v(e(s)?)?)?)?)?/,
 				seq(/fillsteps/, optional(/above|below/), optional($._expression)),
 				/histograms/,
 				/ima(g(e)?)?/,
@@ -1320,12 +1320,15 @@ module.exports = grammar({
 		// t_webp: $ =>
 
 		termoption: ($) =>
-			repeat(
-				choice(
-					/(no)?enhanced/,
-					seq("font", $._expression),
-					seq("fontscale", $._expression),
-					seq(/linewidth|lw/, $._expression),
+			seq(
+				"termoption",
+				repeat(
+					choice(
+						/(no)?enhanced/,
+						seq("font", $._expression),
+						seq("fontscale", $._expression),
+						seq(/linewidth|lw/, $._expression),
+					),
 				),
 			),
 
