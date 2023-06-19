@@ -44,9 +44,9 @@ module.exports = grammar({
 		source_file: ($) => repeat($._statement),
 
 		_statement: ($) =>
-			seq(choice($._command, $._assignment, $.macro), optional(";")),
+			seq(choice($.command, $._assignment, $.macro), optional(";")),
 
-		_command: ($) =>
+		command: ($) =>
 			choice(
 				// $.c_bind, // p. 64
 				// $.c_break,
@@ -96,7 +96,7 @@ module.exports = grammar({
 			seq(
 				"fit",
 				optional($.range_block),
-				field("func", $._function),
+				field("func", $.function),
 				field("data", $._expression),
 				optional($.datafile_modifiers),
 				optional(
@@ -163,9 +163,9 @@ module.exports = grammar({
 							alias($._assignment, $.definition),
 							repeat(seq(",", $._assignment)),
 							",",
-							$._function,
+							$.function,
 						),
-						seq(field("func", $._function)),
+						seq(field("func", $.function)),
 						seq(alias($._expression, $.data), optional($.datafile_modifiers)), // data source
 					),
 					repeat(
@@ -1770,7 +1770,7 @@ module.exports = grammar({
 						/empty/,
 						seq(
 							optional(/trans(p(a(r(e(n(t)?)?)?)?)?)?/),
-							"solid",
+							/s(o(l(i(d)?)?)?)?/,
 							optional(field("density", $._expression)),
 						),
 						seq(
@@ -1784,7 +1784,7 @@ module.exports = grammar({
 				optional(
 					choice(
 						seq("border", optional("lt"), optional(seq("lc", $.colorspec))),
-						"noborder",
+						/nobo(r(d(e(r)?)?)?)?/,
 					),
 				), // colorspec
 			),
@@ -1889,7 +1889,7 @@ module.exports = grammar({
 		//-------------------------------------------------------------------------
 		_assignment: ($) => choice($.func_def, $.var_def, $.array_def),
 
-		func_def: ($) => seq($._function, "=", $._expression),
+		func_def: ($) => seq($.function, "=", $._expression),
 
 		var_def: ($) =>
 			seq(
@@ -1930,7 +1930,7 @@ module.exports = grammar({
 					$._number,
 					$._string_literal,
 					$.array,
-					$._function,
+					$.function,
 					$.sum_block,
 					$.parenthesized_expression,
 					$.unary_expression,
@@ -1965,12 +1965,7 @@ module.exports = grammar({
 
 		array: ($) => seq($.identifier, "[", $._expression, "]"),
 
-		_function: ($) => choice($.defined_func, $.builtin_func),
-
-		defined_func: ($) =>
-			prec(1, seq(alias($.identifier, $.name), $._arguments)),
-
-		builtin_func: ($) => seq($._gnuplot_builtin_func, $._arguments),
+		function: ($) => prec(1, seq(alias($.identifier, $.name), $._arguments)),
 
 		_arguments: ($) =>
 			prec(
@@ -1980,130 +1975,6 @@ module.exports = grammar({
 					field("argument", alias($._expression, $.variable)),
 					repeat(seq(",", field("argument", alias($._expression, $.variable)))),
 					")",
-				),
-			),
-
-		_gnuplot_builtin_func: ($) =>
-			prec(
-				1,
-				choice(
-					"abs",
-					"acos",
-					"acosh",
-					"airy",
-					"arg",
-					"asin",
-					"asinh",
-					"atan",
-					"atan2",
-					"atanh",
-					"besj0",
-					"besj1",
-					"besjn",
-					"besy0",
-					"besy1",
-					"besyn",
-					"besi0",
-					"besi1",
-					"besin",
-					"cbrt",
-					"ceil",
-					"conj",
-					"cos",
-					"cosh",
-					"EllipticK",
-					"EllipticE",
-					"EllipticPi",
-					"erf",
-					"erfc",
-					"exp",
-					"expint",
-					"floor",
-					"gamma",
-					"ibeta",
-					"inverf",
-					"igamma",
-					"imag",
-					"int",
-					"invnorm",
-					"invibeta",
-					"invigamma",
-					"LambertW",
-					"lambertw",
-					"lgamma",
-					"lnGamma",
-					"log",
-					"log10",
-					"norm",
-					"rand",
-					"real",
-					"round",
-					"sgn",
-					"sin",
-					"sinh",
-					"sqrt",
-					"SynchrotronF",
-					"tan",
-					"tanh",
-					"uigamma",
-					"voigt",
-					"zeta",
-					// libcerf library
-					"cerf",
-					"cdawson",
-					"faddeeva",
-					"erfi",
-					"FresnelC",
-					"FresnelS",
-					"VP",
-					"VP_fwhm",
-					// Amos library
-					"Ai",
-					"Bi",
-					"BesselH1",
-					"BesselH2",
-					"BesselJ",
-					"BesselY",
-					"BesselI",
-					"BesselK",
-					// string functions
-					"gprintf",
-					"sprintf",
-					"strlen",
-					"strstrt",
-					"substr",
-					"strptime",
-					"strftime",
-					"system",
-					"trim",
-					"word",
-					"words",
-					// time functions
-					"time",
-					"timecolumn",
-					"tm_hour",
-					"tm_mday",
-					"tm_min",
-					"tm_mon",
-					"tm_sec",
-					"tm_wday",
-					"tm_week",
-					"tm_yday",
-					"tm_year",
-					"weekday_iso",
-					"weekday_cdc",
-					// other gnuplot functions
-					"column",
-					"columnhead",
-					"exists",
-					"hsv2rgb",
-					"index",
-					"palette",
-					"rgbcolor",
-					"stringcolumn",
-					"valid",
-					"value",
-					"voxel",
 				),
 			),
 
