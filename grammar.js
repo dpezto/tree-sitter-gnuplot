@@ -549,35 +549,35 @@ module.exports = grammar({
 
 		_dash_opts: ($) =>
 			choice(
-				$.integer,
+				$.number,
 				$._string_literal,
 				seq(
 					"(",
-					alias($.integer, $.solid_lenght),
+					alias($.number, $.solid_lenght),
 					",",
-					alias($.integer, $.empty_lenght),
+					alias($.number, $.empty_lenght),
 					optional(
 						seq(
 							",",
-							alias($.integer, $.solid_lenght),
+							alias($.number, $.solid_lenght),
 							",",
-							alias($.integer, $.empty_lenght),
+							alias($.number, $.empty_lenght),
 						),
 					),
 					optional(
 						seq(
 							",",
-							alias($.integer, $.solid_lenght),
+							alias($.number, $.solid_lenght),
 							",",
-							alias($.integer, $.empty_lenght),
+							alias($.number, $.empty_lenght),
 						),
 					),
 					optional(
 						seq(
 							",",
-							alias($.integer, $.solid_lenght),
+							alias($.number, $.solid_lenght),
 							",",
-							alias($.integer, $.empty_lenght),
+							alias($.number, $.empty_lenght),
 						),
 					),
 					")",
@@ -1695,7 +1695,7 @@ module.exports = grammar({
 									seq(
 										/pal(e(t(t(e)?)?)?)?/,
 										optional($._expression),
-										optional(choice($.float, $.integer /*, $.hexadecimal*/)),
+										optional($.number /*, $.hexadecimal*/),
 									),
 									/gra(d(i(e(n(t)?)?)?)?)?/,
 									/fit2rgb(f(o(r(m(u(l(a(e)?)?)?)?)?)?)?)?/,
@@ -1913,7 +1913,7 @@ module.exports = grammar({
 		colorspec: ($) =>
 			prec.left(
 				choice(
-					alias($.integer, $.tag),
+					alias($.number, $.tag),
 					seq(choice("rgb", "rgbcolor"), $._expression),
 					seq(
 						choice("pal", "palette"),
@@ -2051,7 +2051,8 @@ module.exports = grammar({
 		_expression: ($) =>
 			prec.left(
 				choice(
-					$._number,
+					$.number,
+					$.complex,
 					$._string_literal,
 					$.array,
 					$.function,
@@ -2065,11 +2066,33 @@ module.exports = grammar({
 				),
 			),
 
-		_number: ($) => choice($.integer, $.float, $.complex),
+		number: ($) => {
+			const hex_literal = seq(choice("0x", "0X"), /[\da-fA-F](_?[\da-fA-F])*/);
+			const decimal_digits = /\d(_?\d)*/;
+			const signed_integer = seq(optional(choice("-", "+")), decimal_digits);
+			const exponent_part = seq(choice("e", "E"), signed_integer);
+			const decimal_integer_literal = choice(
+				"0",
+				seq(
+					optional("0"),
+					/[1-9]/,
+					optional(seq(optional("_"), decimal_digits)),
+				),
+			);
 
-		integer: ($) => /\d+/,
-
-		float: ($) => /\d*(\.\d+)((e|E)(-|\+)?\d+)?/,
+			const decimal_literal = choice(
+				seq(
+					decimal_integer_literal,
+					".",
+					optional(decimal_digits),
+					optional(exponent_part),
+				),
+				seq(".", decimal_digits, optional(exponent_part)),
+				seq(decimal_integer_literal, exponent_part),
+				seq(decimal_digits),
+			);
+			return token(choice(hex_literal, decimal_literal));
+		},
 
 		complex: ($) =>
 			seq(
