@@ -17,7 +17,40 @@ const PREC = {
 	PAREN: 13, // (a)
 };
 
-// TODO: add gnuplot constants or maybe just add them to the queries
+const K = {
+	NO: /(no)?/,
+	as: /arrowstyle|as/,
+	autojustify: /au(t(o(j(u(s(t(i(f(y)?)?)?)?)?)?)?)?)?/,
+	axes: /(x|y|z|x2|y2|cb)/,
+	axesr: /(x|y|z|x2|y2|cb|r)/, // TODO: check if unnessesary
+	bottom: /b(o(t(t(o(m)?)?)?)?)?/,
+	center: /c(e(n(t(e(r)?)?)?)?)?/,
+	dl: /dashl(e(n(g(t(h)?)?)?)?)?|dl/,
+	dt: /dasht(y(p(e)?)?)?|dt/,
+	enhanced: /(no)?enhanced/,
+	fc: /fillc(o(l(o(r)?)?)?)?|fc/,
+	label: /lab(e(l)?)?/,
+	left: /l(e(f(t)?)?)?/,
+	lc: /linec(o(l(o(r)?)?)?)?|lc/,
+	logscale: /log(s(c(a(l(e)?)?)?)?)?/,
+	ls: /lines(t(y(l(e)?)?)?)?|ls/,
+	lt: /linetype|lt/,
+	lw: /linew(i(d(t(h)?)?)?)?|lw/,
+	mirror: /(no)?mirror/,
+	mxtics: /m(x|y|z|x2|y2|r|t|cb)tics/,
+	offset: /off(s(e(t)?)?)?/,
+	output: /o(u(t(p(u(t)?)?)?)?)?/,
+	palette: /pal(e(t(t(e)?)?)?)?/,
+	pt: /pointt(y(p(e)?)?)?|pt/,
+	ps: /points(i(z(e)?)?)?|ps/,
+	range: /ran(g(e)?)?/,
+	right: /r(i(g(h(t)?)?)?)?/,
+	rotate: /rot(a(t(e)?)?)?/,
+	tc: /textc(o(l(o(r)?)?)?)?|tc/,
+	tics: /tics?/,
+	top: /t(o(p)?)?/,
+	transparent: /trans(p(a(r(e(n(t)?)?)?)?)?)?/,
+};
 
 module.exports = grammar({
 	name: "gnuplot",
@@ -31,11 +64,9 @@ module.exports = grammar({
 	conflicts: ($) => [
 		[$._expression],
 		[$.style_opts],
-		[$.palette],
 		[$.label],
-		[$.xdata],
 		[$.xlabel],
-		[$.datafile_modifiers],
+		[$.position],
 		[$.plot_style],
 		[$._i_e_u_directives],
 		[$.fill_style],
@@ -50,16 +81,16 @@ module.exports = grammar({
 		command: ($) =>
 			choice(
 				// $.c_bind, // p. 64
-				// $.c_break,
-				// $.c_cd,
+				// $.c_break, // only in loops do/while
+				$.c_cd,
 				// $.c_call,
-				// $.c_clear,
-				// $.c_continue,
+				$.c_clear,
+				// $.c_continue, // only in loops do/while
 				$.c_do,
 				$.c_eval,
 				// $.c_exit, // quit p. 104
 				$.c_fit,
-				// $.c_help,
+				$.c_help,
 				// $.c_history,
 				$.c_if,
 				// $.c_import,
@@ -89,6 +120,10 @@ module.exports = grammar({
 			),
 
 		//-------------------------------------------------------------------------
+		c_cd: ($) => seq("cd", $._expression),
+
+		c_clear: ($) => "clear",
+
 		c_do: ($) => seq("do", $.for_block, "{", repeat($._statement), "}"),
 
 		c_eval: ($) => seq("eval", $._expression),
@@ -120,6 +155,8 @@ module.exports = grammar({
 				),
 			),
 
+		c_help: ($) => prec.left(seq(/h(e(l(p)?)?)?/, optional($._expression))),
+
 		c_if: ($) =>
 			seq(
 				"if",
@@ -148,8 +185,8 @@ module.exports = grammar({
 
 		c_plot: ($) =>
 			seq(
-				choice("p", "pl", "plo", "plot"),
-				// /p(l(o(t)?)?)?/,
+				alias(/p(l(o(t)?)?)?/, $.plot),
+				optional("sample"),
 				repeat($.range_block),
 				$.plot_element,
 				repeat(seq(choice(",", /,\s*\\/), $.plot_element)),
@@ -168,15 +205,18 @@ module.exports = grammar({
 							$.function,
 						),
 						seq(field("func", $.function)),
-						seq(alias($._expression, $.data), optional($.datafile_modifiers)), // data source
+						seq(alias($._expression, $.data), optional($.datafile_modifiers)),
 					),
 					repeat(
 						choice(
 							seq("axes", choice("x1y1", "x2y2", "x1y2", "x2y1")),
-							seq(
-								alias(/(no)?t(i(t(l(e)?)?)?)?/, $.tit),
-								optional(alias($._expression, $.title)),
-							), // p. 138-139
+							choice(
+								alias(/not(i(t(l(e)?)?)?)?/, $.not),
+								seq(
+									alias(/t(i(t(l(e)?)?)?)?/, $.tit),
+									alias($._expression, $.title),
+								),
+							),
 							choice(
 								seq(
 									alias(/w(i(t(h)?)?)?/, $.with),
@@ -184,7 +224,7 @@ module.exports = grammar({
 									optional($.style_opts),
 								),
 								$.style_opts,
-							), // p. 139-140
+							),
 						),
 					),
 				),
@@ -198,10 +238,7 @@ module.exports = grammar({
 				alias(/fin(a(n(c(e(b(a(r(s)?)?)?)?)?)?)?)?/, $.financebars),
 				alias(/d(o(t(s)?)?)?/, $.dots),
 				alias(/i(m(p(u(l(s(e(s)?)?)?)?)?)?)?/, $.impulses),
-				seq(
-					alias(/lab(e(l(s)?)?)?/, $.labels),
-					repeat(alias($._label_opts, $.label_opts)),
-				),
+				seq(alias(/lab(e(l(s)?)?)?/, $.labels), repeat($.label_opts)),
 				alias(/sur(f(a(c(e)?)?)?)?/, $.surface),
 				alias(/st(e(p(s)?)?)?/, $.steps),
 				"fsteps",
@@ -214,7 +251,6 @@ module.exports = grammar({
 				alias(/(x|y|xy)errorbar/, $.errorbar),
 				alias(/(x|y|xy)errorlines/, $.errorlines),
 				"parallelaxes",
-				// or
 				"boxes",
 				"boxerrorbars",
 				"boxxyerror",
@@ -238,7 +274,7 @@ module.exports = grammar({
 								),
 							),
 						),
-					), // TODO: complete fill properties p. 81
+					),
 					optional(seq(alias(/fill|fs/, $.fill), $.fill_style)),
 				),
 				seq(
@@ -252,7 +288,6 @@ module.exports = grammar({
 				"rgbalpha",
 				"rgbimage",
 				"polygons",
-				// or
 				"table",
 				"mask",
 			),
@@ -260,22 +295,25 @@ module.exports = grammar({
 		style_opts: ($) =>
 			repeat1(
 				choice(
-					// p. 139
-					$._line_opts,
-					field("pt", seq(choice("pointtype", "pt"), $._expression)),
-					field("ps", seq(choice("pointsize", "ps"), $._expression)),
+					$.line_opts,
+					field("pt", seq(K.pt, $._expression)),
+					field("ps", seq(K.ps, $._expression)),
 					field("as", seq(choice("arrowstyle", "as"), $._expression)),
-					field("fs", seq(choice("fill", "fs"), $._expression)),
-					field("fc", seq(choice("fillcolor", "fc"), $.colorspec)),
+					field("fs", seq(choice("fill", "fs"), $.fill_style)),
+					field("fc", seq(K.fc, $.colorspec)),
 					"nohidden3d",
 					"nocontours",
 					/nosurf(a(c(e)?)?)?/,
-					/pal(e(t(t(e)?)?)?)?/,
+					K.palette,
 				),
 			),
 
 		c_print: ($) =>
-			seq("print", $._expression, repeat(seq(",", $._expression))),
+			seq(
+				choice("print", "printerr"),
+				$._expression,
+				repeat(seq(",", $._expression)),
+			),
 
 		c_replot: ($) => /rep(l(o(t)?)?)?/,
 
@@ -284,8 +322,8 @@ module.exports = grammar({
 		c_set: ($) =>
 			seq(
 				choice(
-					seq(alias(/set?/, $.set), optional($.for_block)),
-					alias(/uns(e(t)?)?/, $.unset),
+					seq(alias(/set?/, $._set), optional($.for_block)),
+					seq(alias(/uns(e(t)?)?/, $.unset), optional($.for_block)),
 				),
 				alias($._argument_set_show, $.argument_set_show),
 			),
@@ -310,7 +348,7 @@ module.exports = grammar({
 				$.datafile,
 				$.decimalsign,
 				$.dgrid3d,
-				// $.dummy,
+				$.dummy,
 				$.encoding,
 				$.errorbars,
 				$.fit,
@@ -321,12 +359,12 @@ module.exports = grammar({
 				$.isosamples,
 				$.isosurface,
 				$.isotropic,
-				// $.jitter,
+				$.jitter,
 				$.key,
 				$.label,
 				$.linetype,
-				// $.link,
-				// $.loadpath,
+				// $.link, // p. 181
+				$.loadpath,
 				$.locale,
 				$.logscale,
 				$.mapping,
@@ -337,18 +375,18 @@ module.exports = grammar({
 				$.mouse,
 				$.multiplot,
 				$.mxtics,
-				// $.nonlinear,
-				// $.object,
-				// $.offsets,
-				// $.origin,
+				// $.nonlinear, // p. 191
+				// $.object, // p. 192
+				// $.offsets, // p. 194
+				// $.origin, // p. 195
 				$.output,
 				$.overflow,
 				$.palette,
 				$.parametric,
-				// $.paxis,
-				// $.pixmap,
+				$.paxis,
+				// $.pixmap, // p. 203
 				$.pm3d,
-				// $.pointintervalbox,
+				$.pointintervalbox,
 				$.pointsize,
 				$.polar,
 				$.print,
@@ -386,40 +424,45 @@ module.exports = grammar({
 
 		angles: ($) =>
 			seq(
-				alias(/(an(g(l(e(s)?)?)?)?)/, $.angles),
+				alias(/(an(g(l(e(s)?)?)?)?)/, $._angles),
 				optional(choice("degrees", "radians")),
 			),
 
 		arrow: ($) =>
 			prec.left(
 				seq(
-					alias(/arr(o(w)?)?/, $.arrow),
-					optional(alias($._expression, $.tag)),
-					optional(
+					alias(/arr(o(w)?)?/, $._arrow),
+					optional(alias($._expression, $._tag)),
+					repeat(
 						choice(
 							seq(
-								optional(seq(alias("from", $.from), $.position)),
-								alias(choice("to", "rto"), $.to_rto),
+								optional(seq(alias("from", $._from), $.position)),
+								alias(/r?to/, $._to_rto),
 								$.position,
 							),
 							seq(
-								alias("from", $.from),
+								alias("from", $._from),
 								$.position,
-								alias(/len(g(t(h)?)?)?/, $.length),
-								$._expression,
-								alias(/an(g(l(e)?)?)?/, $.angle),
-								$._expression,
+								alias(/len(g(t(h)?)?)?/, $._len),
+								alias($._expression, $.length),
+								alias(/an(g(l(e)?)?)?/, $._ang),
+								alias($._expression, $.angle),
 							),
+							alias($._arrow_opts, $.arrow_opts),
 						),
 					),
-					repeat($._arrow_opts),
 				),
 			),
 
 		border: ($) =>
-			seq(
-				"border",
-				optional(repeat1(choice(/(front|back|behind)/, $._line_opts, "polar"))),
+			prec.left(
+				seq(
+					alias(/bor(d(e(r)?)?)?/, $._border),
+					optional($._expression),
+					optional(
+						repeat1(choice("front", "back", "behind", $.line_opts, "polar")),
+					),
+				),
 			),
 
 		boxwidth: ($) =>
@@ -459,7 +502,17 @@ module.exports = grammar({
 			seq("colorsequence", optional(choice("default", "classic", "podo"))),
 
 		clip: ($) =>
-			seq("clip", optional(choice("points", "one", "two", "radial"))),
+			seq(
+				"clip",
+				optional(
+					choice(
+						/p(o(i(n(t(s)?)?)?)?)?/,
+						/o(n(e)?)?/,
+						/t(w(o)?)?/,
+						/r(a(d(i(a(l)?)?)?)?)?/,
+					),
+				),
+			),
 
 		cntrlabel: ($) =>
 			seq(
@@ -524,7 +577,6 @@ module.exports = grammar({
 				optional(
 					repeat1(
 						choice(
-							// p. 155
 							/v(e(r(t(i(c(a(l)?)?)?)?)?)?)?|h(o(r(i(z(o(n(t(a(l)?)?)?)?)?)?)?)?)?/,
 							/(no)?inv(e(r(t)?)?)?/,
 							/def(a(u(l(t)?)?)?)?|u(s(e(r)?)?)?/,
@@ -534,9 +586,9 @@ module.exports = grammar({
 							choice(
 								/nobo(r(d(e(r)?)?)?)?/,
 								/bd(f(a(u(l(t)?)?)?)?)?/,
-								seq(/bo(r(d(e(r)?)?)?)?/, $._expression), //linestyle
+								seq(/bo(r(d(e(r)?)?)?)?/, $.line_style),
 							),
-							seq("cbtics", $._expression), //linestyle
+							seq("cbtics", $.line_style),
 						),
 					),
 				),
@@ -546,12 +598,12 @@ module.exports = grammar({
 
 		cornerpoles: ($) => "cornerpoles",
 
-		dashtype: ($) =>
-			seq(/dashtype|dt/, field("tag", $._expression), $._dash_opts),
+		dashtype: ($) => seq(K.dt, field("tag", $._expression), $._dash_opts),
 
 		_dash_opts: ($) =>
 			choice(
 				$.number,
+				"solid",
 				$.string_literal,
 				seq(
 					"(",
@@ -597,7 +649,7 @@ module.exports = grammar({
 							"nofpe_trap",
 							seq(
 								alias(/miss(i(n(g)?)?)?/, $.miss),
-								choice(alias($._expression, $.missing), "NaN"),
+								alias($._expression, $.missing),
 							),
 							seq(
 								alias(/sep(a(r(a(t(o(r)?)?)?)?)?)?/, $.sep),
@@ -607,8 +659,14 @@ module.exports = grammar({
 									"comma",
 									alias($._expression, $.separator),
 								),
-							), // chars
-							seq("commentschars", optional(field("string", $._expression))),
+							),
+							seq(
+								alias(
+									/com(m(e(n(t(s(c(h(a(r(s)?)?)?)?)?)?)?)?)?)?/,
+									$.comments,
+								),
+								optional(alias($._expression, $.str)),
+							),
 							seq("binary", $._expression), // binary list pag 160 -> 118 -> 245
 						),
 					),
@@ -629,7 +687,6 @@ module.exports = grammar({
 					/dg(r(i(d(3(d)?)?)?)?)?/,
 					repeat1(
 						choice(
-							// p. 161
 							seq(
 								field("rows", $._expression),
 								optional(seq(",", field("cols", $._expression))),
@@ -649,7 +706,13 @@ module.exports = grammar({
 				),
 			),
 
-		// dummy: $ =>
+		dummy: ($) =>
+			seq(
+				"dummy",
+				alias($._expression, $.dv1),
+				",",
+				alias($._expression, $.dv2),
+			),
 
 		encoding: ($) =>
 			seq(
@@ -678,7 +741,7 @@ module.exports = grammar({
 								field("size", $._expression),
 							),
 							choice("front", "back"),
-							$._line_opts,
+							$.line_opts,
 						),
 					),
 				),
@@ -690,11 +753,14 @@ module.exports = grammar({
 				repeat1(
 					choice(
 						choice("nolog", seq("logfile", choice($._expression, "default"))),
-						choice(/(no)?quiet/, "results", "brief", "verbose"),
-						choice(/(no)?err(o(r(v(a(r(i(a(b(l(e(s)?)?)?)?)?)?)?)?)?)?)?/),
-						choice(/(no)?covariancevariables/),
-						choice(/(no)?errorscaling/),
-						choice(/(no)?prescale/),
+						alias(/((no)?quiet|results|brief|verbose)/, $.fit_out),
+						alias(
+							/(no)?err(o(r(v(a(r(i(a(b(l(e(s)?)?)?)?)?)?)?)?)?)?)?/,
+							$.errorvars,
+						),
+						alias(/(no)?covariancevariables/, $.covariancevars),
+						alias(/(no)?errorscaling/, $.errorscaling),
+						alias(/(no)?prescale/, $.prescale),
 						seq("maxiter", choice(field("value", $._expression), "default")),
 						seq("limit", choice(field("epsilon", $._expression), "default")),
 						seq("limit_abs", field("epsilon_abs", $._expression)),
@@ -704,7 +770,7 @@ module.exports = grammar({
 							"script",
 							optional(choice(field("command", $._expression), "default")),
 						),
-						/v4|v5/,
+						alias(/v4|v5/, $.version),
 					),
 				),
 			),
@@ -722,32 +788,38 @@ module.exports = grammar({
 				alias(/gr(i(d)?)?/, $.grid),
 				repeat(
 					choice(
-						alias(/(no)?m?(x|y|z|x2|y2|r|cb)tics/, $.tics),
-						seq("polar", optional(alias($._expression, $.angle))),
-						alias(/layerdefault|front|back/, $.layer),
-						alias(/(no)?vertical/, $.vertical),
+						alias(token(seq(/(no)?m?(x|y|z|x2|y2|cb|r)/, K.tics)), $.tics),
 						seq(
-							alias($._line_opts, $.line_prop_major),
-							optional(seq(",", alias($._line_opts, $.line_prop_minor))),
+							alias(token(seq(K.NO, /po(l(a(r)?)?)?/)), $.po),
+							optional(alias($._expression, $.angle)),
 						),
+						alias(/layerd(e(f(a(u(l(t)?)?)?)?)?)?|front|back/, $.layer),
+						alias(/(no)?vert(i(c(a(l)?)?)?)?/, $.vertical),
+						seq($.line_opts, optional(seq(",", $.line_opts))),
 					),
 				),
 			),
 
 		hidden3d: ($) =>
 			seq(
-				/hid(d(e(n(3(d)?)?)?)?)?/,
+				alias(/hid(d(e(n(3(d)?)?)?)?)?/, $.hidden3d),
 				optional(
 					choice(
 						"defaults",
 						repeat1(
 							choice(
-								/front|back/,
-								choice(seq("offset", $._expression), "nooffset"),
-								seq("trianglepattern", $._expression),
-								choice(seq("undefined", $._expression), "noundefined"),
-								/((no)?altdiagonal)/,
-								/((no)?bentover)/,
+								alias(/front|back/, $.fb),
+								seq(
+									alias(token(seq(K.NO, K.offset)), $.offs),
+									alias($._expression, $.offset),
+								),
+								seq("trianglepattern", alias($._expression, $.tp)),
+								seq(
+									alias(/(no)?undefined/, $.undef),
+									alias($._expression, $.undefined),
+								),
+								alias(/((no)?altdiagonal)/, $.altdiagonal),
+								alias(/((no)?bentover)/, $.bentover),
 							),
 						),
 					),
@@ -770,7 +842,7 @@ module.exports = grammar({
 		isosamples: ($) =>
 			prec.left(
 				seq(
-					/iso(s(a(m(p(l(e(s)?)?)?)?)?)?)?/,
+					alias(/iso(s(a(m(p(l(e(s)?)?)?)?)?)?)?/, $.isosamples),
 					optional(seq($._expression, optional(seq(",", $._expression)))),
 				),
 			),
@@ -784,23 +856,28 @@ module.exports = grammar({
 
 		isotropic: ($) => "isotropic",
 
-		// jitter: $ =>
+		jitter: ($) => seq("jitter"), // TODO: p. 173
 
 		key: ($) =>
 			seq(
 				alias(/k(e(y)?)?/, $.key),
 				repeat(
 					choice(
-						// p. 173-177
-						/(on|off)/,
+						choice("on", "off"),
 						"default",
-						/(no)?enhanced/,
+						alias(K.enhanced, $.enhanced),
 						seq(
-							/(no)?a(u(t(o(t(i(t(l(e)?)?)?)?)?)?)?)?/,
+							alias(/(no)?a(u(t(o(t(i(t(l(e)?)?)?)?)?)?)?)?/, $.a),
 							optional("columnheader"),
 						),
-						seq(/(no)?box/, optional($._line_opts)),
-						seq(/(no)?opaque/, optional(seq("fc", $.colorspec))),
+						seq(
+							alias(/(no)?box/, $.box),
+							optional(alias($.line_opts, $.line_opts)),
+						),
+						seq(
+							alias(/(no)?opaque/, $.opaque),
+							optional(seq("fc", $.colorspec)),
+						),
 						seq("width", field("increment", $._expression)),
 						seq("height", field("increment", $._expression)),
 						// layout
@@ -812,41 +889,44 @@ module.exports = grammar({
 						seq("maxrows", optional(choice($._expression, "auto"))),
 						seq("columns", $._expression),
 						seq("keywidth", choice("screen", "graph"), $._expression),
-						/Left|Right/,
-						/(no)?(reverse|invert)/,
-						seq("samplen", field("length", $._expression)),
-						seq("spacing", field("spacing", $._expression)),
+						alias(/Left|Right/, $.lr),
+						alias(/(no)?(rev(e(r(s(e)?)?)?)?|inv(e(r(t)?)?)?)/, $.reverse),
+						seq("samplen", alias($._expression, $.length)),
+						seq("spacing", alias($._expression, $.spacing)),
 						seq(
-							/ti(t(l(e)?)?)?/,
-							optional($._expression),
-							optional(/(no)?enhanced/),
-							optional(/c(e(n(t(e(r)?)?)?)?)?|l(e(f(t)?)?)?|r(i(g(h(t)?)?)?)?/),
+							alias(/ti(t(l(e)?)?)?/, $.tit),
+							optional(alias($._expression, $.title)),
+							optional(alias(K.enhanced, $.enhanced)),
+							optional(alias(choice(K.center, K.left, K.right), $.position)),
 						),
 						seq("font", field("face_size", $._expression)),
-						seq("textcolor", $.colorspec),
+						seq(alias(K.tc, $.tc), $.colorspec),
 						// placement
-						/(ins(i(d(e)?)?)?|o(u(t(s(i(d(e)?)?)?)?)?)?|fixed)/,
-						/(l|r|t|b)m(a(r(g(i(n)?)?)?)?)?/,
+						alias(
+							/(ins(i(d(e)?)?)?|o(u(t(s(i(d(e)?)?)?)?)?)?|fixed)/,
+							$.placement,
+						),
+						alias(/(l|r|t|b)m(a(r(g(i(n)?)?)?)?)?/, $.margin),
 						seq("at", $.position),
-						/l(e(f(t)?)?)?|r(i(g(h(t)?)?)?)?|c(e(n(t(e(r)?)?)?)?)?/,
-						/t(o(p)?)?|b(o(t(t(o(m)?)?)?)?)?|c(e(n(t(e(r)?)?)?)?)?/,
+						alias(token(choice(K.center, K.left, K.right)), $.hor),
+						alias(token(choice(K.top, K.bottom, K.center)), $.vert),
 					),
 				),
 			),
 
 		label: ($) =>
 			seq(
-				/lab(e(l)?)?/,
-				optional(field("tag", $._expression)),
-				optional(field("label", $._expression)),
-				repeat($._label_opts),
+				alias(K.label, $.lab),
+				optional(alias($._expression, $.tag)),
+				optional(alias($._expression, $.label)),
+				repeat($.label_opts),
 			),
 
-		linetype: ($) => seq("linetype", $._line_style),
+		linetype: ($) => prec.left(seq(alias(K.lt, $.lt), optional($.line_style))),
 
 		// link: $ =>
 
-		// loadpath: $ =>
+		loadpath: ($) => seq(/loa(d(p(a(t(h)?)?)?)?)?/, $._expression),
 
 		locale: ($) =>
 			prec.left(seq("locale", optional(field("locale", $._expression)))),
@@ -855,7 +935,7 @@ module.exports = grammar({
 			const axis = choice("x", "y", "z", "x2", "y2", "cb", "r");
 			return prec.left(
 				seq(
-					"logscale",
+					alias(K.logscale, $.log),
 					alias(token(repeat1(seq(axis))), $.axis),
 					optional(field("base", $._expression)),
 				),
@@ -890,11 +970,7 @@ module.exports = grammar({
 
 		minussign: ($) => "minussign", // NOTE: experimental p. 184
 
-		monochrome: ($) =>
-			seq(
-				"monochrome",
-				// {linetype N <linetype properties>}
-			), // p. 185
+		monochrome: ($) => seq("monochrome", $.linetype),
 
 		mouse: ($) =>
 			seq(
@@ -919,7 +995,7 @@ module.exports = grammar({
 							alias(/t(i(t(l(e)?)?)?)?/, $.title),
 							field("title", $._expression),
 							optional(seq("font", field("font", $._expression))),
-							optional(/(no)?enhanced/),
+							optional(K.enhanced),
 						),
 						seq(
 							seq(
@@ -939,7 +1015,7 @@ module.exports = grammar({
 							),
 							optional(
 								seq(
-									"offset",
+									K.offset,
 									field("xoff", $._expression),
 									optional(seq(",", field("yoff", $._expression))),
 								),
@@ -972,10 +1048,9 @@ module.exports = grammar({
 		mxtics: ($) =>
 			prec.left(
 				seq(
-					alias(/m(x|y|z|x2|y2|r|t|cb)tics/, $.mxtics),
+					alias(K.mxtics, $.mxtics),
 					optional(
 						choice(
-							// p. 190
 							alias($._expression, $.freq),
 							"default",
 							seq(
@@ -1006,17 +1081,13 @@ module.exports = grammar({
 
 		// origin: $ =>
 
-		output: ($) =>
-			seq(
-				alias(/o(u(t(p(u(t)?)?)?)?)?/, $.output),
-				field("name", $._expression),
-			),
+		output: ($) => seq(alias(K.output, $.output), field("name", $._expression)),
 
 		overflow: ($) => seq("overflow", choice("float", "NaN", "undefined")),
 
 		palette: ($) =>
 			seq(
-				alias(/pal(e(t(t(e)?)?)?)?/, $.palette),
+				alias(K.palette, $.palette),
 				repeat(
 					choice(
 						choice("gray", "color"),
@@ -1092,7 +1163,30 @@ module.exports = grammar({
 
 		parametric: ($) => /pa(r(a(m(e(t(r(i(c)?)?)?)?)?)?)?)?/,
 
-		// paxis: $ =>
+		paxis: ($) =>
+			seq(
+				alias("paxis", $.paxis),
+				alias($._expression, $.axisno),
+				repeat(
+					choice(
+						seq(
+							alias(K.range, $.range),
+							$.range_block,
+							repeat(
+								choice(
+									/(no)?reverse/,
+									/(no)?writeback/,
+									/(no)?extend/,
+									"restore",
+								),
+							),
+						),
+						seq(alias(K.tics, $.tics), $.tics_opts),
+						seq(alias(K.label, $.label), $._expression, $.label_opts),
+						seq(alias(K.offset, $.offset)),
+					),
+				),
+			),
 
 		// pixmap: $ =>
 		// <index> {"filename" | colormap <name>}
@@ -1105,26 +1199,29 @@ module.exports = grammar({
 				"pm3d",
 				repeat(
 					choice(
-						seq("at", $.position), // TODO: p. 206
-						seq("interpolate", field("steps", $._expression)),
-						field(
-							"scanorder",
-							choice(
-								"scansautomatic",
-								"scansforward",
-								"scansbackward",
-								seq(/dep(t(h(o(r(d(e(r)?)?)?)?)?)?)?/, optional("base")),
-								/hi(d(d(e(n(3(d)?)?)?)?)?)?/,
+						seq("at", $.position),
+						seq(
+							"interpolate",
+							field("steps", $._expression),
+							",",
+							field("between", $._expression),
+						),
+						choice(
+							alias(/scans(automatic|forward|backward)/, $.scanorder),
+							seq(
+								alias(/dep(t(h(o(r(d(e(r)?)?)?)?)?)?)?/, $.depthorder),
+								optional("base"),
 							),
+							alias(/(no)?hi(d(d(e(n(3(d)?)?)?)?)?)?/, $.hidden3d),
 						),
 						seq("flush", choice("begin", "center", "end")),
-						choice("ftriangles", "noftriangles"),
+						alias(/(no)?ftriangles/, $.ftriangles),
 						choice(
 							seq("clip", field("z", $._expression)),
 							"clip1in",
 							"clip4in",
 						),
-						choice("clipcb", "noclipcb"),
+						alias(/(no)?clipcb/, $.clipcb),
 						seq(
 							"corners2color",
 							choice(
@@ -1142,19 +1239,24 @@ module.exports = grammar({
 							),
 						),
 						seq(
-							choice("nolighting", "lighting"),
+							alias(/(no)?lighting/, $.lighting),
 							optional(seq("primary", field("fraction", $._expression))),
 							optional(seq("specular", field("fraction", $._expression))),
 							optional(seq("spec2", field("fraction", $._expression))),
 						),
-						seq(/(no)?border/, optional("retrace"), optional($._line_opts)),
+						seq(
+							alias(/(no)?border/, $.border),
+							optional("retrace"),
+							optional(alias($.line_opts, $.line_opts)),
+						),
 						choice("implicit", "explicit"),
 						"map",
 					),
 				),
 			),
 
-		// pointintervalbox: $ =>
+		pointintervalbox: ($) =>
+			seq(/pointint(e(r(v(a(l(b(o(x)?)?)?)?)?)?)?)?/, $._expression),
 
 		pointsize: ($) =>
 			seq(
@@ -1164,7 +1266,8 @@ module.exports = grammar({
 
 		polar: ($) => /pol(a(r)?)?/,
 
-		print: ($) => seq("print", $._expression), // TODO: complete
+		print: ($) =>
+			prec.left(seq(alias(/pr(i(n(t)?)?)?/, $.print), optional($._expression))),
 
 		psdir: ($) => seq("psdir", $._expression),
 
@@ -1200,10 +1303,13 @@ module.exports = grammar({
 				choice(
 					seq(alias(/arr(o(w)?)?/, $.arrow, choice("default", $._arrow_opts))),
 					seq(alias("boxplot", $.boxplot)), // TODO: p. 214
-					seq(alias(/d(a(t(a)?)?)?/, $.data), $.plot_style),
+					seq(
+						alias(/d(a(t(a)?)?)?/, $.data),
+						choice($.plot_style, alias(/spider(p(l(o(t)?)?)?)?/, $.spiderplot)),
+					),
 					seq(alias(/fill|fs/, $.fill), $.fill_style),
 					seq(alias(/f(u(n(c(t(i(o(n)?)?)?)?)?)?)?/, $.func), $.plot_style),
-					seq(alias(/l(i(n(e)?)?)?/, $.line), $._line_style),
+					seq(alias(/l(i(n(e)?)?)?/, $.line), $.line_style),
 					seq(
 						alias(/circ(l(e)?)?/, $.circle),
 						repeat(
@@ -1218,10 +1324,14 @@ module.exports = grammar({
 					seq(alias("ellipse", $.ellipse)), // TODO: p. 219
 					seq(
 						alias("parallelaxis", $.parallelaxis),
-						seq(optional(/front|back/), optional($._line_opts)),
-						seq(alias("spiderplot", $.spiderplot)), // TODO: p. 219
-						seq(alias("textbox", $.textbox)), // TODO: p. 220
+						seq(optional(/front|back/), optional($.line_opts)),
 					),
+					seq(alias("spiderplot", $.spiderplot)), // TODO: p. 219
+					seq(alias("textbox", $.textbox)), // TODO: p. 220
+					// set style textbox {<boxstyle-index>}
+					//                   {opaque|transparent} {fillcolor <color>}
+					//                   {{no}border {<bordercolor>}}{linewidth <lw>}
+					//                   {margins <xmargin>,<ymargin>}
 				),
 			),
 
@@ -1288,9 +1398,8 @@ module.exports = grammar({
 				/u(n(k(n(o(w(n)?)?)?)?)?)?/, // $.t_webp
 			),
 
-		t_cairolatex: ($) => {
-			const size = seq($.number, choice("cm", "in"));
-			return seq(
+		t_cairolatex: ($) =>
+			seq(
 				alias(/cai(r(o(l(a(t(e(x)?)?)?)?)?)?)?/, $.name),
 				repeat(
 					choice(
@@ -1304,33 +1413,14 @@ module.exports = grammar({
 						seq("background", field("color", $._expression)),
 						seq("font", field("font", $._expression)),
 						seq("fontscale", field("scale", $._expression)),
-						seq(/lw|linewidth/, field("lw", $._expression)),
+						seq(K.lw, field("lw", $._expression)),
 						choice("rounded", "butt", "square"),
-						seq(/dl|dashlength/, field("dl", $._expression)),
-						seq(
-							choice("si", "siz", "size"), // /si(z(e)?)?/,
-							field(
-								"x",
-								choice(
-									// FIX: units without spaces
-									// field("x", token(size)),
-									seq($._expression, choice("cm", "in")),
-								),
-							),
-							",",
-							field(
-								"y",
-								choice(
-									// token(field("y", size)),
-									seq($._expression, choice("cm", "in")),
-								),
-							),
-						),
+						seq(K.dl, field("dl", $._expression)),
+						$.canvas_size,
 						seq("resolution", field("dpi", $._expression)),
 					),
 				),
-			);
-		},
+			),
 
 		t_canvas: ($) => seq(/can(v(a(s)?)?)?/), // TODO: complete
 		t_cgm: ($) => seq(/cgm?/), // TODO: complete
@@ -1347,14 +1437,7 @@ module.exports = grammar({
 				repeat(
 					choice(
 						// TODO: complete
-						seq(
-							/si(z(e)?)?/,
-							field("x", $._expression),
-							/cm|in/,
-							",",
-							field("y", $._expression),
-							/cm|in/,
-						),
+						$.canvas_size,
 					),
 				),
 			),
@@ -1382,15 +1465,41 @@ module.exports = grammar({
 		// t_tkcanvas: $ =>
 		// t_webp: $ =>
 
+		canvas_size: ($) =>
+			seq(
+				alias(/si(z(e)?)?/, $.size),
+				field(
+					"x",
+					seq(
+						choice(
+							alias($._expression, $.noint),
+							token.immediate(seq(alias(/\d+/, $.int))),
+						),
+						optional(choice("cm", "in")),
+					),
+				),
+				",",
+				field(
+					"y",
+					seq(
+						choice(
+							alias($._expression, $.noint),
+							token.immediate(seq(alias(/\d+/, $.int))),
+						),
+						optional(choice("cm", "in")),
+					),
+				),
+			),
+
 		termoption: ($) =>
 			seq(
 				"termoption",
 				repeat(
 					choice(
-						/(no)?enhanced/,
-						seq("font", $._expression),
+						K.enhanced,
+						seq("font", $._expression), // string with font name and optional size
 						seq("fontscale", $._expression),
-						seq(/linewidth|lw/, $._expression),
+						seq(K.lw, $._expression),
 					),
 				),
 			),
@@ -1400,10 +1509,10 @@ module.exports = grammar({
 				"theta",
 				optional(
 					choice(
-						"right",
-						"top",
-						"left",
-						"bottom",
+						K.right,
+						K.top,
+						K.left,
+						K.bottom,
 						"clockwise",
 						"cw",
 						"counterclockwise",
@@ -1414,36 +1523,41 @@ module.exports = grammar({
 
 		tics: ($) =>
 			seq(
-				/tics?/,
+				K.tics,
 				repeat(
 					choice(
 						/axis|border/,
-						/(no)?mirror/,
+						K.mirror,
 						/in|out/,
 						/front|back/,
 						seq(/(no)?rotate/, optional(seq("by", $._expression))),
-						choice(seq("offset", field("offset", $._expression)), "nooffset"),
-						/l(e(f(t)?)?)?|r(i(g(t(h)?)?)?)?|c(e(n(t(e(r)?)?)?)?)?|au(t(o(j(u(s(t(i(f(y)?)?)?)?)?)?)?)?)?/,
+						choice(
+							seq(K.offset, field("offset", $._expression)),
+							token(seq(K.NO, K.offset)),
+						),
+						choice(K.left, K.center, K.right, K.autojustify),
 						seq("format", $._expression),
 						seq("font", $._expression), // string with font name and optional size
-						/(no)?enhanced/,
-						seq(/textcolor|tc/, choice($.colorspec, "default")),
+						K.enhanced,
+						seq(K.tc, choice($.colorspec, "default")),
 					),
 				),
-			), // p. 222
+			),
 
 		// timestamp: $ =>
 
 		timefmt: ($) => seq("timefmt", field("format", $._expression)),
 
 		title: ($) =>
-			seq(
-				/tit(l(e)?)?/,
-				optional($._expression),
-				optional(seq("offset", $._expression)),
-				optional(seq("font", $._expression)), // string with font name and optional size
-				optional(seq(/textcolor|tc/, choice($.colorspec, "default"))),
-				/(no)?enhanced/,
+			prec.left(
+				seq(
+					alias(/tit(l(e)?)?/, $.tit),
+					optional(alias($._expression, $.title)),
+					optional(seq(alias(K.offset, $.offset), $._expression)),
+					optional(seq("font", $._expression)), // string with font name and optional size
+					optional(seq(alias(K.tc, $.tc), choice($.colorspec, "default"))),
+					optional(alias(K.enhanced, $.enhanced)),
+				),
 			),
 
 		version: ($) => seq("version", optional("long")),
@@ -1487,46 +1601,44 @@ module.exports = grammar({
 				"walls",
 				optional(/(x0|y0|z0|x1|y1)/),
 				optional($.fill_style),
-				optional(seq(/fillcolor|fc/, $.colorspec)),
+				optional(seq(K.fc, $.colorspec)),
 			),
 
-		xdata: ($) => seq(/(x|y|z|x2|y2|cb)data/, optional("time")),
+		xdata: ($) => seq(alias(seq(K.axes, "data"), $.xdata), optional("time")),
 
-		xdtics: ($) => /(x|y|z|z2|y2|cb)dtics/,
+		xdtics: ($) => token(seq(K.axes, "d", K.tics)),
 
 		xlabel: ($) =>
 			seq(
-				alias(/(x|y|z|x2|y2|cb|r)lab(e(l)?)?/, $.xlabel),
+				alias(token(seq(K.axesr, K.label)), $.xlabel),
 				optional(alias($._expression, $.label)),
 				repeat(
 					choice(
-						seq("offset", alias($.position, $.offset)),
-						choice(
-							"norotate",
-							seq("rotate", choice(seq("by", $._expression), "parallel")),
+						seq(alias(K.offset, $.offset), $.position),
+						seq(
+							alias(token.immediate(seq(K.NO, K.rotate)), $.rotate),
+							optional(
+								choice(seq("by", alias($._expression, $.angle)), "parallel"),
+							),
 						),
-						seq(choice("textcolor", "tc"), $.colorspec),
-						seq("font", field("font", $._expression)), // string with font name and optional size
-						choice("noenhanced", "enhanced"),
+						seq(alias(K.tc, $.tc), $.colorspec),
+						seq("font", alias($._expression, $.font)), // string with font name and optional size
+						alias(K.enhanced, $.enhanced),
 					),
 				),
 			),
 
-		xmtics: ($) => /(x|y|z|x2|y2|cb)mtics/,
+		xmtics: ($) => token(seq(K.axes, "m", K.tics)),
 
 		xrange: ($) =>
 			seq(
-				alias(/(x|y|z|x2|y2|r|t|u|v|cb|vx|vy|vz)ran(g(e)?)?/, $.range),
-				optional($.range_block),
+				alias(token(seq(/x|y|z|x2|y2|r|t|u|v|cb|vx|vy|vz/, K.range)), $.range),
+				optional($.range_block), // HACK: optional(range_block) for unset command
 				repeat(
 					choice(
-						// HACK: optional(range_block) for unset command
-						"noreverse",
-						"reverse",
-						"nowriteback",
-						"writeback",
-						"noextend",
-						"extend",
+						alias(/(no)?reverse/, $.reverse),
+						alias(/(no)?writeback/, $.writeback),
+						alias(/(no)?extend/, $.extend),
 						"restore",
 					),
 				),
@@ -1534,79 +1646,7 @@ module.exports = grammar({
 
 		xtics: ($) =>
 			prec.left(
-				seq(
-					alias(/(x|y|z|x2|y2|cb|r)tics/, $.xtics),
-					repeat(
-						choice(
-							/axis|border/,
-							/(no)?mirror/,
-							/in|out/,
-							seq(
-								"scale",
-								optional(
-									choice(
-										"default",
-										seq($._expression, optional(seq(",", $._expression))),
-									),
-								),
-							),
-							seq(/(no)?rotate/, optional(seq("by", $._expression))),
-							choice(seq("offset", field("offset", $._expression)), "nooffset"),
-							/left|right|center|autojustify/,
-							"add",
-							choice(
-								"autofreq",
-								$._expression,
-								seq(
-									field("start", $._expression),
-									",",
-									field("incr", $._expression),
-									optional(seq(",", field("end", $._expression))),
-								),
-								seq(
-									"(",
-									choice(
-										field("pos", $._expression),
-										seq(
-											field("label", $._expression),
-											field("pos", $._expression),
-										),
-										seq(
-											field("label", $._expression),
-											field("pos", $._expression),
-											field("level", $._expression),
-										),
-									),
-									repeat(
-										seq(
-											",",
-											choice(
-												field("pos", $._expression),
-												seq(
-													field("label", $._expression),
-													field("pos", $._expression),
-												),
-												seq(
-													field("label", $._expression),
-													field("pos", $._expression),
-													field("level", $._expression),
-												),
-											),
-										),
-									),
-									")",
-								),
-							),
-							seq("format", $._expression),
-							seq("font", $._expression), // string with font name and optional size
-							/(no)?enhanced/,
-							/numeric|timedate|geographic/,
-							/(no)?logscale/,
-							"rangelimited",
-							seq(/textcolor|tc/, choice($.colorspec, "default")),
-						),
-					),
-				),
+				seq(alias(token(seq(K.axesr, K.tics)), $.xtics), optional($.tics_opts)),
 			),
 
 		xyplane: ($) =>
@@ -1620,10 +1660,11 @@ module.exports = grammar({
 				),
 			),
 
-		zero: ($) => seq(/z(e(r(o)?)?)?/, $._expression),
+		zero: ($) =>
+			prec.left(seq(alias(/z(e(r(o)?)?)?/, $.zero), optional($._expression))),
 
 		zeroaxis: ($) =>
-			seq(/(x|x2|y|y2|z)?zeroa(x(i(s)?)?)?/, optional($._line_opts)),
+			seq(/(x|y|z|x2|y2)?zeroa(x(i(s)?)?)?/, optional($.line_opts)),
 
 		c_show: ($) =>
 			prec.left(
@@ -1635,14 +1676,10 @@ module.exports = grammar({
 						"colornames",
 						"functions",
 						seq(
-							/pal(e(t(t(e)?)?)?)?/,
+							K.palette,
 							optional(
 								choice(
-									seq(
-										/pal(e(t(t(e)?)?)?)?/,
-										optional($._expression),
-										optional($.number /*, $.hexadecimal*/),
-									),
+									seq(K.palette, optional($._expression), optional($.number)),
 									/gra(d(i(e(n(t)?)?)?)?)?/,
 									/fit2rgb(f(o(r(m(u(l(a(e)?)?)?)?)?)?)?)?/,
 									/rgbfor(m(u(l(a(e)?)?)?)?)?/,
@@ -1659,6 +1696,7 @@ module.exports = grammar({
 			seq(
 				// TODO: p. 244
 				alias(/sp(l(o(t)?)?)?/, $.splot),
+				optional("sample"),
 				repeat($.range_block),
 				$.plot_element, // add voxelgrids to plot_element
 				repeat(seq(",", $.plot_element)),
@@ -1678,7 +1716,7 @@ module.exports = grammar({
 				repeat(
 					choice(
 						seq(choice("name", "prefix"), $._expression),
-						alias(/(no)?o(u(t(p(u(t)?)?)?)?)?/, $.output),
+						alias(token(seq(K.NO, K.output)), $.output),
 						seq(
 							"$vgridname",
 							optional(seq("name", alias($._expression, $.name))),
@@ -1687,10 +1725,12 @@ module.exports = grammar({
 				),
 			),
 
+		c_system: ($) => seq("system", $._expression),
+
 		c_test: ($) => prec.left(seq("test", optional(choice("test", "terminal")))),
 
 		c_undefine: ($) =>
-			prec.left(seq(/und(e(f(i(n(e)?)?)?)?)?/, repeat($._expression))), // p. 253
+			prec.left(seq(/und(e(f(i(n(e)?)?)?)?)?/, repeat($._expression))),
 
 		c_while: ($) =>
 			seq(
@@ -1734,7 +1774,6 @@ module.exports = grammar({
 		sum_block: ($) =>
 			prec.left(
 				seq(
-					// p. 53
 					"sum",
 					"[",
 					$.identifier,
@@ -1750,7 +1789,7 @@ module.exports = grammar({
 		datafile_modifiers: ($) =>
 			repeat1(
 				choice(
-					field("binary", seq("binary")), // add binary list
+					field("binary", seq("binary")), // TODO: add binary list
 					field("matrix", seq(choice("nonuniform", "sparce"), "matrix")),
 					$._i_e_u_directives,
 					field("skip", seq("skip", field("N_lines", $._expression))),
@@ -1767,12 +1806,12 @@ module.exports = grammar({
 		_arrow_opts: ($) =>
 			prec.left(
 				choice(
-					field("as", seq(/arrowstyle|as/, $._expression)),
-					choice("nohead", "head", "backhead", "heads"),
+					alias(seq(K.as, $._expression), $.as),
+					alias(/(no|back)?heads?/, $.head), //choice("nohead", "head", "backhead", "heads"),
 					prec(
 						2,
 						seq(
-							// FIX: precedence over plot_element
+							// FIX: precedence over plot_element (TAL VEZ SE ARREGLA CON canvas_size)
 							"size",
 							$._expression,
 							",",
@@ -1783,63 +1822,141 @@ module.exports = grammar({
 					"fixed",
 					choice("filled", "empty", "nofilled", "noborder"),
 					choice("front", "back"),
-					$._line_opts,
+					$.line_opts,
 				),
 			),
 
-		_label_opts: ($) =>
-			prec(
-				1,
+		label_opts: ($) =>
+			prec.left(
 				choice(
-					// p. 178
 					choice(
-						"norotate",
-						seq("rotate", optional(seq("by", field("degrees", $._expression)))),
+						alias(token.immediate(seq(K.NO, K.rotate)), $.norotate),
+						seq(
+							alias(K.rotate, $.rotate),
+							optional(seq("by", field("degrees", $._expression))),
+						),
 					),
 					seq("font", field("font", $._expression)), // string with font name and optional size
-					/(no)?enhanced/,
+					alias(K.enhanced, $.enhanced),
 					/front|back/,
-					seq(/textcolor|tc/, $.colorspec),
-					seq("offset", alias($.position, $.offset)),
-					/l(e(f(t)?)?)?|r(i(g(h(t)?)?)?)?|c(e(n(t(e(r)?)?)?)?)?/,
+					seq(alias(K.tc, $.tc), $.colorspec),
+					seq(alias(K.offset, $.offset), $.position),
+					alias(choice(K.left, K.right, K.center), $.align),
 					field("position", seq("at", $.position)),
 					choice(seq("point", field("point", $._expression)), "nopoint"),
 					choice(
 						"nobox",
-						seq("boxed", optional(field("bs", seq("bs", $._expression)))),
+						seq("boxed", optional(field("bs", seq("bs", $._expression)))), // NOTE: bs == boxstyle
 					),
 					"hypertext",
 				),
 			),
 
-		_line_opts: ($) =>
+		line_opts: ($) =>
 			prec.left(
 				repeat1(
 					choice(
-						field("ls", seq(choice("linestyle", "ls"), $._expression)),
-						field("lt", seq(choice("linetype", "lt"), $._expression)),
-						field("lw", seq(choice("linewidth", "lw"), $._expression)),
-						field("lc", seq(choice("linecolor", "lc"), $.colorspec)),
-						field("dt", seq(choice("dashtype", "dt"), $._dash_opts)),
+						seq(alias(K.ls, $.ls), $._expression),
+						seq(alias(K.lt, $.lt), $._expression),
+						seq(alias(K.lw, $.lw), $._expression),
+						seq(alias(K.lc, $.lc), $.colorspec),
+						seq(alias(K.dt, $.dt), $._dash_opts),
 					),
 				),
 			),
 
-		_line_style: ($) =>
+		tics_opts: ($) =>
+			prec.left(
+				repeat1(
+					choice(
+						alias(/axis|border/, $.axis),
+						alias(K.mirror, $.mirror),
+						alias(/in|out/, $.inout),
+						seq(
+							"scale",
+							optional(
+								choice(
+									"default",
+									seq($._expression, optional(seq(",", $._expression))),
+								),
+							),
+						),
+						seq(
+							alias(/(no)?rotate/, $.rotate),
+							optional(seq("by", $._expression)),
+						),
+						choice(seq(K.offset, $._expression), token(seq(K.NO, K.offset))),
+						alias(choice(K.left, K.right, K.center, K.autojustify), $.align),
+						"add",
+						choice(
+							"autofreq",
+							$._expression,
+							seq(
+								field("start", $._expression),
+								",",
+								field("incr", $._expression),
+								optional(seq(",", field("end", $._expression))),
+							),
+							seq(
+								"(",
+								choice(
+									field("pos", $._expression),
+									seq(
+										field("label", $._expression),
+										field("pos", $._expression),
+									),
+									seq(
+										field("label", $._expression),
+										field("pos", $._expression),
+										field("level", $._expression),
+									),
+								),
+								repeat(
+									seq(
+										",",
+										choice(
+											field("pos", $._expression),
+											seq(
+												field("label", $._expression),
+												field("pos", $._expression),
+											),
+											seq(
+												field("label", $._expression),
+												field("pos", $._expression),
+												field("level", $._expression),
+											),
+										),
+									),
+								),
+								")",
+							),
+						),
+						seq("format", $._expression),
+						seq("font", $._expression), // string with font name and optional size
+						alias(K.enhanced, $.enhanced),
+						alias(/numeric|timedate|geographic/, $.format),
+						alias(token(seq(K.NO, K.logscale)), $.log),
+						alias(/(no)?range(l(i(m(i(t(e(d)?)?)?)?)?)?)?/, $.rangelimit),
+						seq(alias(K.tc, $.tc), choice($.colorspec, "default")),
+					),
+				),
+			),
+
+		line_style: ($) =>
 			seq(
-				field("tag", $._expression),
+				alias($._expression, $.tag),
 				repeat(
 					choice(
 						alias(/def(a(u(l(t)?)?)?)?/, $.default),
-						field("lt", seq(/linetype|lt/, $._expression)),
-						field("lw", seq(/linewidth|lw/, $._expression)),
-						field("lc", seq(/linecolor|lc/, $.colorspec)),
-						field("dt", seq(/dashtype|dt/, $._dash_opts)),
-						field("pt", seq(/pointtype|pt/, $._expression)),
-						field("ps", seq(/pointsize|ps/, $._expression)),
-						field("pi", seq(/pointinterval|pi/, $._expression)),
-						field("pn", seq(/pointnumber|pn/, $._expression)),
-						alias(/pal(e(t(t(e)?)?)?)?/, $.palette),
+						seq(alias(K.lt, $.lt), $._expression),
+						seq(alias(K.lw, $.lw), $._expression),
+						seq(alias(K.lc, $.lc), $.colorspec),
+						seq(alias(K.dt, $.dt), $._dash_opts),
+						seq(alias(K.pt, $.pt), $._expression),
+						seq(alias(K.ps, $.ps), $._expression),
+						seq(alias(/pointinterval|pi/, $.pi), $._expression),
+						seq(alias(/pointnumber|pn/, $.pn), $._expression),
+						alias(K.palette, $.palette),
 					),
 				),
 			),
@@ -1851,12 +1968,12 @@ module.exports = grammar({
 					choice(
 						"empty",
 						seq(
-							optional(alias(/trans(p(a(r(e(n(t)?)?)?)?)?)?/, $.transparent)),
+							optional(alias(K.transparent, $.transparent)),
 							alias(/s(o(l(i(d)?)?)?)?/, $.solid),
 							optional(alias($._expression, $.density)),
 						),
 						seq(
-							optional(alias(/trans(p(a(r(e(n(t)?)?)?)?)?)?/, $.transparent)),
+							optional(alias(K.transparent, $.transparent)),
 							"pattern",
 							alias($._expression, $.pattern),
 							optional(field("n", $._expression)),
@@ -1865,7 +1982,11 @@ module.exports = grammar({
 				),
 				optional(
 					choice(
-						seq("border", optional("lt"), optional(seq("lc", $.colorspec))),
+						seq(
+							"border",
+							optional(seq(alias(K.lt, $.lt), $._expression)),
+							optional(seq(alias(K.lc, $.lc), $.colorspec)),
+						),
 						alias(/nobo(r(d(e(r)?)?)?)?/, $.noborder),
 					),
 				),
@@ -1874,10 +1995,10 @@ module.exports = grammar({
 		colorspec: ($) =>
 			prec.left(
 				choice(
-					alias($.number, $.tag),
+					alias($._expression, $.tag),
 					seq(alias(/rgb(c(o(l(o(r)?)?)?)?)?/, $.rgbcolor), $._expression),
 					seq(
-						alias(/pal(e(t(t(e)?)?)?)?/, $.palette),
+						alias(K.palette, $.palette),
 						optional(
 							choice(
 								seq("frac", alias($._expression, $.val)),
@@ -1952,11 +2073,13 @@ module.exports = grammar({
 			prec.left(
 				seq(
 					optional($.system),
-					field("x", $._expression),
-					",",
+					field("x", alias($._expression, $.x)),
+					optional(","),
 					optional($.system),
-					field("y", $._expression),
-					optional(seq(",", optional($.system), field("z", $._expression))),
+					optional(field("y", alias($._expression, $.y))),
+					optional(
+						seq(",", optional($.system), field("z", alias($._expression, $.z))),
+					),
 				),
 			),
 
@@ -2000,8 +2123,6 @@ module.exports = grammar({
 				),
 			),
 
-		_line_continuation: ($) => seq("\\", "\n"),
-
 		macro: ($) => seq("@", $.identifier),
 
 		//-------------------------------------------------------------------------
@@ -2021,6 +2142,8 @@ module.exports = grammar({
 					$.ternary_expression,
 					$.identifier,
 					$.macro,
+					// $.datablock // add datablock? p. 58
+					"NaN",
 				),
 			),
 
@@ -2062,11 +2185,50 @@ module.exports = grammar({
 				"}",
 			),
 
-		string_literal: ($) => {
-			const single_quoted_string = seq("'", repeat(/[^']*/), "'");
-			const double_quoted_string = seq('"', repeat(/[^"]*/), '"');
-			return token(choice(single_quoted_string, double_quoted_string));
-		},
+		string_literal: ($) =>
+			choice(
+				seq(
+					"'",
+					repeat(
+						choice(
+							token.immediate(prec(1, /[^'%]+/)),
+							$.format_specifier,
+							// $.escape_sequence,
+						),
+					),
+					"'",
+				),
+				seq(
+					'"',
+					repeat(
+						choice(
+							token.immediate(prec(1, /[^"%]+/)),
+							$.format_specifier,
+							// $.escape_sequence,
+						),
+					),
+					'"',
+				),
+			),
+
+		format_specifier: ($) =>
+			token.immediate(
+				seq("%", optional(/([+-]?\d+|\d+\.\d+|\.\d+)/), /[a-zA-Z]/),
+			),
+
+		// escape_sequence: ($) =>
+		// 	token.immediate(
+		// 		seq19(
+		// 			"\\",
+		// 			choice(
+		// 				/[^xu0-7]/,
+		// 				/[0-7]{1,3}/,
+		// 				/x[0-9a-fA-F]{2}/,
+		// 				/u[0-9a-fA-F]{4}/,
+		// 				/u{[0-9a-fA-F]+}/,
+		// 			),
+		// 		),
+		// 	),
 
 		array: ($) => seq($.identifier, "[", $._expression, "]"),
 
@@ -2118,7 +2280,6 @@ module.exports = grammar({
 				prec.left(PREC.BIT_OR, seq($._expression, "|", $._expression)),
 				prec.left(PREC.AND, seq($._expression, "&&", $._expression)),
 				prec.left(PREC.OR, seq($._expression, "||", $._expression)),
-				// prec.left(PREC.SHIFT, seq('(', $._expression, ',', $._expression, ')')), // serial evaluation
 				prec.left(PREC.CONCAT, seq($._expression, ".", $._expression)),
 				prec.left(PREC.COMPARE, seq($._expression, "eq", $._expression)),
 				prec.left(PREC.COMPARE, seq($._expression, "ne", $._expression)),
