@@ -13,11 +13,11 @@
   (_) @variable)
 
 (ternary_expression
-  (condition) @variable
+  condition: (_) @variable
   "?" @conditional.ternary
-  (true) @variable
+  true: (_) @variable
   ":" @conditional.ternary
-  (false) @variable)
+  false: (_) @variable)
 
 (func_def (function) "=" @operator)
 (var_def (var) "=" @operator)
@@ -58,26 +58,30 @@
   "plot" @keyword
   "sample"? @keyword)
 
-(plot_element ; FIX: title, notitle, with
+(plot_element
+  (range_block)*
+  (for_block)?
   [
    ("axes" ["x1y1" "x2y2" "x1y2" "x2y1"] @attribute)
-   "title"
-   "with"
+   ("title" title: (_)?) 
+   "notitle"
+   ("with" with: (plot_style) (style_opts)?)
    ]* @field)
 
 (style_opts ["as" "fs" "fc" "nohidden3d" "nocontours" "nosurf" "palette"]+ @field)
 (datafile_modifiers
   [
    "binary"
-   matrix: (["nonuniform" "sparce"] "matrix")
+   matrix: (["nonuniform" "sparce"]? "matrix" @attribute)
    ("skip" N_lines: _)
    ("smooth" (smooth_options)?)
    "mask" "convexhull" "volatile"
   ]* @attribute
   [
-   index: ("index" (m) (":" (n))? (":" (p))?)
-   ("every" (point_incr)? (":" (block_incr)?)? (":" (start_point)?)? (":" (start_block)?)? (":" (end_point)?)? (":" (end_block)?)? )
+   index: ("index" m: (_) (":" n: (_))? (":" p: (_))?)
+   ("every" point_incr: (_)? (":" block_incr: (_)?)? (":" start_point: (_)?)? (":" start_block: (_)?)? (":" end_point: (_)?)? (":" end_block: (_)?)? )
    using: ("using" (_) (":" (_))*)
+   "zsort"
    ]* @field)
 
 (smooth_options) @property
@@ -147,9 +151,9 @@
    "version"
   ]+ @attribute)
 (format
-        (axes)? @attribute
+        "axes"? @attribute
         fmt_str: (_)
-        _? @attribute)
+        _? @attribute) ; TODO: check
 (grid
       [
        "tics"
@@ -187,16 +191,16 @@
       ("keywidth" ["screen" "graph"] )
       "lr"
       "reverse"
-      ("samplen"(length))
-      ("spacing"(spacing))
-      ("title" (enhanced)? @attribute(position)? @attribute)
+      ("samplen" length: (_))
+      ("spacing" spacing: (_))
+      ("title" "enhanced"? @attribute(position)? @attribute)
       (font_spec)
       ("tc" (colorspec))
-      (placement)
-      (margin)
+      "placement"
+      "margin"
       ("at" (position))
-      (hor)
-      (vert)
+      "hor"
+      "vert"
     ]+ @attribute)
 (link 
   [
@@ -335,18 +339,17 @@
 ; (timestamp)
 (title
   [
-   title: (_)
-   ((offset) (position))
+   ("offset" (position))
    (font_spec)
-   ((tc)[(colorspec)(line_style)])
-   (enhanced)
+   ("tc" [(colorspec)(line_style)])
+   "enhanced"
    ]+ @attribute)
 ; (vgrid)
 (view 
   [
    ("map" "scale"?)
    ("projection" ["xy" "xz" "yz"]? @property)
-   ((equal) ["xy" "xyz"]? @property)
+   ("equal" ["xy" "xyz"]? @property)
    ("azimuth")
    ]+ @attribute)
 (walls [
@@ -372,11 +375,18 @@
 (c_stats
   "stats" @keyword
   (range_block)*
-  (filename)
-  ["matrix" (i_e_u_directives)+]? @field
+  filename: (_)
+  [
+   "matrix"? @field
+   [
+   index: ("index" m: (_) (":" n: (_))? (":" p: (_))?)
+   ("every" point_incr: (_)? (":" block_incr: (_)?)? (":" start_point: (_)?)? (":" start_block: (_)?)? (":" end_point: (_)?)? (":" end_block: (_)?)? )
+   using: ("using" (_) (":" (_))*)
+   "zsort"
+   ]* @field]
   [
    (["name" "prefix"] @field (_))
-   (output) @field
+   "output" @field
    ; ("vgridname" ("name" (name))?)
   ]*)
 
@@ -408,7 +418,7 @@
   [
    "empty" 
    "solid"
-   ("transparent"? "solid" @attribute (density)?)
+   ("transparent"? "solid" @attribute density: (_)?)
    ("pattern" (n)?)
    ("transparent"? "pattern" @attribute (n)?)
    ("border" [("lt"? @field (_)) @field ("lc" @field (colorspec))]?)
@@ -424,16 +434,16 @@
    "rgbcolor"
    ("palette"
               [
-               ("frac" @property (val))
-               ("cb" @property (val))
+               ("frac" @property val: (_))
+               ("cb" @property val: (_))
                "z" @property]?)
    "variable"
    "bgnd"
    "black"] @attribute)
 
 (arrow_opts [
-             (as)
-             (head)
+             "as"
+             "head"
              "size"
              "fixed" "filled" "empty" "nofilled" "noborder" "front" "back"
              ]+ @attribute)
@@ -465,8 +475,8 @@
    ("rotate" ("by" @attribute degrees: (_))?)
    "enhanced"
    "fb"
-   ("tc"(colorspec))
-   ("offset"(position))
+   ("tc" (colorspec))
+   ("offset" (position))
    "align"
    position: ("at" @attribute (position))
    "nopoint"
