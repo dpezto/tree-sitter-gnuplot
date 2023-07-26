@@ -75,7 +75,7 @@
    ("title" title: (_))
    ("notitle" title: (_)?)
    "nogrid" ; NOTE: splot only option
-   ("with" with: (plot_style) (style_opts)?) 
+   ("with" with: (plot_style) (style_opts)?)
    ]* @field)
 
 (datafile_modifiers
@@ -127,8 +127,8 @@
    ]* @attribute)
 (colorbox
   [
-   "ver"
-   "hor"
+   "vertical"
+   "horizontal"
    "invert"
    "default"
    ("origin" (position))
@@ -146,7 +146,7 @@
    "fortran"
    "nofpe_trap"
    "missing"
-   ("sep" ["white" "tab" "comma"] @property)
+   ("separator" ["whitespace" "tab" "comma"] @property)
    "commentschars"
    ]? @attribute)
 (decimalsign "locale" @attribute)
@@ -158,11 +158,11 @@
 ; (errorbars)
 (fit
   [
-   "nolog"
-   ("log" "default"? @property)
+   "nologfile"
+   ("logfile" "default"? @property)
    "fit_out"
-   "errorvars"
-   "covariancevars"
+   "errorvariables"
+   "covariancevariables"
    "errorscaling"
    "prescale"
    ("maxiter" "default"? @property)
@@ -188,6 +188,7 @@
    "offset"
    "trianglepattern"
    "undefined"
+   "noundefined"
    "altdiagonal"
    "bentover"
    ]? @attribute)
@@ -199,7 +200,7 @@
    "on" "off"
    "default"
    "enhanced"
-   ("a" "column"? @property)
+   ("a" "columnheader"? @property)
    "box"
    ("opaque"("fc" @property (colorspec))?)
    ("width" increment: (_))
@@ -236,7 +237,7 @@
    ("screen" @attribute(_))
    ("margins" lm: (_) "," rm: (_) "," bm: (_) "," tm: (_))
    ]? @attribute)
-(mouse) ; TODO: complete
+; (mouse) ; TODO: complete
 (multiplot
   [
    ("title" title: (_) (font_spec)? "enhanced"? @property)
@@ -249,10 +250,10 @@
    ("spacing" xspacing: (_) ("," yspacing: (_))?)
    "pn"
    ]+ @attribute)
-(mxtics ; TODO: verify
+(mxtics
   [
    "default"
-   "units"
+   ["seconds" "minutes" "hours" "days" "weeks" "months" "years"]
    ]* @attribute)
 (palette
   [
@@ -261,14 +262,14 @@
    ("rgbformulae" r: (_) ("," g: (_))? ("," b: (_))?)
    ("defined" ("(" gray: (_) color: (_) ("," gray: (_) color: (_))* ")")?)
    ("file" filename: (_)(datafile_modifiers)?)
-   ("col" colormap_name: (_))
-   ("func" R: (_) "," G: (_) "," B: (_))
+   ("colormap" colormap_name: (_))
+   ("functions" R: (_) "," G: (_) "," B: (_))
    ("cubehelix" ("start" val: (_))? @property ("cycles" val: (_))? @property ("saturation" val: (_))? @property)
    "viridis"
    ("model" (["RGB" "CMY" ("HSV" ("start" radians: (_))? @attribute)])? @property )
    "pn"
    "nops_allcF" "ps_allcF"
-   ("maxc" maxcolors: (_))
+   ("maxcolors" maxcolors: (_))
    ]+ @attribute)
 (paxis
   [
@@ -281,7 +282,7 @@
 (pm3d
   [
    ("at" (position))
-   ("interp" steps: (_) "," between: (_))
+   ("interpolate" steps: (_) "," between: (_))
    "scanorder" ("depthorder" "base"? @property) "hidden3d"
    ("flush" ["begin""center""end"] @property)
    "ftriangles"
@@ -301,16 +302,16 @@
    ]+ @attribute)
 (style
   [
-   ("arrow" index:(_)? ["def" @attribute (arrow_opts)])
+   ("arrow" index:(_)? ["defaults" @attribute (arrow_opts)])
    ("boxplot") ; TODO: complete
    ("data" [(plot_style) "spiderplot" @attribute])
    ("fs" (fill_style))
-   ("func" (plot_style))
+   ("function" (plot_style))
    ("line" (line_style))
    ("circle") ; TODO: complete
    ("rectangle") ; TODO: complete
    ("ellipse") ; TODO: complete
-   ("parallelaxis" "fb"? @attribute (style_opts)?) ; TODO: change by style_opts?
+   ("parallelaxis" "fb"? @attribute (style_opts)?)
    ; ((spiderplot)) ; TODO: complete
    ("textbox") ; TODO: complete
    ] @property )
@@ -510,7 +511,7 @@
    "enhanced"
    ("format" (_))
    "log"
-   "rangelimit"
+   "rangelimited"
    ("tc" [(colorspec) ("lt" (_))])
    ]+ @attribute)
 
@@ -547,7 +548,7 @@
    ("fc" [(_) ("lt" @field (_)) ("ls" @field (_))])
    "nohidden3d"
    "nocontours"
-   "nosurf"
+   ; "nosurface"
    "palette"
    ]+ @field)
 
@@ -580,4 +581,3 @@
 (number) @number
 
 (string_literal) @string
-; (format_specifier)@string.special
