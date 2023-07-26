@@ -1,46 +1,103 @@
 ===============================================================================
   Variables
 ===============================================================================
-
-a = lolazo
-
+a = test
 -------------------------------------------------------------------------------
 (source_file
   (var_def
-    (var)
+    (identifier)
     (identifier)))
 
 ===============================================================================
   Arrays
 ===============================================================================
-
 array b[4] = [a,2,3.5,{4,0.3}]
-
 -------------------------------------------------------------------------------
 (source_file
   (array_def
     (array
       (identifier)
-      (integer))
+      (number))
     (identifier)
-    (integer)
-    (float)
+    (number)
+    (number)
     (complex
-      (integer)
-      (float))))
-===============================================================================
-  Functions
-===============================================================================
+      (number)
+      (number))))
 
+===============================================================================
+  Function 1
+===============================================================================
 f(x) = x**2
-
 -------------------------------------------------------------------------------
 (source_file
       (func_def
-        (defined_func
-          (name)
-          argument: (variable
-            (identifier)))
+        (function
+          name: (identifier)
+          arg: (identifier))
         (binary_expression
           (identifier)
-          (integer))))
+          (number))))
+
+===============================================================================
+  Datablocks
+===============================================================================
+$DATA << EOD
+A B C D E 
+1 1 1 1 1
+f(x) λ*pi
+EOD 
+-------------------------------------------------------------------------------
+(source_file
+      (datablock_def
+        (datablock)
+        (identifier)
+        (identifier)
+        (identifier)
+        (identifier)
+        (identifier)
+        (identifier)
+        (number)
+        (number)
+        (number)
+        (number)
+        (number)
+        (function
+          name: (identifier)
+          arg: (identifier))
+        (binary_expression
+          (identifier)
+          (identifier))
+        (identifier)))
+
+===============================================================================
+  Function 2
+===============================================================================
+dot(A,B) = (|A| != |B|) ? NaN : sum [i=1:|A|] A[i] * B[i]
+-------------------------------------------------------------------------------
+(source_file
+  (func_def
+    (function
+      name: (identifier)
+      arg: (identifier)
+      arg: (identifier))
+    (ternary_expression
+      condition: (parenthesized_expression
+      (binary_expression
+        (unary_expression
+          (identifier))
+        (unary_expression
+          (identifier))))
+      true: (identifier)
+      false: (sum_block
+        (identifier)
+        (number)
+        (unary_expression
+          (identifier))
+        (binary_expression
+          (array
+            (identifier)
+            (identifier))
+          (array
+            (identifier)
+            (identifier)))))))

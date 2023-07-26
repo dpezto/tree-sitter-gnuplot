@@ -1,54 +1,150 @@
 ===============================================================================
-  set arrow
+  set arrow 1
 ===============================================================================
-set arrow to 1,2 ls 5
+set arrow 1 heads size screen 0.015, 30, 90 filled front lw 1 lc rgb "gray30"
 -------------------------------------------------------------------------------
 (source_file
   (c_set
     (arrow
-      (to_rto)
-      (position
-        x: (integer)
-        y: (integer))
-        ls: (integer))))
+      tag: (number)
+        (arrow_opts)
+        (arrow_opts
+          (position
+            (system)
+            x: (number)
+            y: (number)
+            z: (number)))
+        (arrow_opts)
+        (arrow_opts)
+        (arrow_opts
+          (style_opts
+            lw: (number)))
+        (arrow_opts
+          (style_opts
+            lc: (colorspec
+              (string_literal)))))))
 
 ===============================================================================
   set arrow 2
-===============================================================================
-set arrow 2 from 1,2 to 3,4 ls 5
--------------------------------------------------------------------------------
-(source_file
-  (c_set
-    (arrow
-      (tag
-        (integer))
-      (from)
-      (position
-        x: (integer)
-        y: (integer))
-      (to_rto)
-      (position
-        x: (integer)
-        y: (integer))
-        ls: (integer))))
-===============================================================================
-  set arrow 3
 ===============================================================================
 set arrow 3 from graph 0,0 to -5,5,3
 -------------------------------------------------------------------------------
 (source_file
   (c_set
     (arrow
-      (tag
-        (integer))
-      (from)
+      tag: (number)
       (position
         (system)
-        x: (integer)
-        y: (integer))
-      (to_rto)
+        x: (number)
+        y: (number))
       (position
         x: (unary_expression
-          (integer))
-        y: (integer)
-        z: (integer)))))
+          (number))
+        y: (number)
+        z: (number)))))
+
+===============================================================================
+  set label 1
+===============================================================================
+set label 1 at -1.12-10,funtion(0)-3 'label' right # comment
+-------------------------------------------------------------------------------
+(source_file
+  (c_set
+    (label
+      tag: (number)
+      (label_opts
+        (position
+          x: (binary_expression
+            (unary_expression
+              (number))
+            (number))
+          y: (binary_expression
+            (function
+              name: (identifier)
+              arg: (number))
+            (number))
+            label: (string_literal))))))
+  (comment))
+
+===============================================================================
+  set label 2
+===============================================================================
+set label tag label at MOUSE_X,MOUSE_Y textcolor ls 1
+-------------------------------------------------------------------------------
+(source_file
+  (c_set
+    (label
+      tag: (identifier)
+      label: (identifier)
+      (label_opts
+        (position
+          x: (identifier)
+          y: (identifier))
+        tc: (number)))))
+
+===============================================================================
+  plot 1
+===============================================================================
+p sin(x) w l lw 2 not
+-------------------------------------------------------------------------------
+(source_file
+  (c_plot
+    (plot_element
+      data: (function
+        name: (identifier)
+        arg: (identifier))
+      with: (plot_style)
+      (style_opts
+        lw: (number)))))
+===============================================================================
+  plot 2
+===============================================================================
+plot for [k=2:5] file u 1:k w p pt 13 lc k t 'T='.k.'°C'
+-------------------------------------------------------------------------------
+(source_file
+  (c_plot
+    (plot_element
+      (for_block
+        start: (var_def
+          var: (identifier)
+          (number))
+        end: (number))
+      data: (identifier)
+      (datafile_modifiers
+        using: (number)
+        using: (identifier))
+      with: (plot_style)
+      (style_opts
+        pt: (number))
+      (style_opts
+        lc: (identifier))
+      title: (binary_expression
+        (binary_expression
+          (string_literal)
+          (identifier))
+        (string_literal)))))
+===============================================================================
+  plot 3
+===============================================================================
+plot [ ] [-2:sin(5)*-8] sin(x)**besj0(x)
+-------------------------------------------------------------------------------
+(source_file
+  (c_plot
+    (plot_element
+      (range_block)
+      (range_block
+        (unary_expression
+          (number))
+        (binary_expression
+          (function
+            name: (identifier)
+            arg: (number))
+          (unary_expression
+            (number))))
+      data: (binary_expression
+        (function
+          name: (identifier)
+          arg: (identifier))
+        (function
+          name: (identifier)
+          arg: (identifier))))))
