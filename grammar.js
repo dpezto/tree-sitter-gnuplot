@@ -20,28 +20,26 @@ const PREC = {
 
 const K = {
 	as: /arrowstyle|as/,
-	autojustify: /au(t(o(j(u(s(t(i(f(y)?)?)?)?)?)?)?)?)?/,
-	axes: /(x|y|z|x2|y2|cb|r|t|u|v|xy)/,
-	bottom: /b(o(t(t(o(m)?)?)?)?)?/,
-	center: /c(e(n(t(e(r)?)?)?)?)?/,
+	axes: /(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)/, // HACK: all the options in one. vx, vy, vz just for set ()range
+	b: /b(o(t(t(o(m)?)?)?)?)?/,
+	c: /c(e(n(t(e(r)?)?)?)?)?/,
 	dl: /dashl(e(n(g(t(h)?)?)?)?)?|dl/,
 	dt: /dasht(y(p(e)?)?)?|dt/,
 	fc: /fillc(o(l(o(r)?)?)?)?|fc/,
 	fs: /fill(s(t(y(l(e)?)?)?)?)?|fs/,
-	label: /lab(e(l)?)?/,
-	left: /l(e(f(t)?)?)?/,
+	l: /l(e(f(t)?)?)?/,
 	lc: /linec(o(l(o(r)?)?)?)?|lc/,
 	ls: /lines(t(y(l(e)?)?)?)?|ls/,
 	lt: /linetype|lt/,
 	lw: /linew(i(d(t(h)?)?)?)?|lw/,
-	mxtics: /m(x|y|z|x2|y2|cb|r|t)tics?/,
 	pi: /pointi(n(t(e(r(v(a(l)?)?)?)?)?)?)?|pi/,
 	pn: /pointn(u(m(b(e(r)?)?)?)?)?|pn/,
 	ps: /points(i(z(e)?)?)?|ps/,
 	pt: /pointt(y(p(e)?)?)?|pt/,
-	right: /r(i(g(h(t)?)?)?)?/,
+	r: /r(i(g(h(t)?)?)?)?/,
+	t: /t(o(p)?)?/,
 	tc: /textc(o(l(o(r)?)?)?)?|tc/,
-	top: /t(o(p)?)?/,
+	zaxes: /(x|y|z|x2|y2)?/,
 };
 
 module.exports = grammar({
@@ -142,13 +140,11 @@ module.exports = grammar({
 				field("func", $.function),
 				field("data", $._expression),
 				optional($.datafile_modifiers),
-				optional(
-					repeat1(
-						choice(
-							"unitweights",
-							/(y|xy|z)err(o(r)?)?/,
-							seq("errors", sep(",", $._expression)),
-						),
+				repeat(
+					choice(
+						"unitweights",
+						/(y|xy|z)err(o(r)?)?/,
+						seq("errors", sep(",", $._expression)),
 					),
 				),
 				"via",
@@ -225,7 +221,7 @@ module.exports = grammar({
 					field("func", $.function),
 					seq(
 						field("data", choice($._expression, "keyentry")),
-						optional($.datafile_modifiers),
+						optional($.datafile_modifiers), // TODO: check smooth_opts convexhull/concavehull with "with"
 					),
 					// newhistogram {"<title>" {font "name,size"} {tc <colorspec>}}
 					//              {lt <linetype>} {fs <fillstyle>} {at <x-coord>}
@@ -233,15 +229,22 @@ module.exports = grammar({
 				repeat(
 					choice(
 						seq("axes", choice("x1y1", "x2y2", "x1y2", "x2y1")),
-						// title columnheader | title columnheader(N)
-						// {at {beginning|end}} {{no}enhanced}
-						seq(key("title", 1), field("title", $._expression)),
-						seq(key("notitle", 3), optional($._expression)), // NOTE: ignored text
+						seq(
+							key("title", 1),
+							field("title", $._expression),
+							repeat(
+								choice(
+									seq("at", choice("beginning", "end")),
+									key("enhanced", undefined, undefined, 1),
+								),
+							),
+						),
+						seq(key("notitle", 3), optional($._expression)), // FIX: combine with title (doing that breaks something in the grammar)
 						"nogrid", // NOTE: splot only option https://stackoverflow.com/questions/74586626/gnuplot-how-to-splot-surface-and-points-with-dgrid3d
 						choice(
 							seq(
 								key("with", 1),
-								field("with", $.plot_style),
+								field("with", $.plot_style), // TODO: check smooth_opts convexhull/concavehull with "with"
 								optional($.style_opts),
 							),
 							$.style_opts,
@@ -254,7 +257,7 @@ module.exports = grammar({
 			choice(
 				key("lines", 1),
 				key("points", 1),
-				alias(/lp|linesp(o(i(n(t(s)?)?)?)?)?/, "lp"),
+				alias(/linesp(o(i(n(t(s)?)?)?)?)?|lp/, "lp"),
 				key("financebars", 3),
 				key("dots", 1),
 				key("impulses", 1),
@@ -354,7 +357,7 @@ module.exports = grammar({
 						),
 						key("nohidden3d", -2),
 						"nocontours",
-						alias(/nosurf(a(c(e)?)?)?/, "nosurf"),
+						key("nosurface", 6),
 						key("palette", 3),
 						$.font_spec,
 					),
@@ -367,11 +370,11 @@ module.exports = grammar({
 
 		c_raise: ($) => prec.left(seq("raise", optional($._expression))),
 
-		c_replot: ($) => /rep(l(o(t)?)?)?/,
+		c_replot: ($) => key("replot", 3),
 
-		c_refresh: ($) => /ref(r(e(s(h)?)?)?)?/,
+		c_refresh: ($) => key("refresh", 3),
 
-		c_reread: ($) => /rer(e(a(d)?)?)?/,
+		c_reread: ($) => key("reread", 3),
 
 		c_reset: ($) => seq("reset", optional(choice("bind", "errors", "session"))),
 
@@ -421,7 +424,7 @@ module.exports = grammar({
 				seq(key("dgrid3d", 2, "arg"), optional($.dgrid3d)),
 				seq(key("dummy", 2, "arg"), optional($.dummy)),
 				seq(key("encoding", 3, "arg"), optional($.encoding)),
-				seq(alias(/errorbars|b(a(r(s)?)?)?/, "arg"), optional($.errorbars)),
+				seq(key1("arg", /errorbars|/, reg("bars", 1)), optional($.errorbars)),
 				seq(alias("fit", "arg"), optional($.fit)),
 				seq(key("format", 4, "arg"), optional($.format)),
 				seq(key("grid", 2, "arg"), optional($.grid)),
@@ -439,13 +442,13 @@ module.exports = grammar({
 				seq(alias("locale", "arg"), optional($.locale)),
 				seq(key("logscale", 3, "arg"), optional($.logscale)),
 				seq(key("mapping", 3, "arg"), optional($.mapping)),
-				seq(alias(/(l|r|t|b)?mar(g(i(n(s)?)?)?)?/, "arg"), optional($.margin)),
+				seq(key1("arg", /(l|r|t|b)?/, reg("margins", 3)), optional($.margin)),
 				seq(alias("micro", "arg"), optional($.micro)), // NOTE: experimental p. 184
 				key("minussign", 5, "arg"), // NOTE: experimental p. 184
 				seq(key("monochrome", 4, "arg"), optional($.monochrome)),
 				seq(key("mouse", 2, "arg"), optional($.mouse)),
 				seq(key("multiplot", 5, "arg"), optional($.multiplot)),
-				seq(alias(K.mxtics, "arg"), optional($.mxtics)),
+				seq(key1("arg", "m", K.axes, reg("tics", -1)), optional($.mxtics)),
 				// seq(optional($.nonlinear)), // p. 191
 				// seq(optional($.object)), // p. 192
 				seq(key("offsets", 3, "arg"), optional($.offsets)), // p. 194
@@ -480,21 +483,15 @@ module.exports = grammar({
 				seq(alias("vgrid", "arg"), optional($.vgrid)),
 				seq(key("view", 2, "arg"), optional($.view)),
 				seq(key("walls", -1, "arg"), optional($.walls)),
-				seq(alias(token(seq(K.axes, /da(t(a)?)?/)), "arg"), optional($.xdata)),
-				alias(token(seq(K.axes, "d", /tics?/)), "arg"),
-				seq(alias(token(seq(K.axes, K.label)), "arg"), optional($.xlabel)),
-				alias(token(seq(K.axes, "m", /tics?/)), "arg"),
-				seq(
-					alias(/(x|y|z|x2|y2|cb|r|t|u|v|vx|vy|vz)ran(g(e)?)?/, "arg"),
-					optional($.xrange),
-				),
-				seq(alias(token(seq(K.axes, /tics?/)), "arg"), optional($.xtics)),
+				seq(key1("arg", K.axes, reg("data", 2)), optional($.xdata)),
+				key1("arg", K.axes, "d", reg("tics", -1)),
+				seq(key1("arg", K.axes, reg("label", 3)), optional($.xlabel)),
+				key1("arg", K.axes, "m", reg("tics", -1)),
+				seq(key1("arg", K.axes, reg("range", 3)), optional($.xrange)),
+				seq(key1("arg", K.axes, reg("tics", -1)), optional($.xtics)),
 				seq(key("xyplane", 3, "arg"), optional($.xyplane)),
 				seq(key("zero", 1, "arg"), optional($.zero)),
-				seq(
-					alias(/(x|y|z|x2|y2)?zeroa(x(i(s)?)?)?/, "arg"),
-					optional($.zeroaxis),
-				),
+				seq(key1("arg", K.zaxes, reg("zeroaxis", 5)), optional($.zeroaxis)),
 			),
 
 		angles: ($) => choice(key("degrees", 1), key("radians", 1)),
@@ -771,7 +768,7 @@ module.exports = grammar({
 						key("polar", 2, undefined, 1),
 						optional(field("angle", $._expression)),
 					),
-					alias(/layerd(e(f(a(u(l(t)?)?)?)?)?)?|front|back/, "layer"),
+					choice(key("layerdefault", 6), "front", "back"),
 					key("vertical", 4, undefined, 1),
 					seq($.style_opts, optional(seq(",", $.style_opts))),
 				),
@@ -797,8 +794,8 @@ module.exports = grammar({
 			repeat1(
 				choice(
 					field("size", seq("size", $._expression)),
-					/quiet|num(b(e(r(s)?)?)?)?/,
-					/full|trip/,
+					choice("quiet", key("numbers", 3)),
+					choice("full", "trip"),
 					key("default", 3),
 				),
 			),
@@ -818,7 +815,7 @@ module.exports = grammar({
 					seq(key("overlap", 4), $._expression),
 					seq("spread", $._expression),
 					seq("wrap", $._expression),
-					alias(/swarm|square|vert(i(c(a(l)?)?)?)?/, "moreopts"),
+					choice("swarm", "square", key("vertical", 4)),
 				),
 			),
 
@@ -846,10 +843,7 @@ module.exports = grammar({
 					seq("width", field("increment", $._expression)),
 					seq("height", field("increment", $._expression)),
 					// layout
-					alias(
-						/ver(t(i(c(a(l)?)?)?)?)?|hor(i(z(o(n(t(a(l)?)?)?)?)?)?)?/,
-						"layout",
-					),
+					alias(choice(key("vertical", 3), key("horizontal", 3)), "layout"),
 					seq("maxcols", optional(choice($._expression, "auto"))),
 					seq("maxrows", optional(choice($._expression, "auto"))),
 					seq("columns", $._expression),
@@ -862,7 +856,7 @@ module.exports = grammar({
 						key("title", 2),
 						optional($._expression),
 						optional(key("enhanced", undefined, undefined, 1)),
-						optional(alias(choice(K.center, K.left, K.right), $.position)),
+						optional(alias(choice(K.c, K.l, K.r), $.position)),
 					),
 					$.font_spec,
 					seq(
@@ -874,13 +868,13 @@ module.exports = grammar({
 					),
 					// placement
 					alias(
-						/(ins(i(d(e)?)?)?|o(u(t(s(i(d(e)?)?)?)?)?)?|fixed)/,
+						choice(key("inside", 3), key("outside", 1), "fixed"),
 						"placement",
 					),
 					alias(/(l|r|t|b)m(a(r(g(i(n)?)?)?)?)?/, "margin"),
 					seq("at", $.position),
-					alias(token(choice(K.center, K.left, K.right)), "hor"),
-					alias(token(choice(K.top, K.bottom, K.center)), "vert"),
+					alias(token(choice(K.c, K.l, K.r)), "hor"),
+					alias(token(choice(K.t, K.b, K.c)), "vert"),
 				),
 			),
 
@@ -1152,7 +1146,7 @@ module.exports = grammar({
 							),
 						),
 					),
-					alias(/pos(i(t(i(v(e)?)?)?)?)?|neg(a(t(i(v(e)?)?)?)?)?/, "pn"),
+					alias(choice(key("positive", 3), key("negative", 3)), "pn"),
 					choice("nops_allcF", "ps_allcF"),
 					seq(key("maxcolors", 4), field("maxcolors", $._expression)),
 				),
@@ -1495,14 +1489,7 @@ module.exports = grammar({
 
 		theta: ($) =>
 			repeat1(
-				choice(
-					K.right,
-					K.top,
-					K.left,
-					K.bottom,
-					/clockwise|cw/,
-					/counterclockwise|ccw/,
-				),
+				choice(K.r, K.t, K.l, K.b, /clockwise|cw/, /counterclockwise|ccw/),
 			),
 
 		tics: ($) => $.tics_opts,
@@ -1512,8 +1499,8 @@ module.exports = grammar({
 				repeat1(
 					choice(
 						field("format", $._expression),
-						K.top,
-						K.bottom,
+						K.t,
+						K.b,
 						key("rotate", 3, undefined, 1),
 						seq(key("offset", 3), $.position),
 						// TODO: complete p. 224
@@ -1822,7 +1809,7 @@ module.exports = grammar({
 							),
 						),
 						seq(key("offset", 3), $.position),
-						field("align", alias(choice(K.left, K.right, K.center), "align")),
+						field("align", alias(choice(K.l, K.r, K.c), "align")),
 						seq("at", $.position),
 						choice(seq("point", field("point", $._expression)), "nopoint"),
 						choice(
@@ -1855,7 +1842,7 @@ module.exports = grammar({
 							key("norotate", 5),
 						),
 						choice(seq(key("offset", 3), $.position), key("nooffset", 5)),
-						alias(choice(K.left, K.right, K.center, K.autojustify), "align"),
+						alias(choice(K.l, K.r, K.c, reg("autojustify", 2)), "align"),
 						"add",
 						choice(
 							"autofreq",
@@ -2229,10 +2216,6 @@ function sep(separator, rule) {
 	return seq(rule, repeat(seq(separator, rule)));
 }
 
-function sep1(separator, rule) {
-	return seq(separator, rule);
-}
-
 function surround(bracket, ...rules) {
 	const surr = bracket;
 	if (surr === "()") {
@@ -2247,6 +2230,11 @@ function surround(bracket, ...rules) {
 }
 // keyword
 function key(word, minChar = word.length, aka = word, opt = 0) {
+	return alias(reg(word, minChar, opt), aka);
+}
+
+// regex
+function reg(word, minChar = word.length, opt = 0) {
 	const regexPattern =
 		word.slice(0, minChar) +
 		word
@@ -2256,6 +2244,11 @@ function key(word, minChar = word.length, aka = word, opt = 0) {
 			.join("") +
 		")?".repeat(word.slice(minChar).length);
 	return opt === 0
-		? alias(new RegExp(regexPattern), aka)
-		: alias(new RegExp(`(no)?${regexPattern}`), aka);
+		? new RegExp(regexPattern)
+		: new RegExp(`(no)?${regexPattern}`);
+}
+
+function key1(aka, ...reg) {
+	const regStr = reg.map((reg) => (reg instanceof RegExp ? reg.source : reg));
+	return alias(new RegExp(regStr.join("")), aka);
 }
