@@ -36,7 +36,7 @@
 
 (c_do "do" @repeat (for_block))
 
-(c_eval "eval" @keyword (_))
+(c_eval "evaluate" @keyword (_))
 
 (c_fit
   "fit" @keyword

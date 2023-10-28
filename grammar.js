@@ -114,13 +114,13 @@ module.exports = grammar({
 
 		c_cd: ($) => seq("cd", $._expression),
 
-		c_clear: ($) => "clear",
+		c_clear: ($) => key("clear", 2),
 
 		c_continue: ($) => "continue",
 
 		c_do: ($) => seq("do", $.for_block, surround("{}", repeat($._statement))),
 
-		c_eval: ($) => seq("eval", $._expression),
+		c_eval: ($) => seq(key("evaluate", 4), $._expression),
 
 		c_exit: ($) =>
 			prec.left(
@@ -135,7 +135,7 @@ module.exports = grammar({
 
 		c_fit: ($) =>
 			seq(
-				"fit",
+				key("fit", 1),
 				optional($.range_block),
 				field("func", $.function),
 				field("data", $._expression),
@@ -179,9 +179,9 @@ module.exports = grammar({
 				),
 			),
 
-		c_load: ($) => seq("load", $._expression),
+		c_load: ($) => seq(key("load", 1), $._expression),
 
-		c_lower: ($) => prec.left(seq("lower", optional($._expression))),
+		c_lower: ($) => prec.left(seq(key("lower", 3), optional($._expression))),
 
 		c_pause: ($) =>
 			prec.left(
@@ -368,7 +368,7 @@ module.exports = grammar({
 
 		c_pwd: ($) => "pwd",
 
-		c_raise: ($) => prec.left(seq("raise", optional($._expression))),
+		c_raise: ($) => prec.left(seq(key("raise", 2), optional($._expression))),
 
 		c_replot: ($) => key("replot", 3),
 
@@ -462,7 +462,7 @@ module.exports = grammar({
 				seq(alias("pm3d", "arg"), optional($.pm3d)),
 				seq(key("pointintervalbox", 8, "arg"), optional($.pointintervalbox)),
 				seq(key("pointsize", 3, "arg"), optional($.pointsize)),
-				key("polar", 3, "arg"),
+				seq(key("polar", 3, "arg"), optional($.polar)),
 				seq(key("print", 2, "arg"), optional($.print)),
 				seq(alias("psdir", "arg"), optional($.psdir)),
 				key("raxis", 2, "arg"),
@@ -763,7 +763,7 @@ module.exports = grammar({
 		grid: ($) =>
 			repeat1(
 				choice(
-					alias(token(seq(/(no)?m?/, K.axes, /tics?/)), "tics"),
+					key1("tics", /(no)?m?/, K.axes, /tics?/),
 					seq(
 						key("polar", 2, undefined, 1),
 						optional(field("angle", $._expression)),
@@ -871,7 +871,7 @@ module.exports = grammar({
 						choice(key("inside", 3), key("outside", 1), "fixed"),
 						"placement",
 					),
-					alias(/(l|r|t|b)m(a(r(g(i(n)?)?)?)?)?/, "margin"),
+					key1("margin", /(l|r|t|b)/, reg("margin", 1)),
 					seq("at", $.position),
 					alias(token(choice(K.c, K.l, K.r)), "hor"),
 					alias(token(choice(K.t, K.b, K.c)), "vert"),
@@ -1146,7 +1146,7 @@ module.exports = grammar({
 							),
 						),
 					),
-					alias(choice(key("positive", 3), key("negative", 3)), "pn"),
+					choice(key("positive", 3), key("negative", 3)),
 					choice("nops_allcF", "ps_allcF"),
 					seq(key("maxcolors", 4), field("maxcolors", $._expression)),
 				),
@@ -1234,6 +1234,8 @@ module.exports = grammar({
 
 		pointsize: ($) => field("multiplier", $._expression),
 
+		polar: ($) => seq("grid"), // TODO: complete
+
 		print: ($) => $._expression,
 
 		psdir: ($) => $._expression,
@@ -1283,7 +1285,7 @@ module.exports = grammar({
 					key("circle", -2),
 					repeat(
 						choice(
-							seq(/rad(i(u(s)?)?)?/, optional($.system), $._expression),
+							seq(key("radius", 3), optional($.system), $._expression),
 							/(no)?wedge/,
 							/(no)?clip/,
 						),
@@ -1734,20 +1736,22 @@ module.exports = grammar({
 								"sparce", // FIX: sparce matrix p.247
 								"matrix",
 								"=",
-								"(",
-								field("cols", $._expression),
-								",",
-								field("rows", $._expression),
-								")",
+								surround(
+									"()",
+									field("cols", $._expression),
+									",",
+									field("rows", $._expression),
+								),
 								optional(
 									seq(
 										"origin",
 										"=",
-										"(",
-										field("x0", $._expression),
-										",",
-										field("y0", $._expression),
-										")",
+										surround(
+											"()",
+											field("x0", $._expression),
+											",",
+											field("y0", $._expression),
+										),
 									),
 								),
 								optional(seq("dx", "=", field("dx", $._expression))),
@@ -2048,7 +2052,7 @@ module.exports = grammar({
 			),
 
 		datablock_def: ($) =>
-			seq($.datablock, "<<", surround($.identifier, repeat($._expression))),
+			seq($.datablock, "<<", surround($.identifier, repeat($._expression))), // FIX: surround
 
 		macro: ($) => token(seq("@", /([a-zA-Z_\u0370-\u26FF])+\w*/)),
 
@@ -2229,6 +2233,10 @@ function surround(bracket, ...rules) {
 	}
 }
 // keyword
+function key1(aka, ...reg) {
+	const regStr = reg.map((reg) => (reg instanceof RegExp ? reg.source : reg));
+	return alias(new RegExp(regStr.join("")), aka);
+}
 function key(word, minChar = word.length, aka = word, opt = 0) {
 	return alias(reg(word, minChar, opt), aka);
 }
@@ -2246,9 +2254,4 @@ function reg(word, minChar = word.length, opt = 0) {
 	return opt === 0
 		? new RegExp(regexPattern)
 		: new RegExp(`(no)?${regexPattern}`);
-}
-
-function key1(aka, ...reg) {
-	const regStr = reg.map((reg) => (reg instanceof RegExp ? reg.source : reg));
-	return alias(new RegExp(regStr.join("")), aka);
 }
