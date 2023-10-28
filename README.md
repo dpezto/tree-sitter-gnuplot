@@ -1,7 +1,7 @@
 # tree-sitter-gnuplot
 [![PRs Welcome][prs-badge]](https://makeapullrequest.com)
 
-A tree-sitter grammar for [gnuplot 5.5](http://gnuplot.info). Still a WIP.
+A tree-sitter grammar for [gnuplot](http://gnuplot.info). Still a WIP.
 
 This is the next evolution to my vim plugin [gnuplot.vim](https://github.com/dpezto/gnuplot.vim), I'm hoping this will be more accurate to gnuplot syntax as well as easier to maintain in the long run.
 
