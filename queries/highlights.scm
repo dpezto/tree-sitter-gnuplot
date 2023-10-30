@@ -173,14 +173,14 @@
    ("script" "default"? @property)
    "version"
    ]+ @attribute)
-(format "axes"? @attribute fmt_str: (_) _? @attribute) ; TODO: check
-(grid
-  [
-   "tics"
-   "polar"
-   "layer"
-   "vertical"
-   ]+ @attribute)
+; (format "axes"? @attribute fmt_str: (_) _? @attribute) ; TODO: check
+; (grid
+;   [
+;    "tics"
+;    "polar"
+;    "layer"
+;    "vertical"
+;    ]+ @attribute)
 (hidden3d
   [
    "defaults"
@@ -194,7 +194,7 @@
    ]? @attribute)
 ; (hystory) ; TODO: complete
 (isosurface ["mixed" "triangles" "noinsidecolor" ("insidecolor" (_))] @attribute)
-(jitter ["overlap" "spread" "wrap" "moreopts"] @attribute)
+; (jitter ["overlap" "spread" "wrap" "moreopts"] @attribute)
 (key
   [
    "on" "off"
