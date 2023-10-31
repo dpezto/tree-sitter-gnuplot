@@ -32,6 +32,10 @@
 
 (for_block "for" @repeat "in"? @repeat)
 
+(c_break) @keyword
+
+(c_cd) @keyword
+
 (c_clear) @keyword
 
 (c_do "do" @repeat (for_block))
@@ -174,13 +178,13 @@
    "version"
    ]+ @attribute)
 ; (format "axes"? @attribute fmt_str: (_) _? @attribute) ; TODO: check
-; (grid
-;   [
-;    "tics"
-;    "polar"
-;    "layer"
-;    "vertical"
-;    ]+ @attribute)
+(grid
+  [
+   "tics"
+   "polar"
+   "layerdefault" "front" "back"
+   "vertical"
+   ]+ @attribute)
 (hidden3d
   [
    "defaults"
@@ -194,7 +198,7 @@
    ]? @attribute)
 ; (hystory) ; TODO: complete
 (isosurface ["mixed" "triangles" "noinsidecolor" ("insidecolor" (_))] @attribute)
-; (jitter ["overlap" "spread" "wrap" "moreopts"] @attribute)
+(jitter ["overlap" "spread" "wrap" "swarm" "square" "vertical"] @attribute)
 (key
   [
    "on" "off"
