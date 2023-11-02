@@ -14,7 +14,6 @@ const PREC = {
 	TIMES: 10, // a*b a/b a%b
 	UNARY: 11, // -a +a !a $a |a|
 	POWER: 12, // a**b a!
-	SERIAL: 13, // a,b
 	PAREN: 14, // (a)
 };
 
@@ -45,7 +44,7 @@ const K = {
 module.exports = grammar({
 	name: "gnuplot",
 
-	extras: ($) => [$.comment, /[\s\f\uFEFF\u2060\u200B]|\\\r?\n/, /\\/],
+	extras: ($) => [$.comment, /[\s\f\uFEFF\u2060\u200B]|\\\r?\n/, /\\\s*\n/],
 
 	word: ($) => $.identifier,
 
@@ -61,11 +60,8 @@ module.exports = grammar({
 		source_file: ($) => repeat($._statement),
 
 		_statement: ($) =>
-			prec.left(
-				seq(
-					choice($._command, $._assignment, $.macro),
-					optional(choice(";", /\\\s*\n/)),
-				),
+			prec.right(
+				seq(choice($._command, $._assignment, $.macro), optional(";")),
 			),
 
 		_command: ($) =>
@@ -239,7 +235,7 @@ module.exports = grammar({
 								),
 							),
 						),
-						seq(key("notitle", 3), optional($._expression)), // FIX: combine with title (doing that breaks something in the grammar)
+						seq(key("notitle", 3), optional($._expression)),
 						"nogrid", // NOTE: splot only option https://stackoverflow.com/questions/74586626/gnuplot-how-to-splot-surface-and-points-with-dgrid3d
 						choice(
 							seq(
@@ -1013,6 +1009,7 @@ module.exports = grammar({
 					field("freq", $._expression),
 					key("default", 3),
 					seq(
+            optional("time"),
 						field("N", $._expression),
 						choice(
 							key("seconds", 3),
@@ -2029,7 +2026,7 @@ module.exports = grammar({
 			),
 		//-------------------------------------------------------------------------
 		_assignment: ($) =>
-			prec(2, choice($.func_def, $.var_def, $.array_def, $.datablock_def)),
+			choice($.func_def, $.var_def, $.array_def, $.datablock_def),
 
 		func_def: ($) => seq($.function, "=", $._expression),
 
@@ -2052,7 +2049,7 @@ module.exports = grammar({
 			),
 
 		datablock_def: ($) =>
-			seq($.datablock, "<<", surround($.identifier, repeat($._expression))), // FIX: surround
+			seq($.datablock, "<<", surround($.identifier, repeat($._expression))), // FIX: surround, identifier MUST be the same at both ends
 
 		macro: ($) => token(seq("@", /([a-zA-Z_\u0370-\u26FF])+\w*/)),
 
@@ -2141,8 +2138,8 @@ module.exports = grammar({
 		array: ($) => seq($.identifier, surround("[]", $._expression)),
 
 		function: ($) =>
-			prec.left(
-				14,
+			prec(
+				14, // NOTE: maybe don't need to be so high?
 				seq(
 					field("name", $.identifier),
 					surround("()", sep(",", field("arg", $._expression))),
@@ -2185,7 +2182,6 @@ module.exports = grammar({
 				prec.left(PREC.AND, seq($._expression, "&&", $._expression)),
 				prec.left(PREC.OR, seq($._expression, "||", $._expression)),
 				prec.left(PREC.CONCAT, seq($._expression, ".", $._expression)),
-				// prec.left(PREC.SERIAL, seq($._expression, ",", $._expression)), // FIX: serial evaluation
 				prec.left(PREC.COMPARE, seq($._expression, "eq", $._expression)),
 				prec.left(PREC.COMPARE, seq($._expression, "ne", $._expression)),
 			),
