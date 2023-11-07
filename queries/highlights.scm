@@ -193,7 +193,8 @@
    ("opaque"("fc" @property (colorspec))?)
    ("width" increment: (_))
    ("height" increment: (_))
-   "layout"
+   "vertical"
+   "horizontal"
    ("maxcols" ["auto"]?)
    ("maxrows" ["auto"]?)
    ("columns" )
@@ -244,8 +245,9 @@
    ]* @attribute)
 (palette
   [
-   "gray" "color"
-   "gamma"
+   "gray"
+   "color"
+   ("gamma" (_))
    "rgbformulae"
    "defined"
    "file"
@@ -253,11 +255,12 @@
    "functions"
    ("cubehelix" "start"? @property "cycles"? @property "saturation"? @property)
    "viridis"
-   ("model" (["RGB" "CMY" ("HSV" "start"? @attribute)])? @property)
+   ("model" ["RGB" "CMY" ("HSV" "start"? @attribute)]? @property)
    "positive"
    "negative"
-   "nops_allcF" "ps_allcF"
-   "maxcolors"
+   "nops_allcF" 
+   "ps_allcF"
+   ("maxcolors" (_)) 
    ]+ @attribute)
 (paxis
   [
