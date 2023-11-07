@@ -232,10 +232,10 @@
    ("layout" rows: (_) cols: (_))
    "rowsfirst" "columnsfirst"
    "downwards" "upwards"
-   ("scale" xscale: (_) yscale: (_)?)
+   ("scale" (_))
    "offset"
    ("margins" lm: (_) rm: (_) bm: (_) tm: (_))
-   ("spacing" xspacing: (_) yspacing: (_)?)
+   ("spacing" (_))
    "pn"
    ]+ @attribute)
 (mxtics
