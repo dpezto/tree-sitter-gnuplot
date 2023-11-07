@@ -839,7 +839,7 @@ module.exports = grammar({
 					seq("width", field("increment", $._expression)),
 					seq("height", field("increment", $._expression)),
 					// layout
-					alias(choice(key("vertical", 3), key("horizontal", 3)), "layout"),
+					choice(key("vertical", 3), key("horizontal", 3)),
 					seq("maxcols", optional(choice($._expression, "auto"))),
 					seq("maxrows", optional(choice($._expression, "auto"))),
 					seq("columns", $._expression),
