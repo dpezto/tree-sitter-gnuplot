@@ -1647,7 +1647,7 @@ module.exports = grammar({
 				repeat(
 					choice(
 						seq(choice("name", "prefix"), $._expression),
-						key("output", 1, undefined, 1),
+						key("output", 3, undefined, 1),
 						seq(
 							"$vgridname",
 							optional(seq("name", field("name", $._expression))),
