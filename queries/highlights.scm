@@ -70,14 +70,14 @@
    "nogrid" ; NOTE: splot only option
    ]* @field)
 
-(datafile_modifiers 
+(datafile_modifiers
   [
    "binary" ; TODO: complete
-   ; matrix: [["nonuniform" "sparce"]? "matrix"] @attribute; TODO: complete
+   ; matrix: [["nonuniform" "sparce"]? "matrix"] @attribute; TODO: check
    ("skip" (_))
    "smooth"
    ; TODO: add bins
-   "mask" "convexhull" "volatile" "zsort"
+   "mask" "convexhull" "concavehull" "volatile" "zsort"
    ]* @attribute)
 
 (smooth_options) @property
@@ -126,6 +126,14 @@
    ("cbtics" (_))
    ]+ @attribute)
 (contour) @attribute
+(contourfill
+  [
+   ("auto" (_))
+   "ztics"
+   "cbtics"
+   "palette"
+   ("firstlinetype" (_))
+   ]+ @attribute)
 (datafile
   [
    "columnheaders"
@@ -214,7 +222,7 @@
   [
    "x2" "y2"
    ("via" "inverse" @attribute)
-   ] @attribute) ; NOTE: maybe change highlight
+   ] @attribute) ; TODO: check highlight
 (logscale "axis" @attribute)
 (mapping) @attribute
 (margin
@@ -256,9 +264,9 @@
    ("model" ["RGB" "CMY" ("HSV" ("start" (_))? @property)]? @property)
    "positive"
    "negative"
-   "nops_allcF" 
+   "nops_allcF"
    "ps_allcF"
-   ("maxcolors" (_)) 
+   ("maxcolors" (_))
    ]+ @attribute)
 (paxis ; TODO: check
   [
@@ -278,7 +286,7 @@
    ("clip" "z"? @property) "clip1in" "clip4in"
    "clipcb"
    ("corners2color" "c2c" @property)
-   ("lighting" ("primary" fraction: (_))? @property ("specular" fraction: (_))? @property("spec2" fraction: (_))? @property )
+   ("lighting" ("primary" fraction: (_))? @property ("specular" fraction: (_))? @property("spec2" fraction: (_))? @property)
    ("border" "retrace"? @property)
    "implicit" "explicit"
    "map"
@@ -291,9 +299,9 @@
    ]+ @attribute)
 (style
   [
-   ("arrow" ["defaults" @attribute (arrow_opts)])
+   ("arrow" ["defaults" @attribute (_)])
    "boxplot"
-   ("data" [(plot_style) "spiderplot" @attribute])
+   ("data" [(_) "spiderplot" @attribute])
    "fs"
    "function"
    "line"
@@ -342,10 +350,11 @@
 ; (t_tikz)
 ; (t_tkcanvas)
 
-(canvas_size "size" @attribute
-             x:((_) ["cm" "in"]? @property)
-             ","
-             y:((_) ["cm" "in"]? @property))
+(canvas_size
+  "size" @attribute
+  x:((_) ["cm" "in"]? @property)
+  ","
+  y:((_) ["cm" "in"]? @property))
 
 (font_spec "font" @attribute)
 
@@ -373,7 +382,7 @@
 (xdata) @attribute
 (xlabel
   [
-   ("offset" (position))
+   ("offset" (_))
    ("rotate" [("by" (_)) "parallel"]? @attribute)
    "enhanced"
    ]+ @attribute)
@@ -400,7 +409,8 @@
 (c_vfill "vfill" @keyword "sample"? @field)
 
 (plot_style
-  ["lines" "points" "lp" "financebars" "dots" "impulses"
+  [
+   "lines" "points" "lp" "financebars" "dots" "impulses"
    "labels"
    "surface" "steps" "fsteps" "histeps" "arrows"
    "vectors"
@@ -411,12 +421,12 @@
     [
      "closed"
      "between"
-     (["above" "below"]? @property ["x1""x2""y1""y2""y""r"]? @attribute) ; FIX: above below highlight
+     (["above" "below"]? ["x1""x2""y1""y2""y""r"] @attribute)
      ]? @property)
-   ("fillsteps" ["above" "below"]? @property ("y" "=" @operator (_))?)
+   ("fillsteps" ["above" "below"]? @property "y"? @attribute)
    "histograms" ("image" "pixels"? @property)
    "pm3d" "rgbalpha" "rgbimage" "polygons" "table" "mask"
-  ] @attribute)
+   ] @attribute)
 
 [
  "tc"
@@ -446,7 +456,7 @@
    "pattern"
    ("transparent"? "pattern" @attribute)
    "border"
-  ] @attribute)
+   ] @attribute)
 
 (line_style ["palette"]? @field) ; TODO: check
 
@@ -487,18 +497,18 @@
 
 (label_opts
   [
-   "norotate" 
-   ("rotate"  "by"? @attribute (_))
-   "enhanced" 
-   "fb" 
-   ("offset" (_)) 
-   "align" 
+   "norotate"
+   ("rotate" "by"? @attribute (_))
+   "enhanced"
+   "fb"
+   ("offset" (_))
+   "align"
    ("at" (_))
-   "nopoint" 
-   ("point" (_)) 
-   "boxed" 
+   "nopoint"
+   ("point" (_))
+   "boxed"
    "noboxed"
-   "hypertext" 
+   "hypertext"
    ]* @attribute)
 
 (style_opts

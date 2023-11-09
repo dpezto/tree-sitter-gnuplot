@@ -414,6 +414,7 @@ module.exports = grammar({
 				seq(key("colorbox", 6, "arg"), optional($.colorbox)),
 				seq(key("contours", 5, "arg"), optional($.contour)),
 				key("cornerpoles", 7, "arg"),
+        seq(alias("contourfill", "arg"), $.contourfill),
 				seq(alias(K.dt, "arg"), optional($.dashtype)),
 				seq(key("datafile", 5, "arg"), optional($.datafile)),
 				seq(key("decimalsign", 3, "arg"), optional($.decimalsign)),
@@ -632,6 +633,15 @@ module.exports = grammar({
 			),
 
 		contour: ($) => choice(key("base", 2), key("surface", 1), key("both", 2)),
+
+    contourfill: ($) => 
+      repeat1(
+        choice(
+          seq("auto", $._expression),
+          choice("ztics", "cbtics"),
+          seq(key("firstlinetype", 5), $._expression),
+        ),
+      ),
 
 		dashtype: ($) => seq(field("tag", $._expression), $.dash_opts),
 
@@ -2004,7 +2014,8 @@ module.exports = grammar({
 			),
 
 		smooth_options: ($) =>
-			choice(
+			repeat1(
+        choice(
 				"unique",
 				"frequency",
 				"fnormal",
@@ -2019,9 +2030,10 @@ module.exports = grammar({
 				prec.left(
 					seq("kdensity", optional(field("bandwidth_period", $._expression))),
 				),
-				prec.left(seq("convexhull", optional(field("expand", $._expression)))),
 				"unwrap",
-			),
+        seq("expand", $._expression), // NOTE: p. 128 v6.1
+			  ),
+      ),
 
 		position: ($) =>
 			seq(
