@@ -751,7 +751,7 @@ module.exports = grammar({
 
 		format: ($) =>
 			seq(
-				optional(alias(choice("x", "y", "xy", "x2", "y2", "z", "cb"), "axes")),
+				optional(choice("x", "y", "xy", "x2", "y2", "z", "cb")),
 				field("fmt_str", $._expression),
 				optional(choice("numeric", "timedate", "geographic")),
 			),
@@ -863,14 +863,11 @@ module.exports = grammar({
 						),
 					),
 					// placement
-					alias(
-						choice(key("inside", 3), key("outside", 1), "fixed"),
-						"placement",
-					),
+					choice(key("inside", 3), key("outside", 1), "fixed"),
 					key1("margin", /(l|r|t|b)/, reg("margin", 1)),
 					seq("at", $.position),
-					alias(token(choice(K.c, K.l, K.r)), "hor"),
-					alias(token(choice(K.t, K.b, K.c)), "vert"),
+					choice(alias(K.c, "cen"), alias(K.l, "lef"), alias(K.r, "rig")),
+					choice(alias(K.t, "top"), alias(K.b, "bot"), alias(K.c, "cen")),
 				),
 			),
 
@@ -999,7 +996,7 @@ module.exports = grammar({
 						field("xspacing", $._expression),
 						optional(seq(",", field("yspacing", $._expression))),
 					),
-					alias(/previous|next/, "pn"),
+					alias(/previous|next/, "prevnext"),
 				),
 			),
 
@@ -1080,7 +1077,7 @@ module.exports = grammar({
 					choice(
 						seq(
 							key("rgbformulae", 3),
-							field("r", $._expression), // TODO: make all 3 optional
+							field("r", $._expression), // TODO: make the next 2 optional
 							",",
 							field("g", $._expression),
 							",",
@@ -1307,11 +1304,27 @@ module.exports = grammar({
 				// set style spiderplot
 				//                     {fillstyle <fillstyle-properties>}
 				//                     {<line-properties> | <point-properties>}
-				seq("textbox"), // TODO: p. 220
-				// set style textbox {<boxstyle-index>}
-				//                   {opaque|transparent} {fillcolor <color>}
-				//                   {{no}border {<bordercolor>}}{linewidth <lw>}
-				//                   {margins <xmargin>,<ymargin>}
+				seq( // TODO: p. 221
+          "textbox",
+          repeat(
+            // TODO: add boxstyle-index
+            choice(
+              choice("opaque", "transparent"),
+              seq(alias(K.fc, "fc"), $.colorspec),
+              seq(
+                key("border", undefined, undefined, 1),
+                optional(seq(alias(K.lc, "lc"), $.colorspec))
+              ),
+              seq(alias(K.lw, "lw"), $._expression),
+              // TODO: add margins
+            ),
+          ),
+        ),
+        seq(
+          key("watchpoint", 5), 
+          key("labels", -1, undefined, 1),
+          optional($.label_opts),
+        )
 			),
 
 		surface: ($) => choice("implicit", "explicit"),
@@ -1658,7 +1671,7 @@ module.exports = grammar({
 
 		c_system: ($) => seq("system", $._expression),
 
-		c_test: ($) => prec.left(seq("test", optional(choice("test", "terminal")))),
+		c_test: ($) => prec.left(seq("test", optional(choice("palette", "terminal")))),
 
 		c_undefine: ($) =>
 			prec.left(seq(key("undefine", 3), repeat($._expression))),
@@ -1723,7 +1736,7 @@ module.exports = grammar({
 		datafile_modifiers: ($) =>
 			repeat1(
 				choice(
-					field("binary", seq("binary")), // TODO: add binary list
+					field("binary", seq("binary")), // TODO: add binary list p. 121
 					field(
 						"matrix",
 						choice(
@@ -1762,6 +1775,7 @@ module.exports = grammar({
 					seq("bins"), // TODO: finish this p. 125
 					"mask",
 					"convexhull",
+          "concavehull",
 					"volatile",
 					"zsort",
 					"noautoscale",
@@ -1796,7 +1810,7 @@ module.exports = grammar({
 						$.font_spec,
 						key("enhanced", undefined, undefined, 1),
 						alias(/front|back/, "fb"),
-						seq(
+						seq( // TODO: check
 							alias(K.tc, "tc"),
 							field(
 								"tc",
@@ -1806,15 +1820,16 @@ module.exports = grammar({
 										choice(alias(K.lt, "lt"), alias(K.ls, "ls")),
 										$._expression,
 									),
+                  $._expression, // TODO: check if this is correct
 								),
 							),
 						),
 						seq(key("offset", 3), $.position),
 						field("align", alias(choice(K.l, K.r, K.c), "align")),
 						seq("at", $.position),
-						choice(seq("point", field("point", $._expression)), "nopoint"),
+						choice(seq("point", field("point", $.line_style)), "nopoint"), // TODO: check
 						choice(
-							"nobox",
+							key("noboxed", -2),
 							seq("boxed", optional(field("bs", seq("bs", $._expression)))), // NOTE: bs == boxstyle
 						),
 						"hypertext",
@@ -1890,8 +1905,8 @@ module.exports = grammar({
 		line_style: ($) =>
 			prec.left(
 				seq(
-					field("tag", $._expression),
-					repeat(
+					optional(field("tag", $._expression)), // TODO: check if tag is optional or not
+					repeat1( // TODO: check if it's repeat1 or repeat
 						choice(
 							key("default", 3),
 							seq(
