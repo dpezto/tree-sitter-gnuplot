@@ -7778,51 +7778,7 @@
         "required": false,
         "types": [
           {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
+            "type": "line_style",
             "named": true
           }
         ]
@@ -7915,7 +7871,7 @@
     "fields": {
       "tag": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "array",
@@ -12556,6 +12512,10 @@
           "named": true
         },
         {
+          "type": "colorspec",
+          "named": true
+        },
+        {
           "type": "complex",
           "named": true
         },
@@ -12573,6 +12533,10 @@
         },
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "label_opts",
           "named": true
         },
         {
@@ -15989,6 +15953,10 @@
     "named": false
   },
   {
+    "type": "bot",
+    "named": false
+  },
+  {
     "type": "both",
     "named": false
   },
@@ -16082,6 +16050,10 @@
   },
   {
     "type": "cd",
+    "named": false
+  },
+  {
+    "type": "cen",
     "named": false
   },
   {
@@ -16190,6 +16162,10 @@
   },
   {
     "type": "commentschars",
+    "named": false
+  },
+  {
+    "type": "concavehull",
     "named": false
   },
   {
@@ -16581,10 +16557,6 @@
     "named": false
   },
   {
-    "type": "hor",
-    "named": false
-  },
-  {
     "type": "horizontal",
     "named": false
   },
@@ -16714,6 +16686,10 @@
   },
   {
     "type": "lc",
+    "named": false
+  },
+  {
+    "type": "lef",
     "named": false
   },
   {
@@ -16901,7 +16877,7 @@
     "named": false
   },
   {
-    "type": "nobox",
+    "type": "noboxed",
     "named": false
   },
   {
@@ -17081,10 +17057,6 @@
     "named": false
   },
   {
-    "type": "placement",
-    "named": false
-  },
-  {
     "type": "plot",
     "named": false
   },
@@ -17134,6 +17106,10 @@
   },
   {
     "type": "prescale",
+    "named": false
+  },
+  {
+    "type": "prevnext",
     "named": false
   },
   {
@@ -17266,6 +17242,10 @@
   },
   {
     "type": "rgbimage",
+    "named": false
+  },
+  {
+    "type": "rig",
     "named": false
   },
   {
@@ -17497,6 +17477,10 @@
     "named": false
   },
   {
+    "type": "top",
+    "named": false
+  },
+  {
     "type": "transparent",
     "named": false
   },
@@ -17569,10 +17553,6 @@
     "named": false
   },
   {
-    "type": "vert",
-    "named": false
-  },
-  {
     "type": "vertical",
     "named": false
   },
@@ -17594,6 +17574,10 @@
   },
   {
     "type": "wall",
+    "named": false
+  },
+  {
+    "type": "watchpoint",
     "named": false
   },
   {
@@ -17622,6 +17606,10 @@
   },
   {
     "type": "writeback",
+    "named": false
+  },
+  {
+    "type": "x",
     "named": false
   },
   {
