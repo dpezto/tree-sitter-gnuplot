@@ -1,6 +1,4 @@
 ; highlights.scm
-; TODO: match "rotate" "norotate" options on all queries
-; TODO: "title" options on all queries
 
 (comment) @comment @spell
 
@@ -42,10 +40,10 @@
 
 (c_eval "evaluate" @keyword (_))
 
-(c_fit
-  "fit" @keyword
-  (_)+
-  "via" @keyword)
+[
+ "fit"
+ "via"
+ ] @keyword
 
 (c_help "help" @keyword)
 
@@ -116,7 +114,6 @@
    "vertical"
    "horizontal"
    "invert"
-   "default"
    ("origin" (_))
    ("size" (_))
    "fb"
@@ -153,18 +150,18 @@
 (fit
   [
    "nologfile"
-   ("logfile" ["default" @property (_)])
+   ("logfile" ["default" (_)])
    "fit_out"
    "errorvariables"
    "covariancevariables"
    "errorscaling"
    "prescale"
-   ("maxiter" ["default" @property (_)])
-   ("limit" ["default" @property (_)])
-   ("limit_abs" ["default" @property (_)])
-   ("start-lambda" ["default" @property (_)])
-   ("lambda-factor" ["default" @property (_)])
-   ("script" ["default" @property (_)])
+   ("maxiter" ["default" (_)])
+   ("limit" ["default" (_)])
+   ("limit_abs" ["default" (_)])
+   ("start-lambda" ["default" (_)])
+   ("lambda-factor" ["default" (_)])
+   ("script" ["default" (_)])
    "version"
    ]+ @attribute)
 (format _? @attribute (_) _? @attribute)
@@ -186,14 +183,12 @@
    "altdiagonal"
    "bentover"
    ]? @attribute)
-; (hystory) ; TODO: complete
+; (hystory)
 (isosurface ["mixed" "triangles" "noinsidecolor" ("insidecolor" (_))] @attribute)
 (jitter ["overlap" "spread" "wrap" "swarm" "square" "vertical"] @attribute)
 (key
   [
    "on" "off"
-   "default" ; TODO: conflict with "default" below on ["tc"…] @field
-   "enhanced"
    ("a" "columnheader"? @property)
    "box"
    "opaque"
@@ -209,7 +204,6 @@
    "reverse"
    ("samplen" (_))
    ("spacing" (_))
-   ; ("title" "enhanced"? @attribute) ; TODO: check
    "inside"
    "outside"
    "fixed"
@@ -234,7 +228,6 @@
 ; (mouse) ; TODO: complete
 (multiplot
   [
-   ; ("title" title: (_) "enhanced"? @property) ; TODO: check
    ("layout" rows: (_) cols: (_))
    "rowsfirst" "columnsfirst"
    "downwards" "upwards"
@@ -246,7 +239,6 @@
    ]+ @attribute)
 (mxtics
   [
-   "default"
    ("time" ["seconds" "minutes" "hours" "days" "weeks" "months" "years"] @property)
    ]* @attribute)
 (palette
@@ -255,7 +247,7 @@
    "color"
    ("gamma" (_))
    ("rgbformulae" (_) (_)? (_)?)
-   ("defined" ("(" (_)+ "," (_)+ ")")?)
+   ("defined" ("(" "," ")")?)
    "file"
    "colormap"
    ("functions" (_) (_) (_))
@@ -286,7 +278,7 @@
    ("clip" "z"? @property) "clip1in" "clip4in"
    "clipcb"
    ("corners2color" "c2c" @property)
-   ("lighting" ("primary" fraction: (_))? @property ("specular" fraction: (_))? @property("spec2" fraction: (_))? @property)
+   ("lighting" [("primary" (_))? ("specular" (_))? ("spec2" (_))?] @property)
    ("border" "retrace"? @property)
    "implicit" "explicit"
    "map"
@@ -358,18 +350,10 @@
 
 (font_spec "font" @attribute)
 
-(termoption
-  [
-   "enhanced" @attribute
-   "fontscale" @attribute
-   ])
+(termoption "fontscale" @attribute)
 (theta) @attribute
 ; (timestamp)
-(title
-  [
-   "offset"
-   "enhanced"
-   ]+ @attribute)
+(title "offset" @attribute)
 (vgrid ("size" @attribute)?)
 (view
   [
@@ -384,7 +368,6 @@
   [
    ("offset" (_))
    ("rotate" [("by" (_)) "parallel"]? @attribute)
-   "enhanced"
    ]+ @attribute)
 (xrange ["reverse" "writeback" "extend" "restore"]+ @attribute)
 (xyplane ["at" "relative"]? @attribute)
@@ -434,12 +417,12 @@
  "lc" "ls" "lw" "lt"
  "pt" "ps" "pi" "pn"
  "dt" "as"
- "default"
  "title" "notitle"
  "every" "index" "using" "with"
  ] @field
 
 [
+ "enhanced"
  "matrix"
  "border"
  "black"
@@ -447,6 +430,8 @@
  "nodraw"
  "variable"
  ] @attribute
+
+"default" @property
 
 (fill_style
   [
@@ -481,7 +466,7 @@
    "mirror"
    "inout"
    ("scale" ["default" ((_) (_)?)]?)
-   ("rotate" "by" @attribute angle: (_))
+   ("rotate" "by" @attribute (_))
    "norotate"
    ("offset" (_))
    "nooffset"
@@ -489,7 +474,6 @@
    "add"
    "autofreq"
    "format"
-   "enhanced"
    ("format" (_))
    "log"
    "rangelimited"
@@ -499,7 +483,6 @@
   [
    "norotate"
    ("rotate" "by"? @attribute (_))
-   "enhanced"
    "fb"
    ("offset" (_))
    "align"
@@ -532,7 +515,7 @@
 ((identifier) @variable.builtin
   (#match? @variable.builtin
    "^\\w+_(records|headers|outofrange|invalid|blank|blocks|columns|column_header|index_(min|max)(_x|_y)?|(min|max)(_x|_y)?|mean(_err)?(_x|_y)?|stddev(_err)?(_x|_y)?)$"))
-((identifier)@variable.builtin
+((identifier) @variable.builtin
   (#match? @variable.builtin
    "^\\w+_(sdd(_x|_y)?|(lo|up)_quartile(_x|_y)?|median(_x|_y)?|sum(sq)?(_x|_y)?|skewness(_err)?(_x|_y)?)$"))
 ((identifier) @variable.builtin

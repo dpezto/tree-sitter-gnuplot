@@ -1220,9 +1220,13 @@ module.exports = grammar({
 					),
 					seq(
 						alias(/(no)?lighting/, "lighting"),
-						optional(seq("primary", field("fraction", $._expression))),
-						optional(seq("specular", field("fraction", $._expression))),
-						optional(seq("spec2", field("fraction", $._expression))),
+						repeat(
+              choice(
+                seq("primary", field("fraction", $._expression)),
+						    seq("specular", field("fraction", $._expression)),
+						    seq("spec2", field("fraction", $._expression))
+              ),
+            ),
 					),
 					seq(
 						alias(/(no)?border/, "border"),
