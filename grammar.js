@@ -622,11 +622,11 @@ module.exports = grammar({
 					alias(/def(a(u(l(t)?)?)?)?|u(s(e(r)?)?)?/, "default"),
 					seq(key("origin", 1), $.position),
 					seq(key("size", 1), $.position),
-					alias(/fr(o(n(t)?)?)?|ba(c(k)?)?/, "fb"),
+          key("front", 2), key("back", 2),
 					choice(
 						key("noborder", 4),
 						key("bdefault", 2),
-						seq(key("border", 2), $.style_opts),
+						seq(key("border", 2), choice($.style_opts, $._expression)),
 					),
 					seq("cbtics", $.style_opts),
 				),
@@ -785,7 +785,7 @@ module.exports = grammar({
 				key("defaults", 3),
 				repeat1(
 					choice(
-						alias(/front|back/, "fb"),
+            "front", "back",
 						seq(key("offset", 3, undefined, 1), field("offset", $._expression)),
 						seq("trianglepattern", $._expression),
 						seq(key("undefined", 5), $._expression),
@@ -855,7 +855,7 @@ module.exports = grammar({
 					seq("columns", $._expression),
 					seq("keywidth", choice("screen", "graph"), $._expression),
 					alias(/Left|Right/, "lr"),
-					alias(/(no)?(rev(e(r(s(e)?)?)?)?|inv(e(r(t)?)?)?)/, "reverse"),
+          key("reverse", 3, undefined, 1), key("invert", 3, undefined, 1),
 					seq("samplen", field("length", $._expression)),
 					seq("spacing", field("spacing", $._expression)),
 					seq(
@@ -1309,7 +1309,7 @@ module.exports = grammar({
 				//                   {clip|noclip}
 				seq(
 					key("parallelaxis", -4),
-					seq(optional(alias(/front|back/, "fb")), optional($.style_opts)),
+					seq(optional(choice("front", "back")), optional($.style_opts)),
 				),
 				seq(
 					key("spiderplot", 6),
@@ -1823,7 +1823,7 @@ module.exports = grammar({
 						),
 						$.font_spec,
 						key("enhanced", undefined, undefined, 1),
-						alias(/front|back/, "fb"),
+						"front", "back",
 						seq( // TODO: check
 							alias(K.tc, "tc"),
 							field(
@@ -1905,7 +1905,7 @@ module.exports = grammar({
 						seq("format", $._expression),
 						$.font_spec, // string with font name and optional size
 						key("enhanced", undefined, undefined, 1),
-						alias(/numeric|timedate|geographic/, "format"),
+						alias(/numeric|timedate|geographic/, "type"),
 						key("logscale", 3, "log", 1),
 						key("rangelimited", 5, undefined, 1),
 						seq(

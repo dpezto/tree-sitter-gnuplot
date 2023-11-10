@@ -3757,11 +3757,59 @@
       "required": false,
       "types": [
         {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "datablock",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
           "type": "position",
           "named": true
         },
         {
+          "type": "string_literal",
+          "named": true
+        },
+        {
           "type": "style_opts",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
           "named": true
         }
       ]
@@ -16428,10 +16476,6 @@
     "named": false
   },
   {
-    "type": "fb",
-    "named": false
-  },
-  {
     "type": "fc",
     "named": false
   },
@@ -17569,6 +17613,10 @@
   },
   {
     "type": "two",
+    "named": false
+  },
+  {
+    "type": "type",
     "named": false
   },
   {
