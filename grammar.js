@@ -634,7 +634,7 @@ module.exports = grammar({
 
 		contour: ($) => choice(key("base", 2), key("surface", 1), key("both", 2)),
 
-    contourfill: ($) => 
+    contourfill: ($) =>
       repeat1(
         choice(
           seq("auto", $._expression),
@@ -1335,7 +1335,7 @@ module.exports = grammar({
           ),
         ),
         seq(
-          key("watchpoint", 5), 
+          key("watchpoint", 5),
           key("labels", -1, undefined, 1),
           optional($.label_opts),
         )
