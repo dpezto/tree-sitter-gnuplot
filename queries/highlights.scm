@@ -23,6 +23,7 @@
  (c_break)
  (c_cd)
  (c_clear)
+ "evaluate"
  "fit"
  "help"
  "load"
@@ -31,28 +32,25 @@
  (c_replot)
  (c_reread)
  "reset"
+ "splot"
  "cmd"
  "test"
  "undefine"
+ "vfill"
  ] @keyword
-
-(c_eval "evaluate" @keyword (_))
 
 (c_pause "pause" @keyword "mouse" @field _? @attribute ("," _ @attribute)?)
 
-(c_plot "plot" @keyword "sample"? @keyword.function)
+(c_plot "plot" @keyword)
 
 (c_show "show" @keyword "plot"? @attribute)
 
-(c_splot "splot" @keyword "sample"? @keyword.function)
-
 (c_stats "stats" @keyword ("name" (_))? @field)
-
-(c_vfill "vfill" @keyword "sample"? @keyword.function)
 
 [
  "via"
  "inverse"
+ "sample"
  ] @keyword.function
 
 [
@@ -65,12 +63,8 @@
 (cntrparam "auto"? @property)
 (colorbox "origin"? @attribute)
 (contourfill "auto"? @field)
-; (errorbars)
 (format _? @attribute (_) _? @attribute)
-; (hystory)
 (key "auto"? @property)
-; (mouse) ; TODO: complete
-; (pixmap)
 (style ; TODO: complete
   [
    "arrow"
@@ -87,7 +81,6 @@
    "textbox"
    ("watchpoint" "labels" @attribute (_)?)
    ] @property)
-; (table)
 (terminal "name" @property)
 ; TODO: complete terminals in grammar and then simplify its options here
 (t_cairolatex
@@ -176,6 +169,9 @@
  "autofreq" "add" "inout" "axis" "mirror" "type"
  "rowsfirst" "columnsfirst" "downwards" "upwards" "prevnext"
  "gray" "color" "gamma" "defined" "cubehelix" "model" "maxcolors" "file" "colormap" "rgbformulae" "viridis" "positive" "negative" "nops_allcF" "ps_allcF"
+ "quiet" "full" "trip" "numbers"
+ "small" "large" "fullwidth"
+ "append"
  "bind" "errors" "session"
  "behind" "polar" "layerdefault"
  "locale"

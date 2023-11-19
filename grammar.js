@@ -887,22 +887,20 @@ module.exports = grammar({
 			// TODO: check
 			prec.left(
 				1,
-				choice(
-					seq(
-						field("tag", $._lab_tag),
-						optional($.label_opts),
-						field("label", $._lab_lab),
-						optional($.label_opts),
-					),
-					seq(
-						field("tag", $._lab_tag),
-						$.label_opts,
-						optional(field("label", $._lab_lab)),
-					),
-          // for paxis, FIX:
-					prec(1, seq(optional($.label_opts), field("label", $._lab_lab), optional($.label_opts))),
-					prec(1, seq($.label_opts, optional(field("label", $._lab_lab)))),
-				),
+				seq(
+          optional(field("tag", $._lab_tag)),
+          choice(
+            seq(
+              optional($.label_opts),
+              field("label", $._lab_lab),
+              optional($.label_opts),
+            ),
+            seq(
+              $.label_opts,
+              optional(field("label", $._lab_lab)),
+            ),
+          ),
+        ),
 			),
 
 		linetype: ($) => choice($.line_style, seq("cycle", $._expression)),
@@ -961,7 +959,7 @@ module.exports = grammar({
 						key("zoomfactors", 6),
 						optional(seq($._expression, optional(seq(",", $._expression)))),
 					),
-					// TODO: complete
+					// TODO: complete and add to query
 					// {noruler | ruler {at x,y}}
 					// {polardistance{deg|tan} | nopolardistance}
 					// {format <string>} $._expression
@@ -1178,7 +1176,7 @@ module.exports = grammar({
 							),
 						),
 						seq(key("tics", -1), optional($.tics_opts)),
-						seq(key("label", 3), optional($.label)),
+						seq(key("label", 3), optional($.label)), // FIX:
 					),
 				),
 			),
