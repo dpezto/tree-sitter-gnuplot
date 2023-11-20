@@ -65,11 +65,12 @@
 (contourfill "auto"? @field)
 (format _? @attribute (_) _? @attribute)
 (key "auto"? @property)
+(polar "r" @attribute)
 (style ; TODO: complete
   [
    "arrow"
    "boxplot"
-   ("data" [(_) "spiderplot" @attribute])
+   "data"
    "fs"
    "function"
    "line"
@@ -77,9 +78,10 @@
    "rectangle"
    "ellipse"
    "parallelaxis"
-   ; (spiderplot) ; TODO: complete
+   "spiderplot"
    "textbox"
    ("watchpoint" "labels" @attribute (_)?)
+   "histogram"
    ] @property)
 (terminal "name" @property)
 ; TODO: complete terminals in grammar and then simplify its options here
@@ -123,7 +125,7 @@
    "surface" "steps" "fsteps" "histeps" "arrows" "vectors"
    "sectors" "contourfill" "errorbar" "errorlines" "parallelaxes" "boxes" "boxerrorbars"
    "boxxyerror" "isosurface" "boxplot" "candlesticks" "circles" "zerrorfill"
-   "ellipses" "filledcurves" "fillsteps" "histograms" "image" "spiderplot"
+   "ellipses" ("filledcurves" "r" @property) "fillsteps" "histograms" "image" "spiderplot"
    "pm3d" "rgbalpha" "rgbimage" "polygons" "table" "mask"
    ] @attribute)
 
@@ -135,11 +137,12 @@
  "every" "index" "using" "with"
  "frac" "cb"
  "arg"
- "prefix" "output"
+ "prefix"
  "primary" "specular" "spec2"
  "firstlinetype"
  "width" "height"
  "expand"
+ "level"
  "array" "dx" "dy" "dz" "filetype" "center" "record"
  ] @field
 
@@ -184,6 +187,7 @@
  "nodraw"
  "size"
  "new"
+ "clustered" "columnstacked" "rowstacked" "nokeyseparators" "errorbars"
  "first" "second" "screen" "graph" "character"
  "trianglepattern" "undefined" "noundefined" "altdiagonal" "bentover"
  "vertical" "horizontal"
@@ -196,23 +200,23 @@
  "font"
  "point" "nopoint" "boxed" "noboxed" "hypertext"
  "defaults"
- "keyentry"
- "splines" "qnorm" "gauss" "cauchy" "exp" "box" "hann"
+ "keyentry" "newhistogram" "newspiderplot"
+ "splines" "qnorm" "gauss" "cauchy" "exp" "box" "hann" "theta"
  "implicit" "explicit"
  "rotate" "by" "parallel" "norotate"
  "map" "projection" "equal" "azimuth"
  "nohidden3d" "nocontours" "nosurface"
  "colornames" "functions" "variables" "version"
- "nologfile" "logfile" "fit_out" "errorvariables" "covariancevariables" "errorscaling" "prescale" "maxiter" "limit" "limit_abs" "start-lambda" "lambda-factor" "script" "clip"
+ "nologfile" "logfile" "fit_out" "errorvariables" "covariancevariables" "errorscaling" "prescale" "maxiter" "limit" "limit_abs" "start-lambda" "lambda-factor" "script" "clip" "noclip" "units"
  "fontscale"
  "lighting" "depthorder" "interpolate" "corners2color" "flush" "scanorder" "hidden3d" "clipcb"
  "layout" "margins" "spacing"
- "smooth" "binary" "skip" "bins" "binrange" "binwidth" "binvalue" "mask" "convexhull" "concavehull" "volatile" "zsort" "nonuniform" "sparse" "matrix"
+ "smooth" "binary" "skip" "bins" "binrange" "binwidth" "binvalue" "mask" "convexhull" "concavehull" "volatile" "zsort" "nonuniform" "sparse" "matrix" "output"
  ] @attribute
 
 [
- "x1" "x2" "y1" "y2" "y" "r" "z"
- "xy" "xz" "yz" "xyz"
+ "x1" "x2" "y1" "y2" "y" "z"
+ "xx" "xy" "yy" "xz" "yz" "xyz"
  "x1y1" "x2y2" "x1y2" "x2y1"
  "columnheader"
  "seconds" "minutes" "hours" "days" "weeks" "months" "years"
@@ -222,10 +226,11 @@
  "long"
  "nogrid"
  "unique" "frequency" "fnormal" "cumulative" "cnormal" "csplines" "acsplines" "mcsplines" "path" "bezier" "sbezier" "unwrap"
- "kdensity"
+ "grid" "kdensity"
  "closed" "between" "above" "below"
  "variable"
  "pixels"
+ "whiskerbars"
  "RGB" "CMY" "HSV"
  "base" "begin" "center" "end" "ftriangles" "clip1in" "clip4in" "c2c" "retrace"
  "whitespace" "tab" "comma"
@@ -241,7 +246,7 @@
   "avs""bin""edf""ehf""gif""gpbin""jpeg""jpg""png""raw""rgb""auto"))
 
 (macro) @function.macro
-(datablock) @function.macro
+(datablock) @namespace
 
 (function name: (identifier) @function)
 

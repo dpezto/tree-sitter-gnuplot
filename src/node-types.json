@@ -7000,6 +7000,69 @@
     }
   },
   {
+    "type": "ellipse",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "datablock",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "encoding",
     "named": true,
     "fields": {}
@@ -12067,6 +12130,60 @@
             "named": true
           }
         ]
+      },
+      "x_coord": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "datablock",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
@@ -12086,6 +12203,10 @@
           "named": true
         },
         {
+          "type": "colorspec",
+          "named": true
+        },
+        {
           "type": "complex",
           "named": true
         },
@@ -12099,6 +12220,14 @@
         },
         {
           "type": "datafile_modifiers",
+          "named": true
+        },
+        {
+          "type": "fill_style",
+          "named": true
+        },
+        {
+          "type": "font_spec",
           "named": true
         },
         {
@@ -12182,6 +12311,10 @@
         },
         {
           "type": "datablock",
+          "named": true
+        },
+        {
+          "type": "ellipse",
           "named": true
         },
         {
@@ -12531,7 +12664,69 @@
   {
     "type": "polar",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "datablock",
+          "named": true
+        },
+        {
+          "type": "dgrid3d",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "range_block",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "position",
@@ -13490,6 +13685,10 @@
         },
         {
           "type": "datablock",
+          "named": true
+        },
+        {
+          "type": "ellipse",
           "named": true
         },
         {
@@ -17112,6 +17311,10 @@
     "named": false
   },
   {
+    "type": "clustered",
+    "named": false
+  },
+  {
     "type": "cm",
     "named": false
   },
@@ -17157,6 +17360,10 @@
   },
   {
     "type": "columnsfirst",
+    "named": false
+  },
+  {
+    "type": "columnstacked",
     "named": false
   },
   {
@@ -17325,6 +17532,10 @@
   },
   {
     "type": "errorbar",
+    "named": false
+  },
+  {
+    "type": "errorbars",
     "named": false
   },
   {
@@ -17520,6 +17731,10 @@
     "named": false
   },
   {
+    "type": "gap",
+    "named": false
+  },
+  {
     "type": "gauss",
     "named": false
   },
@@ -17577,6 +17792,10 @@
   },
   {
     "type": "histeps",
+    "named": false
+  },
+  {
+    "type": "histogram",
     "named": false
   },
   {
@@ -17721,6 +17940,10 @@
   },
   {
     "type": "length",
+    "named": false
+  },
+  {
+    "type": "level",
     "named": false
   },
   {
@@ -17896,6 +18119,14 @@
     "named": false
   },
   {
+    "type": "newhistogram",
+    "named": false
+  },
+  {
+    "type": "newspiderplot",
+    "named": false
+  },
+  {
     "type": "noautoscale",
     "named": false
   },
@@ -17905,6 +18136,10 @@
   },
   {
     "type": "noboxed",
+    "named": false
+  },
+  {
+    "type": "noclip",
     "named": false
   },
   {
@@ -17945,6 +18180,10 @@
   },
   {
     "type": "noinsidecolor",
+    "named": false
+  },
+  {
+    "type": "nokeyseparators",
     "named": false
   },
   {
@@ -18292,6 +18531,10 @@
     "named": false
   },
   {
+    "type": "rowstacked",
+    "named": false
+  },
+  {
     "type": "sample",
     "named": false
   },
@@ -18488,6 +18731,10 @@
     "named": false
   },
   {
+    "type": "theta",
+    "named": false
+  },
+  {
     "type": "tics",
     "named": false
   },
@@ -18545,6 +18792,10 @@
   },
   {
     "type": "unique",
+    "named": false
+  },
+  {
+    "type": "units",
     "named": false
   },
   {
@@ -18628,6 +18879,10 @@
     "named": false
   },
   {
+    "type": "whiskerbars",
+    "named": false
+  },
+  {
     "type": "whitespace",
     "named": false
   },
@@ -18676,6 +18931,10 @@
     "named": false
   },
   {
+    "type": "xx",
+    "named": false
+  },
+  {
     "type": "xy",
     "named": false
   },
@@ -18701,6 +18960,10 @@
   },
   {
     "type": "years",
+    "named": false
+  },
+  {
+    "type": "yy",
     "named": false
   },
   {

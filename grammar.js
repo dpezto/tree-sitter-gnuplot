@@ -1,5 +1,3 @@
-// Based on http://gnuplot.info/docs_5.5/Gnuplot_5_5.pdf
-
 const PREC = {
 	TERNARY: -1, // a?b:c
 	OR: 1, // a||b
@@ -51,7 +49,6 @@ module.exports = grammar({
 	conflicts: ($) => [
 		[$.position],
     [$._i_e_u_directives],
-    // [$.plot_style, $.style],
 	],
 
 	rules: {
@@ -201,50 +198,64 @@ module.exports = grammar({
 			seq(key("plot", 1), optional("sample"), sep(",", $.plot_element)),
 
 		plot_element: ($) =>
-			seq(
-				repeat($.range_block),
-				optional($.for_block),
-				choice(
-					seq(
-						sep(",", $._assignment),
-            optional(","),
-						$._expression, // $.function,
-            optional($.datafile_modifiers),
-					),
-					field("func", $.function),
-					seq(
-						field("data", choice($._expression, "keyentry")),
-						optional($.datafile_modifiers),
-					),
-					// newhistogram {"<title>" {font "name,size"} {tc <colorspec>}}
-					//              {lt <linetype>} {fs <fillstyle>} {at <x-coord>}
-				),
-				repeat(
-					choice(
-						seq("axes", choice("x1y1", "x2y2", "x1y2", "x2y1")),
-						seq(
-							key("title", 1),
-							field("title", $._expression),
-							repeat(
-								choice(
-									seq("at", choice("beginning", "end")),
-									key("enhanced", undefined, undefined, 1),
-								),
-							),
-						),
-						seq(key("notitle", 3), optional($._expression)),
-						"nogrid", // NOTE: splot only option https://stackoverflow.com/questions/74586626/gnuplot-how-to-splot-surface-and-points-with-dgrid3d
-						choice(
-							seq(
-								key("with", 1),
-								field("with", $.plot_style),
-								optional($.style_opts),
-							),
-							$.style_opts,
-						),
-					),
-				),
-			),
+			prec.left(1,
+        seq(
+          repeat($.range_block),
+          optional($.for_block),
+          choice(
+            seq(
+              sep(",", $._assignment),
+              optional(","),
+              $._expression, // $.function,
+              optional($.datafile_modifiers),
+            ),
+            field("func", $.function),
+            seq(
+              field("data", choice($._expression, "keyentry")),
+              optional($.datafile_modifiers),
+            ),
+            "newspiderplot",
+            seq(
+              "newhistogram",
+              optional(
+                seq(
+                  field("title", $._expression),
+                  optional($.font_spec),
+                  optional(seq(alias(K.tc, "tc"), $.colorspec)),
+                ),
+              ),
+              optional(seq(alias(K.lt, "lt"), $._expression)),
+              optional(seq(alias(K.fs, "fs"), $.fill_style)),
+              optional(seq("at", field("x_coord", $._expression))),
+            ),
+          ),
+          repeat(
+            choice(
+              seq("axes", choice("x1y1", "x2y2", "x1y2", "x2y1")),
+              seq(
+                key("title", 1),
+                field("title", $._expression),
+                repeat(
+                  choice(
+                    seq("at", choice("beginning", "end")),
+                    key("enhanced", undefined, undefined, 1),
+                  ),
+                ),
+              ),
+              seq(key("notitle", 3), optional($._expression)),
+              "nogrid", // NOTE: splot only option https://stackoverflow.com/questions/74586626/gnuplot-how-to-splot-surface-and-points-with-dgrid3d
+              choice(
+                seq(
+                  key("with", 1),
+                  field("with", $.plot_style),
+                  optional($.style_opts),
+                ),
+                $.style_opts,
+              ),
+            ),
+          ),
+        ),
+      ),
 
 		plot_style: ($) =>
 			prec.left(
@@ -269,14 +280,14 @@ module.exports = grammar({
           "boxes",
           "boxerrorbars",
           "boxxyerror",
-          "isosurface",
+          seq("isosurface", optional(seq("level", $._expression))),
           "boxplot",
-          "candlesticks", // TODO: add its options p.77
+          seq("candlesticks", optional(key("whiskerbars", -1))),
           "circles",
           key("zerrorfill", 6),
           "contourfill",
-          key("spiderplot", 6), // TODO: add the newspiderplot option p. 94 v6.1
-          "ellipses", // TODO: add its options
+          key("spiderplot", 6),
+          seq("ellipses", optional($.ellipse)),
           seq(
             key("filledcurves", 7),
             optional(
@@ -300,7 +311,7 @@ module.exports = grammar({
             optional(choice("above", "below")),
             optional(seq("y", "=", $._expression)),
           ),
-          key("histograms", -1), // TODO: add its options p.83 (should work in set style)
+          key("histograms", 4),
           seq(key("image", 3), optional("pixels")),
           seq("pm3d", optional($.pm3d)),
           "rgbalpha",
@@ -771,7 +782,7 @@ module.exports = grammar({
 		grid: ($) =>
 			repeat1(
 				choice(
-					key1("tics", /(no)?m?/, K.axes, /tics?/),
+					key1("tics", /(no)?m?/, K.axes, /(t(i(c(s)?)?)?)?/),
 					seq(
 						key("polar", 2, undefined, 1),
 						optional(field("angle", $._expression)),
@@ -779,6 +790,7 @@ module.exports = grammar({
 					choice(key("layerdefault", 6), "front", "back"),
 					key("vertical", 4, undefined, 1),
 					seq($.style_opts, optional(seq(",", $.style_opts))),
+          key("spiderplot", 6),
 				),
 			),
 
@@ -1237,7 +1249,19 @@ module.exports = grammar({
 
 		pointsize: ($) => field("multiplier", $._expression),
 
-		polar: ($) => seq("grid"), // TODO: complete
+		polar: ($) =>
+      prec.left(
+        seq("grid",
+          repeat(
+            choice(
+              $.dgrid3d,
+              seq("scale", $._expression),
+              seq("theta", $.range_block),
+              seq("r", $.range_block),
+            ),
+          ),
+        ),
+      ),
 
 		print: ($) => $._expression,
 
@@ -1267,7 +1291,7 @@ module.exports = grammar({
 			),
 
 		style: ($) =>
-			prec(1,
+			prec.left(1,
         choice(
           seq(
             key("arrow", 3),
@@ -1282,7 +1306,7 @@ module.exports = grammar({
           //                   {separation <x>}
           //                   {labels off | auto | x | x2}
           //                   {sorted | unsorted}
-          seq(key("data", 1), choice($.plot_style, key("spiderplot", 6))),
+          seq(key("data", 1), $.plot_style),
           seq(alias(K.fs, "fs"), $.fill_style),
           seq(key("function", 1), $.plot_style),
           seq(key("line", 1), $.line_style),
@@ -1299,11 +1323,7 @@ module.exports = grammar({
           seq(key("rectangle", 4)), // TODO: p. 218
           // set style rectangle {front|back} {lw|linewidth <lw>}
           //                     {fillcolor <colorspec>} {fs <fillstyle>}
-          seq(key("ellipse", 3)), // TODO: p. 219
-          // set style ellipse {units xx|xy|yy}
-          //                   {size {graph|screen} <a>, {{graph|screen} <b>}}
-          //                   {angle <angle>}
-          //                   {clip|noclip}
+          seq(key("ellipse", 3), optional($.ellipse)),
           seq(
             key("parallelaxis", -4),
             seq(optional(choice("front", "back")), optional($.style_opts)),
@@ -1315,19 +1335,21 @@ module.exports = grammar({
           // set style spiderplot
           //                     {fillstyle <fillstyle-properties>}
           //                     {<line-properties> | <point-properties>}
-          seq( // TODO: p. 221
+          seq(
             "textbox",
-            repeat(
-              // TODO: add boxstyle-index
-              choice(
-                choice("opaque", "transparent"),
-                seq(alias(K.fc, "fc"), $.colorspec),
-                seq(
-                  key("border", undefined, undefined, 1),
-                  optional(seq(alias(K.lc, "lc"), $.colorspec))
+            seq(
+              optional(field("index", $._expression)),
+              repeat(
+                choice(
+                  choice("opaque", "transparent"),
+                  seq(alias(K.fc, "fc"), $.colorspec),
+                  seq(
+                    key("border", undefined, undefined, 1),
+                    optional(seq(alias(K.lc, "lc"), $.colorspec))
+                  ),
+                  seq(alias(K.lw, "lw"), $._expression),
+                  seq("margins", $._expression, ",", $._expression),
                 ),
-                seq(alias(K.lw, "lw"), $._expression),
-                // TODO: add margins
               ),
             ),
           ),
@@ -1336,7 +1358,34 @@ module.exports = grammar({
             key("labels", -1, undefined, 1),
             optional($.label_opts),
           ),
+          seq( // TODO: complete (p. 81 V6.1) and add to query
+            key("histogram", 4),
+            choice(
+              seq(key("clustered", 5), optional(seq("gap", $._expression))),
+              seq(key("errorbars", 5),
+                repeat(
+                  choice(
+                    seq("gap", $._expression),
+                    seq(alias(K.lw, "lw"), $._expression),
+                  ),
+                ),
+              ),
+              key("rowstacked", 4),
+              key("columnstacked", 7),
+              key("nokeyseparators", 5),
+            ),
+          ),
 			  ),
+      ),
+
+    ellipse: ($) =>
+      repeat1(
+        choice(
+          seq("units", choice("xx", "xy", "yy")),
+          seq("size", $.position, optional(seq(",", $.position))),
+          seq("angle", $._expression),
+          choice("clip", "noclip"),
+        ),
       ),
 
 		surface: ($) => choice("implicit", "explicit"),
@@ -2125,6 +2174,7 @@ module.exports = grammar({
 			),
 
 		datablock_def: ($) =>
+      // EOD end of data
 			seq($.datablock, "<<", surround("EOD", repeat($._expression))), // TODO: surround should be any identifier ala it's the same
 
 		macro: ($) => token(seq("@", /([a-zA-Z_\u0370-\u26FF])+\w*/)),
