@@ -726,7 +726,15 @@
           "named": true
         },
         {
+          "type": "c_system",
+          "named": true
+        },
+        {
           "type": "c_test",
+          "named": true
+        },
+        {
+          "type": "c_toggle",
           "named": true
         },
         {
@@ -1306,7 +1314,15 @@
           "named": true
         },
         {
+          "type": "c_system",
+          "named": true
+        },
+        {
           "type": "c_test",
+          "named": true
+        },
+        {
+          "type": "c_toggle",
           "named": true
         },
         {
@@ -3195,9 +3211,127 @@
     }
   },
   {
+    "type": "c_system",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "datablock",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "c_test",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "c_toggle",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "datablock",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "c_undefine",
@@ -3449,7 +3583,15 @@
           "named": true
         },
         {
+          "type": "c_system",
+          "named": true
+        },
+        {
           "type": "c_test",
+          "named": true
+        },
+        {
+          "type": "c_toggle",
           "named": true
         },
         {
@@ -9657,7 +9799,61 @@
   {
     "type": "micro",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "datablock",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "monochrome",
@@ -13557,7 +13753,15 @@
           "named": true
         },
         {
+          "type": "c_system",
+          "named": true
+        },
+        {
           "type": "c_test",
+          "named": true
+        },
+        {
+          "type": "c_toggle",
           "named": true
         },
         {
@@ -17007,6 +17211,10 @@
     "named": false
   },
   {
+    "type": "all",
+    "named": false
+  },
+  {
     "type": "altdiagonal",
     "named": false
   },
@@ -18752,6 +18960,10 @@
   },
   {
     "type": "to_rto",
+    "named": false
+  },
+  {
+    "type": "toggle",
     "named": false
   },
   {

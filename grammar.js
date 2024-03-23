@@ -2286,47 +2286,11 @@ module.exports = grammar({
 
 		string_literal: ($) =>
 			choice(
-				// $.string_double,
-				// $.string_single,
 				token(/"([^"\\\n]|\\.)*"/), // 1
-				token(/"([^"\\\n]|\\.)*/, token.immediate('"')), // 2
+				token(seq(/"([^"\\\n]|\\.)*/, token.immediate('"'))), // 2
 				token(/'([^'\\\n]|\\.)*'/), // 1
-				token(/'([^'\\\n]|\\.)*/, token.immediate("'")), // 2
+				token(seq(/'([^'\\\n]|\\.)*/, token.immediate("'"))), // 2
 			),
-
-		// string_single: ($) => token(/'([^'\\\n]|\\.)*'/),
-		//
-		// string_double: ($) =>
-		//   seq(
-		//     '"',
-		//     repeat(
-		//       choice(
-		//         $.escape_sequence,
-		//         $._not_escape_sequence,
-		//       ),
-		//     ),
-		//     '"',
-		//   ),
-		//
-		// escape_sequence: _ =>
-		//   token.immediate(
-		//     prec(1,
-		//       seq(
-		//         '\\',
-		//         choice(
-		//           /u[a-fA-F\d]{4}/,
-		//           /U[a-fA-F\d]{8}/,
-		//           /x[a-fA-F\d]{2}/,
-		//           /\d{3}/,
-		//           /\r?\n/,
-		//           /['"abfrntv\\]/,
-		//           /N\{[^}]+\}/,
-		//         ),
-		//       ),
-		//     ),
-		//   ),
-		//
-		// _not_escape_sequence: _ => token.immediate('\\'),
 
 		array: ($) => seq($.identifier, surround("[]", $._expression)),
 
