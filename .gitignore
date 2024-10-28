@@ -1,0 +1,21 @@
+# Build Artifacts
+*.so
+*.dylib
+*.dll
+*.dSYM
+*.o
+*.obj
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Editor & OS Files
+.DS_Store
+Thumbs.db
+*~
+
+# Tree-sitter Generated Files
+src/parser.c
+src/scanner.c
+src/binding.cc
