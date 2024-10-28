@@ -2137,22 +2137,6 @@
         "required": false,
         "types": [
           {
-            "type": "clip",
-            "named": true
-          },
-          {
-            "type": "contour",
-            "named": true
-          },
-          {
-            "type": "dgrid3d",
-            "named": true
-          },
-          {
-            "type": "dummy",
-            "named": true
-          },
-          {
             "type": "encoding",
             "named": true
           },
@@ -2324,6 +2308,10 @@
           "named": true
         },
         {
+          "type": "clip",
+          "named": true
+        },
+        {
           "type": "cntrlabel",
           "named": true
         },
@@ -2348,6 +2336,10 @@
           "named": true
         },
         {
+          "type": "contour",
+          "named": true
+        },
+        {
           "type": "contourfill",
           "named": true
         },
@@ -2365,6 +2357,14 @@
         },
         {
           "type": "decimalsign",
+          "named": true
+        },
+        {
+          "type": "dgrid3d",
+          "named": true
+        },
+        {
+          "type": "dummy",
           "named": true
         },
         {
@@ -2482,22 +2482,6 @@
         "multiple": false,
         "required": false,
         "types": [
-          {
-            "type": "clip",
-            "named": true
-          },
-          {
-            "type": "contour",
-            "named": true
-          },
-          {
-            "type": "dgrid3d",
-            "named": true
-          },
-          {
-            "type": "dummy",
-            "named": true
-          },
           {
             "type": "encoding",
             "named": true
@@ -2670,6 +2654,10 @@
           "named": true
         },
         {
+          "type": "clip",
+          "named": true
+        },
+        {
           "type": "cntrlabel",
           "named": true
         },
@@ -2694,6 +2682,10 @@
           "named": true
         },
         {
+          "type": "contour",
+          "named": true
+        },
+        {
           "type": "contourfill",
           "named": true
         },
@@ -2711,6 +2703,14 @@
         },
         {
           "type": "decimalsign",
+          "named": true
+        },
+        {
+          "type": "dgrid3d",
+          "named": true
+        },
+        {
+          "type": "dummy",
           "named": true
         },
         {
@@ -3168,22 +3168,6 @@
         "required": false,
         "types": [
           {
-            "type": "clip",
-            "named": true
-          },
-          {
-            "type": "contour",
-            "named": true
-          },
-          {
-            "type": "dgrid3d",
-            "named": true
-          },
-          {
-            "type": "dummy",
-            "named": true
-          },
-          {
             "type": "encoding",
             "named": true
           },
@@ -3355,6 +3339,10 @@
           "named": true
         },
         {
+          "type": "clip",
+          "named": true
+        },
+        {
           "type": "cntrlabel",
           "named": true
         },
@@ -3379,6 +3367,10 @@
           "named": true
         },
         {
+          "type": "contour",
+          "named": true
+        },
+        {
           "type": "contourfill",
           "named": true
         },
@@ -3396,6 +3388,14 @@
         },
         {
           "type": "decimalsign",
+          "named": true
+        },
+        {
+          "type": "dgrid3d",
+          "named": true
+        },
+        {
+          "type": "dummy",
           "named": true
         },
         {
@@ -5435,7 +5435,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "array",
@@ -12410,6 +12410,7 @@
   {
     "type": "source_file",
     "named": true,
+    "root": true,
     "fields": {
       "command": {
         "multiple": true,
@@ -18650,11 +18651,11 @@
   },
   {
     "type": "auto",
-    "named": false
+    "named": true
   },
   {
     "type": "auto",
-    "named": true
+    "named": false
   },
   {
     "type": "autofreq",
