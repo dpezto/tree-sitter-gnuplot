@@ -1,0 +1,9 @@
+/Users/Dpezto/Documents/GitHub/tree-sitter-gnuplot/target/debug/deps/libtree_sitter-e90f1304d933f990.rmeta: /Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/lib.rs /Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/ffi.rs /Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/util.rs /Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/./bindings.rs /Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/../include/tree_sitter/parser.h
+
+/Users/Dpezto/Documents/GitHub/tree-sitter-gnuplot/target/debug/deps/tree_sitter-e90f1304d933f990.d: /Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/lib.rs /Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/ffi.rs /Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/util.rs /Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/./bindings.rs /Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/../include/tree_sitter/parser.h
+
+/Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/lib.rs:
+/Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/ffi.rs:
+/Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/util.rs:
+/Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/./bindings.rs:
+/Users/Dpezto/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tree-sitter-0.20.10/binding_rust/../include/tree_sitter/parser.h:
