@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "gnuplot",
   "word": "identifier",
   "rules": {
@@ -7731,40 +7732,35 @@
               "content": {
                 "type": "REPEAT1",
                 "content": {
-                  "type": "SEQ",
+                  "type": "CHOICE",
                   "members": [
                     {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": "x"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "y"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "z"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "x2"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "y2"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "cb"
-                        },
-                        {
-                          "type": "STRING",
-                          "value": "r"
-                        }
-                      ]
+                      "type": "STRING",
+                      "value": "x"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "y"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "z"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "x2"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "y2"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "cb"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "r"
                     }
                   ]
                 }
@@ -9929,15 +9925,6 @@
             "type": "SEQ",
             "members": [
               {
-                "type": "STRING",
-                "value": "boxplot"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
                 "type": "ALIAS",
                 "content": {
                   "type": "PATTERN",
@@ -10773,32 +10760,6 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "cg(m)?"
-              },
-              "named": false,
-              "value": "name"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "t_cgm"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
                 "value": "co(n(t(e(x(t)?)?)?)?)?"
               },
               "named": false,
@@ -10810,58 +10771,6 @@
                 {
                   "type": "SYMBOL",
                   "name": "t_context"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "du(m(b)?)?"
-              },
-              "named": false,
-              "value": "name"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "t_dumb"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "e(p(s(c(a(i(r(o)?)?)?)?)?)?)?"
-              },
-              "named": false,
-              "value": "name"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "t_epscairo"
                 },
                 {
                   "type": "BLANK"
@@ -11270,18 +11179,6 @@
         ]
       }
     },
-    "t_cgm": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "font_spec"
-          }
-        ]
-      }
-    },
     "t_context": {
       "type": "REPEAT1",
       "content": {
@@ -11291,30 +11188,6 @@
             "type": "SYMBOL",
             "name": "canvas_size"
           },
-          {
-            "type": "SYMBOL",
-            "name": "font_spec"
-          }
-        ]
-      }
-    },
-    "t_dumb": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          }
-        ]
-      }
-    },
-    "t_epscairo": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
           {
             "type": "SYMBOL",
             "name": "font_spec"
@@ -12344,13 +12217,8 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_expression"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_expression"
         },
         {
           "type": "SEQ",
@@ -16532,13 +16400,8 @@
                 ]
               },
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "PATTERN",
-                    "value": "\\d(_?\\d)*"
-                  }
-                ]
+                "type": "PATTERN",
+                "value": "\\d(_?\\d)*"
               }
             ]
           },

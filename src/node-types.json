@@ -13639,6 +13639,7 @@
   {
     "type": "source_file",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -14999,21 +15000,6 @@
     }
   },
   {
-    "type": "t_cgm",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "font_spec",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "t_context",
     "named": true,
     "fields": {},
@@ -15025,36 +15011,6 @@
           "type": "canvas_size",
           "named": true
         },
-        {
-          "type": "font_spec",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "t_dumb",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "canvas_size",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "t_epscairo",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
         {
           "type": "font_spec",
           "named": true
@@ -15252,19 +15208,7 @@
           "named": true
         },
         {
-          "type": "t_cgm",
-          "named": true
-        },
-        {
           "type": "t_context",
-          "named": true
-        },
-        {
-          "type": "t_dumb",
-          "named": true
-        },
-        {
-          "type": "t_epscairo",
           "named": true
         },
         {

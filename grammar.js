@@ -938,7 +938,7 @@ module.exports = grammar({
 			const axis = choice("x", "y", "z", "x2", "y2", "cb", "r");
 			return prec.left(
 				seq(
-					alias(token(repeat1(seq(axis))), "axis"),
+					alias(token(repeat1(axis)), "axis"),
 					optional(field("base", $._expression)),
 				),
 			);
@@ -1303,7 +1303,7 @@ module.exports = grammar({
 						optional(field("index", $._expression)),
 						choice(key("defaults", 3), $.arrow_opts),
 					),
-					seq("boxplot"), // TODO: p. 214
+					// seq("boxplot"), // TODO: p. 214
 					// set style boxplot {range <r> | fraction <f>}
 					//                   {{no}outliers} {pointtype <p>}
 					//                   {candlesticks | financebars}
@@ -1418,13 +1418,13 @@ module.exports = grammar({
 			choice(
 				seq(key("cairolatex", 3, "name"), optional($.t_cairolatex)),
 				seq(key("canvas", 3, "name"), optional($.t_canvas)),
-				seq(key("cgm", 2, "name"), optional($.t_cgm)),
+				// seq(key("cgm", 2, "name"), optional($.t_cgm)),
 				seq(key("context", 2, "name"), optional($.t_context)),
 				// seq(alias(/do(m(t(e(r(m)?)?)?)?)?/, "name"), optional($.t_domterm)),
-				seq(key("dumb", 2, "name"), optional($.t_dumb)),
+				// seq(key("dumb", 2, "name"), optional($.t_dumb)),
 				// seq(alias(/dxf?/, "name"), optional($.t_dxf)),
 				// seq(alias(/emf?/, "name"), optional($.t_emf)),
-				seq(key("epscairo", 1, "name"), optional($.t_epscairo)),
+				// seq(key("epscairo", 1, "name"), optional($.t_epscairo)),
 				seq(key("epslatex", 4, "name"), optional($.t_epslatex)),
 				// seq(alias(/f(i(g)?)?/, "name"), optional($.t_fig)),
 				// seq(alias(/g(i(f)?)?/, "name"), optional($.t_gif)),
@@ -1481,7 +1481,7 @@ module.exports = grammar({
 		//                        {standalone {mousing} | name '<funcname>'}
 		//                        {jsdir 'URL/for/javascripts'}
 		//                        {title '<some string>'}
-		t_cgm: ($) => repeat1(choice($.font_spec)),
+		// t_cgm: ($) => repeat1(choice($.font_spec)),
 		// cgm {color | monochrome} {solid | dashed} {{no}rotate}
 		//                     {<mode>} {width <plot_width>} {linewidth <line_width>}
 		//                     {font "<fontname>,<fontsize>"}
@@ -1501,7 +1501,7 @@ module.exports = grammar({
 		//           {inlineimages | externalimages}
 		//           {defaultfont | font "{<fontname>}{,<fontsize>}"}
 		// t_domterm: ($) => repeat1(choice()),
-		t_dumb: ($) => repeat1(choice($.canvas_size)),
+		// t_dumb: ($) => repeat1(choice($.canvas_size)),
 		// dumb {size <xchars>,<ychars>} {[no]feed}
 		//                      {aspect <htic>{,<vtic>}}
 		//                      {[no]enhanced}
@@ -1510,7 +1510,7 @@ module.exports = grammar({
 		//                      {mono|ansi|ansi256|ansirgb}
 		// t_dxf: ($) => repeat1(choice()),
 		// t_emf: ($) => repeat1(choice()),
-		t_epscairo: ($) => repeat1(choice($.font_spec)), // same as pdfcairo
+		// t_epscairo: ($) => repeat1(choice($.font_spec)), // same as pdfcairo
 		t_epslatex: ($) => repeat1(choice($.canvas_size, $.font_spec)),
 		// t_fig: ($) => repeat1(choice()),
 		// t_gif: ($) => repeat1(choice()),
@@ -1694,7 +1694,7 @@ module.exports = grammar({
 
 		xyplane: ($) =>
 			choice(
-				seq($._expression),
+				$._expression,
 				seq("at", field("zval", $._expression)),
 				seq("relative", field("val", $._expression)),
 			),
@@ -2271,7 +2271,7 @@ module.exports = grammar({
 				),
 				seq(".", decimal_digits, optional(exponent_part)),
 				seq(decimal_integer_literal, exponent_part),
-				seq(decimal_digits),
+				decimal_digits,
 			);
 			return token(choice(decimal_literal, hex_literal, octal_literal));
 		},
