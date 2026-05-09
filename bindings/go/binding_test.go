@@ -3,8 +3,8 @@ package tree_sitter_gnuplot_test
 import (
 	"testing"
 
-	tree_sitter "github.com/smacker/go-tree-sitter"
-	"github.com/tree-sitter/tree-sitter-gnuplot"
+	tree_sitter "github.com/tree-sitter/go-tree-sitter"
+	tree_sitter_gnuplot "github.com/tree-sitter/tree-sitter-gnuplot/bindings/go"
 )
 
 func TestCanLoadGrammar(t *testing.T) {
