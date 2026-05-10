@@ -45,7 +45,7 @@ const K = {
 	zaxes: /(x|y|z|x2|y2)?/,
 };
 
-module.exports = grammar({
+export default grammar({
 	name: "gnuplot",
 
 	extras: ($) => [$.comment, /[\s\f\uFEFF\u2060\u200B]|\\\r?\n/, /\\\s*\n/],
