@@ -1,103 +1,254 @@
-===============================================================================
+===========================================================================
   Variables
-===============================================================================
+===========================================================================
 a = test
--------------------------------------------------------------------------------
+b = 1
+c = "str"
+d = a + b
+e = c
+f = 3.14
+g = a + b + c
+h = f(x)
+i = a == b
+j = a != b
+---------------------------------------------------------------------------
 (source_file
-  (var_def
-    (identifier)
-    (identifier)))
-
-===============================================================================
-  Arrays
-===============================================================================
-array b[4] = [a,2,3.5,{4,0.3}]
--------------------------------------------------------------------------------
-(source_file
-  (array_def
-    (array
+  (assignment
+    (def_var
       (identifier)
-      (number))
+      (identifier)))
+  (assignment
+    (def_var
+      (identifier)
+      (number)))
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal)))
+  (assignment
+    (def_var
+      (identifier)
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))))
+  (assignment
+    (def_var
+      (identifier)
+      (identifier)))
+  (assignment
+    (def_var
+      (identifier)
+      (number)))
+  (assignment
+    (def_var
+      (identifier)
+      (binary_expression
+        (binary_expression
+          (identifier)
+          (operator)
+          (identifier))
+        (operator)
+        (identifier))))
+  (assignment
+    (def_var
+      (identifier)
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))))
+  (assignment
+    (def_var
+      (identifier)
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))))
+  (assignment
+    (def_var
+      (identifier)
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier)))))
+
+===========================================================================
+  Arrays
+===========================================================================
+array b[4] = [a,2,3.5,{4,0.3}]
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_array
+      (array
+        (identifier)
+        (number))
     (identifier)
     (number)
     (number)
     (complex
       (number)
-      (number))))
+      (number)))))
 
-===============================================================================
-  Function 1
-===============================================================================
+===========================================================================
+  Function 1 - single-char name (f = valid fit abbreviation; scanner disambiguates)
+===========================================================================
 f(x) = x**2
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 (source_file
-      (func_def
-        (function
-          name: (identifier)
-          arg: (identifier))
-        (binary_expression
-          (identifier)
-          (number))))
+  (assignment
+    (def_func
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))
+      (binary_expression
+        (identifier)
+        (operator)
+        (number)))))
 
-===============================================================================
+===========================================================================
   Datablocks
-===============================================================================
+===========================================================================
 $DATA << EOD
 A B C D E 
 1 1 1 1 1
 f(x) λ*pi
 EOD 
--------------------------------------------------------------------------------
-(source_file
-      (datablock_def
-        (datablock)
-        (identifier)
-        (identifier)
-        (identifier)
-        (identifier)
-        (identifier)
-        (identifier)
-        (number)
-        (number)
-        (number)
-        (number)
-        (number)
-        (function
-          name: (identifier)
-          arg: (identifier))
-        (binary_expression
+---------------------------------------------------------------------------
+    (source_file
+      (assignment
+        (def_datablock
+          name: (datablock)
+          start: (datablock_start)
           (identifier)
-          (identifier))
-        (identifier)))
-
-===============================================================================
-  Function 2
-===============================================================================
-dot(A,B) = (|A| != |B|) ? NaN : sum [i=1:|A|] A[i] * B[i]
--------------------------------------------------------------------------------
-(source_file
-  (func_def
-    (function
-      name: (identifier)
-      arg: (identifier)
-      arg: (identifier))
-    (ternary_expression
-      condition: (parenthesized_expression
-      (binary_expression
-        (unary_expression
-          (identifier))
-        (unary_expression
-          (identifier))))
-      true: (identifier)
-      false: (sum_block
-        (identifier)
-        (number)
-        (unary_expression
-          (identifier))
-        (binary_expression
-          (array
+          (identifier)
+          (identifier)
+          (identifier)
+          (identifier)
+          (number)
+          (number)
+          (number)
+          (number)
+          (number)
+          (function
+            name: (identifier)
+            parameters: (parameter_list
+              (identifier)))
+          (binary_expression
             (identifier)
+            (operator)
             (identifier))
-          (array
+          end: (datablock_end))))
+
+===========================================================================
+  Function 2
+===========================================================================
+dot(A,B) = (|A| != |B|) ? NaN : sum [i=1:|A|] A[i] * B[i]
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_func
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)
+          (identifier)))
+      (ternary_expression
+        condition: (parenthesized_expression
+          (binary_expression
+            (unary_expression
+              (operator)
+              (identifier)
+              (operator))
+            (operator)
+            (unary_expression
+              (operator)
+              (identifier)
+              (operator))))
+        (ternary_op)
+        true: (identifier)
+        (ternary_op)
+        false: (sum_block
+          (identifier)
+          (number)
+          (unary_expression
+            (operator)
             (identifier)
-            (identifier)))))))
+            (operator))
+          (binary_expression
+            (array
+              name: (identifier)
+              (identifier))
+            (operator)
+            (array
+              name: (identifier)
+              (identifier))))))))
+
+===========================================================================
+  Arrays 2 - declare only
+===========================================================================
+array A[6]
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_array
+      (array
+        name: (identifier)
+        (number)))))
+
+===========================================================================
+  Arrays 3 - declare from expression
+===========================================================================
+array C = split("A B C")
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_array
+      (identifier)
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (string_literal))))))
+===========================================================================
+  Chained assignment
+===========================================================================
+a=b=c=0
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (def_var
+        (identifier)
+        (def_var
+          (identifier)
+          (number))))))
+
+===========================================================================
+  String subscript
+===========================================================================
+s = "hello"[2:4]
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (subscript
+        (string_literal)
+        (number)
+        (number)))))
+
+===========================================================================
+  Identifier subscript with star
+===========================================================================
+s = file[1:*]
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (subscript
+        (identifier)
+        (number)))))
+

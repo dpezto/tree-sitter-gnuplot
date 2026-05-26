@@ -1,0 +1,377 @@
+===========================================================================
+  if 1 - inline single statement
+===========================================================================
+if (x > 0) set xrange [0:1]
+---------------------------------------------------------------------------
+(source_file
+  (cmd_if
+    conditions: (binary_expression
+      (identifier)
+      (operator)
+      (number))
+    (cmd_set
+      (xrange
+        (range_block
+          (number)
+          (number))))))
+
+===========================================================================
+  if 2 - block with assignment
+===========================================================================
+if (x > 0) { x = 1 } else { x = 0 }
+---------------------------------------------------------------------------
+(source_file
+  (cmd_if
+    conditions: (binary_expression
+      (identifier)
+      (operator)
+      (number))
+    (assignment
+      (def_var
+        (identifier)
+        (number)))
+    (assignment
+      (def_var
+        (identifier)
+        (number)))))
+
+===========================================================================
+  if 3 - else if chain
+===========================================================================
+if (x > 0) { x = 1 } else if (x < 0) { x = -1 } else { x = 0 }
+---------------------------------------------------------------------------
+(source_file
+  (cmd_if
+    conditions: (binary_expression
+      (identifier)
+      (operator)
+      (number))
+    (assignment
+      (def_var
+        (identifier)
+        (number)))
+    conditions: (binary_expression
+      (identifier)
+      (operator)
+      (number))
+    (assignment
+      (def_var
+        (identifier)
+        (unary_expression
+          (operator)
+          (number))))
+    (assignment
+      (def_var
+        (identifier)
+        (number)))))
+
+===========================================================================
+  while 1 - simple counter
+===========================================================================
+while (i < 10) { i = i + 1 }
+---------------------------------------------------------------------------
+(source_file
+  (cmd_while
+    (parenthesized_expression
+      (binary_expression
+        (identifier)
+        (operator)
+        (number)))
+    (assignment
+      (def_var
+        (identifier)
+        (binary_expression
+          (identifier)
+          (operator)
+          (number))))))
+
+===========================================================================
+  while 2 - multiple statements
+===========================================================================
+while (i > 0) { i = i - 1 ; j = j + 1 }
+---------------------------------------------------------------------------
+(source_file
+  (cmd_while
+    (parenthesized_expression
+      (binary_expression
+        (identifier)
+        (operator)
+        (number)))
+    (assignment
+      (def_var
+        (identifier)
+        (binary_expression
+          (identifier)
+          (operator)
+          (number))))
+    (assignment
+      (def_var
+        (identifier)
+        (binary_expression
+          (identifier)
+          (operator)
+          (number))))))
+
+===========================================================================
+  do 1 - integer range
+===========================================================================
+do for [i=1:10] { set yrange [i:i+1] }
+---------------------------------------------------------------------------
+(source_file
+  (cmd_do
+    (for_block
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (number))
+    (cmd_set
+      (xrange
+        (range_block
+          (identifier)
+          (binary_expression
+            (identifier)
+            (operator)
+            (number)))))))
+
+===========================================================================
+  do 2 - range with increment
+===========================================================================
+do for [i=1:10:2] { set yrange [i:i+1] }
+---------------------------------------------------------------------------
+(source_file
+  (cmd_do
+    (for_block
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (number)
+      increment: (number))
+    (cmd_set
+      (xrange
+        (range_block
+          (identifier)
+          (binary_expression
+            (identifier)
+            (operator)
+            (number)))))))
+
+===========================================================================
+  do 3 - string list iteration
+===========================================================================
+do for [s in "a b c"] { x = 1 }
+---------------------------------------------------------------------------
+(source_file
+  (cmd_do
+    (for_block
+      start: (identifier)
+      (string_literal))
+    (assignment
+      (def_var
+        (identifier)
+        (number)))))
+
+===========================================================================
+  fit 1 - basic two-parameter fit
+===========================================================================
+fit f(x) "data.dat" via a,b
+---------------------------------------------------------------------------
+(source_file
+  (cmd_fit
+    func: (function
+      name: (identifier)
+      parameters: (parameter_list
+        (identifier)))
+    data: (string_literal)
+    var: (identifier)
+    var: (identifier)))
+
+===========================================================================
+  fit 2 - range with using and error weighting
+===========================================================================
+fit [0:10] f(x) "data.dat" u 1:2 yerr via a,b,c
+---------------------------------------------------------------------------
+(source_file
+  (cmd_fit
+    (range_block
+      (number)
+      (number))
+    func: (function
+      name: (identifier)
+      parameters: (parameter_list
+        (identifier)))
+    data: (string_literal)
+    (datafile_modifiers
+      (using
+        using: (number)
+        using: (number)))
+    var: (identifier)
+    var: (identifier)
+    var: (identifier)))
+
+===========================================================================
+  fit 3 - 2D fit with zerror
+===========================================================================
+fit f(x,y) "data.dat" u 1:2:3 zerror via a,b,c
+---------------------------------------------------------------------------
+(source_file
+  (cmd_fit
+    func: (function
+      name: (identifier)
+      parameters: (parameter_list
+        (identifier)
+        (identifier)))
+    data: (string_literal)
+    (datafile_modifiers
+      (using
+        using: (number)
+        using: (number)
+        using: (number)))
+    var: (identifier)
+    var: (identifier)
+    var: (identifier)))
+
+===========================================================================
+  stats 1 - basic filename
+===========================================================================
+stats "data.dat" using 1:2 name "S"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_stats
+    filename: (string_literal)
+    (datafile_modifiers
+      (using
+        using: (number)
+        using: (number)))
+    (string_literal)))
+
+===========================================================================
+  stats 2 - range and nooutput
+===========================================================================
+stats [0:100] "file.dat" nooutput
+---------------------------------------------------------------------------
+(source_file
+  (cmd_stats
+    ranges: (range_block
+      (number)
+      (number))
+    filename: (string_literal)))
+
+===========================================================================
+  splot 1 - file with using and style
+===========================================================================
+splot "data.dat" u 1:2:3 w pm3d
+---------------------------------------------------------------------------
+(source_file
+  (cmd_splot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (number)))
+      with: (plot_style))))
+
+===========================================================================
+  splot 2 - function surface with multiple elements
+===========================================================================
+splot sin(x)*cos(y) w pm3d, cos(x) w l lw 2
+---------------------------------------------------------------------------
+(source_file
+  (cmd_splot
+    (plot_element
+      data: (binary_expression
+        (function
+          name: (identifier)
+          parameters: (parameter_list
+            (identifier)))
+        (operator)
+        (function
+          name: (identifier)
+          parameters: (parameter_list
+            (identifier))))
+      with: (plot_style))
+    (plot_element
+      function: (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))
+      with: (plot_style)
+      (style_opts
+        lw: (number)))))
+
+===========================================================================
+  splot 3 - for loop over file indices
+===========================================================================
+splot for [i=1:3] "data.dat" index i u 1:2:3
+---------------------------------------------------------------------------
+(source_file
+  (cmd_splot
+    (plot_element
+      (for_block
+        start: (assignment
+          (def_var
+            (identifier)
+            (number)))
+        end: (number))
+      data: (string_literal)
+      (datafile_modifiers
+        (index
+          start_name: (identifier))
+        (using
+          using: (number)
+          using: (number)
+          using: (number))))))
+===========================================================================
+  splot 4 - sample with two assignment ranges
+===========================================================================
+splot sample [u=0:10][v=0:10] '++' using 1:2:(u*v)
+---------------------------------------------------------------------------
+(source_file
+  (cmd_splot
+    (plot_element
+      sample: (range_block
+        (assignment
+          (def_var
+            (identifier)
+            (number)))
+        (number))
+      sample: (range_block
+        (assignment
+          (def_var
+            (identifier)
+            (number)))
+        (number))
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (parenthesized_expression
+            (binary_expression
+              (identifier)
+              (operator)
+              (identifier))))))))
+
+===========================================================================
+  if - comma-separated conditions (assignment + comparison)
+===========================================================================
+if (a=1, b>0) { c = 2 }
+---------------------------------------------------------------------------
+(source_file
+  (cmd_if
+    conditions: (assignment
+      (def_var
+        (identifier)
+        (number)))
+    conditions: (binary_expression
+      (identifier)
+      (operator)
+      (number))
+    (assignment
+      (def_var
+        (identifier)
+        (number)))))
+

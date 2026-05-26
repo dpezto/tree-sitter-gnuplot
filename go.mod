@@ -1,4 +1,4 @@
-module github.com/tree-sitter/tree-sitter-gnuplot
+module github.com/dpezto/tree-sitter-gnuplot
 
 go 1.22
 

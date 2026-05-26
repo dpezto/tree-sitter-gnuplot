@@ -3,35 +3,35 @@
   "grammars": [
     {
       "name": "gnuplot",
-      "camelcase": "Gnuplot",
+      "camelcase": "yes",
+      "title": "gnuplot",
       "scope": "source.gnuplot",
-      "path": ".",
       "file-types": [
-        "gnuplot",
-        "gp",
-        "plt",
-        "plot",
-        "gnu"
-      ]
+        "gnuplot"
+      ],
+      "injection-regex": "^gnuplot$",
+      "class-name": "TreeSitterGnuplot"
     }
   ],
   "metadata": {
-    "version": "1.0.0",
-    "license": "ISC",
-    "description": "Gnuplot grammar for tree-sitter",
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "A tree-sitter grammar for gnuplot",
     "authors": [
       {
-        "name": "Dai López Jacinto"
+        "name": "Dai López Jacinto",
+        "email": "dpezto@gmail.com",
+        "url": "https://github.com/dpezto"
       }
     ],
     "links": {
-      "repository": "https://github.com/tree-sitter/tree-sitter-gnuplot"
+      "repository": "https://github.com/dpezto/tree-sitter-gnuplot",
+      "funding": "https://github.com/dpezto/tree-sitter-gnuplot"
     }
   },
   "bindings": {
     "c": true,
     "go": true,
-    "java": false,
     "node": true,
     "python": true,
     "rust": true,

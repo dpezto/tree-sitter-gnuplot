@@ -1,0 +1,97 @@
+===========================================================================
+  string - format specifier in double-quoted string
+===========================================================================
+x = "hello %d world"
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal
+        (format_specifier)))))
+
+===========================================================================
+  string - format specifier in single-quoted string
+===========================================================================
+x = '%uchar%uchar'
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal
+        (format_specifier)
+        (format_specifier)))))
+
+===========================================================================
+  string - escape sequence backslash-n
+===========================================================================
+x = "line\nnewline"
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal
+        (escape_sequence)))))
+
+===========================================================================
+  string - backslash is literal in single-quoted string
+===========================================================================
+x = '\n'
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal))))
+
+===========================================================================
+  string - escaped double quote inside double-quoted string
+===========================================================================
+x = "say \"hi\""
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal
+        (escape_sequence)
+        (escape_sequence)))))
+
+===========================================================================
+  string - LaTeX command is literal in single-quoted string
+===========================================================================
+x = '\qty{2}'
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal))))
+
+===========================================================================
+  string - double percent literal
+===========================================================================
+x = "100%%"
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal
+        (format_specifier)))))
+
+===========================================================================
+  string - sprintf with format specifier
+===========================================================================
+print sprintf("%8.5g", x)
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (function
+      name: (identifier)
+      parameters: (parameter_list
+        (string_literal
+          (format_specifier))
+        (identifier)))))

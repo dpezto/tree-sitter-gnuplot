@@ -1,0 +1,150 @@
+===========================================================================
+  terminal domterm
+===========================================================================
+set terminal domterm font 'Arial,12' fontscale 1.5 rounded lw 2 background '#000' animate
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (terminal
+      (t_domterm
+        (fontspec
+          font: (string_literal))
+        (fontscale
+          scale: (number))
+        (line_drawing_method)
+        (number)
+        (background
+          color: (string_literal))))))
+
+===========================================================================
+  terminal emf
+===========================================================================
+set terminal emf color enhanced rounded lw 2 dl 1.5 size 800,600 background '#fff' font 'Arial,10'
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (terminal
+      (t_emf
+        (mono_color)
+        (line_drawing_method)
+        (number)
+        (number)
+        (canvas_size
+          width: (number)
+          height: (number))
+        (background
+          color: (string_literal))
+        (fontspec
+          font: (string_literal))))))
+
+===========================================================================
+  terminal fig
+===========================================================================
+set terminal fig color landscape big pointsmax 500 font 'Times,10'
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (terminal
+      (t_fig
+        (mono_color)
+        (number)
+        (fontspec
+          font: (string_literal))))))
+
+===========================================================================
+  terminal hpgl
+===========================================================================
+set terminal hpgl 8 eject fontscale 1.5
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (terminal
+      (t_hpgl
+        n: (number)
+        (fontscale
+          scale: (number))))))
+
+===========================================================================
+  terminal jpeg
+===========================================================================
+set terminal jpeg enhanced interlace rounded font 'Arial,12' size 800,600 background '#fff'
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (terminal
+      (t_jpeg
+        (line_drawing_method)
+        (fontspec
+          font: (string_literal))
+        (canvas_size
+          width: (number)
+          height: (number))
+        (background
+          color: (string_literal))))))
+
+===========================================================================
+  terminal pcl5
+===========================================================================
+set terminal pcl5 landscape enhanced font 'Univers,12' pspoints linewidth 2 color 8
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (terminal
+      (t_pcl5
+        (fontspec
+          font: (string_literal))
+        (number)
+        (number)))))
+
+===========================================================================
+  terminal pict2e
+===========================================================================
+set terminal pict2e font 'Helvetica,10' size 5in,3.5in color linewidth 2 rounded texarrows smallpoints
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (terminal
+      (t_pic2e
+        (fontspec
+          font: (string_literal))
+        (canvas_size
+          width: (number)
+          height: (number))
+        (mono_color)
+        (number)))))
+
+===========================================================================
+  terminal postscript
+===========================================================================
+set terminal postscript landscape enhanced level3 color colortext dashlength 1.5 linewidth 2 rounded font 'Helvetica,14'
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (terminal
+      (t_postscript
+        (mono_color)
+        (number)
+        (number)
+        (line_drawing_method)
+        (fontspec
+          font: (string_literal))))))
+
+===========================================================================
+  terminal webp with animate
+===========================================================================
+set terminal webp size 800,600 font 'Arial,12' enhanced background '#fff' animate delay 100 loop 0 quality 85
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (terminal
+      (t_webp
+        (canvas_size
+          width: (number)
+          height: (number))
+        (fontspec
+          font: (string_literal))
+        (background
+          color: (string_literal))
+        (number)
+        (number)
+        (number)))))

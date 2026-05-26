@@ -1,10 +1,10 @@
-===============================================================================
+===========================================================================
   set arrow 1
-===============================================================================
+===========================================================================
 set arrow 1 heads size screen 0.015, 30, 90 filled front lw 1 lc rgb "gray30"
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 (source_file
-  (c_set
+  (cmd_set
     (arrow
       tag: (number)
         (arrow_opts)
@@ -24,13 +24,13 @@ set arrow 1 heads size screen 0.015, 30, 90 filled front lw 1 lc rgb "gray30"
             lc: (colorspec
               (string_literal)))))))
 
-===============================================================================
+===========================================================================
   set arrow 2
-===============================================================================
+===========================================================================
 set arrow 3 from graph 0,0 to -5,5,3
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 (source_file
-  (c_set
+  (cmd_set
     (arrow
       tag: (number)
       (position
@@ -39,80 +39,89 @@ set arrow 3 from graph 0,0 to -5,5,3
         y: (number))
       (position
         x: (unary_expression
+          (operator)
           (number))
         y: (number)
         z: (number)))))
 
-===============================================================================
+===========================================================================
   set label 1
-===============================================================================
-set label 1 at -1.12-10,funtion(0)-3 'label' right # comment
--------------------------------------------------------------------------------
+===========================================================================
+set label 1 at -1.12-10,function(0)-3 'label' right # comment
+---------------------------------------------------------------------------
 (source_file
-  (c_set
+  (cmd_set
     (label
       tag: (number)
       (label_opts
-        (position
+        at: (position
           x: (binary_expression
             (unary_expression
+              (operator)
               (number))
+            (operator)
             (number))
           y: (binary_expression
             (function
               name: (identifier)
-              arg: (number))
-            (number))
-            label: (string_literal))))))
-  (comment))
+              parameters: (parameter_list
+                (number)))
+            (operator)
+            (number)))
+        label: (string_literal))))
+  (comment
+    (comment_content)))
 
-===============================================================================
+===========================================================================
   set label 2
-===============================================================================
-set label tag label at MOUSE_X,MOUSE_Y textcolor ls 1
--------------------------------------------------------------------------------
+===========================================================================
+set label tag label at MOUSE_X,MOUSE_Y textcolor lt 1
+---------------------------------------------------------------------------
 (source_file
-  (c_set
+  (cmd_set
     (label
       tag: (identifier)
-      label: (identifier)
       (label_opts
-        (position
+        label: (identifier)
+        at: (position
           x: (identifier)
           y: (identifier))
         tc: (number)))))
 
-===============================================================================
+===========================================================================
   plot 1
-===============================================================================
+===========================================================================
 p sin(x) w l lw 2 not
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 (source_file
-  (c_plot
+  (cmd_plot
     (plot_element
-      data: (function
+      function: (function
         name: (identifier)
-        arg: (identifier))
+        parameters: (parameter_list
+          (identifier)))
       with: (plot_style)
       (style_opts
         lw: (number)))))
-===============================================================================
+===========================================================================
   plot 2
-===============================================================================
+===========================================================================
 plot for [k=2:5] file u 1:k w p pt 13 lc k t 'T='.k.'°C'
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 (source_file
-  (c_plot
+  (cmd_plot
     (plot_element
       (for_block
-        start: (var_def
-          var: (identifier)
-          (number))
+        start: (assignment
+          (def_var
+            (identifier)
+            (number)))
         end: (number))
       data: (identifier)
       (datafile_modifiers
-        using: (number)
-        using: (identifier))
+        (using
+          using: (number)
+          using: (identifier)))
       with: (plot_style)
       (style_opts
         pt: (number))
@@ -121,30 +130,597 @@ plot for [k=2:5] file u 1:k w p pt 13 lc k t 'T='.k.'°C'
       title: (binary_expression
         (binary_expression
           (string_literal)
+          (operator)
           (identifier))
+        (operator)
         (string_literal)))))
-===============================================================================
+===========================================================================
   plot 3
-===============================================================================
+===========================================================================
 plot [ ] [-2:sin(5)*-8] sin(x)**besj0(x)
--------------------------------------------------------------------------------
+---------------------------------------------------------------------------
 (source_file
-  (c_plot
+  (cmd_plot
     (plot_element
-      (range_block)
-      (range_block
+      sample: (range_block)
+      sample: (range_block
         (unary_expression
+          (operator)
           (number))
         (binary_expression
           (function
             name: (identifier)
-            arg: (number))
+            parameters: (parameter_list
+              (number)))
+          (operator)
           (unary_expression
+            (operator)
             (number))))
       data: (binary_expression
         (function
           name: (identifier)
-          arg: (identifier))
+          parameters: (parameter_list
+            (identifier)))
+        (operator)
         (function
           name: (identifier)
-          arg: (identifier))))))
+          parameters: (parameter_list
+            (identifier)))))))
+
+===========================================================================
+  plot 4 - unary expression as function
+===========================================================================
+plot -sin(x) w l
+---------------------------------------------------------------------------
+(source_file
+  (cmd_plot
+    (plot_element
+      function: (unary_expression
+        (operator)
+        (function
+          name: (identifier)
+          parameters: (parameter_list
+            (identifier))))
+      with: (plot_style))))
+
+===========================================================================
+  plot 5 - unary with sampling range
+===========================================================================
+plot [0:5] -x w l
+---------------------------------------------------------------------------
+(source_file
+  (cmd_plot
+    (plot_element
+      sample: (range_block
+        (number)
+        (number))
+      function: (unary_expression
+        (operator)
+        (identifier))
+      with: (plot_style))))
+===========================================================================
+  set title - string argument
+===========================================================================
+set title "My Title"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (title
+      title: (string_literal))))
+===========================================================================
+  plot - title string option
+===========================================================================
+plot sin(x) w l t 'My curve'
+---------------------------------------------------------------------------
+(source_file
+  (cmd_plot
+    (plot_element
+      function: (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))
+      with: (plot_style)
+      title: (string_literal))))
+===========================================================================
+  print - single expression
+===========================================================================
+print x
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (identifier)))
+===========================================================================
+  print - multiple expressions
+===========================================================================
+print x, y
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (identifier)
+    (identifier)))
+===========================================================================
+  set title - expression argument
+===========================================================================
+set title sprintf("Plot %d", n)
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (title
+      title: (function
+        name: (identifier)
+        parameters: (parameter_list
+          (string_literal
+            (format_specifier))
+          (identifier))))))
+===========================================================================
+  textcolor - linestyle
+===========================================================================
+set label 1 "text" tc ls 1
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (label
+      tag: (number)
+      (label_opts
+        label: (string_literal)
+        tc: (number)))))
+===========================================================================
+  textcolor - color name string
+===========================================================================
+set label 2 "text" textcolor "blue"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (label
+      tag: (number)
+      (label_opts
+        label: (string_literal)
+        tc: (string_literal)))))
+===========================================================================
+  paxis - label with function call
+===========================================================================
+set paxis 1 label sprintf("Score %d",i) offset 1
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (label_opts
+        label: (function
+          name: (identifier)
+          parameters: (parameter_list
+            (string_literal
+              (format_specifier))
+            (identifier))))
+      (position
+        x: (number)))))
+===========================================================================
+  stats - using with parenthesized comma-separated expressions
+===========================================================================
+stats data u (X[$0+1], Y[$0+1]) noout
+---------------------------------------------------------------------------
+(source_file
+  (cmd_stats
+    filename: (identifier)
+    (datafile_modifiers
+      (using
+        using: (array
+          name: (identifier)
+          (binary_expression
+            (unary_expression
+              (operator)
+              (number))
+            (operator)
+            (number)))
+        using: (array
+          name: (identifier)
+          (binary_expression
+            (unary_expression
+              (operator)
+              (number))
+            (operator)
+            (number)))))))
+===========================================================================
+  stats - using with parenthesized assignments
+===========================================================================
+stats data u (X[$0+1]=$1, Y[$0+1]=$2) noout
+---------------------------------------------------------------------------
+(source_file
+  (cmd_stats
+    filename: (identifier)
+    (datafile_modifiers
+      (using
+        using: (assignment
+          (def_array
+            (array
+              name: (identifier)
+              (binary_expression
+                (unary_expression
+                  (operator)
+                  (number))
+                (operator)
+                (number)))
+            (unary_expression
+              (operator)
+              (number))))
+        using: (assignment
+          (def_array
+            (array
+              name: (identifier)
+              (binary_expression
+                (unary_expression
+                  (operator)
+                  (number))
+                (operator)
+                (number)))
+            (unary_expression
+              (operator)
+              (number))))))))
+===========================================================================
+  convexhull - smooth then expand
+===========================================================================
+plot data convexhull smooth path expand 1
+---------------------------------------------------------------------------
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (identifier)
+      (datafile_modifiers
+        (hull)
+        smooth_data: (smooth_options)
+        increment: (number)))))
+===========================================================================
+  concavehull - smooth path around hull
+===========================================================================
+plot data smooth path concavehull smooth path expand 1
+---------------------------------------------------------------------------
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (identifier)
+      (datafile_modifiers
+        smooth_data: (smooth_options)
+        (hull)
+        smooth_data: (smooth_options)
+        increment: (number)))))
+
+===========================================================================
+  fit command abbreviations - f and fi both valid
+===========================================================================
+f fit(x) "data.dat" via a,b
+fi fit(x) "data.dat" via a,b
+---------------------------------------------------------------------------
+(source_file
+  (cmd_fit
+    func: (function
+      name: (identifier)
+      parameters: (parameter_list
+        (identifier)))
+    data: (string_literal)
+    var: (identifier)
+    var: (identifier))
+  (cmd_fit
+    func: (function
+      name: (identifier)
+      parameters: (parameter_list
+        (identifier)))
+    data: (string_literal)
+    var: (identifier)
+    var: (identifier)))
+
+===========================================================================
+  help command with and without topic
+===========================================================================
+help
+he integration
+hel "set title"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_help)
+  (cmd_help
+    (identifier))
+  (cmd_help
+    (string_literal)))
+
+===========================================================================
+  scanner disambiguation - command abbreviations vs identifier assignments
+===========================================================================
+f(x) = x**2
+f = 5
+pa(x) = cos(x) + 1
+pa = 0
+p(x) = x + 1
+p = 3.14
+he = 42
+he(x) = x * 2
+l = 100
+l(x) = log(x)
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_func
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))
+      (binary_expression
+        (identifier)
+        (operator)
+        (number))))
+  (assignment
+    (def_var
+      (identifier)
+      (number)))
+  (assignment
+    (def_func
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))
+      (binary_expression
+        (function
+          name: (identifier)
+          parameters: (parameter_list
+            (identifier)))
+        (operator)
+        (number))))
+  (assignment
+    (def_var
+      (identifier)
+      (number)))
+  (assignment
+    (def_func
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))
+      (binary_expression
+        (identifier)
+        (operator)
+        (number))))
+  (assignment
+    (def_var
+      (identifier)
+      (number)))
+  (assignment
+    (def_var
+      (identifier)
+      (number)))
+  (assignment
+    (def_func
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))
+      (binary_expression
+        (identifier)
+        (operator)
+        (number))))
+  (assignment
+    (def_var
+      (identifier)
+      (number)))
+  (assignment
+    (def_func
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier))))))
+===========================================================================
+  undefine - wildcard pattern
+===========================================================================
+undefine bar*
+---------------------------------------------------------------------------
+(source_file
+  (cmd_undefine))
+
+===========================================================================
+  plot - filledcurves with radius
+===========================================================================
+plot x with filledcurves r=10
+---------------------------------------------------------------------------
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (identifier)
+      with: (plot_style
+        (number)))))
+
+===========================================================================
+  plot - labels rotate variable
+===========================================================================
+plot x using 1:2:3 with labels rotate variable
+---------------------------------------------------------------------------
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (identifier)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (number)))
+      with: (plot_style)
+      (style_opts))))
+
+===========================================================================
+  set arrow - negative tag
+===========================================================================
+set arrow -1 from 0,0 to 1,1
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (arrow
+      tag: (unary_expression
+        (operator)
+        (number))
+      (position
+        x: (number)
+        y: (number))
+      (position
+        x: (number)
+        y: (number)))))
+
+===========================================================================
+  set label - negative tag
+===========================================================================
+set label -3 "text" at 1,2
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (label
+      tag: (unary_expression
+        (operator)
+        (number))
+      (label_opts
+        label: (string_literal)
+        at: (position
+          x: (number)
+          y: (number))))))
+
+===========================================================================
+  set paxis - expression for axis number
+===========================================================================
+set paxis (n+1) range [0:1]
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (parenthesized_expression
+        (binary_expression
+          (identifier)
+          (operator)
+          (number)))
+      (range_block
+        (number)
+        (number)))))
+
+===========================================================================
+  history - save last N commands to file
+===========================================================================
+hist 10 "hist.gp"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_history
+    (number)
+    (string_literal)))
+
+===========================================================================
+  import - function from shared library
+===========================================================================
+import myfun(x) from "mylib"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_import
+    (function
+      name: (identifier)
+      parameters: (parameter_list
+        (identifier)))
+    (string_literal)))
+
+===========================================================================
+  set nonlinear - log-scaled axis
+===========================================================================
+set nonlinear x via log10(x) inverse 10**x
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (nonlinear
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))
+      (binary_expression
+        (number)
+        (operator)
+        (identifier)))))
+
+===========================================================================
+  set object - rectangle from/to
+===========================================================================
+set object 1 rectangle from screen 0,0 to screen 1,1 behind fc rgb "gray" fs solid
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (object
+      index: (number)
+      (position
+        (system)
+        x: (number)
+        y: (number))
+      (position
+        (system)
+        x: (number)
+        y: (number))
+      fc: (colorspec
+        (string_literal))
+      (fill_style))))
+
+===========================================================================
+  set object - circle with size
+===========================================================================
+set object 2 circle center graph 0.5,0.5 size 0.1 fc "red"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (object
+      index: (number)
+      (position
+        (system)
+        x: (number)
+        y: (number))
+      (number)
+      fc: (string_literal))))
+
+===========================================================================
+  set origin - lower-left plot corner
+===========================================================================
+set origin 0.1,0.1
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    arg_opts: (origin
+      (number)
+      (number))))
+
+===========================================================================
+  set output - abbreviated as o
+===========================================================================
+set o "test.tex"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    arg_opts: (output
+      name: (string_literal))))
+
+===========================================================================
+  set origin - minimum two-char abbreviation or
+===========================================================================
+set or 0.1,0.1
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    arg_opts: (origin
+      (number)
+      (number))))
+
+===========================================================================
+  set pixmap - image file with position
+===========================================================================
+set pixmap 1 "bg.png" at screen 0,0 width 1.0 front
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (pixmap
+      index: (number)
+      (string_literal)
+      (position
+        (system)
+        x: (number)
+        y: (number))
+      (number))))
+
