@@ -86,6 +86,7 @@ module.exports = grammar({
 	conflicts: ($) => [
 		[$.paxis, $.tics_opts],
 		[$._paxis_label],
+		[$._tag_atom, $._expression],
 		[$.plot_element, $.style_opts],
 		[$.assignment, $._var_rhs],
 	],
@@ -1094,7 +1095,7 @@ module.exports = grammar({
 			prec.right(
 				seq(
 					key("label", 3, "arg"),
-					optional(field("tag", $._tag_atom)),
+					optional(prec.dynamic(2, field("tag", $._tag_atom))),
 					optional($.label_opts),
 				),
 			),
@@ -3222,16 +3223,15 @@ module.exports = grammar({
 				),
 			),
 
-		// label tags are always integers or identifiers, never strings — keeping strings
-		// out avoids a real LALR conflict with label_opts which also starts with string_literal.
+		// label tags are integers or bare identifiers (variable tags), never strings.
+		// No local prec — prec.dynamic(2) is applied to the field in the label rule so
+		// the tag GLR fork wins over the label-text fork when both parses are valid.
 		_tag_atom: ($) =>
-			prec.right(2, choice(
+			choice(
 				$.number,
 				$.unary_expression,
-				$.array,
-				$.function,
 				$.identifier,
-			)),
+			),
 
 		number: (_) => {
 			const hex_literal = seq(choice("0x", "0X"), /[\da-fA-F](_?[\da-fA-F])*/);
