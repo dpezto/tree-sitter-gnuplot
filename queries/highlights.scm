@@ -441,6 +441,8 @@
   "margins"
   ; datafile lc/fc palette shorthand
   "palette"
+  ; set fit quiet / results / verbose / brief
+  "fit_out"
 ] @variable.member
 
 ; -----------------------------------------------------------------------
