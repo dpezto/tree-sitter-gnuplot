@@ -1,0 +1,13 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tree-sitter-cli
+        run: npm install -g tree-sitter-cli
+      - name: Generate parser
+        run: tree-sitter generate
+      - name: Run tests
+        run: tree-sitter test

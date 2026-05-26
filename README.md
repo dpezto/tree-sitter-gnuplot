@@ -1,4 +1,5 @@
 # tree-sitter-gnuplot
+[![CI](https://github.com/dpezto/tree-sitter-gnuplot/actions/workflows/ci.yml/badge.svg)](https://github.com/dpezto/tree-sitter-gnuplot/actions/workflows/ci.yml)
 [![PRs Welcome][prs-badge]](https://makeapullrequest.com)
 
 A tree-sitter grammar for [gnuplot 6.x](http://gnuplot.info).
