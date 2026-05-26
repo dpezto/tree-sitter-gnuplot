@@ -453,7 +453,6 @@
   "color"
   "transparent"
   "enhanced"
-  "background"
   "nobackground"
   "separator"
   (hull)
