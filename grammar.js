@@ -2623,7 +2623,7 @@ module.exports = grammar({
 				),
 			),
 
-		cmd_system: ($) => seq(alias("system", "cmd"), $._expression),
+		cmd_system: ($) => seq(alias(choice("system", "!"), "cmd"), $._expression),
 
 		cmd_test: ($) =>
 			prec.left(
