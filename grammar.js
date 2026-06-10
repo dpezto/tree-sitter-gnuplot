@@ -94,6 +94,7 @@ module.exports = grammar({
 		[$.plot_element, $.style_opts],
 		[$.assignment, $._var_rhs],
 		[$._tag_atom, $._expression],
+		[$._command, $.multiplot_block],
 	],
 
 	rules: {
@@ -131,6 +132,9 @@ module.exports = grammar({
 				$.cmd_unset,
 				$.cmd_vfill,
 				$.cmd_while,
+				$.multiplot_block,
+				// standalone `unset multiplot` (defensive use, no opener)
+				alias($._unset_multiplot, $.cmd_unset),
 			),
 
 		assignment: ($) =>
@@ -169,6 +173,8 @@ module.exports = grammar({
 
 		macro: ($) => token(seq("@", IDENTIFIER)),
 
+		//-------------------------------------------------------------------------
+		// Commands (cmd_*)
 		//-------------------------------------------------------------------------
 		cmd_bind: ($) =>
 			prec.right(
@@ -468,6 +474,9 @@ module.exports = grammar({
 				$._argument_set_show,
 			),
 
+		//-------------------------------------------------------------------------
+		// Set/show arguments (_argument_set_show and its option rules)
+		//-------------------------------------------------------------------------
 		_argument_set_show: ($) =>
 			prec.right(
 				choice(
@@ -531,7 +540,6 @@ module.exports = grammar({
 					key("minussign", 5, "arg"),
 					$.monochrome,
 					seq(key("mouse", 2, "arg"), field("arg_opts", optional($.mouse))),
-					$.multiplot,
 					$.mxtics,
 					$.nonlinear,
 					$.object,
@@ -1199,6 +1207,30 @@ module.exports = grammar({
 					),
 				),
 			),
+
+		// `set multiplot … unset multiplot` parsed as one block so editors can
+		// fold the region. Opener/closer keep the cmd_set/cmd_unset node names;
+		// `multiplot` lives here (and in cmd_show), not in _argument_set_show.
+		// Closed form outranks unclosed-block + standalone-unset (prec.dynamic);
+		// an unclosed block swallows statements to EOF.
+		multiplot_block: ($) =>
+			choice(
+				prec.dynamic(
+					1,
+					seq(
+						alias($._set_multiplot, $.cmd_set),
+						repeat($._statement),
+						alias($._unset_multiplot, $.cmd_unset),
+					),
+				),
+				prec.right(
+					seq(alias($._set_multiplot, $.cmd_set), repeat($._statement)),
+				),
+			),
+
+		_set_multiplot: ($) => seq(key("set", 2, "cmd"), $.multiplot),
+
+		_unset_multiplot: ($) => seq(key("unset", 3, "cmd"), $.multiplot),
 
 		mxtics: ($) =>
 			prec.left(
@@ -2557,6 +2589,7 @@ module.exports = grammar({
 				key("show", 2, "cmd"),
 				choice(
 					$._argument_set_show,
+					$.multiplot,
 					key("colornames", 6, "arg"),
 					key("functions", 3, "arg"),
 					key("plot", 1),
@@ -2651,6 +2684,9 @@ module.exports = grammar({
 				),
 			),
 
+		//-------------------------------------------------------------------------
+		// Data/file handling (datafile_modifiers, using, every, index)
+		//-------------------------------------------------------------------------
 		datafile_modifiers: ($) =>
 			repeat1(
 				choice(
@@ -3156,8 +3192,10 @@ module.exports = grammar({
 				key("character", 4),
 				"polar", // NOTE: v6 not in docs but in examples
 			),
-		//-------------------------------------------------------------------------
 
+		//-------------------------------------------------------------------------
+		// Expressions
+		//-------------------------------------------------------------------------
 		_expression: ($) =>
 			prec.left(
 				choice(
@@ -3408,6 +3446,9 @@ module.exports = grammar({
 	},
 });
 
+//---------------------------------------------------------------------------
+// Helper functions (list/bracket builders + keyword abbreviation system)
+//---------------------------------------------------------------------------
 function sep(separator, rule, rep = 0, assoc = "") {
 	const repeatedRule =
 		rep === 0 ? repeat(seq(separator, rule)) : repeat1(seq(separator, rule));

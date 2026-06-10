@@ -129,7 +129,6 @@
   "plane"
   "viewaxis"
   "axes_opts"
-  (columnheader)
   ; time units (set xdata time / timefmt)
   "seconds"
   "minutes"
