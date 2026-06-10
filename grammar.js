@@ -93,6 +93,7 @@ module.exports = grammar({
 		[$._paxis_label],
 		[$.plot_element, $.style_opts],
 		[$.assignment, $._var_rhs],
+		[$._tag_atom, $._expression],
 	],
 
 	rules: {
@@ -1056,7 +1057,7 @@ module.exports = grammar({
 			prec.right(
 				seq(
 					key("label", 3, "arg"),
-					optional(field("tag", $._tag_atom)),
+					optional(prec.dynamic(2, field("tag", $._tag_atom))),
 					optional($.label_opts),
 				),
 			),
@@ -3179,13 +3180,11 @@ module.exports = grammar({
 		// label tags are always integers or identifiers, never strings — keeping strings
 		// out avoids a real LALR conflict with label_opts which also starts with string_literal.
 		_tag_atom: ($) =>
-			prec.right(2, choice(
+			choice(
 				$.number,
 				$.unary_expression,
-				$.array,
-				$.function,
 				$.identifier,
-			)),
+			),
 
 		number: (_) => {
 			const hex_literal = seq(choice("0x", "0X"), /[\da-fA-F](_?[\da-fA-F])*/);
