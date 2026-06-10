@@ -16,7 +16,74 @@ enum TokenType {
   CMD_PRINT_KW,  // pr / pri / prin / print
   CMD_HELP_KW,   // he / hel / help
   CMD_LOAD_KW,   // l / lo / loa / load
+  KW_PLT_ST,       // plain plot style names (lines, points, boxes, ...)
+  KW_CMD_BARE,     // argument-less commands: break/clear/continue/pwd/replot/reread/refresh
+  KW_CMD_OPTEXPR,  // commands with optional expression: raise/lower/vclear/toggle
+  KW_CMD_EXIT,     // exit / quit
+  KW_CMD_EXPR,     // commands with required expression: cd/evaluate
 };
+
+// Keyword table entry for prefix-abbreviation matching.
+// A word matches when min_chars <= len(word) <= len(keyword) and word is a
+// prefix of keyword, or when word equals alt exactly.
+typedef struct {
+  const char* keyword;
+  const char* alt;
+  int min_chars;
+} KwEntry;
+
+// Plain plot styles: leaf nodes in plot_element with no style-specific
+// continuation. Styles with trailing options (labels, vectors, isosurface,
+// candlesticks, ellipses, filledcurves, fillsteps, image, pm3d) stay as
+// regex tokens in grammar.js. min_chars mirror the old reg() calls.
+static const KwEntry PLT_STYLE_KWS[] = {
+    {"linespoints", "lp", 6},  // before "lines": "linesp..." must not be cut at 5
+    {"lines", NULL, 1},
+    {"points", NULL, 1},
+    {"financebars", NULL, 3},
+    {"dots", NULL, 1},
+    {"impulses", NULL, 1},
+    {"surface", NULL, 3},
+    {"steps", NULL, 2},
+    {"fsteps", NULL, 6},
+    {"histeps", NULL, 7},
+    {"arrows", NULL, 3},
+    {"sectors", NULL, 3},
+    {"xerrorbars", NULL, 9},    // reg("errorbars", -1): "errorbar(s)?"
+    {"yerrorbars", NULL, 9},
+    {"xyerrorbars", NULL, 10},
+    {"xerrorlines", NULL, 11},
+    {"yerrorlines", NULL, 11},
+    {"xyerrorlines", NULL, 12},
+    {"parallelaxes", NULL, 12},
+    {"boxerrorbars", NULL, 12},
+    {"boxxyerror", NULL, 10},
+    {"boxplot", NULL, 7},
+    {"boxes", NULL, 5},
+    {"circles", NULL, 7},
+    {"zerrorfill", NULL, 6},
+    {"contourfill", NULL, 11},
+    {"spiderplot", NULL, 6},
+    {"histograms", NULL, 4},
+    {"rgbalpha", NULL, 8},
+    {"rgbimage", NULL, 8},
+    {"polygons", NULL, 8},
+    {"table", NULL, 5},
+    {"mask", NULL, 4},
+    {NULL, NULL, 0},
+};
+
+static bool match_kw_table(const char* word, int wlen, const KwEntry* table) {
+  for (int i = 0; table[i].keyword != NULL; i++) {
+    const KwEntry* e = &table[i];
+    int klen = (int)strlen(e->keyword);
+    if (wlen >= e->min_chars && wlen <= klen && strncmp(word, e->keyword, (size_t)wlen) == 0)
+      return true;
+    if (e->alt && strcmp(word, e->alt) == 0)
+      return true;
+  }
+  return false;
+}
 
 typedef struct {
   char word[MAX_WORD_LENGTH];
@@ -29,8 +96,12 @@ static inline void skip(TSLexer* lexer) {
   lexer->advance(lexer, true);
 }
 
+// Mirror the grammar's extras regex /\s|\\|;/ — the internal lexer skips these
+// characters inside one lex call, so the external scanner must skip them too;
+// otherwise it fails at a ';' and never gets a second chance at the word that
+// follows (the internal lexer consumes it as identifier in the same call).
 static inline void skip_whitespaces(TSLexer* lexer) {
-  while (iswspace(lexer->lookahead)) skip(lexer);
+  while (iswspace(lexer->lookahead) || lexer->lookahead == ';' || lexer->lookahead == '\\') skip(lexer);
 }
 
 void* tree_sitter_gnuplot_external_scanner_create() {
@@ -188,6 +259,21 @@ static bool scan_ambiguous_cmd(TSLexer* lexer, const bool* valid_symbols) {
     sym = CMD_HELP_KW;
   else if (MATCH(CMD_LOAD_KW, "load", 1))
     sym = CMD_LOAD_KW;
+  // Argument-less commands collapsed into one token (continuation identical):
+  else if (MATCH(KW_CMD_BARE, "break", 5) || MATCH(KW_CMD_BARE, "clear", 2) ||
+           MATCH(KW_CMD_BARE, "continue", 8) || MATCH(KW_CMD_BARE, "pwd", 3) ||
+           MATCH(KW_CMD_BARE, "replot", 3) || MATCH(KW_CMD_BARE, "reread", 6) ||
+           MATCH(KW_CMD_BARE, "refresh", 3))
+    sym = KW_CMD_BARE;
+  // Commands followed by one optional expression:
+  else if (MATCH(KW_CMD_OPTEXPR, "raise", 2) || MATCH(KW_CMD_OPTEXPR, "lower", 3) ||
+           MATCH(KW_CMD_OPTEXPR, "vclear", 6) || MATCH(KW_CMD_OPTEXPR, "toggle", 6))
+    sym = KW_CMD_OPTEXPR;
+  else if (MATCH(KW_CMD_EXIT, "exit", 2) || MATCH(KW_CMD_EXIT, "quit", 1))
+    sym = KW_CMD_EXIT;
+  // Commands followed by one required expression:
+  else if (MATCH(KW_CMD_EXPR, "cd", 2) || MATCH(KW_CMD_EXPR, "evaluate", 4))
+    sym = KW_CMD_EXPR;
 #undef MATCH
 
   if (sym == -1)
@@ -196,6 +282,32 @@ static bool scan_ambiguous_cmd(TSLexer* lexer, const bool* valid_symbols) {
     return false;
 
   lexer->result_symbol = sym;
+  return true;
+}
+
+// Read the word at the current position and match it against the plain plot
+// style table. Only valid after `with` (gated by valid_symbols), so no
+// assignment-context check is needed.
+static bool scan_plot_style(TSLexer* lexer) {
+  char word[16] = {0};
+  int word_len = 0;
+
+  while (word_len < 15 && is_word_char(lexer->lookahead)) {
+    word[word_len++] = (char)lexer->lookahead;
+    consume(lexer);
+  }
+  word[word_len] = '\0';
+
+  if (word_len == 0)
+    return false;
+  if (is_word_char(lexer->lookahead))
+    return false;  // word longer than any style name
+
+  if (!match_kw_table(word, word_len, PLT_STYLE_KWS))
+    return false;
+
+  lexer->mark_end(lexer);
+  lexer->result_symbol = KW_PLT_ST;
   return true;
 }
 
@@ -217,10 +329,17 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
   // chance to match them.
   bool any_cmd_valid = valid_symbols[CMD_FIT_KW] || valid_symbols[CMD_PLOT_KW] || valid_symbols[CMD_SPLOT_KW] ||
                        valid_symbols[CMD_PAUSE_KW] || valid_symbols[CMD_PRINT_KW] || valid_symbols[CMD_HELP_KW] ||
-                       valid_symbols[CMD_LOAD_KW];
+                       valid_symbols[CMD_LOAD_KW] || valid_symbols[KW_CMD_BARE] || valid_symbols[KW_CMD_OPTEXPR] ||
+                       valid_symbols[KW_CMD_EXIT] || valid_symbols[KW_CMD_EXPR];
 
   if (any_cmd_valid && scan_ambiguous_cmd(lexer, valid_symbols)) {
     return true;  // result_symbol set inside scan_ambiguous_cmd
+  }
+
+  // Before DATABLOCK_START: during error recovery all externals are valid and
+  // scan_datablock_start would swallow style words.
+  if (valid_symbols[KW_PLT_ST] && !any_cmd_valid && scan_plot_style(lexer)) {
+    return true;
   }
 
   if (valid_symbols[DATABLOCK_START] && scan_datablock_start(lexer, s)) {
