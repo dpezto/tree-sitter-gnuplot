@@ -45,8 +45,4 @@ CLAUDE.local.md
 *_md_ltex.json
 graphify-out/
 
-# tree_sitter/ headers are committed; generated parser artifacts are not —
-# `tree-sitter generate` runs via the npm `prepare` script and in CI.
 src/parser.c
-src/grammar.json
-src/node-types.json
