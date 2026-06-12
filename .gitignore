@@ -44,5 +44,3 @@ CLAUDE.local.md
 
 *_md_ltex.json
 graphify-out/
-
-src/parser.c

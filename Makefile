@@ -4,7 +4,7 @@ endif
 
 LANGUAGE_NAME := tree-sitter-gnuplot
 HOMEPAGE_URL := https://github.com/dpezto/tree-sitter-gnuplot
-VERSION := 1.1.0
+VERSION := 1.1.2
 
 # repository
 SRC_DIR := src
