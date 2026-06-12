@@ -1,0 +1,104 @@
+===========================================================================
+  multiplot 1 - paired set/unset block
+===========================================================================
+set multiplot layout 2,2
+plot x
+unset multiplot
+---------------------------------------------------------------------------
+(source_file
+  (multiplot_block
+    (cmd_set
+      (multiplot
+        rows: (number)
+        cols: (number)))
+    (cmd_plot
+      (plot_element
+        data: (identifier)))
+    (cmd_unset
+      (multiplot))))
+
+===========================================================================
+  multiplot 2 - two consecutive blocks pair exactly
+===========================================================================
+set multiplot
+plot x
+unset multiplot
+set multiplot
+plot y
+unset multiplot
+---------------------------------------------------------------------------
+(source_file
+  (multiplot_block
+    (cmd_set
+      (multiplot))
+    (cmd_plot
+      (plot_element
+        data: (identifier)))
+    (cmd_unset
+      (multiplot)))
+  (multiplot_block
+    (cmd_set
+      (multiplot))
+    (cmd_plot
+      (plot_element
+        data: (identifier)))
+    (cmd_unset
+      (multiplot))))
+
+===========================================================================
+  multiplot 3 - standalone unset multiplot
+===========================================================================
+unset multiplot
+---------------------------------------------------------------------------
+(source_file
+  (cmd_unset
+    (multiplot)))
+
+===========================================================================
+  multiplot 4 - unclosed block runs to EOF
+===========================================================================
+set multiplot
+plot x
+---------------------------------------------------------------------------
+(source_file
+  (multiplot_block
+    (cmd_set
+      (multiplot))
+    (cmd_plot
+      (plot_element
+        data: (identifier)))))
+
+===========================================================================
+  multiplot 5 - show multiplot
+===========================================================================
+show multiplot
+---------------------------------------------------------------------------
+(source_file
+  (cmd_show
+    (multiplot)))
+
+===========================================================================
+  multiplot 6 - block with title and options
+===========================================================================
+set multiplot layout 2,2 spacing 0 margins 0.05,0.95,0.0,0.85 title "All"
+plot x
+unset multiplot
+---------------------------------------------------------------------------
+(source_file
+  (multiplot_block
+    (cmd_set
+      (multiplot
+        rows: (number)
+        cols: (number)
+        xspacing: (number)
+        (margin
+          lm: (number)
+          rm: (number)
+          bm: (number)
+          tm: (number))
+        title: (string_literal)))
+    (cmd_plot
+      (plot_element
+        data: (identifier)))
+    (cmd_unset
+      (multiplot))))

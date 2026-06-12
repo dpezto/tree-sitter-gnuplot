@@ -77,6 +77,11 @@ module.exports = grammar({
 		$.cmd_print_kw,  // pr / pri / prin / print
 		$.cmd_help_kw,   // he / hel / help
 		$.cmd_load_kw,   // l / lo / loa / load
+		$.kw_plt_st,      // plain plot style names — see PLT_STYLE_KWS in scanner.c
+		$.kw_cmd_bare,    // break/clear/continue/pwd/replot/reread/refresh
+		$.kw_cmd_optexpr, // raise/lower/vclear/toggle
+		$.kw_cmd_exit,    // exit/quit
+		$.kw_cmd_expr,    // cd/evaluate
 	],
 
 	extras: ($) => [$.comment, /\s|\\|;/],
@@ -88,6 +93,8 @@ module.exports = grammar({
 		[$._paxis_label],
 		[$.plot_element, $.style_opts],
 		[$.assignment, $._var_rhs],
+		[$._tag_atom, $._expression],
+		[$._command, $.multiplot_block],
 	],
 
 	rules: {
@@ -98,13 +105,10 @@ module.exports = grammar({
 		_command: ($) =>
 			choice(
 				$.cmd_bind,
-				$.cmd_break,
-				$.cmd_cd,
+				$.cmd_bare,
 				$.cmd_call,
-				$.cmd_clear,
-				$.cmd_continue,
 				$.cmd_do,
-				$.cmd_eval,
+				$.cmd_expr,
 				$.cmd_exit,
 				$.cmd_fit,
 				$.cmd_help,
@@ -112,15 +116,10 @@ module.exports = grammar({
 				$.cmd_if,
 				$.cmd_import,
 				$.cmd_load,
-				$.cmd_lower,
+				$.cmd_opt_expr,
 				$.cmd_pause,
 				$.cmd_plot,
 				$.cmd_print,
-				$.cmd_pwd,
-				$.cmd_raise,
-				$.cmd_refresh,
-				$.cmd_replot,
-				$.cmd_reread,
 				$.cmd_reset,
 				$.cmd_save,
 				$.cmd_set,
@@ -129,12 +128,13 @@ module.exports = grammar({
 				$.cmd_stats,
 				$.cmd_system,
 				$.cmd_test,
-				$.cmd_toggle,
 				$.cmd_undefine,
 				$.cmd_unset,
-				$.cmd_vclear,
 				$.cmd_vfill,
 				$.cmd_while,
+				$.multiplot_block,
+				// standalone `unset multiplot` (defensive use, no opener)
+				alias($._unset_multiplot, $.cmd_unset),
 			),
 
 		assignment: ($) =>
@@ -174,6 +174,8 @@ module.exports = grammar({
 		macro: ($) => token(seq("@", IDENTIFIER)),
 
 		//-------------------------------------------------------------------------
+		// Commands (cmd_*)
+		//-------------------------------------------------------------------------
 		cmd_bind: ($) =>
 			prec.right(
 				seq(
@@ -188,28 +190,37 @@ module.exports = grammar({
 				),
 			),
 
-		cmd_break: ($) => alias("break", "cmd"),
+		// break/clear/continue/pwd/replot/reread/refresh — one scanner token,
+		// identical (empty) continuation. See KW_CMD_BARE in scanner.c.
+		cmd_bare: ($) => alias($.kw_cmd_bare, "cmd"),
+
+		// raise/lower/vclear/toggle — one scanner token + optional expression
+		// ("all" is only meaningful for toggle; accepted permissively for the rest).
+		cmd_opt_expr: ($) =>
+			prec.left(
+				seq(
+					alias($.kw_cmd_optexpr, "cmd"),
+					optional(choice($._expression, "all")),
+				),
+			),
+
+		// cd/evaluate — one scanner token + required expression.
+		cmd_expr: ($) => seq(alias($.kw_cmd_expr, "cmd"), $._expression),
 
 		cmd_call: ($) =>
 			prec.right(seq(alias("call", "cmd"), $._expression, repeat($._expression))),
 
-		cmd_cd: ($) => seq(alias("cd", "cmd"), $._expression),
-
-		cmd_clear: ($) => key("clear", 2, "cmd"),
-
-		cmd_continue: ($) => alias("continue", "cmd"),
-
 		cmd_do: ($) => seq("do", $.for_block, surround("{}", repeat($._statement))),
-
-		cmd_eval: ($) => seq(key("evaluate", 4, "cmd"), $._expression),
 
 		cmd_exit: ($) =>
 			prec.left(
 				seq(
-					choice(key("exit", 2, "cmd"), key("quit", 1, "cmd")),
-					choice(
-						"gnuplot",
-						seq(choice("message", "status"), optional($._expression)),
+					alias($.kw_cmd_exit, "cmd"),
+					optional(
+						choice(
+							"gnuplot",
+							seq(choice("message", "status"), optional($._expression)),
+						),
 					),
 				),
 			),
@@ -288,9 +299,6 @@ module.exports = grammar({
 			),
 
 		cmd_load: ($) => seq(alias($.cmd_load_kw, "cmd"), $._expression),
-
-		cmd_lower: ($) =>
-			prec.left(seq(key("lower", 3, "cmd"), optional($._expression))),
 
 		cmd_pause: ($) =>
 			prec.right(
@@ -392,41 +400,20 @@ module.exports = grammar({
 		plot_style: ($) =>
 			prec.left(
 				choice(
-					// NOTE: line, point, and text properties
-					key("lines", 1, "plt_st"),
-					key("points", 1, "plt_st"),
-					key1("plt_st", reg("linespoints", 6, "lp")),
-					key("financebars", 3, "plt_st"),
-					key("dots", 1, "plt_st"),
-					key("impulses", 1, "plt_st"),
+					// Plain styles (no style-specific continuation) are matched by the
+					// external scanner as one token — see PLT_STYLE_KWS in scanner.c.
+					alias($.kw_plt_st, "plt_st"),
+					// Styles with trailing options keep their own regex token:
 					seq(key("labels", 3, "plt_st"), optional($.label_opts)),
-					key("surface", 3, "plt_st"),
-					key("steps", 2, "plt_st"),
-					key("fsteps", 6, "plt_st"),
-					key("histeps", 7, "plt_st"),
-					key("arrows", 3, "plt_st"),
 					seq(key("vectors", 3, "plt_st"), optional($.arrow_opts)),
-					key("sectors", 3, "plt_st"),
-					key1("plt_st", /(x|y|xy)/, reg("errorbars", -1)),
-					key1("plt_st", /(x|y|xy)/, "errorlines"),
-					key("parallelaxes", 12, "plt_st"),
-					// NOTE: line, point, text and fill properties
-					key("boxes", 5, "plt_st"),
-					key("boxerrorbars", 12, "plt_st"),
-					key("boxxyerror", 10, "plt_st"),
 					seq(
 						key("isosurface", 10, "plt_st"),
 						optional(seq("level", $._expression)),
 					),
-					key("boxplot", 7, "plt_st"),
 					seq(
 						key("candlesticks", 12, "plt_st"),
 						optional(key("whiskerbars", -1)),
 					),
-					key("circles", 7, "plt_st"),
-					key("zerrorfill", 6, "plt_st"),
-					key("contourfill", 11, "plt_st"),
-					key("spiderplot", 6, "plt_st"),
 					seq(key("ellipses", 8, "plt_st"), optional($.ellipse)),
 					seq(
 						key("filledcurves", 7, "plt_st"),
@@ -454,30 +441,12 @@ module.exports = grammar({
 						optional(choice("above", "below")),
 						optional(seq("y", "=", $._expression)),
 					),
-					key("histograms", 4, "plt_st"),
 					seq(key("image", 3, "plt_st"), optional("pixels")),
 					seq(key("pm3d", 4, "plt_st"), optional(alias($._pm3d, $.pm3d))),
-					key("rgbalpha", 8, "plt_st"),
-					key("rgbimage", 8, "plt_st"),
-					key("polygons", 8, "plt_st"),
-					// NOTE: special styles produce no immediate plot
-					key("table", 5, "plt_st"),
-					key("mask", 4, "plt_st"),
 				),
 			),
 
 		cmd_print: ($) => seq(alias($.cmd_print_kw, "cmd"), sep(",", $._expression)),
-
-		cmd_pwd: ($) => alias("pwd", "cmd"),
-
-		cmd_raise: ($) =>
-			prec.left(seq(key("raise", 2, "cmd"), optional($._expression))),
-
-		cmd_replot: ($) => key("replot", 3, "cmd"),
-
-		cmd_reread: ($) => alias("reread", "cmd"),
-
-		cmd_refresh: ($) => key("refresh", 3, "cmd"),
 
 		cmd_reset: ($) =>
 			prec.right(seq(alias("reset", "cmd"), optional(choice("bind", "errors", "session")))),
@@ -505,6 +474,9 @@ module.exports = grammar({
 				$._argument_set_show,
 			),
 
+		//-------------------------------------------------------------------------
+		// Set/show arguments (_argument_set_show and its option rules)
+		//-------------------------------------------------------------------------
 		_argument_set_show: ($) =>
 			prec.right(
 				choice(
@@ -568,7 +540,6 @@ module.exports = grammar({
 					key("minussign", 5, "arg"),
 					$.monochrome,
 					seq(key("mouse", 2, "arg"), field("arg_opts", optional($.mouse))),
-					$.multiplot,
 					$.mxtics,
 					$.nonlinear,
 					$.object,
@@ -1094,7 +1065,7 @@ module.exports = grammar({
 			prec.right(
 				seq(
 					key("label", 3, "arg"),
-					optional(field("tag", $._tag_atom)),
+					optional(prec.dynamic(2, field("tag", $._tag_atom))),
 					optional($.label_opts),
 				),
 			),
@@ -1236,6 +1207,30 @@ module.exports = grammar({
 					),
 				),
 			),
+
+		// `set multiplot … unset multiplot` parsed as one block so editors can
+		// fold the region. Opener/closer keep the cmd_set/cmd_unset node names;
+		// `multiplot` lives here (and in cmd_show), not in _argument_set_show.
+		// Closed form outranks unclosed-block + standalone-unset (prec.dynamic);
+		// an unclosed block swallows statements to EOF.
+		multiplot_block: ($) =>
+			choice(
+				prec.dynamic(
+					1,
+					seq(
+						alias($._set_multiplot, $.cmd_set),
+						repeat($._statement),
+						alias($._unset_multiplot, $.cmd_unset),
+					),
+				),
+				prec.right(
+					seq(alias($._set_multiplot, $.cmd_set), repeat($._statement)),
+				),
+			),
+
+		_set_multiplot: ($) => seq(key("set", 2, "cmd"), $.multiplot),
+
+		_unset_multiplot: ($) => seq(key("unset", 3, "cmd"), $.multiplot),
 
 		mxtics: ($) =>
 			prec.left(
@@ -2594,6 +2589,7 @@ module.exports = grammar({
 				key("show", 2, "cmd"),
 				choice(
 					$._argument_set_show,
+					$.multiplot,
 					key("colornames", 6, "arg"),
 					key("functions", 3, "arg"),
 					key("plot", 1),
@@ -2623,16 +2619,11 @@ module.exports = grammar({
 				),
 			),
 
-		cmd_system: ($) => seq(alias("system", "cmd"), $._expression),
+		cmd_system: ($) => seq(alias(choice("system", "!"), "cmd"), $._expression),
 
 		cmd_test: ($) =>
 			prec.left(
 				seq(alias("test", "cmd"), optional(choice("palette", "terminal"))),
-			),
-
-		cmd_toggle: ($) =>
-			prec.left(
-				seq(alias("toggle", "cmd"), optional(choice($._expression, "all"))),
 			),
 
 		cmd_undefine: ($) =>
@@ -2646,9 +2637,6 @@ module.exports = grammar({
 				seq(key("unset", 3, "cmd"), optional($.for_block)),
 				$._argument_set_show,
 			),
-
-		cmd_vclear: ($) =>
-			prec.left(seq(alias("vclear", "cmd"), optional($._expression))),
 
 		cmd_vfill: ($) =>
 			seq(
@@ -2696,6 +2684,9 @@ module.exports = grammar({
 				),
 			),
 
+		//-------------------------------------------------------------------------
+		// Data/file handling (datafile_modifiers, using, every, index)
+		//-------------------------------------------------------------------------
 		datafile_modifiers: ($) =>
 			repeat1(
 				choice(
@@ -2839,8 +2830,8 @@ module.exports = grammar({
 						seq(K.lw, field("lw", $._expression)),
 						$._linecolor,
 						seq(K.dt, field("dt", $.dash_opts)),
-						seq(K.pt, field("pt", $._expression)),
-						seq(K.ps, field("ps", $._expression)),
+						seq(K.pt, field("pt", choice("variable", $._expression))),
+						seq(K.ps, field("ps", choice("variable", $._expression))),
 						seq(K.pi, field("pi", $._expression)),
 						seq(K.pn, field("pn", $._expression)),
 						seq(K.as, field("as", $._expression)),
@@ -3201,8 +3192,10 @@ module.exports = grammar({
 				key("character", 4),
 				"polar", // NOTE: v6 not in docs but in examples
 			),
-		//-------------------------------------------------------------------------
 
+		//-------------------------------------------------------------------------
+		// Expressions
+		//-------------------------------------------------------------------------
 		_expression: ($) =>
 			prec.left(
 				choice(
@@ -3225,13 +3218,11 @@ module.exports = grammar({
 		// label tags are always integers or identifiers, never strings — keeping strings
 		// out avoids a real LALR conflict with label_opts which also starts with string_literal.
 		_tag_atom: ($) =>
-			prec.right(2, choice(
+			choice(
 				$.number,
 				$.unary_expression,
-				$.array,
-				$.function,
 				$.identifier,
-			)),
+			),
 
 		number: (_) => {
 			const hex_literal = seq(choice("0x", "0X"), /[\da-fA-F](_?[\da-fA-F])*/);
@@ -3455,6 +3446,9 @@ module.exports = grammar({
 	},
 });
 
+//---------------------------------------------------------------------------
+// Helper functions (list/bracket builders + keyword abbreviation system)
+//---------------------------------------------------------------------------
 function sep(separator, rule, rep = 0, assoc = "") {
 	const repeatedRule =
 		rep === 0 ? repeat(seq(separator, rule)) : repeat1(seq(separator, rule));

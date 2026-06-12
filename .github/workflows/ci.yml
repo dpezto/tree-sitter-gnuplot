@@ -1,0 +1,27 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tree-sitter-cli
+        run: npm install -g tree-sitter-cli
+      - name: Generate parser
+        run: tree-sitter generate
+      - name: Run tests with coverage instrumentation
+        run: tree-sitter test
+        env:
+          CFLAGS: --coverage -O0
+      - name: Generate gcov report for scanner
+        # tree-sitter builds the parser in ~/.cache/tree-sitter/lib; the .gcno
+        # files reference src/scanner.c relative to the repo root, so gcov must
+        # run from here. parser.c is generated, so only the scanner is reported.
+        run: gcov ~/.cache/tree-sitter/lib/*-scanner.gcda
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./scanner.c.gcov
+          disable_search: true
+          fail_ci_if_error: false

@@ -1,6 +1,8 @@
+; Block commands with explicit delimiters
 (cmd_do) @fold
 (cmd_if) @fold
+(cmd_while) @fold
 (def_datablock) @fold
 
-(cmd_set   (multiplot)) @fold.start
-(cmd_unset (multiplot)) @fold.end
+; set multiplot … unset multiplot region (one node in the grammar)
+(multiplot_block) @fold

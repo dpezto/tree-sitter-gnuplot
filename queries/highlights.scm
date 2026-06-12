@@ -129,7 +129,6 @@
   "plane"
   "viewaxis"
   "axes_opts"
-  (columnheader)
   ; time units (set xdata time / timefmt)
   "seconds"
   "minutes"
@@ -441,6 +440,8 @@
   "margins"
   ; datafile lc/fc palette shorthand
   "palette"
+  ; set fit quiet / results / verbose / brief
+  "fit_out"
 ] @variable.member
 
 ; -----------------------------------------------------------------------
@@ -451,7 +452,6 @@
   "color"
   "transparent"
   "enhanced"
-  "background"
   "nobackground"
   "separator"
   (hull)

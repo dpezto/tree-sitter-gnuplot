@@ -1,11 +1,13 @@
 # tree-sitter-gnuplot
+[![CI](https://github.com/dpezto/tree-sitter-gnuplot/actions/workflows/ci.yml/badge.svg)](https://github.com/dpezto/tree-sitter-gnuplot/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/dpezto/tree-sitter-gnuplot/branch/main/graph/badge.svg)](https://codecov.io/gh/dpezto/tree-sitter-gnuplot)
 [![PRs Welcome][prs-badge]](https://makeapullrequest.com)
 
 A tree-sitter grammar for [gnuplot 6.x](http://gnuplot.info).
 
 Supports `.gnuplot`, `.gp`, `.plt`, `.plot`, `.gnu` files. Built with an external
 scanner for command disambiguation, comprehensive syntax highlighting queries, and
-86 corpus tests.
+92 corpus tests.
 
 This project is the next evolution of [gnuplot.vim](https://github.com/dpezto/gnuplot.vim),
 designed for accuracy to gnuplot 6 syntax and long-term maintainability.
