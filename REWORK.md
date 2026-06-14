@@ -12,6 +12,7 @@
 | 3 — Terminal names (32 → 1) | **DONE** (2026-06-13). One `TERM_NAME` token + one permissive `t_opts` rule replaced 32 name tokens and 30 `t_*` rules. **−6.1 MB / −13 %** on its own. |
 | 4 — `_argument_set_show` keywords | mostly stale: axis families already merged via `K.axes`. Only D3 minor-tics (6→1) remains as a clean small win. |
 | 5 — Command keyword abbreviations | partially done via scanner (`kw_cmd_bare/optexpr/exit/expr`, `cmd_*_kw`). |
+| 6 — Statement-terminator (`_eos`) redesign | **PLANNED (v2, next phase).** The single biggest remaining size lever: measured **−38 % (40 → 24.9 MB)**, generates cleanly. To be implemented as a focused scanner change (external `_eos` token matching EOF). Spec + blocker in the empirical-corrections bullet below. |
 
 Measured so far: parser.c 52.45 MB → **39.95 MB**; SYMBOL_COUNT 1,236 → **1,076**;
 STATE_COUNT → **17,532**; TOKEN_COUNT → **809**. 92/92 corpus tests pass.
@@ -378,8 +379,8 @@ size payoff** (size shrinks only via N→1 merges — see the Why caveat):
 - **Small clean win: Phase 4/D3 — minor tics (6 → 1, `kw_mtics`).** Low risk.
 - **No size payoff: Phase 1 — style attrs (14 → 14).** Do only as grammar
   simplification / to retire `reg()` calls; it will not shrink `parser.c`.
-- **Deepest win but v3 territory: statement-terminator redesign** to cut the
-  per-command-token cost (see empirical corrections).
+- **Deepest remaining win (Phase 6, next v2): statement-terminator `_eos`
+  redesign** to cut the per-command-token cost (see empirical corrections).
 
 Original phase list (kept for reference; statuses in the Status table at top):
 
@@ -403,6 +404,29 @@ Original phase list (kept for reference; statuses in the Status table at top):
 
 ## Empirical corrections (measured)
 
+- **Set/show options are ~70 % of parser.c (measured 2026-06-14).** Stubbing
+  `_argument_set_show` to a trivial rule: parser.c 40 → 12 MB, STATE_COUNT
+  17,532 → 5,301, SYMBOL_COUNT 1,091 → 475. The cost is DISTRIBUTED across ~85
+  option rules (style −3.85 MB, palette −2.5, object −2.4, key −1.6, colorbox
+  −1.3; most others <1 MB each) — no single whopper. Each option rule embeds
+  expressions/colorspec/positions, and every expression tail carries the
+  statement-start follow set → the bloat is structural, not per-token.
+- **Statement-terminator redesign is THE size lever: −38 % (40 → 24.9 MB),
+  measured + generates cleanly 2026-06-14.** Make statements terminator-separated
+  instead of abutting: `source_file: repeat(seq($._statement, $._eos))` (and the 8
+  other `repeat($._statement)` sites), `extras` drops `\n`/`;` (keeps `[ \t]` +
+  `\\\r?\n` line-continuation). This removes the statement-start follow set from
+  every expression-tail state — STATE_COUNT 17,532 → 15,406 but parser.c −38 %
+  (each state far smaller). `_eos` is hidden → CST/queries unchanged.
+  **Blocker for production:** strict `repeat(seq(stmt,_eos))` requires a terminator
+  after EVERY statement → fails on files without trailing newline (corpus 0/92,
+  validation 30 errors). `optional($._statement)` trailing to fix it EXPLODES to
+  57 MB (parallel statement-tail context). **The correct fix is an external `_eos`
+  token that also matches EOF** (standard tree-sitter idiom, e.g. Python's newline
+  scanner) + absorbs blank/comment lines; plus `skip_whitespaces` must stop
+  skipping `;`/`\n` (now `_eos`, not extras). This is the **next v2 phase
+  (Phase 6)** — a focused scanner change, to be implemented. Estimated end state
+  ≈ 25 MB (hits the original REWORK target), the single biggest remaining win.
 - Parse-table entries are sparse-initialized — removing a token column only saves
   the entries where that token was actually valid.
   Savings ≈ (tokens merged − 1) × (states where the token was valid).
@@ -412,7 +436,7 @@ Original phase list (kept for reference; statuses in the Status table at top):
   in ~9,500 states — every expression-tail state carries the full statement-start
   follow set because `source_file: repeat($._statement)` lets statements abut with
   no terminator token. ~25 remaining command tokens ≈ 240K entries. Deep fix =
-  statement-terminator redesign (v3). **Cause is structural, not extras (probe
+  statement-terminator redesign (Phase 6, next v2). **Cause is structural, not extras (probe
   2026-06-13):** removing `\n` from `extras` alone left STATE_COUNT unchanged
   (20,515) and parser.c −0.015 %. A real fix promotes newline/`;` to an explicit
   terminator TOKEN + `sep` in `source_file`; payoff UNMEASURED, high risk.

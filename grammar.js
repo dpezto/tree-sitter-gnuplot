@@ -2,11 +2,14 @@
  * @file Gnuplot grammar for tree-sitter.
  * @author Dai López Jacinto <dpezto@gmail.com>
  * @see {@link http://gnuplot.info/docs_6.0/Gnuplot_6.pdf}
+ *
+ * Scanner-first: gnuplot keyword-abbreviation matching lives in src/scanner.c
+ * (STYLE_KWS / PLT_STYLE_KWS / CMD_KWS), not in reg()/key() here. The v2
+ * size-reduction plan, phase status, and measurements are in REWORK.md.
  * */
 
 const PREC = {
-	// ASSIGNMENT: 16,
-	// COMMAND: 15,
+	// assignment/command bind above PAREN conceptually; not modeled in this table
 	PAREN: 14, // (a)
 	POWER: 12, // a**b a!
 	UNARY: 11, // -a +a !a $a |a|
@@ -21,18 +24,7 @@ const PREC = {
 	AND: 2, // a&&b
 	OR: 1, // a||b
 	TERNARY: -1, // a?b:c
-	// SERIAL: -2, // (a,b)
 };
-
-// const FMT_SEQUENCE = seq(
-// 	"%",
-// 	choice(
-// 		/%?/,
-// 		/\*?(lf|\d+)/, // p. 136-137
-// 		/[-+\s]{0,3}\d*(\.\d+)?[a-zA-Z]{1,2}/, // p. 169-171
-// 		/\*?\d*(uchar|int|float)/, // p. 122
-// 	),
-// );
 
 const IDENTIFIER = /[A-Za-z_\u00A1-\uFFFF][A-Za-z0-9_\u00A1-\uFFFF′⁀-⁑₀-₉]*/;
 const UNDEFINE_ARG = new RegExp(`[ \\t]+${IDENTIFIER.source}\\*?`);
@@ -91,9 +83,6 @@ module.exports = grammar({
 	externals: ($) => [
 		$.datablock_start,
 		$.datablock_end,
-		// $._string_start,
-		// $._string_content,
-		// $._string_end,
 		$.cmd_fit_kw,    // f / fi / fit  — disambiguated by scanner lookahead
 		$.cmd_plot_kw,   // p / pl / plo / plot
 		$.cmd_splot_kw,  // sp / spl / splo / splot
@@ -127,6 +116,11 @@ module.exports = grammar({
 	],
 
 	rules: {
+		// Statements abut with no terminator token, so every expression-tail state
+		// carries the full statement-start follow set — the dominant parser.c size
+		// cost (~70% lives in _argument_set_show below). NEXT v2 SIZE PHASE: an
+		// external `_eos` terminator (also matching EOF) to make statements
+		// terminator-separated; measured −38% (40 → 24.9 MB). See REWORK.md.
 		source_file: ($) => repeat($._statement),
 
 		// Style attribute keywords (REWORK Phase 1): hidden rules that alias the
@@ -523,6 +517,11 @@ module.exports = grammar({
 
 		//-------------------------------------------------------------------------
 		// Set/show arguments (_argument_set_show and its option rules)
+		//
+		// ~70% of parser.c, distributed across ~85 option rules (no single whopper).
+		// Bloat is structural: each option embeds expressions/colorspec/positions
+		// whose tails carry the statement-start follow set, so per-token keyword
+		// merges here do NOT shrink the table — only the `_eos` redesign does.
 		//-------------------------------------------------------------------------
 		_argument_set_show: ($) =>
 			prec.right(
@@ -2838,6 +2837,8 @@ module.exports = grammar({
 				field("Im", $._expression),
 			),
 
+		// Alt design: scanner-based string tokens (_string_start/_content/_end);
+		// the inline format_specifier below works, so the scanner path isn't needed.
 		string_literal: ($) =>
 			choice(
 				seq(
@@ -2875,28 +2876,6 @@ module.exports = grammar({
 				// Standard printf + gnuplot-specific: covers %t %T %l %L %S %n %r %k %K and all standard letters
 				/%%|%[-+0 #*]*\d*(?:\.\d+)?(?:uchar|int|float|[a-zA-Z])/
 			),
-
-		// scanner-based approach (fallback if LALR conflicts arise):
-		// string_literal: ($) =>
-		// 	seq(
-		// 		$._string_start,
-		// 		repeat(choice($._string_content, $.escape_sequence, $.fmt_sequence)),
-		// 		$._string_end,
-		// 	),
-
-		// escape_sequence: (_) =>
-		// 	token.immediate(
-		// 		seq(
-		// 			"\\",
-		// 			choice(
-		// 				/[uU][0-9a-fA-F]{4,5}/, // unicode codepoints
-		// 				/[0-7]{3}/,
-		// 				/x[0-9a-fA-F]{2}/,
-		// 			),
-		// 		),
-		// 	),
-
-		// fmt_sequence: ($) => token.immediate(FMT_SEQUENCE),
 
 		sum_block: ($) =>
 			prec.left(
@@ -2953,7 +2932,8 @@ module.exports = grammar({
 					["|", PREC.BIT_OR],
 					["&&", PREC.AND],
 					["||", PREC.OR],
-					// [",", PREC.SERIAL],
+					// comma/"serial" intentionally NOT a binary operator (would
+					// conflict with argument lists and range syntax)
 					[".", PREC.CONCAT],
 				].map(([operator, precedence]) =>
 					prec.left(
@@ -2992,7 +2972,7 @@ module.exports = grammar({
 				seq(
 					field("name", $.identifier),
 					surround("[]", $._expression),
-					// $._range_block,
+					// note: no range form — array name[expr] only, not name[lo:hi]
 				),
 			),
 
