@@ -25,8 +25,14 @@ enum TokenType {
   // distinct grammar continuation, so they are distinct tokens (no N->1 merge);
   // moved to the scanner to retire the reg() machinery (scanner-first, REWORK
   // Phase 1). Order MUST match the externals list in grammar.js.
-  KW_LW, KW_LT, KW_LS, KW_LC, KW_DT, KW_DL,
-  KW_PT, KW_PS, KW_PI, KW_PN, KW_AS,
+  // KW_SA: the style attrs whose continuation is exactly `<kw> <expression>`
+  // (linewidth/linestyle/pointinterval/pointnumber/arrowstyle/dashlength) collapsed
+  // into ONE token (6->1, identical continuation -> shrinks the table). The rest
+  // keep distinct tokens (different continuations: lt/lc colorspec, dt dash_opts,
+  // pt/ps `variable`|expr, fs fill_style, fc colorspec, tc textcolor).
+  // Order MUST match the externals list in grammar.js.
+  KW_SA,
+  KW_LT, KW_LC, KW_DT, KW_PT, KW_PS,
   KW_FS, KW_FC, KW_TC,
 };
 
@@ -103,17 +109,17 @@ typedef struct {
 } StyleKwEntry;
 
 static const StyleKwEntry STYLE_KWS[] = {
-    {"linewidth", "lw", 5, KW_LW},
+    {"linewidth", "lw", 5, KW_SA},
+    {"linestyle", "ls", 5, KW_SA},
+    {"pointinterval", "pi", 6, KW_SA},
+    {"pointnumber", "pn", 6, KW_SA},
+    {"arrowstyle", "as", 10, KW_SA},
+    {"dashlength", "dl", 5, KW_SA},
     {"linetype", "lt", 8, KW_LT},
-    {"linestyle", "ls", 5, KW_LS},
     {"linecolor", "lc", 5, KW_LC},
     {"dashtype", "dt", 5, KW_DT},
-    {"dashlength", "dl", 5, KW_DL},
     {"pointtype", "pt", 6, KW_PT},
     {"pointsize", "ps", 6, KW_PS},
-    {"pointinterval", "pi", 6, KW_PI},
-    {"pointnumber", "pn", 6, KW_PN},
-    {"arrowstyle", "as", 10, KW_AS},
     {"fillstyle", "fs", 4, KW_FS},
     {"fillcolor", "fc", 5, KW_FC},
     {"textcolor", "tc", 5, KW_TC},
@@ -390,11 +396,10 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
   // error recovery (all externals valid) scan_datablock_start does not swallow a
   // keyword.
   bool any_style_valid =
-      valid_symbols[KW_PLT_ST] || valid_symbols[KW_LW] || valid_symbols[KW_LT] ||
-      valid_symbols[KW_LS] || valid_symbols[KW_LC] || valid_symbols[KW_DT] ||
-      valid_symbols[KW_DL] || valid_symbols[KW_PT] || valid_symbols[KW_PS] ||
-      valid_symbols[KW_PI] || valid_symbols[KW_PN] || valid_symbols[KW_AS] ||
-      valid_symbols[KW_FS] || valid_symbols[KW_FC] || valid_symbols[KW_TC];
+      valid_symbols[KW_PLT_ST] || valid_symbols[KW_SA] || valid_symbols[KW_LT] ||
+      valid_symbols[KW_LC] || valid_symbols[KW_DT] || valid_symbols[KW_PT] ||
+      valid_symbols[KW_PS] || valid_symbols[KW_FS] || valid_symbols[KW_FC] ||
+      valid_symbols[KW_TC];
 
   if ((any_cmd_valid || any_style_valid) && scan_keywords(lexer, valid_symbols, any_cmd_valid)) {
     return true;

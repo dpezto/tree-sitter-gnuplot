@@ -95,17 +95,12 @@
 ; -----------------------------------------------------------------------
 ; Style attribute shorthands (K constants + datafile keywords)
 [
-  "as"
-  "dl"
+  "sa"
   "dt"
   "fc"
   "fs"
   "lc"
-  "ls"
   "lt"
-  "lw"
-  "pi"
-  "pn"
   "ps"
   "pt"
   "tc"

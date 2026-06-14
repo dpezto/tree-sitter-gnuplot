@@ -3,32 +3,34 @@
 ===========================================================================
 set arrow 1 heads size screen 0.015, 30, 90 filled front lw 1 lc rgb "gray30"
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (arrow
       tag: (number)
-        (arrow_opts)
-        (arrow_opts
-          (position
-            (system)
-            x: (number)
-            y: (number)
-            z: (number)))
-        (arrow_opts)
-        (arrow_opts)
-        (arrow_opts
-          (style_opts
-            lw: (number)))
-        (arrow_opts
-          (style_opts
-            lc: (colorspec
-              (string_literal)))))))
+      (arrow_opts)
+      (arrow_opts
+        (position
+          (system)
+          x: (number)
+          y: (number)
+          z: (number)))
+      (arrow_opts)
+      (arrow_opts)
+      (arrow_opts
+        (style_opts
+          (number)))
+      (arrow_opts
+        (style_opts
+          lc: (colorspec
+            (string_literal)))))))
 
 ===========================================================================
   set arrow 2
 ===========================================================================
 set arrow 3 from graph 0,0 to -5,5,3
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (arrow
@@ -49,6 +51,7 @@ set arrow 3 from graph 0,0 to -5,5,3
 ===========================================================================
 set label 1 at -1.12-10,function(0)-3 'label' right # comment
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (label
@@ -77,6 +80,7 @@ set label 1 at -1.12-10,function(0)-3 'label' right # comment
 ===========================================================================
 set label tag label at MOUSE_X,MOUSE_Y textcolor lt 1
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (label
@@ -93,6 +97,7 @@ set label tag label at MOUSE_X,MOUSE_Y textcolor lt 1
 ===========================================================================
 p sin(x) w l lw 2 not
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element
@@ -102,12 +107,14 @@ p sin(x) w l lw 2 not
           (identifier)))
       with: (plot_style)
       (style_opts
-        lw: (number)))))
+        (number)))))
+
 ===========================================================================
   plot 2
 ===========================================================================
 plot for [k=2:5] file u 1:k w p pt 13 lc k t 'T='.k.'°C'
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element
@@ -134,11 +141,13 @@ plot for [k=2:5] file u 1:k w p pt 13 lc k t 'T='.k.'°C'
           (identifier))
         (operator)
         (string_literal)))))
+
 ===========================================================================
   plot 3
 ===========================================================================
 plot [ ] [-2:sin(5)*-8] sin(x)**besj0(x)
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element
@@ -172,6 +181,7 @@ plot [ ] [-2:sin(5)*-8] sin(x)**besj0(x)
 ===========================================================================
 plot -sin(x) w l
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element
@@ -188,6 +198,7 @@ plot -sin(x) w l
 ===========================================================================
 plot [0:5] -x w l
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element
@@ -198,20 +209,24 @@ plot [0:5] -x w l
         (operator)
         (identifier))
       with: (plot_style))))
+
 ===========================================================================
   set title - string argument
 ===========================================================================
 set title "My Title"
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (title
       title: (string_literal))))
+
 ===========================================================================
   plot - title string option
 ===========================================================================
 plot sin(x) w l t 'My curve'
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element
@@ -221,28 +236,34 @@ plot sin(x) w l t 'My curve'
           (identifier)))
       with: (plot_style)
       title: (string_literal))))
+
 ===========================================================================
   print - single expression
 ===========================================================================
 print x
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_print
     (identifier)))
+
 ===========================================================================
   print - multiple expressions
 ===========================================================================
 print x, y
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_print
     (identifier)
     (identifier)))
+
 ===========================================================================
   set title - expression argument
 ===========================================================================
 set title sprintf("Plot %d", n)
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (title
@@ -252,11 +273,13 @@ set title sprintf("Plot %d", n)
           (string_literal
             (format_specifier))
           (identifier))))))
+
 ===========================================================================
   textcolor - linestyle
 ===========================================================================
 set label 1 "text" tc ls 1
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (label
@@ -264,11 +287,13 @@ set label 1 "text" tc ls 1
       (label_opts
         label: (string_literal)
         tc: (number)))))
+
 ===========================================================================
   textcolor - color name string
 ===========================================================================
 set label 2 "text" textcolor "blue"
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (label
@@ -276,11 +301,13 @@ set label 2 "text" textcolor "blue"
       (label_opts
         label: (string_literal)
         tc: (string_literal)))))
+
 ===========================================================================
   paxis - label with function call
 ===========================================================================
 set paxis 1 label sprintf("Score %d",i) offset 1
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (paxis
@@ -294,11 +321,13 @@ set paxis 1 label sprintf("Score %d",i) offset 1
             (identifier))))
       (position
         x: (number)))))
+
 ===========================================================================
   stats - using with parenthesized comma-separated expressions
 ===========================================================================
 stats data u (X[$0+1], Y[$0+1]) noout
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_stats
     filename: (identifier)
@@ -320,11 +349,13 @@ stats data u (X[$0+1], Y[$0+1]) noout
               (number))
             (operator)
             (number)))))))
+
 ===========================================================================
   stats - using with parenthesized assignments
 ===========================================================================
 stats data u (X[$0+1]=$1, Y[$0+1]=$2) noout
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_stats
     filename: (identifier)
@@ -356,11 +387,13 @@ stats data u (X[$0+1]=$1, Y[$0+1]=$2) noout
             (unary_expression
               (operator)
               (number))))))))
+
 ===========================================================================
   convexhull - smooth then expand
 ===========================================================================
 plot data convexhull smooth path expand 1
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element
@@ -369,11 +402,13 @@ plot data convexhull smooth path expand 1
         (hull)
         smooth_data: (smooth_options)
         increment: (number)))))
+
 ===========================================================================
   concavehull - smooth path around hull
 ===========================================================================
 plot data smooth path concavehull smooth path expand 1
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element
@@ -390,6 +425,7 @@ plot data smooth path concavehull smooth path expand 1
 f fit(x) "data.dat" via a,b
 fi fit(x) "data.dat" via a,b
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_fit
     func: (function
@@ -415,6 +451,7 @@ help
 he integration
 hel "set title"
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_help)
   (cmd_help
@@ -436,6 +473,7 @@ he(x) = x * 2
 l = 100
 l(x) = log(x)
 ---------------------------------------------------------------------------
+
 (source_file
   (assignment
     (def_func
@@ -510,11 +548,13 @@ l(x) = log(x)
         name: (identifier)
         parameters: (parameter_list
           (identifier))))))
+
 ===========================================================================
   undefine - wildcard pattern
 ===========================================================================
 undefine bar*
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_undefine))
 
@@ -523,6 +563,7 @@ undefine bar*
 ===========================================================================
 plot x with filledcurves r=10
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element
@@ -535,6 +576,7 @@ plot x with filledcurves r=10
 ===========================================================================
 plot x using 1:2:3 with labels rotate variable
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element
@@ -552,6 +594,7 @@ plot x using 1:2:3 with labels rotate variable
 ===========================================================================
 set arrow -1 from 0,0 to 1,1
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (arrow
@@ -570,6 +613,7 @@ set arrow -1 from 0,0 to 1,1
 ===========================================================================
 set label -3 "text" at 1,2
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (label
@@ -587,6 +631,7 @@ set label -3 "text" at 1,2
 ===========================================================================
 set paxis (n+1) range [0:1]
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (paxis
@@ -604,6 +649,7 @@ set paxis (n+1) range [0:1]
 ===========================================================================
 hist 10 "hist.gp"
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_history
     (number)
@@ -614,6 +660,7 @@ hist 10 "hist.gp"
 ===========================================================================
 import myfun(x) from "mylib"
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_import
     (function
@@ -627,6 +674,7 @@ import myfun(x) from "mylib"
 ===========================================================================
 set nonlinear x via log10(x) inverse 10**x
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (nonlinear
@@ -644,6 +692,7 @@ set nonlinear x via log10(x) inverse 10**x
 ===========================================================================
 set object 1 rectangle from screen 0,0 to screen 1,1 behind fc rgb "gray" fs solid
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (object
@@ -665,6 +714,7 @@ set object 1 rectangle from screen 0,0 to screen 1,1 behind fc rgb "gray" fs sol
 ===========================================================================
 set object 2 circle center graph 0.5,0.5 size 0.1 fc "red"
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (object
@@ -681,6 +731,7 @@ set object 2 circle center graph 0.5,0.5 size 0.1 fc "red"
 ===========================================================================
 set origin 0.1,0.1
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     arg_opts: (origin
@@ -692,6 +743,7 @@ set origin 0.1,0.1
 ===========================================================================
 set o "test.tex"
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     arg_opts: (output
@@ -702,6 +754,7 @@ set o "test.tex"
 ===========================================================================
 set or 0.1,0.1
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     arg_opts: (origin
@@ -713,6 +766,7 @@ set or 0.1,0.1
 ===========================================================================
 set pixmap 1 "bg.png" at screen 0,0 width 1.0 front
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_set
     (pixmap
@@ -723,4 +777,3 @@ set pixmap 1 "bg.png" at screen 0,0 width 1.0 front
         x: (number)
         y: (number))
       (number))))
-

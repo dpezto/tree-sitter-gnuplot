@@ -55,8 +55,6 @@ const T_INTERLACE = key("interlace", 5, undefined, 1); // {no}interlace
 const T_GDSIZES = choice("tiny", "small", "medium", "large", "giant");
 const T_ANCHOR = choice(key("anchor"), key("scroll"));
 // $-dependent fragments return arrays meant to be spread into a choice():
-const tLwExpr = ($) => seq($._lw, $._expression);
-const tDlExpr = ($) => seq($._dl, $._expression);
 const tFont = ($) => [$.fontspec, $.fontscale];
 
 // Shared option fragments (DRY; expand inline, so the CST is unchanged at each
@@ -113,10 +111,10 @@ module.exports = grammar({
 		$.kw_cmd_optexpr, // raise/lower/vclear/toggle
 		$.kw_cmd_exit,    // exit/quit
 		$.kw_cmd_expr,    // cd/evaluate
-		// Style attribute keywords (REWORK Phase 1) — order MUST match the
-		// enum in scanner.c. Aliased to lw/lt/... via the _lw.._tc hidden rules.
-		$.kw_lw, $.kw_lt, $.kw_ls, $.kw_lc, $.kw_dt, $.kw_dl,
-		$.kw_pt, $.kw_ps, $.kw_pi, $.kw_pn, $.kw_as,
+		// Style attribute keywords — order MUST match the enum in scanner.c.
+		// kw_sa = lw/ls/pi/pn/as/dl collapsed (all `<kw> <expr>`); the rest stay
+		// distinct (different continuations). Aliased via the _sa / _lt.._tc rules.
+		$.kw_sa, $.kw_lt, $.kw_lc, $.kw_dt, $.kw_pt, $.kw_ps,
 		$.kw_fs, $.kw_fc, $.kw_tc,
 	],
 
@@ -134,27 +132,21 @@ module.exports = grammar({
 	],
 
 	rules: {
-		// Statements abut with no terminator token, so every expression-tail state
-		// carries the full statement-start follow set — the dominant parser.c size
-		// cost (~70% lives in _argument_set_show below). NEXT v2 SIZE PHASE: an
-		// external `_eos` terminator (also matching EOF) to make statements
-		// terminator-separated; measured −38% (40 → 24.9 MB). See REWORK.md.
+		// Statements abut with no terminator token. A `_eos` terminator redesign to
+		// collapse the expression-tail follow set was attempted and REFUTED — it
+		// regresses parser.c (see REWORK.md Phase 6). Size wins instead come from
+		// N→1 token merges with identical continuations (e.g. $._sa below, kw_plt_st).
 		source_file: ($) => repeat($._statement),
 
-		// Style attribute keywords (REWORK Phase 1): hidden rules that alias the
-		// external scanner tokens to their short names, so call sites stay terse
-		// (`$._lw`) and highlights.scm keeps capturing "lw"/"lt"/... unchanged.
-		_lw: ($) => alias($.kw_lw, "lw"),
+		// Style attribute keywords: hidden rules aliasing the external scanner
+		// tokens. $._sa is the collapsed lw/ls/pi/pn/as/dl option (`<kw> <expr>`,
+		// node "sa"); the rest keep their own short-name nodes for highlights.scm.
+		_sa: ($) => seq(alias($.kw_sa, "sa"), $._expression),
 		_lt: ($) => alias($.kw_lt, "lt"),
-		_ls: ($) => alias($.kw_ls, "ls"),
 		_lc: ($) => alias($.kw_lc, "lc"),
 		_dt: ($) => alias($.kw_dt, "dt"),
-		_dl: ($) => alias($.kw_dl, "dl"),
 		_pt: ($) => alias($.kw_pt, "pt"),
 		_ps: ($) => alias($.kw_ps, "ps"),
-		_pi: ($) => alias($.kw_pi, "pi"),
-		_pn: ($) => alias($.kw_pn, "pn"),
-		_as: ($) => alias($.kw_as, "as"),
 		_fs: ($) => alias($.kw_fs, "fs"),
 		_fc: ($) => alias($.kw_fc, "fc"),
 		_tc: ($) => alias($.kw_tc, "tc"),
@@ -1387,7 +1379,7 @@ module.exports = grammar({
 						$._fillcolor,
 						fillStyleOpt($),
 						"default",
-						seq($._lw, $._expression),
+						$._sa,
 						seq($._dt, $.dash_opts),
 					),
 				),
@@ -1714,7 +1706,7 @@ module.exports = grammar({
 										repeat(
 											choice(
 												seq("gap", $._expression),
-												seq($._lw, $._expression),
+												$._sa,
 											),
 										),
 									),
@@ -1757,7 +1749,7 @@ module.exports = grammar({
 								repeat(
 									choice(
 										fillStyleOpt($),
-										seq($._ls, field("ls", $._expression)),
+										$._sa,
 										seq(
 											$._lt,
 											field(
@@ -1765,13 +1757,13 @@ module.exports = grammar({
 												choice($._expression, $.colorspec, "black", "background", "nodraw"),
 											),
 										),
-										seq($._lw, field("lw", $._expression)),
+										$._sa,
 										$._linecolor,
 										seq($._dt, field("dt", $.dash_opts)),
 										seq($._pt, field("pt", $._expression)),
 										seq($._ps, field("ps", $._expression)),
-										seq($._pi, field("pi", $._expression)),
-										seq($._pn, field("pn", $._expression)),
+										$._sa,
+										$._sa,
 									),
 								),
 							),
@@ -1787,7 +1779,7 @@ module.exports = grammar({
 												key("border", undefined, undefined, 1),
 												optional($._linecolor),
 											),
-											seq($._lw, $._expression),
+											$._sa,
 											seq("margins", $._expression, ",", $._expression),
 										),
 									),
@@ -1859,8 +1851,8 @@ module.exports = grammar({
 						$.fontscale,
 						$.mono_color,
 						$.line_drawing_method, // rounded / butt / square
-						tLwExpr($),
-						tDlExpr($),
+						$._sa,
+						$._sa,
 						seq($._ps, $._expression),
 						// value-taking options
 						field("n", $.number),
@@ -1987,8 +1979,8 @@ module.exports = grammar({
 					key("enhanced", undefined, undefined, 1),
 					$.fontspec,
 					$.fontscale,
-					seq($._lw, $._expression),
-					seq($._dl, $._expression),
+					$._sa,
+					$._sa,
 					seq($._ps, $._expression),
 				),
 			),
@@ -2401,7 +2393,7 @@ module.exports = grammar({
 			prec.left(
 				repeat1(
 					choice(
-						seq($._ls, field("ls", $._expression)),
+						$._sa,
 						seq(
 							$._lt,
 							field(
@@ -2409,14 +2401,14 @@ module.exports = grammar({
 								choice($._expression, $.colorspec, "black", "bgnd", "background", "nodraw"),
 							),
 						),
-						seq($._lw, field("lw", $._expression)),
+						$._sa,
 						$._linecolor,
 						seq($._dt, field("dt", $.dash_opts)),
 						seq($._pt, field("pt", choice("variable", $._expression))),
 						seq($._ps, field("ps", choice("variable", $._expression))),
-						seq($._pi, field("pi", $._expression)),
-						seq($._pn, field("pn", $._expression)),
-						seq($._as, field("as", $._expression)),
+						$._sa,
+						$._sa,
+						$._sa,
 						seq($._fs, field("fs", $.fill_style)),
 						$._fillcolor,
 						key("nohidden3d", -2),
@@ -2580,11 +2572,11 @@ module.exports = grammar({
 								choice($._expression, $.colorspec, "black", "bgnd", "background", "nodraw"),
 							),
 							$._linecolor,
-							seq($._lw, $._expression),
+							$._sa,
 							seq($._pt, $._expression),
 							seq($._ps, $._expression),
-							seq($._pi, $._expression),
-							seq($._pn, $._expression),
+							$._sa,
+							$._sa,
 							seq($._dt, $.dash_opts),
 							key("palette", 3),
 						),
@@ -2631,7 +2623,7 @@ module.exports = grammar({
 					choice(
 						$.colorspec,
 						seq($._lt, $._expression),
-						seq($._ls, $._expression),
+						$._sa,
 						"default",
 						$._expression,
 						"variable",
@@ -2647,7 +2639,7 @@ module.exports = grammar({
 					choice(
 						$.colorspec,
 						seq($._lt, $._expression),
-						seq($._ls, field("ls", $._expression)),
+						$._sa,
 						$._expression,
 					),
 				),

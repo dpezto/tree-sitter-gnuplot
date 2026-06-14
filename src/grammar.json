@@ -10,14 +10,23 @@
         "name": "_statement"
       }
     },
-    "_lw": {
-      "type": "ALIAS",
-      "content": {
-        "type": "SYMBOL",
-        "name": "kw_lw"
-      },
-      "named": false,
-      "value": "lw"
+    "_sa": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "kw_sa"
+          },
+          "named": false,
+          "value": "sa"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_expression"
+        }
+      ]
     },
     "_lt": {
       "type": "ALIAS",
@@ -27,15 +36,6 @@
       },
       "named": false,
       "value": "lt"
-    },
-    "_ls": {
-      "type": "ALIAS",
-      "content": {
-        "type": "SYMBOL",
-        "name": "kw_ls"
-      },
-      "named": false,
-      "value": "ls"
     },
     "_lc": {
       "type": "ALIAS",
@@ -55,15 +55,6 @@
       "named": false,
       "value": "dt"
     },
-    "_dl": {
-      "type": "ALIAS",
-      "content": {
-        "type": "SYMBOL",
-        "name": "kw_dl"
-      },
-      "named": false,
-      "value": "dl"
-    },
     "_pt": {
       "type": "ALIAS",
       "content": {
@@ -81,33 +72,6 @@
       },
       "named": false,
       "value": "ps"
-    },
-    "_pi": {
-      "type": "ALIAS",
-      "content": {
-        "type": "SYMBOL",
-        "name": "kw_pi"
-      },
-      "named": false,
-      "value": "pi"
-    },
-    "_pn": {
-      "type": "ALIAS",
-      "content": {
-        "type": "SYMBOL",
-        "name": "kw_pn"
-      },
-      "named": false,
-      "value": "pn"
-    },
-    "_as": {
-      "type": "ALIAS",
-      "content": {
-        "type": "SYMBOL",
-        "name": "kw_as"
-      },
-      "named": false,
-      "value": "as"
     },
     "_fs": {
       "type": "ALIAS",
@@ -8653,17 +8617,8 @@
                 "value": "default"
               },
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_lw"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "_sa"
               },
               {
                 "type": "SEQ",
@@ -10896,17 +10851,8 @@
                                       ]
                                     },
                                     {
-                                      "type": "SEQ",
-                                      "members": [
-                                        {
-                                          "type": "SYMBOL",
-                                          "name": "_lw"
-                                        },
-                                        {
-                                          "type": "SYMBOL",
-                                          "name": "_expression"
-                                        }
-                                      ]
+                                      "type": "SYMBOL",
+                                      "name": "_sa"
                                     }
                                   ]
                                 }
@@ -11246,21 +11192,8 @@
                               ]
                             },
                             {
-                              "type": "SEQ",
-                              "members": [
-                                {
-                                  "type": "SYMBOL",
-                                  "name": "_ls"
-                                },
-                                {
-                                  "type": "FIELD",
-                                  "name": "ls",
-                                  "content": {
-                                    "type": "SYMBOL",
-                                    "name": "_expression"
-                                  }
-                                }
-                              ]
+                              "type": "SYMBOL",
+                              "name": "_sa"
                             },
                             {
                               "type": "SEQ",
@@ -11301,21 +11234,8 @@
                               ]
                             },
                             {
-                              "type": "SEQ",
-                              "members": [
-                                {
-                                  "type": "SYMBOL",
-                                  "name": "_lw"
-                                },
-                                {
-                                  "type": "FIELD",
-                                  "name": "lw",
-                                  "content": {
-                                    "type": "SYMBOL",
-                                    "name": "_expression"
-                                  }
-                                }
-                              ]
+                              "type": "SYMBOL",
+                              "name": "_sa"
                             },
                             {
                               "type": "SYMBOL",
@@ -11373,38 +11293,12 @@
                               ]
                             },
                             {
-                              "type": "SEQ",
-                              "members": [
-                                {
-                                  "type": "SYMBOL",
-                                  "name": "_pi"
-                                },
-                                {
-                                  "type": "FIELD",
-                                  "name": "pi",
-                                  "content": {
-                                    "type": "SYMBOL",
-                                    "name": "_expression"
-                                  }
-                                }
-                              ]
+                              "type": "SYMBOL",
+                              "name": "_sa"
                             },
                             {
-                              "type": "SEQ",
-                              "members": [
-                                {
-                                  "type": "SYMBOL",
-                                  "name": "_pn"
-                                },
-                                {
-                                  "type": "FIELD",
-                                  "name": "pn",
-                                  "content": {
-                                    "type": "SYMBOL",
-                                    "name": "_expression"
-                                  }
-                                }
-                              ]
+                              "type": "SYMBOL",
+                              "name": "_sa"
                             }
                           ]
                         }
@@ -11491,17 +11385,8 @@
                                   ]
                                 },
                                 {
-                                  "type": "SEQ",
-                                  "members": [
-                                    {
-                                      "type": "SYMBOL",
-                                      "name": "_lw"
-                                    },
-                                    {
-                                      "type": "SYMBOL",
-                                      "name": "_expression"
-                                    }
-                                  ]
+                                  "type": "SYMBOL",
+                                  "name": "_sa"
                                 },
                                 {
                                   "type": "SEQ",
@@ -12013,30 +11898,12 @@
               "name": "line_drawing_method"
             },
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_lw"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "_sa"
             },
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_dl"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "_sa"
             },
             {
               "type": "SEQ",
@@ -13460,30 +13327,12 @@
             "name": "fontscale"
           },
           {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "_sa"
           },
           {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "_sa"
           },
           {
             "type": "SEQ",
@@ -16089,21 +15938,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_ls"
-                },
-                {
-                  "type": "FIELD",
-                  "name": "ls",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  }
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "_sa"
             },
             {
               "type": "SEQ",
@@ -16148,21 +15984,8 @@
               ]
             },
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_lw"
-                },
-                {
-                  "type": "FIELD",
-                  "name": "lw",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  }
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "_sa"
             },
             {
               "type": "SYMBOL",
@@ -16238,55 +16061,16 @@
               ]
             },
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_pi"
-                },
-                {
-                  "type": "FIELD",
-                  "name": "pi",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  }
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "_sa"
             },
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_pn"
-                },
-                {
-                  "type": "FIELD",
-                  "name": "pn",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  }
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "_sa"
             },
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_as"
-                },
-                {
-                  "type": "FIELD",
-                  "name": "as",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  }
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "_sa"
             },
             {
               "type": "SEQ",
@@ -17497,17 +17281,8 @@
                   "name": "_linecolor"
                 },
                 {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "_lw"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "_expression"
-                    }
-                  ]
+                  "type": "SYMBOL",
+                  "name": "_sa"
                 },
                 {
                   "type": "SEQ",
@@ -17536,30 +17311,12 @@
                   ]
                 },
                 {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "_pi"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "_expression"
-                    }
-                  ]
+                  "type": "SYMBOL",
+                  "name": "_sa"
                 },
                 {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "_pn"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "_expression"
-                    }
-                  ]
+                  "type": "SYMBOL",
+                  "name": "_sa"
                 },
                 {
                   "type": "SEQ",
@@ -17833,17 +17590,8 @@
                 ]
               },
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_ls"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "_sa"
               },
               {
                 "type": "STRING",
@@ -17893,21 +17641,8 @@
                 ]
               },
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_ls"
-                  },
-                  {
-                    "type": "FIELD",
-                    "name": "ls",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "_expression"
-                    }
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "_sa"
               },
               {
                 "type": "SYMBOL",
@@ -20498,15 +20233,11 @@
     },
     {
       "type": "SYMBOL",
-      "name": "kw_lw"
+      "name": "kw_sa"
     },
     {
       "type": "SYMBOL",
       "name": "kw_lt"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "kw_ls"
     },
     {
       "type": "SYMBOL",
@@ -20518,27 +20249,11 @@
     },
     {
       "type": "SYMBOL",
-      "name": "kw_dl"
-    },
-    {
-      "type": "SYMBOL",
       "name": "kw_pt"
     },
     {
       "type": "SYMBOL",
       "name": "kw_ps"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "kw_pi"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "kw_pn"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "kw_as"
     },
     {
       "type": "SYMBOL",
