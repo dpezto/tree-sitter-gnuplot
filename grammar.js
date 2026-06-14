@@ -76,6 +76,14 @@ const dataSeparator = ($) =>
 // pm3d's `depthorder base` are intentionally left inline.
 const LAYER = choice("front", "back", "behind", "depthorder");
 
+// Frequently-repeated option fragments (found via a structural clone-scan of
+// src/grammar.json). Pure refactor — each expands to the exact inline form it
+// replaces, so the generated parser is byte-identical. Centralizes the spelling
+// (e.g. change `offset`'s min_chars in one place).
+const fillStyleOpt = ($) => seq($._fs, $.fill_style); // `fs <fillstyle>` (×6)
+const atPos = ($) => seq("at", $.position); //          `at <position>` (×6)
+const offsetPos = ($) => seq(key("offset", 3), $.position); // `offset <pos>` (×9)
+
 // All terminal names collapsed into ONE token (was 32 separate `key()` tokens).
 // `token(choice(...))` forces a single terminal symbol; abbreviation min_chars
 // are the same reg() calls the old per-terminal `key(..., "name")` used.
@@ -414,7 +422,7 @@ module.exports = grammar({
 									$.fontspec,
 									$._textcolor,
 									seq($._lt, field("lt", $._expression)),
-									seq($._fs, $.fill_style),
+									fillStyleOpt($),
 									seq("at", field("at", $._expression)),
 								),
 							),
@@ -1101,7 +1109,7 @@ module.exports = grammar({
 							$._textcolor,
 							choice(key("inside", 3), key("outside", 1), "fixed"),
 							key1("margin", /(l|r|t|b)/, reg("margin", 1)),
-							seq("at", $.position),
+							atPos($),
 							// simplfy next two
 							choice(alias(K.c, "cen"), alias(K.l, "lef"), alias(K.r, "rig")),
 							choice(alias(K.t, "top"), alias(K.b, "bot"), alias(K.c, "cen")),
@@ -1204,7 +1212,7 @@ module.exports = grammar({
 						optional(seq($._expression, optional(seq(",", $._expression)))),
 					),
 					"noruler",
-					seq("ruler", optional(seq("at", $.position))),
+					seq("ruler", optional(atPos($))),
 					seq(
 						alias(/polardistance(deg|tan)?/, "polardistance"),
 						optional(choice("deg", "tan")),
@@ -1248,7 +1256,7 @@ module.exports = grammar({
 							field("xscale", $._expression),
 							optional(seq(",", field("yscale", $._expression))),
 						),
-						seq(key("offset", 3), $.position),
+						offsetPos($),
 						seq("margins", alias($._margin, $.margin)), // only the second option
 						seq(
 							"spacing",
@@ -1381,7 +1389,7 @@ module.exports = grammar({
 						LAYER,
 						choice("clip", "noclip"),
 						$._fillcolor,
-						seq($._fs, $.fill_style),
+						fillStyleOpt($),
 						"default",
 						seq($._lw, $._expression),
 						seq($._dt, $.dash_opts),
@@ -1529,7 +1537,7 @@ module.exports = grammar({
 					),
 					optional(seq(key("tics", 3), optional($.tics_opts))),
 					optional($._paxis_label),
-					optional(seq(key("offset", 3), $.position)),
+					optional(offsetPos($)),
 				),
 			),
 
@@ -1547,7 +1555,7 @@ module.exports = grammar({
 				),
 				repeat(
 					choice(
-						seq("at", $.position),
+						atPos($),
 						seq("width", $._expression),
 						seq("height", $._expression),
 						seq("size", $._expression, ",", $._expression),
@@ -1699,7 +1707,7 @@ module.exports = grammar({
 								),
 							),
 							seq(key("data", 1, "st_opt"), $.plot_style),
-							seq($._fs, $.fill_style),
+							fillStyleOpt($),
 							seq(key("function", 1, "st_opt"), $.plot_style),
 							seq(
 								key("histogram", 4, "st_opt"),
@@ -1738,7 +1746,7 @@ module.exports = grammar({
 										LAYER,
 										seq(key("linewidth", 5, "lw"), field("lw", $._expression)),
 										seq(key("fillcolor", 5, "fc"), field("fc", $.colorspec)),
-										seq($._fs, $.fill_style),
+										fillStyleOpt($),
 									),
 								),
 							),
@@ -1751,7 +1759,7 @@ module.exports = grammar({
 								key("spiderplot", 6, "st_opt"),
 								repeat(
 									choice(
-										seq($._fs, $.fill_style),
+										fillStyleOpt($),
 										seq($._ls, field("ls", $._expression)),
 										seq(
 											$._lt,
@@ -2009,7 +2017,7 @@ module.exports = grammar({
 						alias(K.t, "top"),
 						alias(K.b, "bot"),
 						key("rotate", 3, undefined, 1),
-						seq(key("offset", 3), $.position),
+						offsetPos($),
 						$.fontspec,
 						$._textcolor,
 					),
@@ -2028,8 +2036,8 @@ module.exports = grammar({
 								field("title", $._expression),
 								repeat(
 									choice(
-										field("offset", seq(key("offset", 3), $.position)),
-										field("at", seq("at", $.position)),
+										field("offset", offsetPos($)),
+										field("at", atPos($)),
 										$.fontspec,
 										$._textcolor,
 										key("enhanced", undefined, undefined, 1),
@@ -2038,8 +2046,8 @@ module.exports = grammar({
 							),
 							repeat1(
 								choice(
-									field("offset", seq(key("offset", 3), $.position)),
-									field("at", seq("at", $.position)),
+									field("offset", offsetPos($)),
+									field("at", atPos($)),
 									$.fontspec,
 									$._textcolor,
 									key("enhanced", undefined, undefined, 1),
@@ -2086,7 +2094,7 @@ module.exports = grammar({
 			repeat1(
 				choice(
 					alias(choice("x0", "y0", "z0", "x1", "y1"), "wall"),
-					seq($._fs, $.fill_style),
+					fillStyleOpt($),
 					$._fillcolor,
 				),
 			),
@@ -2103,7 +2111,7 @@ module.exports = grammar({
 					repeat1(
 						choice(
 							field("label", $._expression),
-							seq(key("offset", 3), $.position),
+							offsetPos($),
 							seq(
 								key("rotate", 3, undefined, 1),
 								optional(
@@ -2422,7 +2430,7 @@ module.exports = grammar({
 						key("enhanced", 3, undefined, 1),
 						choice(alias(K.c, "cen"), alias(K.l, "lef"), alias(reg("right", 2), "rig")),
 						seq(key("rotate", 3, undefined, 1), optional(choice(seq("by", $._expression), "variable"))),
-						seq(key("offset", 3), $.position),
+						offsetPos($),
 						$._textcolor,
 					),
 				),
@@ -2464,7 +2472,7 @@ module.exports = grammar({
 				repeat1(
 					choice(
 						prec.dynamic(1, field("label", $._expression)),
-					field("at", seq("at", $.position)),
+					field("at", atPos($)),
 					choice(alias(K.c, "cen"), alias(K.l, "lef"), alias(K.r, "rig")),
 					seq(
 						key("rotate", 3, undefined, 1),
@@ -2480,7 +2488,7 @@ module.exports = grammar({
 					LAYER,
 					$._textcolor,
 					choice(seq("point", field("point", $.line_style)), "nopoint"),
-					field("offset", seq(key("offset", 3), $.position)),
+					field("offset", offsetPos($)),
 					choice(
 						key("noboxed", -2),
 						seq(
@@ -2514,7 +2522,7 @@ module.exports = grammar({
 							key("norotate", 5),
 						),
 						choice(
-							field("offset", seq(key("offset", 3), $.position)),
+							field("offset", offsetPos($)),
 							key("nooffset", 5),
 						),
 						choice(
