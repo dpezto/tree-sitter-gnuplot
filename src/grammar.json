@@ -4080,25 +4080,16 @@
                   "name": "_expression"
                 },
                 {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": "front"
-                    },
-                    {
-                      "type": "STRING",
-                      "value": "back"
-                    },
-                    {
-                      "type": "STRING",
-                      "value": "behind"
-                    },
-                    {
-                      "type": "STRING",
-                      "value": "depthorder"
-                    }
-                  ]
+                  "type": "STRING",
+                  "value": "front"
+                },
+                {
+                  "type": "STRING",
+                  "value": "back"
+                },
+                {
+                  "type": "STRING",
+                  "value": "behind"
                 },
                 {
                   "type": "SYMBOL",
@@ -5533,14 +5524,6 @@
                 {
                   "type": "STRING",
                   "value": "back"
-                },
-                {
-                  "type": "STRING",
-                  "value": "behind"
-                },
-                {
-                  "type": "STRING",
-                  "value": "depthorder"
                 }
               ]
             },
@@ -5935,25 +5918,12 @@
                     "value": "layerdefault"
                   },
                   {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "front"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "back"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "behind"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "depthorder"
-                      }
-                    ]
+                    "type": "STRING",
+                    "value": "front"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "back"
                   }
                 ]
               },
@@ -6036,25 +6006,12 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "front"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "back"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "behind"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "depthorder"
-                  }
-                ]
+                "type": "STRING",
+                "value": "front"
+              },
+              {
+                "type": "STRING",
+                "value": "back"
               },
               {
                 "type": "SEQ",
@@ -9847,10 +9804,6 @@
                   {
                     "type": "STRING",
                     "value": "behind"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "depthorder"
                   }
                 ]
               },
@@ -11115,25 +11068,12 @@
                           "type": "CHOICE",
                           "members": [
                             {
-                              "type": "CHOICE",
-                              "members": [
-                                {
-                                  "type": "STRING",
-                                  "value": "front"
-                                },
-                                {
-                                  "type": "STRING",
-                                  "value": "back"
-                                },
-                                {
-                                  "type": "STRING",
-                                  "value": "behind"
-                                },
-                                {
-                                  "type": "STRING",
-                                  "value": "depthorder"
-                                }
-                              ]
+                              "type": "STRING",
+                              "value": "front"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "back"
                             },
                             {
                               "type": "SEQ",
@@ -11251,14 +11191,6 @@
                                   {
                                     "type": "STRING",
                                     "value": "back"
-                                  },
-                                  {
-                                    "type": "STRING",
-                                    "value": "behind"
-                                  },
-                                  {
-                                    "type": "STRING",
-                                    "value": "depthorder"
                                   }
                                 ]
                               },
@@ -16592,14 +16524,6 @@
                 {
                   "type": "STRING",
                   "value": "back"
-                },
-                {
-                  "type": "STRING",
-                  "value": "behind"
-                },
-                {
-                  "type": "STRING",
-                  "value": "depthorder"
                 }
               ]
             }
@@ -16845,14 +16769,6 @@
                 {
                   "type": "STRING",
                   "value": "back"
-                },
-                {
-                  "type": "STRING",
-                  "value": "behind"
-                },
-                {
-                  "type": "STRING",
-                  "value": "depthorder"
                 }
               ]
             },
