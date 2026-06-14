@@ -1,11 +1,69 @@
 # Grammar v2: Scanner-First Architecture
 
+> **Living document — keep current.** Update this file in the same change as any
+> phase work (see the DIRECTIVE in `CLAUDE.local.md`). Last revised 2026-06-13.
+
+## Status
+
+| Phase | State |
+|-------|-------|
+| 1 — Style attributes (14 K.* → externals) | **DONE** (2026-06-13). 14 `K.*` regex tokens → external scanner tokens (`KW_LW`..`KW_TC`, `STYLE_KWS` table) via `_lw`..`_tc` hidden alias rules. CST unchanged (all corpus passes without tree edits). **Size-NEGATIVE** (+86 KB, SYMBOL_COUNT +15): confirms the rule that 1:1 relocation without N→1 merge does not shrink — done purely to retire `reg()` (scanner-first), not for size. |
+| 2 — Plot style names (→ `kw_plt_st`) | **DONE** (2026-06-09). 29 plain styles → 1 external token; 9 styles with trailing opts keep regex (different continuations). |
+| 3 — Terminal names (32 → 1) | **DONE** (2026-06-13). One `TERM_NAME` token + one permissive `t_opts` rule replaced 32 name tokens and 30 `t_*` rules. **−6.1 MB / −13 %** on its own. |
+| 4 — `_argument_set_show` keywords | mostly stale: axis families already merged via `K.axes`. Only D3 minor-tics (6→1) remains as a clean small win. |
+| 5 — Command keyword abbreviations | partially done via scanner (`kw_cmd_bare/optexpr/exit/expr`, `cmd_*_kw`). |
+
+Measured so far: parser.c 52.45 MB → **39.95 MB**; SYMBOL_COUNT 1,236 → **1,076**;
+STATE_COUNT → **17,532**; TOKEN_COUNT → **809**. 92/92 corpus tests pass.
+
+**Terminal merge 2026-06-13 (Phase 3 — −13 %, the big win).** All 32 terminal
+names collapsed into one `TERM_NAME = token(choice(...))` aliased `"name"`, and all
+30 `t_*` option rules collapsed into one permissive `t_opts`. The grammar no longer
+tracks which terminal an option belongs to (a highlighter need not reject invalid
+combos). parser.c **47.06 → 39.95 MB**, STATE_COUNT 20,515 → 17,532.
+**Correction to the earlier size pessimism:** terminal names alone are valid in few
+states (≈negligible), BUT collapsing the 30 separate `repeat1(choice(...))` *opt
+rules* into one shed ~3,000 states — that is where the win came from. The lesson:
+collapsing many sibling **non-terminal rules** with overlapping option sets is a
+real lever, not just merging leaf tokens.
+
+Pitfalls hit (all fixed; see CLAUDE.local for detail):
+- **Empty-token infinite loop:** `seq(key("window", $._expression))` (a pre-existing
+  typo from `t_x11` — `$._expression` passed as `key`'s `minChar`) made every char
+  optional → a token matching the empty string → infinite loop in `repeat1`. Fixed to
+  `seq(key("window"), $._expression)`. THIS, not abbreviation overlap, caused the OOM.
+- **Abbreviation shadowing (mis-parse, not hang):** loose `min_chars` let
+  `key("colortext", 2)` swallow `"color"` (→ wrong node). Fixed by forcing all inline
+  `t_opts` option keywords to full form (no abbreviation). `K.lw/dl/ps` and
+  `T_ENH/T_CROP/T_TRUECOLOR/T_INTERLACE` keep their abbreviations (no collision).
+- **Bare-expression ambiguity:** `field("n", $._expression)` caused a generate
+  conflict + blowup; replaced with `field("n", $.number)` (numbers don't start
+  statements → no swallowing; verified `set term png⏎plot` stays two statements).
+
+**Readability pass 2026-06-13 (preceded the merge):** the `t_*` rules were first
+de-duplicated with shared fragment helpers (`T_ENH`, `T_CROP`, `T_TRUECOLOR`,
+`T_INTERLACE`, `T_GDSIZES`, `T_ANCHOR`, `tLwExpr`, `tDlExpr`, `tFont`) under the `K`
+object; those helpers now live inside `t_opts`.
+
 ## Why
 
-`parser.c` is 52 MB. Root cause: 503 `key()` calls generate 587 `aux_sym_*`
-parse-table columns. Even though many keywords share the same alias (e.g.,
-63 keywords aliased to `"arg"`), each distinct regex creates a separate symbol
-column. `alias()` is a CST-only operation — it never reduces parse-table width.
+`parser.c` was 52 MB (≈45 MB now). Root cause: the `reg()`/`key()`/`key1()`
+machinery at the bottom of `grammar.js` — **555 calls as of 2026-06-13**
+(502 `key()` + 15 `key1()` + 38 `reg()`), ≈ 64 % of TOKEN_COUNT 867. Each distinct
+keyword regex creates a separate terminal symbol = a separate parse-table column,
+and `parser.c` size ≈ parse-table width ≈ number of distinct terminals. Even
+though many keywords share an alias (e.g. 63 aliased to `"arg"`), `alias()` is a
+CST-only operation — it never reduces parse-table width.
+
+**Critical caveat (measured, not theoretical).** Deleting a regex shrinks
+`parser.c` *only* when it collapses **N keywords → 1 token** with an identical
+grammar continuation (the `kw_plt_st` win, 29→1). **Moving a keyword into the
+scanner 1:1 keeps SYMBOL_COUNT and saves ~0 bytes** — the external token still
+needs the same ACTIONS entries. So the goal is "merge keyword groups into shared
+external tokens," not merely "relocate every `key()` into `scanner.c`." Groups
+whose continuations genuinely differ (the 14 style attrs, most set/show args)
+cannot be 1→1-relocated into a smaller table; they need a *union opts* redesign to
+merge, or they stay as-is.
 
 ## Guiding Principle
 
@@ -311,20 +369,59 @@ test/corpus/      (mostly unchanged — CST node types preserved via aliases)
 
 Each phase: `tree-sitter generate && tree-sitter test && parse pruebadefuego.plt`
 
-1. **Phase 1 — Style attributes (14 K.* → 14 external tokens)**  
-   Lowest risk: K.* appear in well-tested contexts. Establishes pattern for all phases.
+The original order below was risk-first. **Re-prioritized 2026-06-13 by actual
+size payoff** (size shrinks only via N→1 merges — see the Why caveat):
 
-2. **Phase 2 — Plot style names (35 → 1 token)**  
-   High savings (34 fewer symbols), low risk (leaf nodes, identical continuation).
+- **Biggest remaining size win: Phase 3 — terminal names (32 → 1).** Needs a
+  permissive union `t_opts` rule so all terminals share one continuation, plus
+  corpus-test updates for the changed CST. Medium risk, highest payoff.
+- **Small clean win: Phase 4/D3 — minor tics (6 → 1, `kw_mtics`).** Low risk.
+- **No size payoff: Phase 1 — style attrs (14 → 14).** Do only as grammar
+  simplification / to retire `reg()` calls; it will not shrink `parser.c`.
+- **Deepest win but v3 territory: statement-terminator redesign** to cut the
+  per-command-token cost (see empirical corrections).
+
+Original phase list (kept for reference; statuses in the Status table at top):
+
+1. **Phase 1 — Style attributes (14 K.* → 14 external tokens)**  
+   Size-neutral (14 distinct continuations). Lowest risk; establishes the
+   external-token pattern. Pursue for simplification, not size.
+
+2. **Phase 2 — Plot style names (35 → 1 token)** — **DONE 2026-06-09.**
 
 3. **Phase 3 — Terminal type names (32 → 1 token)**  
-   Medium risk (terminal options are complex; scanner must store terminal name).
+   Medium risk (each terminal's options differ → needs union `t_opts` rule).
 
 4. **Phase 4 — `_argument_set_show` keywords (~80 tokens, one group at a time)**  
-   Highest effort. Start with minor-tics merge (D3), then per-option keywords.
+   Mostly stale (axis families already merged via `K.axes`). Only D3 minor-tics
+   (6→1) is a clean remaining win.
 
 5. **Phase 5 — Remaining command keyword abbreviations**  
-   `set`, `show`, `unset`, `clear`, `replot`, etc.
+   Partially done via scanner (`kw_cmd_bare/optexpr/exit/expr`, `cmd_*_kw`).
+
+---
+
+## Empirical corrections (measured)
+
+- Parse-table entries are sparse-initialized — removing a token column only saves
+  the entries where that token was actually valid.
+  Savings ≈ (tokens merged − 1) × (states where the token was valid).
+- **Moving a keyword to the scanner WITHOUT merging N→1 saves nothing** (the
+  external token still needs the same ACTIONS entries). Phase 1 is the example.
+- **Statement-start tokens are the cost center**: each command token has entries
+  in ~9,500 states — every expression-tail state carries the full statement-start
+  follow set because `source_file: repeat($._statement)` lets statements abut with
+  no terminator token. ~25 remaining command tokens ≈ 240K entries. Deep fix =
+  statement-terminator redesign (v3). **Cause is structural, not extras (probe
+  2026-06-13):** removing `\n` from `extras` alone left STATE_COUNT unchanged
+  (20,515) and parser.c −0.015 %. A real fix promotes newline/`;` to an explicit
+  terminator TOKEN + `sep` in `source_file`; payoff UNMEASURED, high risk.
+- Group D (set/show args) is largely stale: axis families (x/y/z/x2/y2/cb ranges,
+  labels, m*tics) are ALREADY merged via `K.axes` regexes.
+- Terminal names have NON-identical continuations (each `t_*` opts rule differs);
+  merging requires a permissive union `t_opts` rule + corpus test updates.
+- Merging changes CST rule names — grep `test/corpus/` and `queries/` first.
+  `cmd_system` is referenced in `injections.scm`; keep it separate.
 
 ---
 

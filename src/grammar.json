@@ -10,6 +10,132 @@
         "name": "_statement"
       }
     },
+    "_lw": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_lw"
+      },
+      "named": false,
+      "value": "lw"
+    },
+    "_lt": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_lt"
+      },
+      "named": false,
+      "value": "lt"
+    },
+    "_ls": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_ls"
+      },
+      "named": false,
+      "value": "ls"
+    },
+    "_lc": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_lc"
+      },
+      "named": false,
+      "value": "lc"
+    },
+    "_dt": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_dt"
+      },
+      "named": false,
+      "value": "dt"
+    },
+    "_dl": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_dl"
+      },
+      "named": false,
+      "value": "dl"
+    },
+    "_pt": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_pt"
+      },
+      "named": false,
+      "value": "pt"
+    },
+    "_ps": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_ps"
+      },
+      "named": false,
+      "value": "ps"
+    },
+    "_pi": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_pi"
+      },
+      "named": false,
+      "value": "pi"
+    },
+    "_pn": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_pn"
+      },
+      "named": false,
+      "value": "pn"
+    },
+    "_as": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_as"
+      },
+      "named": false,
+      "value": "as"
+    },
+    "_fs": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_fs"
+      },
+      "named": false,
+      "value": "fs"
+    },
+    "_fc": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_fc"
+      },
+      "named": false,
+      "value": "fc"
+    },
+    "_tc": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "kw_tc"
+      },
+      "named": false,
+      "value": "tc"
+    },
     "_statement": {
       "type": "CHOICE",
       "members": [
@@ -1563,13 +1689,8 @@
                           "type": "SEQ",
                           "members": [
                             {
-                              "type": "ALIAS",
-                              "content": {
-                                "type": "PATTERN",
-                                "value": "linetype|lt"
-                              },
-                              "named": false,
-                              "value": "lt"
+                              "type": "SYMBOL",
+                              "name": "_lt"
                             },
                             {
                               "type": "FIELD",
@@ -1585,13 +1706,8 @@
                           "type": "SEQ",
                           "members": [
                             {
-                              "type": "ALIAS",
-                              "content": {
-                                "type": "PATTERN",
-                                "value": "fill(s(t(y(l(e)?)?)?)?)?|fs"
-                              },
-                              "named": false,
-                              "value": "fs"
+                              "type": "SYMBOL",
+                              "name": "_fs"
                             },
                             {
                               "type": "SYMBOL",
@@ -4890,13 +5006,8 @@
           {
             "type": "ALIAS",
             "content": {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "dasht(y(p(e)?)?)?|dt"
-              },
-              "named": false,
-              "value": "dt"
+              "type": "SYMBOL",
+              "name": "kw_dt"
             },
             "named": false,
             "value": "arg"
@@ -6836,13 +6947,8 @@
           {
             "type": "ALIAS",
             "content": {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "linetype|lt"
-              },
-              "named": false,
-              "value": "lt"
+              "type": "SYMBOL",
+              "name": "kw_lt"
             },
             "named": false,
             "value": "arg"
@@ -8533,13 +8639,8 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "fill(s(t(y(l(e)?)?)?)?)?|fs"
-                    },
-                    "named": false,
-                    "value": "fs"
+                    "type": "SYMBOL",
+                    "name": "_fs"
                   },
                   {
                     "type": "SYMBOL",
@@ -8555,13 +8656,8 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "linew(i(d(t(h)?)?)?)?|lw"
-                    },
-                    "named": false,
-                    "value": "lw"
+                    "type": "SYMBOL",
+                    "name": "_lw"
                   },
                   {
                     "type": "SYMBOL",
@@ -8573,13 +8669,8 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "dasht(y(p(e)?)?)?|dt"
-                    },
-                    "named": false,
-                    "value": "dt"
+                    "type": "SYMBOL",
+                    "name": "_dt"
                   },
                   {
                     "type": "SYMBOL",
@@ -10577,13 +10668,8 @@
                               "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "ALIAS",
-                                  "content": {
-                                    "type": "PATTERN",
-                                    "value": "pointt(y(p(e)?)?)?|pt"
-                                  },
-                                  "named": false,
-                                  "value": "pt"
+                                  "type": "SYMBOL",
+                                  "name": "_pt"
                                 },
                                 {
                                   "type": "FIELD",
@@ -10702,13 +10788,8 @@
                     "type": "SEQ",
                     "members": [
                       {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "fill(s(t(y(l(e)?)?)?)?)?|fs"
-                        },
-                        "named": false,
-                        "value": "fs"
+                        "type": "SYMBOL",
+                        "name": "_fs"
                       },
                       {
                         "type": "SYMBOL",
@@ -10818,13 +10899,8 @@
                                       "type": "SEQ",
                                       "members": [
                                         {
-                                          "type": "ALIAS",
-                                          "content": {
-                                            "type": "PATTERN",
-                                            "value": "linew(i(d(t(h)?)?)?)?|lw"
-                                          },
-                                          "named": false,
-                                          "value": "lw"
+                                          "type": "SYMBOL",
+                                          "name": "_lw"
                                         },
                                         {
                                           "type": "SYMBOL",
@@ -11047,13 +11123,8 @@
                               "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "ALIAS",
-                                  "content": {
-                                    "type": "PATTERN",
-                                    "value": "fill(s(t(y(l(e)?)?)?)?)?|fs"
-                                  },
-                                  "named": false,
-                                  "value": "fs"
+                                  "type": "SYMBOL",
+                                  "name": "_fs"
                                 },
                                 {
                                   "type": "SYMBOL",
@@ -11165,13 +11236,8 @@
                               "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "ALIAS",
-                                  "content": {
-                                    "type": "PATTERN",
-                                    "value": "fill(s(t(y(l(e)?)?)?)?)?|fs"
-                                  },
-                                  "named": false,
-                                  "value": "fs"
+                                  "type": "SYMBOL",
+                                  "name": "_fs"
                                 },
                                 {
                                   "type": "SYMBOL",
@@ -11183,13 +11249,8 @@
                               "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "ALIAS",
-                                  "content": {
-                                    "type": "PATTERN",
-                                    "value": "lines(t(y(l(e)?)?)?)?|ls"
-                                  },
-                                  "named": false,
-                                  "value": "ls"
+                                  "type": "SYMBOL",
+                                  "name": "_ls"
                                 },
                                 {
                                   "type": "FIELD",
@@ -11205,13 +11266,8 @@
                               "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "ALIAS",
-                                  "content": {
-                                    "type": "PATTERN",
-                                    "value": "linetype|lt"
-                                  },
-                                  "named": false,
-                                  "value": "lt"
+                                  "type": "SYMBOL",
+                                  "name": "_lt"
                                 },
                                 {
                                   "type": "FIELD",
@@ -11248,13 +11304,8 @@
                               "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "ALIAS",
-                                  "content": {
-                                    "type": "PATTERN",
-                                    "value": "linew(i(d(t(h)?)?)?)?|lw"
-                                  },
-                                  "named": false,
-                                  "value": "lw"
+                                  "type": "SYMBOL",
+                                  "name": "_lw"
                                 },
                                 {
                                   "type": "FIELD",
@@ -11274,13 +11325,8 @@
                               "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "ALIAS",
-                                  "content": {
-                                    "type": "PATTERN",
-                                    "value": "dasht(y(p(e)?)?)?|dt"
-                                  },
-                                  "named": false,
-                                  "value": "dt"
+                                  "type": "SYMBOL",
+                                  "name": "_dt"
                                 },
                                 {
                                   "type": "FIELD",
@@ -11296,13 +11342,8 @@
                               "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "ALIAS",
-                                  "content": {
-                                    "type": "PATTERN",
-                                    "value": "pointt(y(p(e)?)?)?|pt"
-                                  },
-                                  "named": false,
-                                  "value": "pt"
+                                  "type": "SYMBOL",
+                                  "name": "_pt"
                                 },
                                 {
                                   "type": "FIELD",
@@ -11318,13 +11359,8 @@
                               "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "ALIAS",
-                                  "content": {
-                                    "type": "PATTERN",
-                                    "value": "points(i(z(e)?)?)?|ps"
-                                  },
-                                  "named": false,
-                                  "value": "ps"
+                                  "type": "SYMBOL",
+                                  "name": "_ps"
                                 },
                                 {
                                   "type": "FIELD",
@@ -11340,13 +11376,8 @@
                               "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "ALIAS",
-                                  "content": {
-                                    "type": "PATTERN",
-                                    "value": "pointi(n(t(e(r(v(a(l)?)?)?)?)?)?)?|pi"
-                                  },
-                                  "named": false,
-                                  "value": "pi"
+                                  "type": "SYMBOL",
+                                  "name": "_pi"
                                 },
                                 {
                                   "type": "FIELD",
@@ -11362,13 +11393,8 @@
                               "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "ALIAS",
-                                  "content": {
-                                    "type": "PATTERN",
-                                    "value": "pointn(u(m(b(e(r)?)?)?)?)?|pn"
-                                  },
-                                  "named": false,
-                                  "value": "pn"
+                                  "type": "SYMBOL",
+                                  "name": "_pn"
                                 },
                                 {
                                   "type": "FIELD",
@@ -11468,13 +11494,8 @@
                                   "type": "SEQ",
                                   "members": [
                                     {
-                                      "type": "ALIAS",
-                                      "content": {
-                                        "type": "PATTERN",
-                                        "value": "linew(i(d(t(h)?)?)?)?|lw"
-                                      },
-                                      "named": false,
-                                      "value": "lw"
+                                      "type": "SYMBOL",
+                                      "name": "_lw"
                                     },
                                     {
                                       "type": "SYMBOL",
@@ -11751,2365 +11772,211 @@
       }
     },
     "terminal": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "t(e(r(m(i(n(a(l)?)?)?)?)?)?)?"
-          },
-          "named": false,
-          "value": "arg"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_terminal_type"
-                },
-                {
-                  "type": "STRING",
-                  "value": "push"
-                },
-                {
-                  "type": "STRING",
-                  "value": "pop"
-                }
-              ]
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        }
-      ]
-    },
-    "_terminal_type": {
-      "type": "PREC_LEFT",
+      "type": "PREC_RIGHT",
       "value": 0,
       "content": {
-        "type": "CHOICE",
+        "type": "SEQ",
         "members": [
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "cai(r(o(l(a(t(e(x)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_cairolatex"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "can(v(a(s)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_canvas"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "cg(m)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_cgm"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "co(n(t(e(x(t)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_context"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "do(m(t(e(r(m)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_domterm"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "du(m(b)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_dumb"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
           {
             "type": "ALIAS",
             "content": {
               "type": "PATTERN",
-              "value": "dx(f)?"
+              "value": "t(e(r(m(i(n(a(l)?)?)?)?)?)?)?"
             },
             "named": false,
-            "value": "name"
+            "value": "arg"
           },
           {
-            "type": "SEQ",
+            "type": "CHOICE",
             "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "em(f)?"
-                },
-                "named": false,
-                "value": "name"
-              },
               {
                 "type": "CHOICE",
                 "members": [
                   {
-                    "type": "SYMBOL",
-                    "name": "t_emf"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "e(p(s(c(a(i(r(o)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_epscairo"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "epsl(a(t(e(x)?)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_epslatex"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "f(i(g)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_fig"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "g(i(f)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_gif"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "h(p(g(l)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_hpgl"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "j(p(e(g)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_jpeg"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "kittyc(a(i(r(o)?)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_kittycairo"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "kittyg(d)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_kittygd"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "l(u(a)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "CHOICE",
+                    "type": "SEQ",
                     "members": [
                       {
-                        "type": "SYMBOL",
-                        "name": "t_lua"
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "TOKEN",
+                          "content": {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "PATTERN",
+                                "value": "cai(r(o(l(a(t(e(x)?)?)?)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "can(v(a(s)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "cg(m)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "co(n(t(e(x(t)?)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "do(m(t(e(r(m)?)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "du(m(b)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "dx(f)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "em(f)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "e(p(s(c(a(i(r(o)?)?)?)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "epsl(a(t(e(x)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "f(i(g)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "g(i(f)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "h(p(g(l)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "j(p(e(g)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "kittyc(a(i(r(o)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "kittyg(d)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "l(u(a)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "pc(l(5)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "pd(f(c(a(i(r(o)?)?)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "pi(c(t(2(e)?)?)?)?"
+                              },
+                              {
+                                "type": "STRING",
+                                "value": "png"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "pngc(a(i(r(o)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "po(s(t(s(c(r(i(p(t)?)?)?)?)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "psl(a(t(e(x)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "pste(x)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "q(t)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "s(i(x(e(l(g(d)?)?)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "sv(g)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "tek4(0|1|2)\\d\\d"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "ti(k(z)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "u(n(k(n(o(w(n)?)?)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "w(e(b(p)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "wx(t)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "x(1(1)?)?"
+                              }
+                            ]
+                          }
+                        },
+                        "named": false,
+                        "value": "name"
                       },
                       {
-                        "type": "SEQ",
+                        "type": "CHOICE",
                         "members": [
                           {
-                            "type": "STRING",
-                            "value": "tikz"
+                            "type": "SYMBOL",
+                            "name": "t_opts"
                           },
                           {
-                            "type": "SYMBOL",
-                            "name": "t_tikz"
+                            "type": "BLANK"
                           }
                         ]
                       }
                     ]
                   },
                   {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "pc(l(5)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_pcl5"
+                    "type": "STRING",
+                    "value": "push"
                   },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "pd(f(c(a(i(r(o)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_pdfcairo"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "pi(c(t(2(e)?)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_pic2e"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "STRING",
-                  "value": "png"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_png"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "pngc(a(i(r(o)?)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_pngcairo"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "po(s(t(s(c(r(i(p(t)?)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_postscript"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "psl(a(t(e(x)?)?)?)?|pste(x)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_pslatex"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "q(t)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_qt"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "s(i(x(e(l(g(d)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_sixelgd"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "sv(g)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_svg"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "tek4(0|1|2)\\d\\d"
-            },
-            "named": false,
-            "value": "name"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "ti(k(z)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_tikz"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "u(n(k(n(o(w(n)?)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "name"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "w(e(b(p)?)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_webp"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "wx(t)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_wxt"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "x(1(1)?)?"
-                },
-                "named": false,
-                "value": "name"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "t_x11"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "t_cairolatex": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "eps"
-              },
-              {
-                "type": "STRING",
-                "value": "pdf"
-              },
-              {
-                "type": "STRING",
-                "value": "png"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "standalone"
-              },
-              {
-                "type": "STRING",
-                "value": "input"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "blacktext"
-              },
-              {
-                "type": "STRING",
-                "value": "colortext"
-              },
-              {
-                "type": "STRING",
-                "value": "colourtext"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
                   {
                     "type": "STRING",
-                    "value": "header"
-                  },
-                  {
-                    "type": "FIELD",
-                    "name": "header",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "_expression"
-                    }
+                    "value": "pop"
                   }
                 ]
               },
               {
-                "type": "STRING",
-                "value": "noheader"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?crop"
-            },
-            "named": false,
-            "value": "crop"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "points(i(z(e)?)?)?|ps"
-                },
-                "named": false,
-                "value": "ps"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "resolution"
-              },
-              {
-                "type": "FIELD",
-                "name": "dpi",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
+                "type": "BLANK"
               }
             ]
           }
         ]
       }
     },
-    "t_canvas": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "fsize"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "ti(t(l(e)?)?)?"
-                },
-                "named": false,
-                "value": "title"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "t_cgm": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "s(o(l(i(d)?)?)?)?"
-                },
-                "named": false,
-                "value": "solid"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "da(s(h(e(d)?)?)?)?"
-                },
-                "named": false,
-                "value": "dashed"
-              }
-            ]
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?r(o(t(a(t(e)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "rotate"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "la(n(d(s(c(a(p(e)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "landscape"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "po(r(t(r(a(i(t)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "portrait"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "wi(d(t(h)?)?)?"
-                },
-                "named": false,
-                "value": "width"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "FIELD",
-                "name": "lw",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "FIELD",
-                "name": "dl",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          }
-        ]
-      }
-    },
-    "t_context": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "d(e(f(a(u(l(t)?)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "default"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "inp(u(t)?)?"
-                },
-                "named": false,
-                "value": "input"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "stand(a(l(o(n(e)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "standalone"
-              }
-            ]
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?time(s(t(a(m(p)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "timestamp"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "noheader"
-              },
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "header"
-                  },
-                  {
-                    "type": "FIELD",
-                    "name": "header",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "_expression"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "rounded"
-              },
-              {
-                "type": "STRING",
-                "value": "mitered"
-              },
-              {
-                "type": "STRING",
-                "value": "beveled"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "s(o(l(i(d)?)?)?)?"
-                },
-                "named": false,
-                "value": "solid"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "da(s(h(e(d)?)?)?)?"
-                },
-                "named": false,
-                "value": "dashed"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "FIELD",
-                "name": "dl",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "FIELD",
-                "name": "lw",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "mp(o(i(n(t(s)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "mpoints"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "tex(p(o(i(n(t(s)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "texpoints"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "inline(i(m(a(g(e(s)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "inlineimages"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "external(i(m(a(g(e(s)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "externalimages"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          }
-        ]
-      }
-    },
-    "t_domterm": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "anim(a(t(e)?)?)?"
-            },
-            "named": false,
-            "value": "animate"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          }
-        ]
-      }
-    },
-    "t_dumb": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?f(e(e(d)?)?)?"
-            },
-            "named": false,
-            "value": "feed"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "aspect"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": ","
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "_expression"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "fill(c(h(a(r)?)?)?)?"
-                },
-                "named": false,
-                "value": "fillchar"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "solid"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?attr(i(b(u(t(e(s)?)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "attributes"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "mono"
-              },
-              {
-                "type": "STRING",
-                "value": "ansi"
-              },
-              {
-                "type": "STRING",
-                "value": "ansi256"
-              },
-              {
-                "type": "STRING",
-                "value": "ansirgb"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "t_emf": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "nopr(o(p(o(r(t(i(o(n(a(l)?)?)?)?)?)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "noproportional"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          }
-        ]
-      }
-    },
-    "t_epscairo": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          }
-        ]
-      }
-    },
-    "t_epslatex": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "standalone"
-              },
-              {
-                "type": "STRING",
-                "value": "input"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "level1"
-              },
-              {
-                "type": "STRING",
-                "value": "leveldefault"
-              },
-              {
-                "type": "STRING",
-                "value": "level3"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "points(i(z(e)?)?)?|ps"
-                },
-                "named": false,
-                "value": "ps"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?clip"
-            },
-            "named": false,
-            "value": "clip"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "header"
-                  },
-                  {
-                    "type": "FIELD",
-                    "name": "header",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "_expression"
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "STRING",
-                "value": "noheader"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "blacktext"
-              },
-              {
-                "type": "STRING",
-                "value": "colortext"
-              },
-              {
-                "type": "STRING",
-                "value": "colourtext"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          }
-        ]
-      }
-    },
-    "t_fig": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "small"
-              },
-              {
-                "type": "STRING",
-                "value": "big"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "landscape"
-              },
-              {
-                "type": "STRING",
-                "value": "portrait"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "si(z(e)?)?"
-                },
-                "named": false,
-                "value": "size"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_size"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "poi(n(t(s(m(a(x)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "pointsmax"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "fontsize"
-                },
-                "named": false,
-                "value": "fontsize"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "textn(o(r(m(a(l)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "textnormal"
-              },
-              {
-                "type": "STRING",
-                "value": "textspecial"
-              },
-              {
-                "type": "STRING",
-                "value": "texthidden"
-              },
-              {
-                "type": "STRING",
-                "value": "textrigid"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "t_gif": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "tiny"
-              },
-              {
-                "type": "STRING",
-                "value": "small"
-              },
-              {
-                "type": "STRING",
-                "value": "medium"
-              },
-              {
-                "type": "STRING",
-                "value": "large"
-              },
-              {
-                "type": "STRING",
-                "value": "giant"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?crop"
-            },
-            "named": false,
-            "value": "crop"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "anim(a(t(e)?)?)?"
-                },
-                "named": false,
-                "value": "animate"
-              },
-              {
-                "type": "REPEAT",
-                "content": {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "ALIAS",
-                          "content": {
-                            "type": "PATTERN",
-                            "value": "delay"
-                          },
-                          "named": false,
-                          "value": "delay"
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "_expression"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "ALIAS",
-                          "content": {
-                            "type": "PATTERN",
-                            "value": "loop"
-                          },
-                          "named": false,
-                          "value": "loop"
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "_expression"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "t_hpgl": {
+    "t_opts": {
       "type": "PREC_LEFT",
       "value": 0,
       "content": {
@@ -14117,2177 +11984,9 @@
         "content": {
           "type": "CHOICE",
           "members": [
-            {
-              "type": "FIELD",
-              "name": "n",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "ej(e(c(t)?)?)?"
-              },
-              "named": false,
-              "value": "eject"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "fontscale"
-            }
-          ]
-        }
-      }
-    },
-    "t_jpeg": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?inter(l(a(c(e)?)?)?)?"
-            },
-            "named": false,
-            "value": "interlace"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "tiny"
-              },
-              {
-                "type": "STRING",
-                "value": "small"
-              },
-              {
-                "type": "STRING",
-                "value": "medium"
-              },
-              {
-                "type": "STRING",
-                "value": "large"
-              },
-              {
-                "type": "STRING",
-                "value": "giant"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?crop"
-            },
-            "named": false,
-            "value": "crop"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          }
-        ]
-      }
-    },
-    "t_kittycairo": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "anchor"
-                },
-                "named": false,
-                "value": "anchor"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "scroll"
-                },
-                "named": false,
-                "value": "scroll"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          }
-        ]
-      }
-    },
-    "t_kittygd": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?true(c(o(l(o(r)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "truecolor"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "anchor"
-                },
-                "named": false,
-                "value": "anchor"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "scroll"
-                },
-                "named": false,
-                "value": "scroll"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          }
-        ]
-      }
-    },
-    "t_lua": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "FIELD",
-          "name": "name",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_expression"
-          }
-        }
-      ]
-    },
-    "t_pcl5": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "la(n(d(s(c(a(p(e)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "landscape"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "po(r(t(r(a(i(t)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "portrait"
-              }
-            ]
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "psp(o(i(n(t(s)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "pspoints"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "nop(s(p(o(i(n(t(s)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "nopspoints"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "points(i(z(e)?)?)?"
-                },
-                "named": false,
-                "value": "pointsize"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?"
-                },
-                "named": false,
-                "value": "linewidth"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "col(o(r)?)?"
-                },
-                "named": false,
-                "value": "color"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "t_pdfcairo": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          }
-        ]
-      }
-    },
-    "t_pic2e": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?"
-                },
-                "named": false,
-                "value": "linewidth"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "round(e(d)?)?"
-                },
-                "named": false,
-                "value": "rounded"
-              },
-              {
-                "type": "STRING",
-                "value": "butt"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "texarrows"
-              },
-              {
-                "type": "STRING",
-                "value": "gparrows"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "texpoints"
-              },
-              {
-                "type": "STRING",
-                "value": "gppoints"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "sma(l(l(p(o(i(n(t(s)?)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "smallpoints"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "tin(y(p(o(i(n(t(s)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "tinypoints"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "norm(a(l(p(o(i(n(t(s)?)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "normalpoints"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "t_png": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?inter(l(a(c(e)?)?)?)?"
-            },
-            "named": false,
-            "value": "interlace"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?true(c(o(l(o(r)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "truecolor"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "tiny"
-              },
-              {
-                "type": "STRING",
-                "value": "small"
-              },
-              {
-                "type": "STRING",
-                "value": "medium"
-              },
-              {
-                "type": "STRING",
-                "value": "large"
-              },
-              {
-                "type": "STRING",
-                "value": "giant"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          }
-        ]
-      }
-    },
-    "t_pngcairo": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?crop"
-            },
-            "named": false,
-            "value": "crop"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "points(i(z(e)?)?)?|ps"
-                },
-                "named": false,
-                "value": "ps"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          }
-        ]
-      }
-    },
-    "t_postscript": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "l(a(n(d(s(c(a(p(e)?)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "landscape"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "p(o(r(t(r(a(i(t)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "portrait"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "ep(s)?"
-                },
-                "named": false,
-                "value": "eps"
-              }
-            ]
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "d(e(f(a(u(l(t(p(l(e(x)?)?)?)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "defaultplex"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "si(m(p(l(e(x)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "simplex"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "du(p(l(e(x)?)?)?)?"
-                },
-                "named": false,
-                "value": "duplex"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "leveldefault"
-              },
-              {
-                "type": "STRING",
-                "value": "level1"
-              },
-              {
-                "type": "STRING",
-                "value": "level3"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "b(l(a(c(k(t(e(x(t)?)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "blacktext"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "co(l(o(r(t(e(x(t)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "colortext"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "colou(r(t(e(x(t)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "colortext"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "so(l(i(d)?)?)?"
-                },
-                "named": false,
-                "value": "solid"
-              },
-              {
-                "type": "STRING",
-                "value": "dashed"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?"
-                },
-                "named": false,
-                "value": "linewidth"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "palf(u(n(c(p(a(r(a(m)?)?)?)?)?)?)?)?"
-                },
-                "named": false,
-                "value": "palfuncparam"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": ","
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "_expression"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "points(c(a(l(e)?)?)?)?"
-                },
-                "named": false,
-                "value": "pointscale"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "clip"
-                },
-                "named": false,
-                "value": "clip"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "nocli(p)?"
-                },
-                "named": false,
-                "value": "noclip"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          }
-        ]
-      }
-    },
-    "t_pslatex": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?rotate"
-            },
-            "named": false,
-            "value": "rotate"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?auxfile"
-            },
-            "named": false,
-            "value": "auxfile"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "level1"
-              },
-              {
-                "type": "STRING",
-                "value": "leveldefault"
-              },
-              {
-                "type": "STRING",
-                "value": "level3"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "points(i(z(e)?)?)?|ps"
-                },
-                "named": false,
-                "value": "ps"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?clip"
-            },
-            "named": false,
-            "value": "clip"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          }
-        ]
-      }
-    },
-    "t_qt": {
-      "type": "PREC_LEFT",
-      "value": 0,
-      "content": {
-        "type": "REPEAT1",
-        "content": {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "n",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            },
             {
               "type": "SYMBOL",
               "name": "canvas_size"
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "position"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "position"
-                }
-              ]
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "ti(t(l(e)?)?)?"
-                  },
-                  "named": false,
-                  "value": "title"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              ]
-            },
-            {
-              "type": "SYMBOL",
-              "name": "fontspec"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-              },
-              "named": false,
-              "value": "enhanced"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "line_drawing_method"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?rep(l(o(t(o(n(r(e(s(i(z(e)?)?)?)?)?)?)?)?)?)?)?"
-              },
-              "named": false,
-              "value": "replotonresize"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?an(t(i(a(l(i(a(s)?)?)?)?)?)?)?"
-              },
-              "named": false,
-              "value": "antialias"
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "linew(i(d(t(h)?)?)?)?|lw"
-                  },
-                  "named": false,
-                  "value": "lw"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              ]
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                  },
-                  "named": false,
-                  "value": "dl"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              ]
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?per(s(i(s(t)?)?)?)?"
-              },
-              "named": false,
-              "value": "persist"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?rai(s(e)?)?"
-              },
-              "named": false,
-              "value": "raise"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?ct(r(l)?)?"
-              },
-              "named": false,
-              "value": "ctrl"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "cl(o(s(e)?)?)?"
-              },
-              "named": false,
-              "value": "close"
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "w(i(d(g(e(t)?)?)?)?)?"
-                  },
-                  "named": false,
-                  "value": "widget"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              ]
-            }
-          ]
-        }
-      }
-    },
-    "t_sixelgd": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?true(c(o(l(o(r)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "truecolor"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "tiny"
-              },
-              {
-                "type": "STRING",
-                "value": "small"
-              },
-              {
-                "type": "STRING",
-                "value": "medium"
-              },
-              {
-                "type": "STRING",
-                "value": "large"
-              },
-              {
-                "type": "STRING",
-                "value": "giant"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "anchor"
-                },
-                "named": false,
-                "value": "anchor"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "scroll"
-                },
-                "named": false,
-                "value": "scroll"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          }
-        ]
-      }
-    },
-    "t_svg": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "fixed"
-              },
-              {
-                "type": "STRING",
-                "value": "dynamic"
-              }
-            ]
-          },
-          {
-            "type": "STRING",
-            "value": "mouse"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "standalone"
-              },
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "jsdir"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "name"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "solid"
-              },
-              {
-                "type": "STRING",
-                "value": "dashed"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          }
-        ]
-      }
-    },
-    "t_tikz": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "l(a(t(e(x)?)?)?)?"
-                },
-                "named": false,
-                "value": "latex"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "tex"
-                },
-                "named": false,
-                "value": "tex"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "con(t(e(x(t)?)?)?)?"
-                },
-                "named": false,
-                "value": "context"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "mono_color"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?origin(r(e(s(e(t)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "originreset"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?gparr(o(w(s)?)?)?"
-            },
-            "named": false,
-            "value": "gparrows"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?gppoint(s)?"
-            },
-            "named": false,
-            "value": "gppoints"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?pic(e(n(v(i(r(o(n(m(e(n(t)?)?)?)?)?)?)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "picenvironment"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?clip"
-            },
-            "named": false,
-            "value": "clip"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "line_drawing_method"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?tight(b(o(u(n(d(i(n(g(b(o(x)?)?)?)?)?)?)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "tightboundingbox"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "sc(a(l(e)?)?)?"
-                },
-                "named": false,
-                "value": "scale"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_size"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "plot(s(i(z(e)?)?)?)?"
-                },
-                "named": false,
-                "value": "plotsize"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_size"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "char(s(i(z(e)?)?)?)?"
-                },
-                "named": false,
-                "value": "charsize"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_size"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            ]
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?full(d(o(c)?)?)?"
-            },
-            "named": false,
-            "value": "fulldoc"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?stand(a(l(o(n(e)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "standalone"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?tikzar(r(o(w(s)?)?)?)?"
-            },
-            "named": false,
-            "value": "tikzarrows"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?externalimages"
-            },
-            "named": false,
-            "value": "externalimages"
-          }
-        ]
-      }
-    },
-    "t_webp": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "canvas_size"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontspec"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "fontscale"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-            },
-            "named": false,
-            "value": "enhanced"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "background"
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "(no)?crop"
-            },
-            "named": false,
-            "value": "crop"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "anim(a(t(e)?)?)?"
-                },
-                "named": false,
-                "value": "animate"
-              },
-              {
-                "type": "REPEAT",
-                "content": {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": "delay"
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "_expression"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": "loop"
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "_expression"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": "quality"
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "_expression"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "noanim(a(t(e)?)?)?"
-            },
-            "named": false,
-            "value": "noanimate"
-          }
-        ]
-      }
-    },
-    "t_wxt": {
-      "type": "PREC_LEFT",
-      "value": 0,
-      "content": {
-        "type": "REPEAT1",
-        "content": {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "n",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_expression"
-              }
-            },
-            {
-              "type": "SYMBOL",
-              "name": "canvas_size"
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "position"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "position"
-                }
-              ]
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "ti(t(l(e)?)?)?"
-                  },
-                  "named": false,
-                  "value": "title"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              ]
             },
             {
               "type": "SYMBOL",
@@ -16302,126 +12001,58 @@
               "name": "fontscale"
             },
             {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
-              },
-              "named": false,
-              "value": "enhanced"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?rep(l(o(t(o(n(r(e(s(i(z(e)?)?)?)?)?)?)?)?)?)?)?"
-              },
-              "named": false,
-              "value": "replotonresize"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?an(t(i(a(l(i(a(s)?)?)?)?)?)?)?"
-              },
-              "named": false,
-              "value": "antialias"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?persist"
-              },
-              "named": false,
-              "value": "persist"
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "linew(i(d(t(h)?)?)?)?|lw"
-                  },
-                  "named": false,
-                  "value": "lw"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              ]
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                  },
-                  "named": false,
-                  "value": "dl"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "mono_color"
             },
             {
               "type": "SYMBOL",
               "name": "line_drawing_method"
             },
             {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?rai(s(e)?)?"
-              },
-              "named": false,
-              "value": "raise"
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_lw"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
             },
             {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "(no)?ct(r(l(q)?)?)?"
-              },
-              "named": false,
-              "value": "ctrlq"
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_dl"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
             },
             {
-              "type": "ALIAS",
-              "content": {
-                "type": "PATTERN",
-                "value": "cl(o(s(e)?)?)?"
-              },
-              "named": false,
-              "value": "close"
-            }
-          ]
-        }
-      }
-    },
-    "t_x11": {
-      "type": "PREC_LEFT",
-      "value": 0,
-      "content": {
-        "type": "REPEAT1",
-        "content": {
-          "type": "CHOICE",
-          "members": [
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_ps"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
+            },
             {
               "type": "FIELD",
               "name": "n",
               "content": {
                 "type": "SYMBOL",
-                "name": "_expression"
+                "name": "number"
               }
             },
             {
@@ -16431,16 +12062,16 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "PATTERN",
-                    "value": "(w(i(n(d(o(w)?)?)?)?)?)?"
+                    "value": "title"
                   },
                   "named": false,
-                  "value": "window"
+                  "value": "title"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
                 }
               ]
-            },
-            {
-              "type": "SYMBOL",
-              "name": "canvas_size"
             },
             {
               "type": "SEQ",
@@ -16462,10 +12093,10 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "PATTERN",
-                    "value": "ti(t(l(e)?)?)?"
+                    "value": "window"
                   },
                   "named": false,
-                  "value": "title"
+                  "value": "window"
                 },
                 {
                   "type": "SYMBOL",
@@ -16474,8 +12105,286 @@
               ]
             },
             {
-              "type": "SYMBOL",
-              "name": "fontspec"
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "name"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "fsize"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "width"
+                  },
+                  "named": false,
+                  "value": "width"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "pointsmax"
+                  },
+                  "named": false,
+                  "value": "pointsmax"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "fontsize"
+                  },
+                  "named": false,
+                  "value": "fontsize"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "pointscale"
+                  },
+                  "named": false,
+                  "value": "pointscale"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "scale"
+                  },
+                  "named": false,
+                  "value": "scale"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_size"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "plotsize"
+                  },
+                  "named": false,
+                  "value": "plotsize"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_size"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "charsize"
+                  },
+                  "named": false,
+                  "value": "charsize"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_size"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "resolution"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "dpi",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_expression"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "palfuncparam"
+                  },
+                  "named": false,
+                  "value": "palfuncparam"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": ","
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "_expression"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "aspect"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": ","
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "_expression"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "fillchar"
+                  },
+                  "named": false,
+                  "value": "fillchar"
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "solid"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "jsdir"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
             },
             {
               "type": "ALIAS",
@@ -16490,7 +12399,118 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "(no)?rep(l(o(t(o(n(r(e(s(i(z(e)?)?)?)?)?)?)?)?)?)?)?"
+                "value": "(no)?crop"
+              },
+              "named": false,
+              "value": "crop"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?true(c(o(l(o(r)?)?)?)?)?"
+              },
+              "named": false,
+              "value": "truecolor"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?inter(l(a(c(e)?)?)?)?"
+              },
+              "named": false,
+              "value": "interlace"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "anchor"
+                  },
+                  "named": false,
+                  "value": "anchor"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "scroll"
+                  },
+                  "named": false,
+                  "value": "scroll"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "tiny"
+                },
+                {
+                  "type": "STRING",
+                  "value": "small"
+                },
+                {
+                  "type": "STRING",
+                  "value": "medium"
+                },
+                {
+                  "type": "STRING",
+                  "value": "large"
+                },
+                {
+                  "type": "STRING",
+                  "value": "giant"
+                }
+              ]
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?rotate"
+              },
+              "named": false,
+              "value": "rotate"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?timestamp"
+              },
+              "named": false,
+              "value": "timestamp"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?attributes"
+              },
+              "named": false,
+              "value": "attributes"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?feed"
+              },
+              "named": false,
+              "value": "feed"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?replotonresize"
               },
               "named": false,
               "value": "replotonresize"
@@ -16499,7 +12519,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "(no)?an(t(i(a(l(i(a(s)?)?)?)?)?)?)?"
+                "value": "(no)?antialias"
               },
               "named": false,
               "value": "antialias"
@@ -16514,46 +12534,10 @@
               "value": "persist"
             },
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "linew(i(d(t(h)?)?)?)?|lw"
-                  },
-                  "named": false,
-                  "value": "lw"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              ]
-            },
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                  },
-                  "named": false,
-                  "value": "dl"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                }
-              ]
-            },
-            {
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "(no)?rai(s(e)?)?"
+                "value": "(no)?raise"
               },
               "named": false,
               "value": "raise"
@@ -16562,7 +12546,16 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "(no)?ct(r(l(q)?)?)?"
+                "value": "(no)?ctrl"
+              },
+              "named": false,
+              "value": "ctrl"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?ctrlq"
               },
               "named": false,
               "value": "ctrlq"
@@ -16571,7 +12564,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": "cl(o(s(e)?)?)?"
+                "value": "close"
               },
               "named": false,
               "value": "close"
@@ -16584,6 +12577,580 @@
               },
               "named": false,
               "value": "reset"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "eject"
+              },
+              "named": false,
+              "value": "eject"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "noproportional"
+              },
+              "named": false,
+              "value": "noproportional"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "default"
+              },
+              "named": false,
+              "value": "default"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?originreset"
+              },
+              "named": false,
+              "value": "originreset"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?gparrows"
+              },
+              "named": false,
+              "value": "gparrows"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?gppoints"
+              },
+              "named": false,
+              "value": "gppoints"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?picenvironment"
+              },
+              "named": false,
+              "value": "picenvironment"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?tightboundingbox"
+              },
+              "named": false,
+              "value": "tightboundingbox"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?fulldoc"
+              },
+              "named": false,
+              "value": "fulldoc"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?standalone"
+              },
+              "named": false,
+              "value": "standalone"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?tikzarrows"
+              },
+              "named": false,
+              "value": "tikzarrows"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?externalimages"
+              },
+              "named": false,
+              "value": "externalimages"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "inlineimages"
+              },
+              "named": false,
+              "value": "inlineimages"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "noanimate"
+              },
+              "named": false,
+              "value": "noanimate"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?auxfile"
+              },
+              "named": false,
+              "value": "auxfile"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "(no)?clip"
+              },
+              "named": false,
+              "value": "clip"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "input"
+              },
+              "named": false,
+              "value": "input"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "eps"
+              },
+              "named": false,
+              "value": "eps"
+            },
+            {
+              "type": "STRING",
+              "value": "pdf"
+            },
+            {
+              "type": "STRING",
+              "value": "png"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "level1"
+                },
+                {
+                  "type": "STRING",
+                  "value": "leveldefault"
+                },
+                {
+                  "type": "STRING",
+                  "value": "level3"
+                }
+              ]
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "blacktext"
+              },
+              "named": false,
+              "value": "blacktext"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "colortext"
+              },
+              "named": false,
+              "value": "colortext"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "colourtext"
+              },
+              "named": false,
+              "value": "colortext"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "header"
+                    },
+                    {
+                      "type": "FIELD",
+                      "name": "header",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_expression"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "STRING",
+                  "value": "noheader"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "landscape"
+                  },
+                  "named": false,
+                  "value": "landscape"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "portrait"
+                  },
+                  "named": false,
+                  "value": "portrait"
+                }
+              ]
+            },
+            {
+              "type": "STRING",
+              "value": "big"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "solid"
+                  },
+                  "named": false,
+                  "value": "solid"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "dashed"
+                  },
+                  "named": false,
+                  "value": "dashed"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "defaultplex"
+                  },
+                  "named": false,
+                  "value": "defaultplex"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "simplex"
+                  },
+                  "named": false,
+                  "value": "simplex"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "duplex"
+                  },
+                  "named": false,
+                  "value": "duplex"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "mitered"
+                },
+                {
+                  "type": "STRING",
+                  "value": "beveled"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "mpoints"
+                  },
+                  "named": false,
+                  "value": "mpoints"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "texpoints"
+                  },
+                  "named": false,
+                  "value": "texpoints"
+                }
+              ]
+            },
+            {
+              "type": "STRING",
+              "value": "texarrows"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "smallpoints"
+                  },
+                  "named": false,
+                  "value": "smallpoints"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "tinypoints"
+                  },
+                  "named": false,
+                  "value": "tinypoints"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "normalpoints"
+                  },
+                  "named": false,
+                  "value": "normalpoints"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "textnormal"
+                  },
+                  "named": false,
+                  "value": "textnormal"
+                },
+                {
+                  "type": "STRING",
+                  "value": "textspecial"
+                },
+                {
+                  "type": "STRING",
+                  "value": "texthidden"
+                },
+                {
+                  "type": "STRING",
+                  "value": "textrigid"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "mono"
+                },
+                {
+                  "type": "STRING",
+                  "value": "ansi"
+                },
+                {
+                  "type": "STRING",
+                  "value": "ansi256"
+                },
+                {
+                  "type": "STRING",
+                  "value": "ansirgb"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "pspoints"
+                  },
+                  "named": false,
+                  "value": "pspoints"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "nopspoints"
+                  },
+                  "named": false,
+                  "value": "nopspoints"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "latex"
+                  },
+                  "named": false,
+                  "value": "latex"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "tex"
+                  },
+                  "named": false,
+                  "value": "tex"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "context"
+                  },
+                  "named": false,
+                  "value": "context"
+                }
+              ]
+            },
+            {
+              "type": "STRING",
+              "value": "mouse"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "fixed"
+                },
+                {
+                  "type": "STRING",
+                  "value": "dynamic"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "animate"
+                  },
+                  "named": false,
+                  "value": "animate"
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "delay"
+                          },
+                          {
+                            "type": "SYMBOL",
+                            "name": "_expression"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "loop"
+                          },
+                          {
+                            "type": "SYMBOL",
+                            "name": "_expression"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "quality"
+                          },
+                          {
+                            "type": "SYMBOL",
+                            "name": "_expression"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
             }
           ]
         }
@@ -16892,13 +13459,8 @@
             "type": "SEQ",
             "members": [
               {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "linew(i(d(t(h)?)?)?)?|lw"
-                },
-                "named": false,
-                "value": "lw"
+                "type": "SYMBOL",
+                "name": "_lw"
               },
               {
                 "type": "SYMBOL",
@@ -16910,13 +13472,8 @@
             "type": "SEQ",
             "members": [
               {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "dashl(e(n(g(t(h)?)?)?)?)?|dl"
-                },
-                "named": false,
-                "value": "dl"
+                "type": "SYMBOL",
+                "name": "_dl"
               },
               {
                 "type": "SYMBOL",
@@ -16928,13 +13485,8 @@
             "type": "SEQ",
             "members": [
               {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "points(i(z(e)?)?)?|ps"
-                },
-                "named": false,
-                "value": "ps"
+                "type": "SYMBOL",
+                "name": "_ps"
               },
               {
                 "type": "SYMBOL",
@@ -17530,13 +14082,8 @@
             "type": "SEQ",
             "members": [
               {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "fill(s(t(y(l(e)?)?)?)?)?|fs"
-                },
-                "named": false,
-                "value": "fs"
+                "type": "SYMBOL",
+                "name": "_fs"
               },
               {
                 "type": "SYMBOL",
@@ -19541,13 +16088,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "lines(t(y(l(e)?)?)?)?|ls"
-                  },
-                  "named": false,
-                  "value": "ls"
+                  "type": "SYMBOL",
+                  "name": "_ls"
                 },
                 {
                   "type": "FIELD",
@@ -19563,13 +16105,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "linetype|lt"
-                  },
-                  "named": false,
-                  "value": "lt"
+                  "type": "SYMBOL",
+                  "name": "_lt"
                 },
                 {
                   "type": "FIELD",
@@ -19610,13 +16147,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "linew(i(d(t(h)?)?)?)?|lw"
-                  },
-                  "named": false,
-                  "value": "lw"
+                  "type": "SYMBOL",
+                  "name": "_lw"
                 },
                 {
                   "type": "FIELD",
@@ -19636,13 +16168,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "dasht(y(p(e)?)?)?|dt"
-                  },
-                  "named": false,
-                  "value": "dt"
+                  "type": "SYMBOL",
+                  "name": "_dt"
                 },
                 {
                   "type": "FIELD",
@@ -19658,13 +16185,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "pointt(y(p(e)?)?)?|pt"
-                  },
-                  "named": false,
-                  "value": "pt"
+                  "type": "SYMBOL",
+                  "name": "_pt"
                 },
                 {
                   "type": "FIELD",
@@ -19689,13 +16211,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "points(i(z(e)?)?)?|ps"
-                  },
-                  "named": false,
-                  "value": "ps"
+                  "type": "SYMBOL",
+                  "name": "_ps"
                 },
                 {
                   "type": "FIELD",
@@ -19720,13 +16237,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "pointi(n(t(e(r(v(a(l)?)?)?)?)?)?)?|pi"
-                  },
-                  "named": false,
-                  "value": "pi"
+                  "type": "SYMBOL",
+                  "name": "_pi"
                 },
                 {
                   "type": "FIELD",
@@ -19742,13 +16254,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "pointn(u(m(b(e(r)?)?)?)?)?|pn"
-                  },
-                  "named": false,
-                  "value": "pn"
+                  "type": "SYMBOL",
+                  "name": "_pn"
                 },
                 {
                   "type": "FIELD",
@@ -19764,13 +16271,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "arrowstyle|as"
-                  },
-                  "named": false,
-                  "value": "as"
+                  "type": "SYMBOL",
+                  "name": "_as"
                 },
                 {
                   "type": "FIELD",
@@ -19786,13 +16288,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "fill(s(t(y(l(e)?)?)?)?)?|fs"
-                  },
-                  "named": false,
-                  "value": "fs"
+                  "type": "SYMBOL",
+                  "name": "_fs"
                 },
                 {
                   "type": "FIELD",
@@ -20957,13 +17454,8 @@
                   "type": "SEQ",
                   "members": [
                     {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "linetype|lt"
-                      },
-                      "named": false,
-                      "value": "lt"
+                      "type": "SYMBOL",
+                      "name": "_lt"
                     },
                     {
                       "type": "CHOICE",
@@ -21004,13 +17496,8 @@
                   "type": "SEQ",
                   "members": [
                     {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "linew(i(d(t(h)?)?)?)?|lw"
-                      },
-                      "named": false,
-                      "value": "lw"
+                      "type": "SYMBOL",
+                      "name": "_lw"
                     },
                     {
                       "type": "SYMBOL",
@@ -21022,13 +17509,8 @@
                   "type": "SEQ",
                   "members": [
                     {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "pointt(y(p(e)?)?)?|pt"
-                      },
-                      "named": false,
-                      "value": "pt"
+                      "type": "SYMBOL",
+                      "name": "_pt"
                     },
                     {
                       "type": "SYMBOL",
@@ -21040,13 +17522,8 @@
                   "type": "SEQ",
                   "members": [
                     {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "points(i(z(e)?)?)?|ps"
-                      },
-                      "named": false,
-                      "value": "ps"
+                      "type": "SYMBOL",
+                      "name": "_ps"
                     },
                     {
                       "type": "SYMBOL",
@@ -21058,13 +17535,8 @@
                   "type": "SEQ",
                   "members": [
                     {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "pointi(n(t(e(r(v(a(l)?)?)?)?)?)?)?|pi"
-                      },
-                      "named": false,
-                      "value": "pi"
+                      "type": "SYMBOL",
+                      "name": "_pi"
                     },
                     {
                       "type": "SYMBOL",
@@ -21076,13 +17548,8 @@
                   "type": "SEQ",
                   "members": [
                     {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "pointn(u(m(b(e(r)?)?)?)?)?|pn"
-                      },
-                      "named": false,
-                      "value": "pn"
+                      "type": "SYMBOL",
+                      "name": "_pn"
                     },
                     {
                       "type": "SYMBOL",
@@ -21094,13 +17561,8 @@
                   "type": "SEQ",
                   "members": [
                     {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "dasht(y(p(e)?)?)?|dt"
-                      },
-                      "named": false,
-                      "value": "dt"
+                      "type": "SYMBOL",
+                      "name": "_dt"
                     },
                     {
                       "type": "SYMBOL",
@@ -21256,13 +17718,8 @@
                           "type": "CHOICE",
                           "members": [
                             {
-                              "type": "ALIAS",
-                              "content": {
-                                "type": "PATTERN",
-                                "value": "linetype|lt"
-                              },
-                              "named": false,
-                              "value": "lt"
+                              "type": "SYMBOL",
+                              "name": "_lt"
                             },
                             {
                               "type": "BLANK"
@@ -21319,13 +17776,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "linec(o(l(o(r)?)?)?)?|lc"
-          },
-          "named": false,
-          "value": "lc"
+          "type": "SYMBOL",
+          "name": "_lc"
         },
         {
           "type": "FIELD",
@@ -21350,13 +17802,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "textc(o(l(o(r)?)?)?)?|tc"
-          },
-          "named": false,
-          "value": "tc"
+          "type": "SYMBOL",
+          "name": "_tc"
         },
         {
           "type": "FIELD",
@@ -21372,13 +17819,8 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "linetype|lt"
-                    },
-                    "named": false,
-                    "value": "lt"
+                    "type": "SYMBOL",
+                    "name": "_lt"
                   },
                   {
                     "type": "SYMBOL",
@@ -21390,13 +17832,8 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "lines(t(y(l(e)?)?)?)?|ls"
-                    },
-                    "named": false,
-                    "value": "ls"
+                    "type": "SYMBOL",
+                    "name": "_ls"
                   },
                   {
                     "type": "SYMBOL",
@@ -21425,13 +17862,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "fillc(o(l(o(r)?)?)?)?|fc"
-          },
-          "named": false,
-          "value": "fc"
+          "type": "SYMBOL",
+          "name": "_fc"
         },
         {
           "type": "FIELD",
@@ -21447,13 +17879,8 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "linetype|lt"
-                    },
-                    "named": false,
-                    "value": "lt"
+                    "type": "SYMBOL",
+                    "name": "_lt"
                   },
                   {
                     "type": "SYMBOL",
@@ -21465,13 +17892,8 @@
                 "type": "SEQ",
                 "members": [
                   {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "lines(t(y(l(e)?)?)?)?|ls"
-                    },
-                    "named": false,
-                    "value": "ls"
+                    "type": "SYMBOL",
+                    "name": "_ls"
                   },
                   {
                     "type": "FIELD",
@@ -24069,6 +20491,62 @@
     {
       "type": "SYMBOL",
       "name": "kw_cmd_expr"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_lw"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_lt"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_ls"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_lc"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_dt"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_dl"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_pt"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_ps"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_pi"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_pn"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_as"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_fs"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_fc"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_tc"
     }
   ],
   "inline": [],

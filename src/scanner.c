@@ -21,6 +21,13 @@ enum TokenType {
   KW_CMD_OPTEXPR,  // commands with optional expression: raise/lower/vclear/toggle
   KW_CMD_EXIT,     // exit / quit
   KW_CMD_EXPR,     // commands with required expression: cd/evaluate
+  // Style attribute keywords (was K.* regex tokens in grammar.js). Each has a
+  // distinct grammar continuation, so they are distinct tokens (no N->1 merge);
+  // moved to the scanner to retire the reg() machinery (scanner-first, REWORK
+  // Phase 1). Order MUST match the externals list in grammar.js.
+  KW_LW, KW_LT, KW_LS, KW_LC, KW_DT, KW_DL,
+  KW_PT, KW_PS, KW_PI, KW_PN, KW_AS,
+  KW_FS, KW_FC, KW_TC,
 };
 
 // Keyword table entry for prefix-abbreviation matching.
@@ -83,6 +90,49 @@ static bool match_kw_table(const char* word, int wlen, const KwEntry* table) {
       return true;
   }
   return false;
+}
+
+// Style attribute keywords (REWORK Phase 1). Like KwEntry but each maps to its
+// own token (distinct grammar continuations). min_chars/alt mirror the old
+// K.* reg() calls in grammar.js.
+typedef struct {
+  const char* keyword;
+  const char* alt;
+  int min_chars;
+  int symbol;
+} StyleKwEntry;
+
+static const StyleKwEntry STYLE_KWS[] = {
+    {"linewidth", "lw", 5, KW_LW},
+    {"linetype", "lt", 8, KW_LT},
+    {"linestyle", "ls", 5, KW_LS},
+    {"linecolor", "lc", 5, KW_LC},
+    {"dashtype", "dt", 5, KW_DT},
+    {"dashlength", "dl", 5, KW_DL},
+    {"pointtype", "pt", 6, KW_PT},
+    {"pointsize", "ps", 6, KW_PS},
+    {"pointinterval", "pi", 6, KW_PI},
+    {"pointnumber", "pn", 6, KW_PN},
+    {"arrowstyle", "as", 10, KW_AS},
+    {"fillstyle", "fs", 4, KW_FS},
+    {"fillcolor", "fc", 5, KW_FC},
+    {"textcolor", "tc", 5, KW_TC},
+    {NULL, NULL, 0, 0},
+};
+
+// Match word against STYLE_KWS, returning the token if a currently-valid one
+// matches, else -1.
+static int match_style_kw(const char* word, int wlen, const bool* valid_symbols) {
+  for (int i = 0; STYLE_KWS[i].keyword != NULL; i++) {
+    const StyleKwEntry* e = &STYLE_KWS[i];
+    if (!valid_symbols[e->symbol])
+      continue;
+    int klen = (int)strlen(e->keyword);
+    if ((wlen >= e->min_chars && wlen <= klen && strncmp(word, e->keyword, (size_t)wlen) == 0) ||
+        (e->alt && strcmp(word, e->alt) == 0))
+      return e->symbol;
+  }
+  return -1;
 }
 
 // Command keyword table: maps each prefix-abbreviated command word to its
@@ -268,51 +318,50 @@ static bool is_assignment_context(TSLexer* lexer) {
   return false;
 }
 
-// Read the full word at the current position, then determine if it is a valid
-// abbreviation of any command keyword whose token is currently valid. Returns
-// true (with lexer->result_symbol set) on match.
-static bool scan_ambiguous_cmd(TSLexer* lexer, const bool* valid_symbols) {
-  char word[12];
+// Read the full word ONCE, then match it (in priority order) against command
+// keywords, plain plot-style names, and style-attribute keywords — whichever
+// tokens are currently valid. One read per scan() call: command, plot-style and
+// style-attr tokens can all be valid in the same state (e.g. `plot x lw 2` — at
+// the plot-element tail, statement-start command tokens AND style attrs are both
+// valid), and tree-sitter resets the lexer between scanner invocations but NOT
+// between sub-scanners, so the word must be consumed exactly once.
+static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cmd_valid) {
+  char word[16];
   int word_len = read_word(lexer, word, sizeof(word));
   if (word_len < 0)
     return false;
 
   lexer->mark_end(lexer);  // mark end of keyword token before lookahead
 
-  int sym = -1;
-  for (int i = 0; CMD_KWS[i].keyword != NULL; i++) {
-    const CmdKwEntry* e = &CMD_KWS[i];
-    if (valid_symbols[e->symbol] && word_len >= e->min_chars &&
-        word_len <= (int)strlen(e->keyword) && strncmp(word, e->keyword, (size_t)word_len) == 0) {
-      sym = e->symbol;
-      break;
+  // Command keywords (statement-start). The assignment-context guard keeps
+  // `plot = 1` an assignment rather than the plot command.
+  if (any_cmd_valid) {
+    for (int i = 0; CMD_KWS[i].keyword != NULL; i++) {
+      const CmdKwEntry* e = &CMD_KWS[i];
+      if (valid_symbols[e->symbol] && word_len >= e->min_chars &&
+          word_len <= (int)strlen(e->keyword) && strncmp(word, e->keyword, (size_t)word_len) == 0) {
+        if (is_assignment_context(lexer))
+          return false;
+        lexer->result_symbol = e->symbol;
+        return true;
+      }
     }
   }
 
-  if (sym == -1)
-    return false;
-  if (is_assignment_context(lexer))
-    return false;
+  // Plot style names take priority over style attrs (e.g. "lines" is the style,
+  // not linestyle).
+  if (valid_symbols[KW_PLT_ST] && match_kw_table(word, word_len, PLT_STYLE_KWS)) {
+    lexer->result_symbol = KW_PLT_ST;
+    return true;
+  }
 
-  lexer->result_symbol = sym;
-  return true;
-}
-
-// Read the word at the current position and match it against the plain plot
-// style table. Only valid after `with` (gated by valid_symbols), so no
-// assignment-context check is needed.
-static bool scan_plot_style(TSLexer* lexer) {
-  char word[16];
-  int word_len = read_word(lexer, word, sizeof(word));
-  if (word_len < 0)
-    return false;
-
-  if (!match_kw_table(word, word_len, PLT_STYLE_KWS))
-    return false;
-
-  lexer->mark_end(lexer);
-  lexer->result_symbol = KW_PLT_ST;
-  return true;
+  // Style attribute keywords (lw/lt/ls/...).
+  int sym = match_style_kw(word, word_len, valid_symbols);
+  if (sym >= 0) {
+    lexer->result_symbol = sym;
+    return true;
+  }
+  return false;
 }
 
 bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, const bool* valid_symbols) {
@@ -336,13 +385,18 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
                        valid_symbols[CMD_LOAD_KW] || valid_symbols[KW_CMD_BARE] || valid_symbols[KW_CMD_OPTEXPR] ||
                        valid_symbols[KW_CMD_EXIT] || valid_symbols[KW_CMD_EXPR];
 
-  if (any_cmd_valid && scan_ambiguous_cmd(lexer, valid_symbols)) {
-    return true;  // result_symbol set inside scan_ambiguous_cmd
-  }
+  // Command, plot-style and style-attribute keywords share one word read (they
+  // can be valid in the same state). Runs before DATABLOCK_START so that during
+  // error recovery (all externals valid) scan_datablock_start does not swallow a
+  // keyword.
+  bool any_style_valid =
+      valid_symbols[KW_PLT_ST] || valid_symbols[KW_LW] || valid_symbols[KW_LT] ||
+      valid_symbols[KW_LS] || valid_symbols[KW_LC] || valid_symbols[KW_DT] ||
+      valid_symbols[KW_DL] || valid_symbols[KW_PT] || valid_symbols[KW_PS] ||
+      valid_symbols[KW_PI] || valid_symbols[KW_PN] || valid_symbols[KW_AS] ||
+      valid_symbols[KW_FS] || valid_symbols[KW_FC] || valid_symbols[KW_TC];
 
-  // Before DATABLOCK_START: during error recovery all externals are valid and
-  // scan_datablock_start would swallow style words.
-  if (valid_symbols[KW_PLT_ST] && !any_cmd_valid && scan_plot_style(lexer)) {
+  if ((any_cmd_valid || any_style_valid) && scan_keywords(lexer, valid_symbols, any_cmd_valid)) {
     return true;
   }
 

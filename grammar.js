@@ -45,21 +45,45 @@ const K = {
 	t: reg("top", 1),
 	b: reg("bottom", 1),
 	c: reg("center", 1),
-	as: alias(reg("arrowstyle", 10, "as"), "as"),
-	dl: alias(reg("dashlength", 5, "dl"), "dl"),
-	dt: alias(reg("dashtype", 5, "dt"), "dt"),
-	fc: alias(reg("fillcolor", 5, "fc"), "fc"),
-	fs: alias(reg("fillstyle", 4, "fs"), "fs"),
-	lc: alias(reg("linecolor", 5, "lc"), "lc"),
-	ls: alias(reg("linestyle", 5, "ls"), "ls"),
-	lt: alias(reg("linetype", 8, "lt"), "lt"),
-	lw: alias(reg("linewidth", 5, "lw"), "lw"),
-	pi: alias(reg("pointinterval", 6, "pi"), "pi"),
-	pn: alias(reg("pointnumber", 6, "pn"), "pn"),
-	ps: alias(reg("pointsize", 6, "ps"), "ps"),
-	pt: alias(reg("pointtype", 6, "pt"), "pt"),
-	tc: alias(reg("textcolor", 5, "tc"), "tc"),
+	// Style attribute keywords (lw/lt/ls/lc/dt/dl/pt/ps/pi/pn/as/fs/fc/tc) moved
+	// to the external scanner (REWORK Phase 1) — see STYLE_KWS in scanner.c and
+	// the `_lw`..`_tc` hidden rules below. Aliased to the same names, so
+	// highlights.scm is unchanged.
 };
+
+// Shared terminal-option fragments — factored out of the ~30 `t_*` rules to cut
+// their heavy duplication. Pure source dedup: each fragment expands to the exact
+// same node(s) it replaced (identical token/min_chars), so the CST and corpus
+// tests are unchanged. Forms that differ between terminals (e.g. `persist` with
+// different min_chars) are left inline on purpose — functionality is preserved.
+const T_ENH = key("enhanced", 3, undefined, 1); // {no}enhanced
+const T_CROP = key("crop", undefined, undefined, 1); // {no}crop
+const T_TRUECOLOR = key("truecolor", 4, undefined, 1); // {no}truecolor
+const T_INTERLACE = key("interlace", 5, undefined, 1); // {no}interlace
+const T_GDSIZES = choice("tiny", "small", "medium", "large", "giant");
+const T_ANCHOR = choice(key("anchor"), key("scroll"));
+// $-dependent fragments return arrays meant to be spread into a choice():
+const tLwExpr = ($) => seq($._lw, $._expression);
+const tDlExpr = ($) => seq($._dl, $._expression);
+const tFont = ($) => [$.fontspec, $.fontscale];
+
+// All terminal names collapsed into ONE token (was 32 separate `key()` tokens).
+// `token(choice(...))` forces a single terminal symbol; abbreviation min_chars
+// are the same reg() calls the old per-terminal `key(..., "name")` used.
+const TERM_NAME = token(
+	choice(
+		reg("cairolatex", 3), reg("canvas", 3), reg("cgm", 2), reg("context", 2),
+		reg("domterm", 2), reg("dumb", 2), reg("dxf", 2), reg("emf", 2),
+		reg("epscairo", 1), reg("epslatex", 4), reg("fig", 1), reg("gif", 1),
+		reg("hpgl", 1), reg("jpeg", 1), reg("kittycairo", -4), reg("kittygd", -1),
+		reg("lua", 1), reg("pcl5", 2), reg("pdfcairo", 2), reg("pict2e", 2),
+		"png", reg("pngcairo", 4), reg("postscript", 2),
+		reg("pslatex", 3), reg("pstex", -1),
+		reg("qt", 1), reg("sixelgd", 1), reg("svg", 2),
+		/tek4(0|1|2)\d\d/, reg("tikz", 2), reg("unknown", 1),
+		reg("webp", 1), reg("wxt", 2), reg("x11", 1),
+	),
+);
 
 module.exports = grammar({
 	name: "gnuplot",
@@ -82,6 +106,11 @@ module.exports = grammar({
 		$.kw_cmd_optexpr, // raise/lower/vclear/toggle
 		$.kw_cmd_exit,    // exit/quit
 		$.kw_cmd_expr,    // cd/evaluate
+		// Style attribute keywords (REWORK Phase 1) — order MUST match the
+		// enum in scanner.c. Aliased to lw/lt/... via the _lw.._tc hidden rules.
+		$.kw_lw, $.kw_lt, $.kw_ls, $.kw_lc, $.kw_dt, $.kw_dl,
+		$.kw_pt, $.kw_ps, $.kw_pi, $.kw_pn, $.kw_as,
+		$.kw_fs, $.kw_fc, $.kw_tc,
 	],
 
 	extras: ($) => [$.comment, /\s|\\|;/],
@@ -99,6 +128,24 @@ module.exports = grammar({
 
 	rules: {
 		source_file: ($) => repeat($._statement),
+
+		// Style attribute keywords (REWORK Phase 1): hidden rules that alias the
+		// external scanner tokens to their short names, so call sites stay terse
+		// (`$._lw`) and highlights.scm keeps capturing "lw"/"lt"/... unchanged.
+		_lw: ($) => alias($.kw_lw, "lw"),
+		_lt: ($) => alias($.kw_lt, "lt"),
+		_ls: ($) => alias($.kw_ls, "ls"),
+		_lc: ($) => alias($.kw_lc, "lc"),
+		_dt: ($) => alias($.kw_dt, "dt"),
+		_dl: ($) => alias($.kw_dl, "dl"),
+		_pt: ($) => alias($.kw_pt, "pt"),
+		_ps: ($) => alias($.kw_ps, "ps"),
+		_pi: ($) => alias($.kw_pi, "pi"),
+		_pn: ($) => alias($.kw_pn, "pn"),
+		_as: ($) => alias($.kw_as, "as"),
+		_fs: ($) => alias($.kw_fs, "fs"),
+		_fc: ($) => alias($.kw_fc, "fc"),
+		_tc: ($) => alias($.kw_tc, "tc"),
 
 		_statement: ($) => choice($._command, $.assignment, $.macro),
 
@@ -355,8 +402,8 @@ module.exports = grammar({
 									field("title", $.string_literal),
 									$.fontspec,
 									$._textcolor,
-									seq(K.lt, field("lt", $._expression)),
-									seq(K.fs, $.fill_style),
+									seq($._lt, field("lt", $._expression)),
+									seq($._fs, $.fill_style),
 									seq("at", field("at", $._expression)),
 								),
 							),
@@ -819,7 +866,7 @@ module.exports = grammar({
 		dashtype: ($) =>
 			prec.left(
 				seq(
-					alias(K.dt, "arg"),
+					alias($.kw_dt, "arg"),
 					field("tag", $._expression),
 					optional($.dash_opts),
 				),
@@ -1073,7 +1120,7 @@ module.exports = grammar({
 		linetype: ($) =>
 			prec.left(
 				seq(
-					alias(K.lt, "arg"),
+					alias($.kw_lt, "arg"),
 					optional(choice($.line_style, seq("cycle", $._expression))),
 				),
 			),
@@ -1329,10 +1376,10 @@ module.exports = grammar({
 						choice("front", "back", "behind", "depthorder"),
 						choice("clip", "noclip"),
 						$._fillcolor,
-						seq(K.fs, $.fill_style),
+						seq($._fs, $.fill_style),
 						"default",
-						seq(K.lw, $._expression),
-						seq(K.dt, $.dash_opts),
+						seq($._lw, $._expression),
+						seq($._dt, $.dash_opts),
 					),
 				),
 			),
@@ -1635,7 +1682,7 @@ module.exports = grammar({
 										seq("range", field("range", $._expression)),
 										seq("fraction", field("fraction", $._expression)),
 										key("outliers", 3, undefined, 1),
-										seq(K.pt, field("pt", $._expression)),
+										seq($._pt, field("pt", $._expression)),
 										"candlesticks",
 										"financebars",
 										seq("medianlinewidth", field("medianlinewidth", $._expression)),
@@ -1647,7 +1694,7 @@ module.exports = grammar({
 								),
 							),
 							seq(key("data", 1, "st_opt"), $.plot_style),
-							seq(K.fs, $.fill_style),
+							seq($._fs, $.fill_style),
 							seq(key("function", 1, "st_opt"), $.plot_style),
 							seq(
 								key("histogram", 4, "st_opt"),
@@ -1658,7 +1705,7 @@ module.exports = grammar({
 										repeat(
 											choice(
 												seq("gap", $._expression),
-												seq(K.lw, $._expression),
+												seq($._lw, $._expression),
 											),
 										),
 									),
@@ -1687,7 +1734,7 @@ module.exports = grammar({
 										"back",
 										seq(key("linewidth", 5, "lw"), field("lw", $._expression)),
 										seq(key("fillcolor", 5, "fc"), field("fc", $.colorspec)),
-										seq(K.fs, $.fill_style),
+										seq($._fs, $.fill_style),
 									),
 								),
 							),
@@ -1700,22 +1747,22 @@ module.exports = grammar({
 								key("spiderplot", 6, "st_opt"),
 								repeat(
 									choice(
-										seq(K.fs, $.fill_style),
-										seq(K.ls, field("ls", $._expression)),
+										seq($._fs, $.fill_style),
+										seq($._ls, field("ls", $._expression)),
 										seq(
-											K.lt,
+											$._lt,
 											field(
 												"lt",
 												choice($._expression, $.colorspec, "black", "background", "nodraw"),
 											),
 										),
-										seq(K.lw, field("lw", $._expression)),
+										seq($._lw, field("lw", $._expression)),
 										$._linecolor,
-										seq(K.dt, field("dt", $.dash_opts)),
-										seq(K.pt, field("pt", $._expression)),
-										seq(K.ps, field("ps", $._expression)),
-										seq(K.pi, field("pi", $._expression)),
-										seq(K.pn, field("pn", $._expression)),
+										seq($._dt, field("dt", $.dash_opts)),
+										seq($._pt, field("pt", $._expression)),
+										seq($._ps, field("ps", $._expression)),
+										seq($._pi, field("pi", $._expression)),
+										seq($._pn, field("pn", $._expression)),
 									),
 								),
 							),
@@ -1731,7 +1778,7 @@ module.exports = grammar({
 												key("border", undefined, undefined, 1),
 												optional($._linecolor),
 											),
-											seq(K.lw, $._expression),
+											seq($._lw, $._expression),
 											seq("margins", $._expression, ",", $._expression),
 										),
 									),
@@ -1778,603 +1825,133 @@ module.exports = grammar({
 			),
 
 		terminal: ($) =>
-			seq(
-				key("terminal", 1, "arg"),
-				optional(choice($._terminal_type, "push", "pop")),
-			),
-
-		_terminal_type: ($) =>
-			prec.left(
-				choice(
-					seq(key("cairolatex", 3, "name"), optional($.t_cairolatex)),
-					seq(key("canvas", 3, "name"), optional($.t_canvas)),
-					seq(key("cgm", 2, "name"), optional($.t_cgm)),
-					seq(key("context", 2, "name"), optional($.t_context)),
-					seq(key("domterm", 2, "name"), optional($.t_domterm)),
-					seq(key("dumb", 2, "name"), optional($.t_dumb)),
-					key("dxf", 2, "name"),
-					seq(key("emf", 2, "name"), optional($.t_emf)),
-					seq(key("epscairo", 1, "name"), optional($.t_epscairo)),
-					seq(key("epslatex", 4, "name"), optional($.t_epslatex)),
-					seq(key("fig", 1, "name"), optional($.t_fig)),
-					seq(key("gif", 1, "name"), optional($.t_gif)),
-					seq(key("hpgl", 1, "name"), optional($.t_hpgl)),
-					seq(key("jpeg", 1, "name"), optional($.t_jpeg)),
-					seq(key("kittycairo", -4, "name"), optional($.t_kittycairo)),
-					seq(key("kittygd", -1, "name"), optional($.t_kittygd)),
-					seq(
-						key("lua", 1, "name"),
-						optional(choice($.t_lua, seq("tikz", $.t_tikz))),
-					),
-					seq(key("pcl5", 2, "name"), optional($.t_pcl5)),
-					seq(key("pdfcairo", 2, "name"), optional($.t_pdfcairo)),
-					seq(key("pict2e", 2, "name"), optional($.t_pic2e)),
-					seq(alias("png", "name"), optional($.t_png)),
-					seq(key("pngcairo", 4, "name"), optional($.t_pngcairo)),
-					seq(key("postscript", 2, "name"), optional($.t_postscript)),
-					seq(
-						key1("name", reg("pslatex", 3), /|/, reg("pstex", -1)),
-						optional($.t_pslatex),
-					),
-					seq(key("qt", 1, "name"), optional($.t_qt)),
-					seq(key("sixelgd", 1, "name"), optional($.t_sixelgd)),
-					seq(key("svg", 2, "name"), optional($.t_svg)),
-					alias(/tek4(0|1|2)\d\d/, "name"),
-					seq(key("tikz", 2, "name"), optional($.t_tikz)),
-					key("unknown", 1, "name"),
-					seq(key("webp", 1, "name"), optional($.t_webp)),
-					seq(key("wxt", 2, "name"), optional($.t_wxt)),
-					seq(key("x11", 1, "name"), optional($.t_x11)),
+			prec.right(
+				seq(
+					key("terminal", 1, "arg"),
+					optional(choice(
+						seq(alias(TERM_NAME, "name"), optional($.t_opts)),
+						"push",
+						"pop",
+					)),
 				),
 			),
 
-		t_cairolatex: ($) =>
-			repeat1(
-				choice(
-					choice("eps", "pdf", "png"),
-					choice("standalone", "input"),
-					choice("blacktext", "colortext", "colourtext"),
-					choice(seq("header", field("header", $._expression)), "noheader"),
-					$.mono_color,
-					key("crop", undefined, undefined, 1),
-					$.background,
-					$.fontspec,
-					$.fontscale,
-					seq(K.lw, $._expression),
-					$.line_drawing_method,
-					seq(K.dl, $._expression),
-					seq(K.ps, $._expression),
-					$.canvas_size,
-					seq("resolution", field("dpi", $._expression)),
-				),
-			),
-		t_canvas: ($) =>
-			repeat1(
-				choice(
-					$.canvas_size,
-					$.background,
-					$.fontspec,
-					seq("fsize", $._expression),
-					key("enhanced", 3, undefined, 1),
-					seq(K.lw, $._expression),
-					$.line_drawing_method,
-					seq(K.dl, $._expression),
-					seq(key("title", 2), $._expression),
-					// {standalone {mousing} | name '<funcname>'}
-					// {jsdir 'URL/for/javascripts'}
-				),
-			),
-		t_cgm: ($) =>
-			repeat1(
-				choice(
-					$.mono_color,
-					choice(key("solid", 1), key("dashed", 2)),
-					key("rotate", 1, undefined, 1),
-					choice(key("landscape", 2), key("portrait", 2)),
-					seq(key("width", 2), $._expression),
-					seq(K.lw, field("lw", $._expression)),
-					seq(K.dl, field("dl", $._expression)),
-					$.fontspec,
-					$.background,
-				),
-			),
-		t_context: ($) =>
-			repeat1(
-				choice(
-					key("default", 1),
-					$.canvas_size,
-					choice(key("input", 3), key("standalone", 5)),
-					key("timestamp", 4, undefined, 1),
-					choice("noheader", seq("header", field("header", $._expression))),
-					$.mono_color,
-					choice("rounded", "mitered", "beveled"),
-					$.line_drawing_method,
-					choice(key("solid", 1), key("dashed", 2)),
-					seq(K.dl, field("dl", $._expression)),
-					seq(K.lw, field("lw", $._expression)),
-					$.fontscale,
-					choice(key("mpoints", 2), key("texpoints", 3)),
-					choice(key("inlineimages", 6), key("externalimages", 8)),
-					$.fontspec,
-				),
-			),
-		t_domterm: ($) =>
-			repeat1(
-				choice(
-					$.fontspec,
-					key("enhanced", 3, undefined, 1),
-					$.fontscale,
-					$.line_drawing_method,
-					seq(K.lw, $._expression),
-					seq(K.dl, $._expression),
-					$.background,
-					key("animate", 4),
-					$.canvas_size,
-				),
-			),
-		t_dumb: ($) =>
-			repeat1(
-				choice(
-					$.canvas_size,
-					key("feed", 1, undefined, 1),
-					seq("aspect", $._expression, optional(seq(",", $._expression))),
-					key("enhanced", 3, undefined, 1),
-					seq(key("fillchar", 4), choice("solid", $._expression)),
-					key("attributes", 4, undefined, 1),
-					choice("mono", "ansi", "ansi256", "ansirgb"),
-				),
-			),
-		t_emf: ($) =>
-			repeat1(
-				choice(
-					$.mono_color,
-					key("enhanced", 3, undefined, 1),
-					key("noproportional", 4),
-					$.line_drawing_method,
-					seq(K.lw, $._expression),
-					seq(K.dl, $._expression),
-					$.canvas_size,
-					$.background,
-					$.fontspec,
-					$.fontscale,
-				),
-			),
-		t_epscairo: ($) =>
-			repeat1(
-				choice(
-					key("enhanced", 3, undefined, 1),
-					$.mono_color,
-					$.fontspec,
-					$.fontscale,
-					seq(K.lw, $._expression),
-					$.line_drawing_method,
-					seq(K.dl, $._expression),
-					$.background,
-					$.canvas_size,
-				),
-			),
-		t_epslatex: ($) =>
-			repeat1(
-				choice(
-					choice("standalone", "input"),
-					choice("level1", "leveldefault", "level3"),
-					$.mono_color,
-					$.background,
-					seq(K.dl, $._expression),
-					seq(K.lw, $._expression),
-					seq(K.ps, $._expression),
-					$.line_drawing_method, // no square
-					key("clip", undefined, undefined, 1),
-					// {palfuncparam <samples>{,<maxdeviation>}}
-					$.canvas_size,
-					choice(seq("header", field("header", $._expression)), "noheader"),
-					choice("blacktext", "colortext", "colourtext"),
-					$.fontspec,
-					$.fontscale,
-				),
-			),
-		t_fig: ($) =>
-			repeat1(
-				choice(
-					$.mono_color,
-					choice("small", "big"),
-					choice("landscape", "portrait"),
-					seq(key("size", 2), $._size),
-					seq(key("pointsmax", 3), $._expression),
-					$.fontspec,
-					seq(key("fontsize", 8), $._expression),
-					choice(
-						key("textnormal", 5),
-						"textspecial",
-						"texthidden",
-						"textrigid",
-					),
-					seq(K.lw, $._expression),
-				),
-			),
-		t_gif: ($) =>
-			repeat1(
-				choice(
-					key("enhanced", 3, undefined, 1),
-					$.line_drawing_method, // NOTE: not square
-					seq(K.lw, $._expression),
-					seq(K.dl, $._expression),
-					choice("tiny", "small", "medium", "large", "giant"),
-					$.fontspec,
-					$.fontscale,
-					$.canvas_size,
-					key("crop", undefined, undefined, 1),
-					$.background,
-					seq(
-						key("animate", 4),
-						repeat(
-							choice(
-								seq(key("delay"), $._expression),
-								seq(key("loop"), $._expression),
-							),
-						),
-					),
-				),
-			),
-		t_hpgl: ($) =>
+		// Single permissive option list shared by every terminal. A highlighter
+		// does not need to reject terminal/option mismatches, so the grammar no
+		// longer tracks which terminal an option belongs to. This collapsed the
+		// 32 terminal-name tokens into one `TERM_NAME` token and the 30 `t_*`
+		// rules into this one. Options whose abbreviation min_chars differed
+		// between terminals use the loosest form here (superset — every formerly
+		// valid spelling still parses).
+		t_opts: ($) =>
 			prec.left(
 				repeat1(
 					choice(
-						field("n", $._expression),
-						key("eject", 2),
-						$.fontscale,
-					),
-				),
-			),
-		t_jpeg: ($) =>
-			repeat1(
-				choice(
-					key("enhanced", 3, undefined, 1),
-					key("interlace", 5, undefined, 1),
-					seq(K.lw, $._expression),
-					seq(K.dl, $._expression),
-					$.line_drawing_method,
-					choice("tiny", "small", "medium", "large", "giant"),
-					$.fontspec,
-					$.fontscale,
-					$.canvas_size,
-					key("crop", undefined, undefined, 1),
-					$.background,
-				),
-			),
-		t_kittycairo: ($) =>
-			repeat1(
-				choice(
-					key("enhanced", 3, undefined, 1),
-					$.mono_color,
-					$.fontspec,
-					$.fontscale,
-					seq(K.lw, $._expression),
-					$.line_drawing_method,
-					seq(K.dl, $._expression),
-					$.background,
-					choice(key("anchor"), key("scroll")),
-					$.canvas_size,
-				),
-			),
-		t_kittygd: ($) =>
-			repeat1(
-				choice(
-					key("enhanced", 3, undefined, 1),
-					key("truecolor", 4, undefined, 1),
-					$.line_drawing_method,
-					seq(K.lw, $._expression),
-					seq(K.dl, $._expression),
-					$.fontspec,
-					$.fontscale,
-					$.canvas_size,
-					choice(key("anchor"), key("scroll")),
-					$.background,
-				),
-			),
-		t_lua: ($) => seq(field("name", $._expression)),
-		t_pcl5: ($) =>
-			repeat1(
-				choice(
-					choice(key("landscape", 2), key("portrait", 2)),
-					key("enhanced", 3, undefined, 1),
-					$.canvas_size,
-					$.fontspec,
-					choice(key("pspoints", 3), key("nopspoints", 3)),
-					$.fontscale,
-					seq(key("pointsize", 6), $._expression),
-					seq(key("linewidth", 5), $._expression),
-					$.line_drawing_method,
-					seq(key("color", 3, "color"), $._expression),
-				),
-			),
-		t_pdfcairo: ($) =>
-			repeat1(
-				choice(
-					key("enhanced", 3, undefined, 1),
-					$.mono_color,
-					$.fontspec,
-					$.fontscale,
-					seq(K.lw, $._expression),
-					$.line_drawing_method,
-					seq(K.dl, $._expression),
-					$.background,
-					$.canvas_size,
-				),
-			),
-		t_pic2e: ($) =>
-			repeat1(
-				choice(
-					$.fontspec,
-					$.canvas_size,
-					$.mono_color,
-					seq(key("linewidth", 5), $._expression),
-					choice(key("rounded", -2), "butt"),
-					choice("texarrows", "gparrows"),
-					choice("texpoints", "gppoints"),
-					choice(
-						key("smallpoints", 3),
-						key("tinypoints", 3),
-						key("normalpoints", 4),
-					),
-				),
-			),
-		t_png: ($) =>
-			repeat1(
-				choice(
-					key("enhanced", 3, undefined, 1),
-					key("interlace", 5, undefined, 1),
-					key("truecolor", 4, undefined, 1),
-					$.line_drawing_method, // NOTE: not square
-					seq(K.lw, $._expression),
-					seq(K.dl, $._expression),
-					choice("tiny", "small", "medium", "large", "giant"),
-					$.fontspec,
-					$.fontscale,
-					$.canvas_size,
-					$.background,
-				),
-			),
-		t_pngcairo: ($) =>
-			repeat1(
-				choice(
-					key("enhanced", 3, undefined, 1),
-					$.mono_color,
-					key("crop", undefined, undefined, 1),
-					$.background,
-					$.fontspec,
-					$.fontscale,
-					seq(K.lw, $._expression),
-					$.line_drawing_method,
-					seq(K.dl, $._expression),
-					seq(K.ps, $._expression),
-					$.canvas_size,
-				),
-			),
-		t_postscript: ($) =>
-			repeat1(
-				choice(
-					// orientation / mode
-					choice(key("landscape", 1), key("portrait", 1), key("eps", 2)),
-					// enhancement
-					key("enhanced", 3, undefined, 1),
-					// plex
-					choice(
-						key("defaultplex", 1),
-						key("simplex", 2),
-						key("duplex", 2),
-					),
-					// PostScript level
-					choice("leveldefault", "level1", "level3"),
-					// color mode
-					$.mono_color,
-					// text color
-					choice(
-						key("blacktext", 1),
-						key("colortext", 2),
-						key("colourtext", 5, "colortext"),
-					),
-					// background
-					$.background,
-					// line style
-					choice(key("solid", 2), "dashed"),
-					seq(K.dl, $._expression),
-					seq(key("linewidth", 5), $._expression),
-					$.line_drawing_method,
-					$.fontscale,
-					// palfuncparam <samples>{,<maxdeviation>}
-					seq(
-						key("palfuncparam", 4),
-						$._expression,
-						optional(seq(",", $._expression)),
-					),
-					// pointscale — min 6 to avoid "po" conflict with portrait
-					seq(key("pointscale", 6), $._expression),
-					// clip
-					choice(key("clip", 4), key("noclip", 5)),
-					// font + size
-					$.fontspec,
-					$.canvas_size,
-				),
-			),
-		t_pslatex: ($) =>
-			repeat1(
-				choice(
-					key("rotate", undefined, undefined, 1),
-					key("auxfile", undefined, undefined, 1),
-					choice("level1", "leveldefault", "level3"),
-					$.mono_color,
-					$.background,
-					seq(K.dl, $._expression),
-					seq(K.lw, $._expression),
-					seq(K.ps, $._expression),
-					$.line_drawing_method, // NOTE: not square
-					key("clip", undefined, undefined, 1),
-					// {palfuncparam <samples>{,<maxdeviation>}}
-					$.canvas_size,
-					$.fontscale,
-				),
-			),
-		t_qt: ($) =>
-			prec.left(
-				repeat1(
-					choice(
-						field("n", $._expression),
+						// shared structured options
 						$.canvas_size,
-						seq("position", $.position),
-						seq(key("title", 2), $._expression),
-						$.fontspec,
-						key("enhanced", 3, undefined, 1),
-						$.line_drawing_method, // NOTE: not square
-						key("replotonresize", 3, undefined, 1),
-						key("antialias", 2, undefined, 1),
-						seq(K.lw, $._expression),
-						seq(K.dl, $._expression),
-						key("persist", 3, undefined, 1),
-						key("raise", 3, undefined, 1),
-						key("ctrl", 2, undefined, 1),
-						key("close", 2),
-						seq(key("widget", 1), $._expression),
-					),
-				),
-			),
-		t_sixelgd: ($) =>
-			repeat1(
-				choice(
-					key("enhanced", 3, undefined, 1),
-					key("truecolor", 4, undefined, 1),
-					$.line_drawing_method, // NOTE: not square
-					seq(K.dl, $._expression),
-					seq(K.lw, $._expression),
-					choice("tiny", "small", "medium", "large", "giant"),
-					$.fontspec,
-					$.fontscale,
-					$.canvas_size,
-					choice(key("anchor"), key("scroll")),
-					$.background,
-				),
-			),
-		t_svg: ($) =>
-			repeat1(
-				choice(
-					$.canvas_size,
-					choice("fixed", "dynamic"),
-					"mouse",
-					choice("standalone", seq("jsdir", $._expression)),
-					seq("name", $._expression),
-					$.fontspec,
-					key("enhanced", 3, undefined, 1),
-					$.fontscale,
-					$.line_drawing_method, // NOTE: not square
-					choice("solid", "dashed"),
-					seq(K.lw, $._expression),
-					seq(K.dl, $._expression),
-					$.background,
-				),
-			),
-		t_tikz: ($) =>
-			repeat1(
-				choice(
-					choice(key("latex", 1), key("tex"), key("context", 3)),
-					$.mono_color,
-					key("originreset", 6, undefined, 1),
-					key("gparrows", 5, undefined, 1),
-					key("gppoints", -1, undefined, 1),
-					key("picenvironment", 3, undefined, 1),
-					key("clip", undefined, undefined, 1),
-					$.line_drawing_method, // NOTE: only butt
-					key("tightboundingbox", 5, undefined, 1),
-					$.background,
-					$.canvas_size,
-					seq(key("scale", 2), $._size),
-					seq(key("plotsize", 4), $._size),
-					seq(key("charsize", 4), $._size),
-					$.fontspec,
-					$.fontscale,
-					seq(K.dl, $._expression),
-					seq(K.lw, $._expression),
-					key("fulldoc", 4, undefined, 1),
-					key("standalone", 5, undefined, 1),
-					// {{preamble | header} "<preamble_string>"}
-					// {tikzplot <ltn>,...}
-					key("tikzarrows", 6, undefined, 1),
-					// {rgbimages | cmykimages}
-					key("externalimages", undefined, undefined, 1),
-					// {bitmap | nobitmap}
-					// {providevars <var name>,...}
-					// {createstyle}
-					// {help}
-				),
-			),
-		t_webp: ($) =>
-			repeat1(
-				choice(
-					$.canvas_size,
-					$.fontspec,
-					$.fontscale,
-					key("enhanced", 3, undefined, 1),
-					$.background,
-					key("crop", undefined, undefined, 1),
-					seq(
-						key("animate", 4),
-						repeat(
-							choice(
-								seq("delay", $._expression),
-								seq("loop", $._expression),
-								seq("quality", $._expression),
-							),
-						),
-					),
-					key("noanimate", 6),
-				),
-			),
-		t_wxt: ($) =>
-			prec.left(
-				repeat1(
-					choice(
-						field("n", $._expression),
-						$.canvas_size,
-						seq("position", $.position),
-						seq(key("title", 2), $._expression),
 						$.background,
 						$.fontspec,
 						$.fontscale,
-						key("enhanced", 3, undefined, 1),
-						key("replotonresize", 3, undefined, 1),
-						key("antialias", 2, undefined, 1),
-						key("persist", undefined, undefined, 1),
-						seq(K.lw, $._expression),
-						seq(K.dl, $._expression),
-						$.line_drawing_method,
-						key("raise", 3, undefined, 1),
-						key("ctrlq", 2, undefined, 1),
-						key("close", 2),
-					),
-				),
-			),
-		t_x11: ($) =>
-			prec.left(
-				repeat1(
-					choice(
-						field("n", $._expression),
-						seq(key("window", $._expression)),
-						$.canvas_size,
+						$.mono_color,
+						$.line_drawing_method, // rounded / butt / square
+						tLwExpr($),
+						tDlExpr($),
+						seq($._ps, $._expression),
+						// value-taking options
+						field("n", $.number),
+						seq(key("title", undefined), $._expression),
 						seq("position", $.position),
-						seq(key("title", 2), $._expression),
-						$.fontspec,
-						key("enhanced", 3, undefined, 1),
-						key("replotonresize", 3, undefined, 1),
-						key("antialias", 2, undefined, 1),
+						seq(key("window"), $._expression),
+						seq("name", $._expression),
+						seq("fsize", $._expression),
+						seq(key("width", undefined), $._expression),
+						seq(key("pointsmax", undefined), $._expression),
+						seq(key("fontsize", undefined), $._expression),
+						seq(key("pointscale", undefined), $._expression),
+						seq(key("scale", undefined), $._size),
+						seq(key("plotsize", undefined), $._size),
+						seq(key("charsize", undefined), $._size),
+						seq("resolution", field("dpi", $._expression)),
+						seq(
+							key("palfuncparam", undefined),
+							$._expression,
+							optional(seq(",", $._expression)),
+						),
+						seq("aspect", $._expression, optional(seq(",", $._expression))),
+						seq(key("fillchar", undefined), choice("solid", $._expression)),
+						seq("jsdir", $._expression),
+						// flags
+						T_ENH,
+						T_CROP,
+						T_TRUECOLOR,
+						T_INTERLACE,
+						T_ANCHOR,
+						T_GDSIZES,
+						key("rotate", undefined, undefined, 1),
+						key("timestamp", undefined, undefined, 1),
+						key("attributes", undefined, undefined, 1),
+						key("feed", undefined, undefined, 1),
+						key("replotonresize", undefined, undefined, 1),
+						key("antialias", undefined, undefined, 1),
 						key("persist", undefined, undefined, 1),
-						seq(K.lw, $._expression),
-						seq(K.dl, $._expression),
-						key("raise", 3, undefined, 1),
-						key("ctrlq", 2, undefined, 1),
-						key("close", 2),
+						key("raise", undefined, undefined, 1),
+						key("ctrl", undefined, undefined, 1),
+						key("ctrlq", undefined, undefined, 1),
+						key("close", undefined),
 						key("reset"),
+						key("eject", undefined),
+						key("noproportional", undefined),
+						key("default", undefined),
+						key("originreset", undefined, undefined, 1),
+						key("gparrows", undefined, undefined, 1),
+						key("gppoints", undefined, undefined, 1),
+						key("picenvironment", undefined, undefined, 1),
+						key("tightboundingbox", undefined, undefined, 1),
+						key("fulldoc", undefined, undefined, 1),
+						key("standalone", undefined, undefined, 1),
+						key("tikzarrows", undefined, undefined, 1),
+						key("externalimages", undefined, undefined, 1),
+						key("inlineimages", undefined),
+						key("noanimate", undefined),
+						key("auxfile", undefined, undefined, 1),
+						key("clip", undefined, undefined, 1), // clip / noclip
+						key("input", undefined),
+						// output format / level / text
+						key("eps", undefined),
+						"pdf",
+						"png",
+						choice("level1", "leveldefault", "level3"),
+						key("blacktext", undefined),
+						key("colortext", undefined),
+						key("colourtext", undefined, "colortext"),
+						choice(seq("header", field("header", $._expression)), "noheader"),
+						// orientation / mode / style
+						choice(key("landscape", undefined), key("portrait", undefined)),
+						"big", // "small" handled by T_GDSIZES (tiny/small/medium/large/giant)
+						choice(key("solid", undefined), key("dashed", undefined)),
+						choice(key("defaultplex", undefined), key("simplex", undefined), key("duplex", undefined)),
+						choice("mitered", "beveled"),
+						choice(key("mpoints", undefined), key("texpoints", undefined)),
+						"texarrows",
+						choice(key("smallpoints", undefined), key("tinypoints", undefined), key("normalpoints", undefined)),
+						choice(key("textnormal", undefined), "textspecial", "texthidden", "textrigid"),
+						choice("mono", "ansi", "ansi256", "ansirgb"),
+						choice(key("pspoints", undefined), key("nopspoints", undefined)),
+						choice(key("latex", undefined), key("tex"), key("context", undefined)),
+						"mouse",
+						choice("fixed", "dynamic"),
+						seq(
+							key("animate", undefined),
+							repeat(choice(
+								seq("delay", $._expression),
+								seq("loop", $._expression),
+								seq("quality", $._expression),
+							)),
+						),
 					),
 				),
 			),
+
 		// shared terminal options ----------------------------------------
 		canvas_size: ($) => seq(key("size", 2), $._size),
 		_size: ($) => {
@@ -2405,9 +1982,9 @@ module.exports = grammar({
 					key("enhanced", undefined, undefined, 1),
 					$.fontspec,
 					$.fontscale,
-					seq(K.lw, $._expression),
-					seq(K.dl, $._expression),
-					seq(K.ps, $._expression),
+					seq($._lw, $._expression),
+					seq($._dl, $._expression),
+					seq($._ps, $._expression),
 				),
 			),
 
@@ -2509,7 +2086,7 @@ module.exports = grammar({
 			repeat1(
 				choice(
 					alias(choice("x0", "y0", "z0", "x1", "y1"), "wall"),
-					seq(K.fs, $.fill_style),
+					seq($._fs, $.fill_style),
 					$._fillcolor,
 				),
 			),
@@ -2819,23 +2396,23 @@ module.exports = grammar({
 			prec.left(
 				repeat1(
 					choice(
-						seq(K.ls, field("ls", $._expression)),
+						seq($._ls, field("ls", $._expression)),
 						seq(
-							K.lt,
+							$._lt,
 							field(
 								"lt",
 								choice($._expression, $.colorspec, "black", "bgnd", "background", "nodraw"),
 							),
 						),
-						seq(K.lw, field("lw", $._expression)),
+						seq($._lw, field("lw", $._expression)),
 						$._linecolor,
-						seq(K.dt, field("dt", $.dash_opts)),
-						seq(K.pt, field("pt", choice("variable", $._expression))),
-						seq(K.ps, field("ps", choice("variable", $._expression))),
-						seq(K.pi, field("pi", $._expression)),
-						seq(K.pn, field("pn", $._expression)),
-						seq(K.as, field("as", $._expression)),
-						seq(K.fs, field("fs", $.fill_style)),
+						seq($._dt, field("dt", $.dash_opts)),
+						seq($._pt, field("pt", choice("variable", $._expression))),
+						seq($._ps, field("ps", choice("variable", $._expression))),
+						seq($._pi, field("pi", $._expression)),
+						seq($._pn, field("pn", $._expression)),
+						seq($._as, field("as", $._expression)),
+						seq($._fs, field("fs", $.fill_style)),
 						$._fillcolor,
 						key("nohidden3d", -2),
 						"nocontours",
@@ -2994,16 +2571,16 @@ module.exports = grammar({
 						choice(
 							key("default", 3),
 							seq(
-								K.lt,
+								$._lt,
 								choice($._expression, $.colorspec, "black", "bgnd", "background", "nodraw"),
 							),
 							$._linecolor,
-							seq(K.lw, $._expression),
-							seq(K.pt, $._expression),
-							seq(K.ps, $._expression),
-							seq(K.pi, $._expression),
-							seq(K.pn, $._expression),
-							seq(K.dt, $.dash_opts),
+							seq($._lw, $._expression),
+							seq($._pt, $._expression),
+							seq($._ps, $._expression),
+							seq($._pi, $._expression),
+							seq($._pn, $._expression),
+							seq($._dt, $.dash_opts),
 							key("palette", 3),
 						),
 					),
@@ -3029,7 +2606,7 @@ module.exports = grammar({
 						),
 						seq(
 							key("border", 2, undefined, 1),
-							optional(seq(optional(K.lt), $._expression)),
+							optional(seq(optional($._lt), $._expression)),
 							optional($._linecolor),
 						),
 					),
@@ -3039,17 +2616,17 @@ module.exports = grammar({
 		fontspec: ($) => seq("font", field("font", $._expression)),
 
 		_linecolor: ($) =>
-			seq(K.lc, field("lc", choice($._expression, $.colorspec))),
+			seq($._lc, field("lc", choice($._expression, $.colorspec))),
 
 		_textcolor: ($) =>
 			seq(
-				K.tc,
+				$._tc,
 				field(
 					"tc",
 					choice(
 						$.colorspec,
-						seq(K.lt, $._expression),
-						seq(K.ls, $._expression),
+						seq($._lt, $._expression),
+						seq($._ls, $._expression),
 						"default",
 						$._expression,
 						"variable",
@@ -3059,13 +2636,13 @@ module.exports = grammar({
 
 		_fillcolor: ($) =>
 			seq(
-				K.fc,
+				$._fc,
 				field(
 					"fc",
 					choice(
 						$.colorspec,
-						seq(K.lt, $._expression),
-						seq(K.ls, field("ls", $._expression)),
+						seq($._lt, $._expression),
+						seq($._ls, field("ls", $._expression)),
 						$._expression,
 					),
 				),
