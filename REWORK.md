@@ -92,9 +92,12 @@ The scanner returns one token per keyword match. Tokens can be shared
 (one external token) only when ALL matched keywords have IDENTICAL parse
 continuations in the grammar.
 
-### Group A: Style attribute keywords (14 tokens, replacing K.* regex constants)
+### Group A: Style attribute keywords (was 14 tokens; now 9)
 
-Each has a unique following structure → must remain separate tokens:
+The original claim "each has a unique following structure → must remain separate"
+was WRONG for the six whose continuation is `_expression`. Those (`lw ls pi pn as
+dl`) were collapsed into one `kw_sa` token (commit 97653db, −1.7%, see below). The
+table shows why the rest stay separate (genuinely different continuations):
 
 | External token | Matches | Continuation |
 |----------------|---------|--------------|
@@ -113,7 +116,12 @@ Each has a unique following structure → must remain separate tokens:
 | `kw_tc` | textcolor / tc | `_textcolor` |
 | `kw_dl` | dashlength / dl | `_expression` |
 
-Alias names preserved: `alias($.kw_lw, "lw")` etc. → highlights.scm unchanged.
+**DONE 2026-06-14 (commit 97653db):** the six `_expression` rows → one `kw_sa`
+(`$._sa = seq(alias($.kw_sa,"sa"), $._expression)`). parser.c 38.18 → 37.53 MB
+(−1.7%), SYMBOL_COUNT 1092 → 1081. The other 8 keep distinct tokens + aliases.
+Cost: the six lose per-attr CST identity (all → node "sa", no field). This is the
+correct N→1 pattern — same-continuation SUBSET only; the all-14 value-union attempt
+blew up to 94 MB.
 
 ### Group B: Alignment tokens (5 tokens, replacing K.l/r/t/b/c)
 
