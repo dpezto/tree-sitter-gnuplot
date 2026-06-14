@@ -59,6 +59,23 @@ const tLwExpr = ($) => seq($._lw, $._expression);
 const tDlExpr = ($) => seq($._dl, $._expression);
 const tFont = ($) => [$.fontspec, $.fontscale];
 
+// Shared option fragments (DRY; expand inline, so the CST is unchanged at each
+// site). `separator <whitespace|tab|comma|"str">` is identical in `set datafile`
+// and `table`.
+const dataSeparator = ($) =>
+	seq(
+		key("separator", 3),
+		choice(key("whitespace", 5), "tab", "comma", field("separator", $._expression)),
+	);
+
+// Drawing-layer keywords. One permissive superset shared by every site that
+// takes a layer (border, grid, object, label, arrow, errorbars, hidden3d, …).
+// Being permissive (accepting e.g. `behind` where gnuplot allows only
+// front/back) is fine for a highlighter and keeps the literal nodes that
+// highlights.scm captures. The abbreviated colorbox form (`key("front",2)`) and
+// pm3d's `depthorder base` are intentionally left inline.
+const LAYER = choice("front", "back", "behind", "depthorder");
+
 // All terminal names collapsed into ONE token (was 32 separate `key()` tokens).
 // `token(choice(...))` forces a single terminal symbol; abbreviation min_chars
 // are the same reg() calls the old per-terminal `key(..., "name")` used.
@@ -706,9 +723,7 @@ module.exports = grammar({
 					repeat(
 						choice(
 							$._expression,
-							"front",
-							"back",
-							"behind",
+							LAYER,
 							$.style_opts,
 							"polar",
 						),
@@ -881,15 +896,7 @@ module.exports = grammar({
 							key("fortran", 4),
 							"nofpe_trap",
 							seq(key("missing", 4), field("missing", $._expression)),
-							seq(
-								key("separator", 3),
-								choice(
-									key("whitespace", 5),
-									"tab",
-									"comma",
-									field("separator", $._expression),
-								),
-							),
+							dataSeparator($),
 							seq(
 								key("commentschars", 3),
 								optional(field("srt", $._expression)),
@@ -959,7 +966,7 @@ module.exports = grammar({
 				repeat1(
 					choice(
 						choice("small", "large", "fullwidth", field("size", $._expression)),
-						choice("front", "back"),
+						LAYER,
 						$.style_opts,
 					),
 				),
@@ -1007,7 +1014,7 @@ module.exports = grammar({
 							key("polar", 2, undefined, 1),
 							optional(field("angle", $._expression)),
 						),
-						choice(key("layerdefault", 6), "front", "back"),
+						choice(key("layerdefault", 6), LAYER),
 						key("vertical", 4, undefined, 1),
 						seq(
 							field("major", $.style_opts),
@@ -1023,8 +1030,7 @@ module.exports = grammar({
 				key("defaults", 3),
 				repeat1(
 					choice(
-						"front",
-						"back",
+						LAYER,
 						seq(key("offset", 3, undefined, 1), field("offset", $._expression)),
 						seq("trianglepattern", $._expression),
 						seq(key("undefined", 5), $._expression),
@@ -1372,7 +1378,7 @@ module.exports = grammar({
 				),
 				repeat(
 					choice(
-						choice("front", "back", "behind", "depthorder"),
+						LAYER,
 						choice("clip", "noclip"),
 						$._fillcolor,
 						seq($._fs, $.fill_style),
@@ -1545,7 +1551,7 @@ module.exports = grammar({
 						seq("width", $._expression),
 						seq("height", $._expression),
 						seq("size", $._expression, ",", $._expression),
-						choice("front", "back", "behind"),
+						LAYER,
 						"center",
 					),
 				),
@@ -1729,8 +1735,7 @@ module.exports = grammar({
 								key("rectangle", 4, "st_opt"),
 								repeat(
 									choice(
-										"front",
-										"back",
+										LAYER,
 										seq(key("linewidth", 5, "lw"), field("lw", $._expression)),
 										seq(key("fillcolor", 5, "fc"), field("fc", $.colorspec)),
 										seq($._fs, $.fill_style),
@@ -1740,7 +1745,7 @@ module.exports = grammar({
 							seq(key("ellipse", 3, "st_opt"), optional($.ellipse)),
 							seq(
 								key("parallelaxis", -4, "st_opt"),
-								seq(optional(choice("front", "back")), optional($.style_opts)),
+								seq(optional(LAYER), optional($.style_opts)),
 							),
 							seq(
 								key("spiderplot", 6, "st_opt"),
@@ -1813,11 +1818,7 @@ module.exports = grammar({
 						choice(
 							choice($.string_literal, $.datablock),
 							"append",
-							// NOTE: same as in datafile, simplify?
-							seq(
-								key("separator", 3),
-								choice(key("whitespace", 5), "tab", "comma", $._expression),
-							),
+							dataSeparator($),
 						),
 					),
 				),
@@ -2436,7 +2437,7 @@ module.exports = grammar({
 						seq("size", $.position),
 						"fixed",
 						choice("filled", "empty", "nofilled", "noborder"),
-						choice("front", "back"),
+						LAYER,
 					),
 				),
 			),
@@ -2476,7 +2477,7 @@ module.exports = grammar({
 					),
 					$.fontspec,
 					key("enhanced", undefined, undefined, 1),
-					choice("front", "back"),
+					LAYER,
 					$._textcolor,
 					choice(seq("point", field("point", $.line_style)), "nopoint"),
 					field("offset", seq(key("offset", 3), $.position)),

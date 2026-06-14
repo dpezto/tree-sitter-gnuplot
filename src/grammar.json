@@ -4080,16 +4080,25 @@
                   "name": "_expression"
                 },
                 {
-                  "type": "STRING",
-                  "value": "front"
-                },
-                {
-                  "type": "STRING",
-                  "value": "back"
-                },
-                {
-                  "type": "STRING",
-                  "value": "behind"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "front"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "back"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "behind"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "depthorder"
+                    }
+                  ]
                 },
                 {
                   "type": "SYMBOL",
@@ -5524,6 +5533,14 @@
                 {
                   "type": "STRING",
                   "value": "back"
+                },
+                {
+                  "type": "STRING",
+                  "value": "behind"
+                },
+                {
+                  "type": "STRING",
+                  "value": "depthorder"
                 }
               ]
             },
@@ -5918,12 +5935,25 @@
                     "value": "layerdefault"
                   },
                   {
-                    "type": "STRING",
-                    "value": "front"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "back"
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "front"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "back"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "behind"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "depthorder"
+                      }
+                    ]
                   }
                 ]
               },
@@ -6006,12 +6036,25 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "STRING",
-                "value": "front"
-              },
-              {
-                "type": "STRING",
-                "value": "back"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "front"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "back"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "behind"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "depthorder"
+                  }
+                ]
               },
               {
                 "type": "SEQ",
@@ -9804,6 +9847,10 @@
                   {
                     "type": "STRING",
                     "value": "behind"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "depthorder"
                   }
                 ]
               },
@@ -11068,12 +11115,25 @@
                           "type": "CHOICE",
                           "members": [
                             {
-                              "type": "STRING",
-                              "value": "front"
-                            },
-                            {
-                              "type": "STRING",
-                              "value": "back"
+                              "type": "CHOICE",
+                              "members": [
+                                {
+                                  "type": "STRING",
+                                  "value": "front"
+                                },
+                                {
+                                  "type": "STRING",
+                                  "value": "back"
+                                },
+                                {
+                                  "type": "STRING",
+                                  "value": "behind"
+                                },
+                                {
+                                  "type": "STRING",
+                                  "value": "depthorder"
+                                }
+                              ]
                             },
                             {
                               "type": "SEQ",
@@ -11191,6 +11251,14 @@
                                   {
                                     "type": "STRING",
                                     "value": "back"
+                                  },
+                                  {
+                                    "type": "STRING",
+                                    "value": "behind"
+                                  },
+                                  {
+                                    "type": "STRING",
+                                    "value": "depthorder"
                                   }
                                 ]
                               },
@@ -11758,8 +11826,12 @@
                           "value": "comma"
                         },
                         {
-                          "type": "SYMBOL",
-                          "name": "_expression"
+                          "type": "FIELD",
+                          "name": "separator",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_expression"
+                          }
                         }
                       ]
                     }
@@ -16520,6 +16592,14 @@
                 {
                   "type": "STRING",
                   "value": "back"
+                },
+                {
+                  "type": "STRING",
+                  "value": "behind"
+                },
+                {
+                  "type": "STRING",
+                  "value": "depthorder"
                 }
               ]
             }
@@ -16765,6 +16845,14 @@
                 {
                   "type": "STRING",
                   "value": "back"
+                },
+                {
+                  "type": "STRING",
+                  "value": "behind"
+                },
+                {
+                  "type": "STRING",
+                  "value": "depthorder"
                 }
               ]
             },
