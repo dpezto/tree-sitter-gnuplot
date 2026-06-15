@@ -86,6 +86,10 @@
   "reverse"
   "invert"
   "extend"
+  ; palette colour models (set palette model)
+  "RGB"
+  "CMY"
+  "HSV"
 ] @keyword.directive
 
 ; -----------------------------------------------------------------------
@@ -110,6 +114,8 @@
   "using"
   "with"
   "expand"
+  "title"
+  "notitle"
 ] @variable.member
 
 ; set/show argument keywords (all key("...", n, "arg") aliases)
@@ -120,7 +126,6 @@
 [
   ; coordinate systems / axes
   "unit"
-  "units_opt"
   "plane"
   "viewaxis"
   "axes_opts"
@@ -161,10 +166,6 @@
   "beginning"
   "long"
   "nogrid"
-  ; colorspace
-  "RGB"
-  "CMY"
-  "HSV"
   ; positioning / key
   "base"
   "begin"
@@ -329,8 +330,7 @@
   "timedate"
   "maxrows"
   "maxcolors"
-  ; axes aliases / coordinate planes / walls
-  "xy"
+  ; coordinate planes / walls
   "wall"
   "version"
   ; colorspec
@@ -450,8 +450,7 @@
   "nobackground"
   "separator"
   (hull)
-  "title"
-  "notitle"
+  "units_opt"
   "rectangle"
   "circle"
   "ellipse"
