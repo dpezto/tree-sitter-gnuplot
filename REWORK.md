@@ -470,6 +470,21 @@ Original phase list (kept for reference; statuses in the Status table at top):
   `repeat1(choice(...))`, not by statement starts). `_eos` does not touch those.
   A future size win must restructure set/show option parsing, not statement
   boundaries. **Do not re-attempt `_eos` without a genuinely new mechanism.**
+- **`token()` does NOT help here (measured 2026-06-15).** Two probes:
+  (1) Wrapping every `key()`/`key1()` regex in `token()` → parser.c **byte-identical**
+  (38.201 MB, STATE/SYMBOL unchanged). `reg()` already returns ONE `RegExp`, which
+  tree-sitter already treats as a single token; `token()` of a lone regex is a no-op.
+  (2) `token(choice(...))` on the arrow_opts/binvalue literal choices
+  (`filled/empty/…`, `front/back`, `sum/avg`) → parser.c **grew** 38.20 → 38.90 MB
+  (+0.7 MB), STATE +359. Those literals are SHARED (used elsewhere too), so the
+  combined token adds a second lexer path for the same words → DFA growth. `token()`
+  only shrinks when collapsing MANY UNIQUE alternatives with one continuation (the
+  TERM_NAME merge, −13%); not single regexes and not shared literals.
+- **Size is up to 38.20 MB (2026-06-15) by design:** empty-bound ranges, nested
+  `for`, `remultiplot`, and scanf `using` formats (commit bba188a) add real
+  capability. Correctness over size. The clean N→1 merges (plot styles, kw_sa,
+  terminals, commands) remain the only banked size wins; the generic set/show body
+  rewrite (−10..−15 MB, kills option highlighting) is the only untaken lever.
 - Parse-table entries are sparse-initialized — removing a token column only saves
   the entries where that token was actually valid.
   Savings ≈ (tokens merged − 1) × (states where the token was valid).
