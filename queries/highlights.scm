@@ -83,12 +83,12 @@
   "filled"
   "nofilled"
   "parallel"
-  "reverse"
-  "invert"
-  "extend"
   ; coordinate systems (first/second/graph/screen/character/polar) — alias "coord"
   "coord"
 ] @keyword.directive
+
+; on/off toggle flags ({no}X) — alias "flag" (@keyword.modifier)
+"flag" @keyword.modifier
 
 ; -----------------------------------------------------------------------
 ; Terminal output path
@@ -173,7 +173,6 @@
   "samplen"
   "columns"
   ; pm3d / 3d options
-  "ftriangles"
   "clip1in"
   "clip4in"
   "c2c"
@@ -282,7 +281,6 @@
   "border"
   "noborder"
   "noextend"
-  "writeback"
   "restore"
   ; pm3d
   "scanorder"
@@ -331,13 +329,9 @@
   ; colorspec
   "rgbcolor"
   ; tics
-  "mirror"
   ; set size
-  "equal"
   "ratio"
   ; set fit
-  "covariancevariables"
-  "errorvariables"
   "maxiter"
   "default"
   ; label / style
@@ -357,7 +351,6 @@
   "saturation"
   ; pm3d / lighting
   "corners2color"
-  "lighting"
   "primary"
   "specular"
   "spec2"
@@ -372,7 +365,6 @@
   "ztics"
   "cbtics"
   "add"
-  "rangelimited"
   ; text / font / encoding
   "fontscale"
   "utf8"
@@ -425,7 +417,6 @@
   ; binary filetype
   "png"
   ; datafile option
-  "columnheaders"
   ; textbox / multiplot margins (anonymous "margins" string)
   "margins"
   ; datafile lc/fc palette shorthand
@@ -441,7 +432,6 @@
   "monochrome"
   "color"
   "transparent"
-  "enhanced"
   ; palette colour models (set palette model)
   "RGB"
   "CMY"
@@ -466,7 +456,6 @@
   ; terminal options
   "animate"
   "noanimate"
-  "standalone"
   "input"
   "colortext"
   "blacktext"
@@ -488,7 +477,6 @@
   ; layer / style misc
   "layerdefault"
   "st_opt"
-  "output"
 ] @attribute
 
 "plt_st" @attribute

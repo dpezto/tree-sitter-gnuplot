@@ -1830,7 +1830,7 @@
                                     "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
                                   },
                                   "named": false,
-                                  "value": "enhanced"
+                                  "value": "flag"
                                 }
                               ]
                             }
@@ -4681,7 +4681,7 @@
                   "value": "(no)?inv(e(r(t)?)?)?"
                 },
                 "named": false,
-                "value": "invert"
+                "value": "flag"
               },
               {
                 "type": "ALIAS",
@@ -5026,7 +5026,7 @@
                     "value": "(no)?columnhead(e(r(s)?)?)?"
                   },
                   "named": false,
-                  "value": "columnheaders"
+                  "value": "flag"
                 },
                 {
                   "type": "ALIAS",
@@ -5561,7 +5561,7 @@
               "value": "(no)?err(o(r(v(a(r(i(a(b(l(e(s)?)?)?)?)?)?)?)?)?)?)?"
             },
             "named": false,
-            "value": "errorvariables"
+            "value": "flag"
           },
           {
             "type": "ALIAS",
@@ -5570,7 +5570,7 @@
               "value": "(no)?cov(a(r(i(a(n(c(e(v(a(r(i(a(b(l(e(s)?)?)?)?)?)?)?)?)?)?)?)?)?)?)?)?"
             },
             "named": false,
-            "value": "covariancevariables"
+            "value": "flag"
           },
           {
             "type": "ALIAS",
@@ -5579,7 +5579,7 @@
               "value": "(no)?errors(c(a(l(i(n(g)?)?)?)?)?)?"
             },
             "named": false,
-            "value": "errorscaling"
+            "value": "flag"
           },
           {
             "type": "ALIAS",
@@ -5588,7 +5588,7 @@
               "value": "(no)?prescale"
             },
             "named": false,
-            "value": "prescale"
+            "value": "flag"
           },
           {
             "type": "SEQ",
@@ -5849,7 +5849,7 @@
                       "value": "(no)?po(l(a(r)?)?)?"
                     },
                     "named": false,
-                    "value": "polar"
+                    "value": "flag"
                   },
                   {
                     "type": "CHOICE",
@@ -5898,7 +5898,7 @@
                   "value": "(no)?vert(i(c(a(l)?)?)?)?"
                 },
                 "named": false,
-                "value": "vertical"
+                "value": "flag"
               },
               {
                 "type": "SEQ",
@@ -5987,7 +5987,7 @@
                       "value": "(no)?off(s(e(t)?)?)?"
                     },
                     "named": false,
-                    "value": "offset"
+                    "value": "flag"
                   },
                   {
                     "type": "FIELD",
@@ -6046,7 +6046,7 @@
                   "value": "(no)?alt(d(i(a(g(o(n(a(l)?)?)?)?)?)?)?)?"
                 },
                 "named": false,
-                "value": "altdiagonal"
+                "value": "flag"
               },
               {
                 "type": "ALIAS",
@@ -6055,7 +6055,7 @@
                   "value": "(no)?bent(o(v(e(r)?)?)?)?"
                 },
                 "named": false,
-                "value": "bentover"
+                "value": "flag"
               }
             ]
           }
@@ -6339,7 +6339,7 @@
                     "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
                   },
                   "named": false,
-                  "value": "enhanced"
+                  "value": "flag"
                 },
                 {
                   "type": "SEQ",
@@ -6382,7 +6382,7 @@
                         "value": "(no)?box"
                       },
                       "named": false,
-                      "value": "box"
+                      "value": "flag"
                     },
                     {
                       "type": "CHOICE",
@@ -6408,7 +6408,7 @@
                         "value": "(no)?opaque"
                       },
                       "named": false,
-                      "value": "opaque"
+                      "value": "flag"
                     },
                     {
                       "type": "CHOICE",
@@ -6637,7 +6637,7 @@
                     "value": "(no)?rev(e(r(s(e)?)?)?)?"
                   },
                   "named": false,
-                  "value": "reverse"
+                  "value": "flag"
                 },
                 {
                   "type": "ALIAS",
@@ -6646,7 +6646,7 @@
                     "value": "(no)?inv(e(r(t)?)?)?"
                   },
                   "named": false,
-                  "value": "invert"
+                  "value": "flag"
                 },
                 {
                   "type": "SEQ",
@@ -7673,7 +7673,7 @@
                           "value": "(no)?enhanced"
                         },
                         "named": false,
-                        "value": "enhanced"
+                        "value": "flag"
                       },
                       {
                         "type": "BLANK"
@@ -8372,7 +8372,7 @@
                             "value": "(no)?we(d(g(e)?)?)?"
                           },
                           "named": false,
-                          "value": "wedge"
+                          "value": "flag"
                         },
                         {
                           "type": "BLANK"
@@ -9519,7 +9519,7 @@
                             "value": "(no)?rev(e(r(s(e)?)?)?)?"
                           },
                           "named": false,
-                          "value": "reverse"
+                          "value": "flag"
                         },
                         {
                           "type": "ALIAS",
@@ -9528,7 +9528,7 @@
                             "value": "(no)?wri(t(e(b(a(c(k)?)?)?)?)?)?"
                           },
                           "named": false,
-                          "value": "writeback"
+                          "value": "flag"
                         },
                         {
                           "type": "ALIAS",
@@ -9537,7 +9537,7 @@
                             "value": "(no)?ext(e(n(d)?)?)?"
                           },
                           "named": false,
-                          "value": "extend"
+                          "value": "flag"
                         },
                         {
                           "type": "STRING",
@@ -9913,7 +9913,7 @@
                   "value": "(no)?hi(d(d(e(n(3(d)?)?)?)?)?)?"
                 },
                 "named": false,
-                "value": "hidden3d"
+                "value": "flag"
               }
             ]
           },
@@ -9950,7 +9950,7 @@
               "value": "(no)?ftriangles"
             },
             "named": false,
-            "value": "ftriangles"
+            "value": "flag"
           },
           {
             "type": "CHOICE",
@@ -9993,7 +9993,7 @@
               "value": "(no)?clipcb"
             },
             "named": false,
-            "value": "clipcb"
+            "value": "flag"
           },
           {
             "type": "SEQ",
@@ -10023,7 +10023,7 @@
                   "value": "(no)?lighting"
                 },
                 "named": false,
-                "value": "lighting"
+                "value": "flag"
               },
               {
                 "type": "REPEAT",
@@ -10096,7 +10096,7 @@
                   "value": "(no)?border"
                 },
                 "named": false,
-                "value": "border"
+                "value": "flag"
               },
               {
                 "type": "CHOICE",
@@ -10415,7 +10415,7 @@
                     "value": "(no)?square"
                   },
                   "named": false,
-                  "value": "square"
+                  "value": "flag"
                 },
                 {
                   "type": "SEQ",
@@ -10615,7 +10615,7 @@
                                 "value": "(no)?out(l(i(e(r(s)?)?)?)?)?"
                               },
                               "named": false,
-                              "value": "outliers"
+                              "value": "flag"
                             },
                             {
                               "type": "SEQ",
@@ -10978,7 +10978,7 @@
                                 "value": "(no)?wedge"
                               },
                               "named": false,
-                              "value": "wedge"
+                              "value": "flag"
                             },
                             {
                               "type": "ALIAS",
@@ -10987,7 +10987,7 @@
                                 "value": "(no)?clip"
                               },
                               "named": false,
-                              "value": "clip"
+                              "value": "flag"
                             }
                           ]
                         }
@@ -11366,7 +11366,7 @@
                                         "value": "(no)?border"
                                       },
                                       "named": false,
-                                      "value": "border"
+                                      "value": "flag"
                                     },
                                     {
                                       "type": "CHOICE",
@@ -11433,7 +11433,7 @@
                           "value": "(no)?label(s)?"
                         },
                         "named": false,
-                        "value": "labels"
+                        "value": "flag"
                       },
                       {
                         "type": "CHOICE",
@@ -11553,7 +11553,7 @@
               "value": "(no)?clip"
             },
             "named": false,
-            "value": "clip"
+            "value": "flag"
           }
         ]
       }
@@ -12262,7 +12262,7 @@
                 "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
               },
               "named": false,
-              "value": "enhanced"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12271,7 +12271,7 @@
                 "value": "(no)?crop"
               },
               "named": false,
-              "value": "crop"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12280,7 +12280,7 @@
                 "value": "(no)?true(c(o(l(o(r)?)?)?)?)?"
               },
               "named": false,
-              "value": "truecolor"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12289,7 +12289,7 @@
                 "value": "(no)?inter(l(a(c(e)?)?)?)?"
               },
               "named": false,
-              "value": "interlace"
+              "value": "flag"
             },
             {
               "type": "CHOICE",
@@ -12346,7 +12346,7 @@
                 "value": "(no)?rotate"
               },
               "named": false,
-              "value": "rotate"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12355,7 +12355,7 @@
                 "value": "(no)?timestamp"
               },
               "named": false,
-              "value": "timestamp"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12364,7 +12364,7 @@
                 "value": "(no)?attributes"
               },
               "named": false,
-              "value": "attributes"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12373,7 +12373,7 @@
                 "value": "(no)?feed"
               },
               "named": false,
-              "value": "feed"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12382,7 +12382,7 @@
                 "value": "(no)?replotonresize"
               },
               "named": false,
-              "value": "replotonresize"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12391,7 +12391,7 @@
                 "value": "(no)?antialias"
               },
               "named": false,
-              "value": "antialias"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12400,7 +12400,7 @@
                 "value": "(no)?persist"
               },
               "named": false,
-              "value": "persist"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12409,7 +12409,7 @@
                 "value": "(no)?raise"
               },
               "named": false,
-              "value": "raise"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12418,7 +12418,7 @@
                 "value": "(no)?ctrl"
               },
               "named": false,
-              "value": "ctrl"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12427,7 +12427,7 @@
                 "value": "(no)?ctrlq"
               },
               "named": false,
-              "value": "ctrlq"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12481,7 +12481,7 @@
                 "value": "(no)?originreset"
               },
               "named": false,
-              "value": "originreset"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12490,7 +12490,7 @@
                 "value": "(no)?gparrows"
               },
               "named": false,
-              "value": "gparrows"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12499,7 +12499,7 @@
                 "value": "(no)?gppoints"
               },
               "named": false,
-              "value": "gppoints"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12508,7 +12508,7 @@
                 "value": "(no)?picenvironment"
               },
               "named": false,
-              "value": "picenvironment"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12517,7 +12517,7 @@
                 "value": "(no)?tightboundingbox"
               },
               "named": false,
-              "value": "tightboundingbox"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12526,7 +12526,7 @@
                 "value": "(no)?fulldoc"
               },
               "named": false,
-              "value": "fulldoc"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12535,7 +12535,7 @@
                 "value": "(no)?standalone"
               },
               "named": false,
-              "value": "standalone"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12544,7 +12544,7 @@
                 "value": "(no)?tikzarrows"
               },
               "named": false,
-              "value": "tikzarrows"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12553,7 +12553,7 @@
                 "value": "(no)?externalimages"
               },
               "named": false,
-              "value": "externalimages"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12580,7 +12580,7 @@
                 "value": "(no)?auxfile"
               },
               "named": false,
-              "value": "auxfile"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -12589,7 +12589,7 @@
                 "value": "(no)?clip"
               },
               "named": false,
-              "value": "clip"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -13298,7 +13298,7 @@
             "value": "(no)?trans(p(a(r(e(n(t)?)?)?)?)?)?"
           },
           "named": false,
-          "value": "transparent"
+          "value": "flag"
         }
       ]
     },
@@ -13314,7 +13314,7 @@
               "value": "(no)?enhanced"
             },
             "named": false,
-            "value": "enhanced"
+            "value": "flag"
           },
           {
             "type": "SYMBOL",
@@ -13446,7 +13446,7 @@
                 "value": "(no)?rot(a(t(e)?)?)?"
               },
               "named": false,
-              "value": "rotate"
+              "value": "flag"
             },
             {
               "type": "SEQ",
@@ -13577,7 +13577,7 @@
                                 "value": "(no)?enhanced"
                               },
                               "named": false,
-                              "value": "enhanced"
+                              "value": "flag"
                             }
                           ]
                         }
@@ -13643,7 +13643,7 @@
                             "value": "(no)?enhanced"
                           },
                           "named": false,
-                          "value": "enhanced"
+                          "value": "flag"
                         }
                       ]
                     }
@@ -13847,7 +13847,7 @@
                     "value": "(no)?equal"
                   },
                   "named": false,
-                  "value": "equal"
+                  "value": "flag"
                 },
                 {
                   "type": "CHOICE",
@@ -14045,7 +14045,7 @@
                         "value": "(no)?rot(a(t(e)?)?)?"
                       },
                       "named": false,
-                      "value": "rotate"
+                      "value": "flag"
                     },
                     {
                       "type": "CHOICE",
@@ -14098,7 +14098,7 @@
                     "value": "(no)?enhanced"
                   },
                   "named": false,
-                  "value": "enhanced"
+                  "value": "flag"
                 }
               ]
             }
@@ -14143,7 +14143,7 @@
                   "value": "(no)?rev(e(r(s(e)?)?)?)?"
                 },
                 "named": false,
-                "value": "reverse"
+                "value": "flag"
               },
               {
                 "type": "ALIAS",
@@ -14152,7 +14152,7 @@
                   "value": "(no)?wri(t(e(b(a(c(k)?)?)?)?)?)?"
                 },
                 "named": false,
-                "value": "writeback"
+                "value": "flag"
               },
               {
                 "type": "ALIAS",
@@ -14161,7 +14161,7 @@
                   "value": "(no)?ext(e(n(d)?)?)?"
                 },
                 "named": false,
-                "value": "extend"
+                "value": "flag"
               },
               {
                 "type": "STRING",
@@ -14531,7 +14531,7 @@
                   "value": "(no)?out(p(u(t)?)?)?"
                 },
                 "named": false,
-                "value": "output"
+                "value": "flag"
               },
               {
                 "type": "SEQ",
@@ -16036,7 +16036,7 @@
                 "value": "(no)?enh(a(n(c(e(d)?)?)?)?)?"
               },
               "named": false,
-              "value": "enhanced"
+              "value": "flag"
             },
             {
               "type": "CHOICE",
@@ -16080,7 +16080,7 @@
                     "value": "(no)?rot(a(t(e)?)?)?"
                   },
                   "named": false,
-                  "value": "rotate"
+                  "value": "flag"
                 },
                 {
                   "type": "CHOICE",
@@ -16388,7 +16388,7 @@
                     "value": "(no)?rot(a(t(e)?)?)?"
                   },
                   "named": false,
-                  "value": "rotate"
+                  "value": "flag"
                 },
                 {
                   "type": "CHOICE",
@@ -16442,7 +16442,7 @@
                 "value": "(no)?enhanced"
               },
               "named": false,
-              "value": "enhanced"
+              "value": "flag"
             },
             {
               "type": "CHOICE",
@@ -16598,7 +16598,7 @@
                 "value": "(no)?mirror"
               },
               "named": false,
-              "value": "mirror"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -17053,7 +17053,7 @@
                 "value": "(no)?enhanced"
               },
               "named": false,
-              "value": "enhanced"
+              "value": "flag"
             },
             {
               "type": "ALIAS",
@@ -17093,7 +17093,7 @@
                 "value": "(no)?range(l(i(m(i(t(e(d)?)?)?)?)?)?)?"
               },
               "named": false,
-              "value": "rangelimited"
+              "value": "flag"
             },
             {
               "type": "SYMBOL",
@@ -17368,7 +17368,7 @@
                     "value": "(no)?bo(r(d(e(r)?)?)?)?"
                   },
                   "named": false,
-                  "value": "border"
+                  "value": "flag"
                 },
                 {
                   "type": "CHOICE",

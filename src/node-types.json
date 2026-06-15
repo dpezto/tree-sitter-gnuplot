@@ -18931,10 +18931,6 @@
     "named": false
   },
   {
-    "type": "altdiagonal",
-    "named": false
-  },
-  {
     "type": "anchor",
     "named": false
   },
@@ -18956,10 +18952,6 @@
   },
   {
     "type": "ansirgb",
-    "named": false
-  },
-  {
-    "type": "antialias",
     "named": false
   },
   {
@@ -18991,10 +18983,6 @@
     "named": false
   },
   {
-    "type": "attributes",
-    "named": false
-  },
-  {
     "type": "auto",
     "named": false
   },
@@ -19013,10 +19001,6 @@
   {
     "type": "autotitle",
     "named": true
-  },
-  {
-    "type": "auxfile",
-    "named": false
   },
   {
     "type": "avg",
@@ -19076,10 +19060,6 @@
   },
   {
     "type": "below",
-    "named": false
-  },
-  {
-    "type": "bentover",
     "named": false
   },
   {
@@ -19239,10 +19219,6 @@
     "named": false
   },
   {
-    "type": "clipcb",
-    "named": false
-  },
-  {
     "type": "close",
     "named": false
   },
@@ -19277,10 +19253,6 @@
   {
     "type": "columnheader",
     "named": true
-  },
-  {
-    "type": "columnheaders",
-    "named": false
   },
   {
     "type": "columns",
@@ -19323,23 +19295,7 @@
     "named": false
   },
   {
-    "type": "covariancevariables",
-    "named": false
-  },
-  {
-    "type": "crop",
-    "named": false
-  },
-  {
     "type": "csplines",
-    "named": false
-  },
-  {
-    "type": "ctrl",
-    "named": false
-  },
-  {
-    "type": "ctrlq",
     "named": false
   },
   {
@@ -19483,15 +19439,7 @@
     "named": false
   },
   {
-    "type": "enhanced",
-    "named": false
-  },
-  {
     "type": "eps",
-    "named": false
-  },
-  {
-    "type": "equal",
     "named": false
   },
   {
@@ -19500,14 +19448,6 @@
   },
   {
     "type": "errors",
-    "named": false
-  },
-  {
-    "type": "errorscaling",
-    "named": false
-  },
-  {
-    "type": "errorvariables",
     "named": false
   },
   {
@@ -19531,19 +19471,7 @@
     "named": false
   },
   {
-    "type": "extend",
-    "named": false
-  },
-  {
-    "type": "externalimages",
-    "named": false
-  },
-  {
     "type": "fc",
-    "named": false
-  },
-  {
-    "type": "feed",
     "named": false
   },
   {
@@ -19588,6 +19516,10 @@
   },
   {
     "type": "fixed",
+    "named": false
+  },
+  {
+    "type": "flag",
     "named": false
   },
   {
@@ -19671,15 +19603,7 @@
     "named": false
   },
   {
-    "type": "ftriangles",
-    "named": false
-  },
-  {
     "type": "full",
-    "named": false
-  },
-  {
-    "type": "fulldoc",
     "named": false
   },
   {
@@ -19719,14 +19643,6 @@
     "named": false
   },
   {
-    "type": "gparrows",
-    "named": false
-  },
-  {
-    "type": "gppoints",
-    "named": false
-  },
-  {
     "type": "gradient",
     "named": false
   },
@@ -19756,10 +19672,6 @@
   },
   {
     "type": "hex",
-    "named": false
-  },
-  {
-    "type": "hidden3d",
     "named": false
   },
   {
@@ -19827,10 +19739,6 @@
     "named": false
   },
   {
-    "type": "interlace",
-    "named": false
-  },
-  {
     "type": "interpolate",
     "named": false
   },
@@ -19840,10 +19748,6 @@
   },
   {
     "type": "inverse",
-    "named": false
-  },
-  {
-    "type": "invert",
     "named": false
   },
   {
@@ -19936,10 +19840,6 @@
   },
   {
     "type": "levels",
-    "named": false
-  },
-  {
-    "type": "lighting",
     "named": false
   },
   {
@@ -20052,10 +19952,6 @@
   },
   {
     "type": "minutes",
-    "named": false
-  },
-  {
-    "type": "mirror",
     "named": false
   },
   {
@@ -20283,18 +20179,6 @@
     "named": false
   },
   {
-    "type": "originreset",
-    "named": false
-  },
-  {
-    "type": "outliers",
-    "named": false
-  },
-  {
-    "type": "output",
-    "named": false
-  },
-  {
     "type": "outside",
     "named": false
   },
@@ -20336,14 +20220,6 @@
   },
   {
     "type": "perpendicular",
-    "named": false
-  },
-  {
-    "type": "persist",
-    "named": false
-  },
-  {
-    "type": "picenvironment",
     "named": false
   },
   {
@@ -20423,10 +20299,6 @@
     "named": false
   },
   {
-    "type": "prescale",
-    "named": false
-  },
-  {
     "type": "prevnext",
     "named": false
   },
@@ -20487,15 +20359,7 @@
     "named": false
   },
   {
-    "type": "raise",
-    "named": false
-  },
-  {
     "type": "range",
-    "named": false
-  },
-  {
-    "type": "rangelimited",
     "named": false
   },
   {
@@ -20515,10 +20379,6 @@
     "named": false
   },
   {
-    "type": "replotonresize",
-    "named": false
-  },
-  {
     "type": "reset",
     "named": false
   },
@@ -20532,10 +20392,6 @@
   },
   {
     "type": "retrace",
-    "named": false
-  },
-  {
-    "type": "reverse",
     "named": false
   },
   {
@@ -20707,10 +20563,6 @@
     "named": false
   },
   {
-    "type": "standalone",
-    "named": false
-  },
-  {
     "type": "start",
     "named": false
   },
@@ -20807,23 +20659,11 @@
     "named": false
   },
   {
-    "type": "tightboundingbox",
-    "named": false
-  },
-  {
-    "type": "tikzarrows",
-    "named": false
-  },
-  {
     "type": "time",
     "named": false
   },
   {
     "type": "timedate",
-    "named": false
-  },
-  {
-    "type": "timestamp",
     "named": false
   },
   {
@@ -20872,10 +20712,6 @@
   },
   {
     "type": "trip",
-    "named": false
-  },
-  {
-    "type": "truecolor",
     "named": false
   },
   {
@@ -20971,10 +20807,6 @@
     "named": false
   },
   {
-    "type": "wedge",
-    "named": false
-  },
-  {
     "type": "weeks",
     "named": false
   },
@@ -21004,10 +20836,6 @@
   },
   {
     "type": "wrap",
-    "named": false
-  },
-  {
-    "type": "writeback",
     "named": false
   },
   {
