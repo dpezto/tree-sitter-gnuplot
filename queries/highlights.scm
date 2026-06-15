@@ -86,10 +86,6 @@
   "reverse"
   "invert"
   "extend"
-  ; palette colour models (set palette model)
-  "RGB"
-  "CMY"
-  "HSV"
 ] @keyword.directive
 
 ; -----------------------------------------------------------------------
@@ -447,6 +443,10 @@
   "color"
   "transparent"
   "enhanced"
+  ; palette colour models (set palette model)
+  "RGB"
+  "CMY"
+  "HSV"
   "nobackground"
   "separator"
   (hull)
