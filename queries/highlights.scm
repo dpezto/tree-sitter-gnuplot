@@ -286,8 +286,9 @@
   "noextend"
   "writeback"
   "restore"
-  ; pm3d scan order
+  ; pm3d
   "scanorder"
+  "position"
   ; histogram subtypes
   "clustered"
   "rowstacked"

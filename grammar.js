@@ -1192,20 +1192,17 @@ module.exports = grammar({
 		mouse: ($) =>
 			repeat1(
 				choice(
-					seq(key("doubleclick", 2), $._expression),
-					key("nodoubleclick", 4),
-					key("zoomcoordinates", 6, undefined, 1),
+					seq(key("doubleclick", 2, "arg", 1), $._expression),
+					key("zoomcoordinates", 6, "arg", 1),
 					seq(
 						key("zoomfactors", 6),
 						optional(seq($._expression, optional(seq(",", $._expression)))),
 					),
-					"noruler",
-					seq("ruler", optional(atPos($))),
+					seq(key("ruler", undefined, "arg", 1), optional(atPos($))),
 					seq(
-						alias(/polardistance(deg|tan)?/, "polardistance"),
+						alias(/(no)?polardistance(deg|tan)?/, "polardistance"),
 						optional(choice("deg", "tan")),
 					),
-					"nopolardistance",
 					seq("format", field("format", $._expression)),
 					seq(
 						"mouseformat",
@@ -1214,9 +1211,9 @@ module.exports = grammar({
 							field("mouseformat", $._expression),
 						),
 					),
-					seq(key("labels", 3, undefined, 1), optional(field("labeloptions", $._expression))),
-					key("zoomjump", 5, undefined, 1),
-					key("verbose", 3, undefined, 1),
+					seq(key("labels", 3, "arg", 1), optional(field("labeloptions", $._expression))),
+					key("zoomjump", 5, "arg", 1),
+					key("verbose", 3, "arg", 1),
 				),
 			),
 
@@ -2300,29 +2297,16 @@ module.exports = grammar({
 						// binary general
 						repeat1(
 							choice(
-								seq("array", "=", field("array", sep(":", $.parameter_list))),
-								seq("record", "=", field("record", $._expression)),
-								seq("format", "=", field("format", $._expression)),
+								seq(choice("record", "format", "rotate"), "=", field("opt", $._expression)),
+								seq(choice("dx", "dy", "dz", "perpendicular", "skip"), "=", field("opt", sep(":", $._expression))),
+								seq(choice("array", "origin", "center"), "=", field("opt", sep(":", $.parameter_list))),
 								seq("filetype", "=", field("filetype", $.identifier)),
-								seq(
-									choice("origin", "center"),
-									"=",
-									field("origin_center", sep(":", $.parameter_list)),
-								),
-								seq(
-									choice("dx", "dy", "dz"),
-									"=",
-									field("dxyz", sep(":", $._expression)),
-								),
+								seq("scan", "=", field("scan", $.identifier)),
+								seq(key("endian", 3), "=", field("endian", choice("little", "big", "default", "swap", "swab", "middle", "pdp"))),
 								"flipx",
 								"flipy",
 								"flipz",
 								"transpose",
-								seq("scan", "=", field("scan", $.identifier)),
-								seq("rotate", "=", field("rotate", $._expression)),
-								seq("perpendicular", "=", field("perpendicular", sep(":", $._expression))),
-								seq(key("endian", 3), "=", field("endian", choice("little", "big", "default", "swap", "swab", "middle", "pdp"))),
-								seq("skip", "=", field("skip_bytes", sep(":", $._expression))),
 							),
 						),
 						$.matrix_options,
@@ -2883,7 +2867,9 @@ module.exports = grammar({
 
 		escape_sequence: (_) =>
 			token.immediate(
-				/\\(?:[ \t]*\n|[\\'"nrtabu]|\d{3}|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4,8}|.)/
+				// \uXXXX (UTF-16) and \UXXXXXXXX (UTF-32) unicode escapes (4–8 hex),
+				// octal \NNN, hex \xHH, named (\n \t …), line continuation, or \<char>.
+				/\\(?:[ \t]*\n|[\\'"nrtab]|\d{3}|x[0-9a-fA-F]{2}|[uU][0-9a-fA-F]{4,8}|.)/
 			),
 
 		format_specifier: (_) =>
