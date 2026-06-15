@@ -1361,7 +1361,7 @@ module.exports = grammar({
 							$.position,
 							optional(seq("size", $._expression, ",", $._expression)),
 							optional(seq("angle", $._expression)),
-							optional(seq("units", choice("xy", "xx", "yy"))),
+							optional(seq("units", alias(choice("xy", "xx", "yy"), "units_opt"))),
 						),
 						// polygon: from <pos> to <pos> {to <pos>}*
 						seq(
@@ -2231,17 +2231,30 @@ module.exports = grammar({
 		range_block: ($) => $._range_block,
 
 		_range_block: ($) =>
-			// Array and substrings
+			// Ranges / array / substring: [lo], [lo:hi], [:hi], [lo:], [:],
+			// [lo:hi:inc], [lo:hi:] — every bound optional, `*` = autoscale.
 			surround(
 				"[]",
-				optional(sep(":", choice($.assignment, $._expression, "*"))),
+				optional(
+					seq(
+						optional(choice($.assignment, $._expression, "*")),
+						optional(
+							seq(
+								":",
+								optional(choice($._expression, "*")),
+								optional(seq(":", optional($._expression))),
+							),
+						),
+					),
+				),
 			),
 
 		for_block: ($) =>
+			// Single or nested: `for [i=1:5]`, `for [s in "a b"]`, `for [..] for [..]`.
 			prec.right(
-				seq(
-					"for",
-					repeat1(
+				repeat1(
+					seq(
+						"for",
 						surround(
 							"[]",
 							choice(
@@ -2738,6 +2751,10 @@ module.exports = grammar({
 						surround("()", sep(",", choice($.assignment, $._expression))),
 						$._expression,
 					)),
+					// Optional trailing scanf format string: `using 1:($2+$3) '%lf,%lf,%lf'`
+					// (gnuplot 6 docs p.138-139). The format-only form `using "%lf"`
+					// is already covered by the string as the sole entry above.
+					optional(field("format", $.string_literal)),
 				),
 			),
 
@@ -2871,8 +2888,10 @@ module.exports = grammar({
 
 		format_specifier: (_) =>
 			token.immediate(
-				// Standard printf + gnuplot-specific: covers %t %T %l %L %S %n %r %k %K and all standard letters
-				/%%|%[-+0 #*]*\d*(?:\.\d+)?(?:uchar|int|float|[a-zA-Z])/
+				// printf + gnuplot-specific (%t %T %l %L %S %n %r %k %K) + the C scanf
+				// read-formats used in `using`: length modifiers (%lf), skip (%*lf),
+				// and scansets with width (%*20[^\n]).
+				/%%|%[-+0 #*]*\d*(?:\.\d+)?(?:\[[^\]]*\]|uchar|int|float|(?:hh|ll|[hlLjztq])?[a-zA-Z])/
 			),
 
 		sum_block: ($) =>

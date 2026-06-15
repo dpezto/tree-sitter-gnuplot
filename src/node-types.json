@@ -18325,6 +18325,16 @@
     "type": "using",
     "named": true,
     "fields": {
+      "format": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "string_literal",
+            "named": true
+          }
+        ]
+      },
       "using": {
         "multiple": true,
         "required": true,
@@ -21371,23 +21381,11 @@
     "named": false
   },
   {
-    "type": "xx",
-    "named": false
-  },
-  {
-    "type": "xy",
-    "named": false
-  },
-  {
     "type": "y",
     "named": false
   },
   {
     "type": "years",
-    "named": false
-  },
-  {
-    "type": "yy",
     "named": false
   },
   {

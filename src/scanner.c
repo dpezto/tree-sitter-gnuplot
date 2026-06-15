@@ -166,6 +166,7 @@ static const CmdKwEntry CMD_KWS[] = {
     {"replot", 3, KW_CMD_BARE},
     {"reread", 6, KW_CMD_BARE},
     {"refresh", 3, KW_CMD_BARE},
+    {"remultiplot", 7, KW_CMD_BARE},
     // Commands followed by one optional expression:
     {"raise", 2, KW_CMD_OPTEXPR},
     {"lower", 3, KW_CMD_OPTEXPR},
