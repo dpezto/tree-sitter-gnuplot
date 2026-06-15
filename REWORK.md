@@ -423,6 +423,22 @@ Original phase list (kept for reference; statuses in the Status table at top):
   every option's expression tail carries the whole OPTION-START follow set (not
   the statement-start set — see the Phase 6 refutation below) → the bloat is
   structural, not per-token, and is NOT addressed by statement terminators.
+- **Generic-option redesign: SPIKED on `cntrparam` 2026-06-14 — works, but trades
+  the grammar's purpose for size.** Replacing cntrparam's specific body
+  (`repeat(choice(key("linear"),…, levels-block,…))`) with the generic
+  `prec.right(repeat($._expression))`: parser.c 37.53 → 37.00 MB (**−0.53 MB for
+  ONE option**), STATE −283, SYMBOL −10. Extrapolated across the genericizable set/
+  show options this is the only multi-MB lever left (set/show ≈25 MB; a full
+  generic rewrite could land ≈20–25 MB, i.e. −10 to −15 MB). **Costs, all
+  measured:** (1) every set/show SUB-keyword (`levels`/`auto`/`linear`/`vertical`/
+  `solid`/…) becomes a bare `(identifier)` → loses keyword highlighting, the
+  grammar's primary job; (2) the simple `repeat($._expression)` drops comma support
+  → `levels discrete 1,2,3` / `incremental 0,1,5` break (3 validation errors;
+  fixable with `choice(expr,",")` + a declared conflict); (3) needs `prec.right`
+  (a conflict with the statement boundary / `def_datablock` otherwise) → greedy,
+  though it did NOT swallow the next statement across a newline in testing.
+  **Verdict:** the size is real but locked behind option-level highlighting. Only
+  pursue if highlighting set/show sub-options is expendable. Not done.
 - **Statement-terminator (`_eos`) redesign is REFUTED — it does NOT shrink
   parser.c; it regresses it (measured 2026-06-14, the implementation attempt).**
   Baseline with tree-sitter 0.26.9 is **38.18 MB / STATE 17,882 / LARGE_STATE
