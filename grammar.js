@@ -1170,7 +1170,7 @@ module.exports = grammar({
 		_margin: ($) =>
 			prec.left(
 				choice(
-					seq(optional(seq(optional("at"), "screen")), $._expression),
+					seq(optional(seq(optional("at"), alias("screen", "coord"))), $._expression),
 					seq(
 						// recycle code for multiplot
 						field("lm", $._expression),
@@ -2758,14 +2758,16 @@ module.exports = grammar({
 				),
 			),
 
+		// Coordinate systems — all aliased to one `coord` node (capture taxonomy:
+		// @keyword.directive). Adding a coord keyword needs no highlights.scm edit.
 		system: (_) =>
 			choice(
-				key("first", 3),
-				key("second", 3),
-				key("graph", 2),
-				key("screen", 2),
-				key("character", 4),
-				"polar", // NOTE: v6 not in docs but in examples
+				key("first", 3, "coord"),
+				key("second", 3, "coord"),
+				key("graph", 2, "coord"),
+				key("screen", 2, "coord"),
+				key("character", 4, "coord"),
+				alias("polar", "coord"), // v6 not in docs but in examples
 			),
 
 		//-------------------------------------------------------------------------

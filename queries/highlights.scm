@@ -86,6 +86,8 @@
   "reverse"
   "invert"
   "extend"
+  ; coordinate systems (first/second/graph/screen/character/polar) — alias "coord"
+  "coord"
 ] @keyword.directive
 
 ; -----------------------------------------------------------------------
@@ -235,12 +237,8 @@
   "full"
   ; pixmap
   "colormap"
-  ; coordinate system prefixes (position context)
-  "first"
-  "second"
-  "graph"
-  "screen"
-  "character"
+  ; coordinate axis-family prefix (the coord systems first/second/graph/screen/
+  ; character/polar are aliased to (coord) -> @keyword.directive below)
   "axis"
   ; position direction aliases
   "bot"

@@ -19215,10 +19215,6 @@
     "named": false
   },
   {
-    "type": "character",
-    "named": false
-  },
-  {
     "type": "charsize",
     "named": false
   },
@@ -19312,6 +19308,10 @@
   },
   {
     "type": "context",
+    "named": false
+  },
+  {
+    "type": "coord",
     "named": false
   },
   {
@@ -19567,10 +19567,6 @@
     "named": false
   },
   {
-    "type": "first",
-    "named": false
-  },
-  {
     "type": "firstlinetype",
     "named": false
   },
@@ -19732,10 +19728,6 @@
   },
   {
     "type": "gradient",
-    "named": false
-  },
-  {
-    "type": "graph",
     "named": false
   },
   {
@@ -20611,19 +20603,11 @@
     "named": false
   },
   {
-    "type": "screen",
-    "named": false
-  },
-  {
     "type": "script",
     "named": false
   },
   {
     "type": "scroll",
-    "named": false
-  },
-  {
-    "type": "second",
     "named": false
   },
   {

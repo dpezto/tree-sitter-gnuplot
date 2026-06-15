@@ -7225,8 +7225,13 @@
                         ]
                       },
                       {
-                        "type": "STRING",
-                        "value": "screen"
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "STRING",
+                          "value": "screen"
+                        },
+                        "named": false,
+                        "value": "coord"
                       }
                     ]
                   },
@@ -18270,7 +18275,7 @@
             "value": "fir(s(t)?)?"
           },
           "named": false,
-          "value": "first"
+          "value": "coord"
         },
         {
           "type": "ALIAS",
@@ -18279,7 +18284,7 @@
             "value": "sec(o(n(d)?)?)?"
           },
           "named": false,
-          "value": "second"
+          "value": "coord"
         },
         {
           "type": "ALIAS",
@@ -18288,7 +18293,7 @@
             "value": "gr(a(p(h)?)?)?"
           },
           "named": false,
-          "value": "graph"
+          "value": "coord"
         },
         {
           "type": "ALIAS",
@@ -18297,7 +18302,7 @@
             "value": "sc(r(e(e(n)?)?)?)?"
           },
           "named": false,
-          "value": "screen"
+          "value": "coord"
         },
         {
           "type": "ALIAS",
@@ -18306,11 +18311,16 @@
             "value": "char(a(c(t(e(r)?)?)?)?)?"
           },
           "named": false,
-          "value": "character"
+          "value": "coord"
         },
         {
-          "type": "STRING",
-          "value": "polar"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "polar"
+          },
+          "named": false,
+          "value": "coord"
         }
       ]
     },
