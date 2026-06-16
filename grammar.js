@@ -704,7 +704,7 @@ module.exports = grammar({
 						),
 						"fix",
 						"keepfix",
-						key("noextend", 5),
+						key("noextend", 5, "flag"),
 					),
 				),
 			),
@@ -842,7 +842,7 @@ module.exports = grammar({
 						key("front", 2),
 						key("back", 2),
 						choice(
-							key("noborder", 4),
+							key("noborder", 4, "flag"),
 							key("bdefault", 2),
 							seq(key("border", 2), choice($.style_opts, $._expression)),
 						),
@@ -1372,7 +1372,7 @@ module.exports = grammar({
 				repeat(
 					choice(
 						choice("front", "back", "behind", "depthorder"),
-						choice("clip", "noclip"),
+						choice(alias("clip", "flag"), alias("noclip", "flag")),
 						$._fillcolor,
 						fillStyleOpt($),
 						"default",
@@ -1580,7 +1580,7 @@ module.exports = grammar({
 						alias(/(geo|har)?mean|rms|m(edian|in|ax)|c(1|2|3|4)/, "c2c"),
 					),
 					seq(
-						key("lighting", undefined, "flag", 1),
+						key("lighting", 5, "flag", 1),
 						repeat(
 							choice(
 								seq("primary", field("fraction", $._expression)),
@@ -2408,7 +2408,7 @@ module.exports = grammar({
 						$._sa,
 						seq($._fs, field("fs", $.fill_style)),
 						$._fillcolor,
-						key("nohidden3d", -2),
+						key("nohidden3d", -2, "flag"),
 						"nocontours",
 						key("nosurface", 6),
 						key("palette", 3),
@@ -2430,7 +2430,7 @@ module.exports = grammar({
 						alias(/(no|back)?heads?/, "head"),
 						seq("size", $.position),
 						"fixed",
-						choice("filled", "empty", "nofilled", "noborder"),
+						choice("filled", "empty", "nofilled", alias("noborder", "flag")),
 						choice("front", "back"),
 					),
 				),
@@ -2475,12 +2475,9 @@ module.exports = grammar({
 					$._textcolor,
 					choice(seq("point", field("point", $.line_style)), "nopoint"),
 					field("offset", offsetPos($)),
-					choice(
-						key("noboxed", -2),
-						seq(
-							"boxed",
-							optional(field("boxstyle", seq("bs", $._expression))),
-						),
+					seq(
+						key("boxed", -2, "flag", 1),
+						optional(field("boxstyle", seq("bs", $._expression))),
 					),
 					"hypertext",
 				),
@@ -2505,7 +2502,7 @@ module.exports = grammar({
 						),
 						choice(
 							seq(key("rotate", 3), seq("by", field("angle", $._expression))),
-							key("norotate", 5),
+							key("norotate", 5, "flag"),
 						),
 						choice(
 							field("offset", offsetPos($)),

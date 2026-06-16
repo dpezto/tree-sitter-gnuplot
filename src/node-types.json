@@ -19131,10 +19131,6 @@
     "named": false
   },
   {
-    "type": "boxed",
-    "named": false
-  },
-  {
     "type": "bs",
     "named": false
   },
@@ -20027,27 +20023,11 @@
     "named": false
   },
   {
-    "type": "noborder",
-    "named": false
-  },
-  {
-    "type": "noboxed",
-    "named": false
-  },
-  {
-    "type": "noclip",
-    "named": false
-  },
-  {
     "type": "nocontours",
     "named": false
   },
   {
     "type": "nodraw",
-    "named": false
-  },
-  {
-    "type": "noextend",
     "named": false
   },
   {
@@ -20064,10 +20044,6 @@
   },
   {
     "type": "noheader",
-    "named": false
-  },
-  {
-    "type": "nohidden3d",
     "named": false
   },
   {
@@ -20112,10 +20088,6 @@
   },
   {
     "type": "normalpoints",
-    "named": false
-  },
-  {
-    "type": "norotate",
     "named": false
   },
   {

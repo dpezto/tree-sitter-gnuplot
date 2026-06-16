@@ -4012,7 +4012,7 @@
                   "value": "noext(e(n(d)?)?)?"
                 },
                 "named": false,
-                "value": "noextend"
+                "value": "flag"
               }
             ]
           }
@@ -4765,7 +4765,7 @@
                       "value": "nobo(r(d(e(r)?)?)?)?"
                     },
                     "named": false,
-                    "value": "noborder"
+                    "value": "flag"
                   },
                   {
                     "type": "ALIAS",
@@ -8584,12 +8584,22 @@
                 "type": "CHOICE",
                 "members": [
                   {
-                    "type": "STRING",
-                    "value": "clip"
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "STRING",
+                      "value": "clip"
+                    },
+                    "named": false,
+                    "value": "flag"
                   },
                   {
-                    "type": "STRING",
-                    "value": "noclip"
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "STRING",
+                      "value": "noclip"
+                    },
+                    "named": false,
+                    "value": "flag"
                   }
                 ]
               },
@@ -10020,7 +10030,7 @@
                 "type": "ALIAS",
                 "content": {
                   "type": "PATTERN",
-                  "value": "(no)?lighting"
+                  "value": "(no)?light(i(n(g)?)?)?"
                 },
                 "named": false,
                 "value": "flag"
@@ -16001,7 +16011,7 @@
                 "value": "nohidden(3(d)?)?"
               },
               "named": false,
-              "value": "nohidden3d"
+              "value": "flag"
             },
             {
               "type": "STRING",
@@ -16194,8 +16204,13 @@
                   "value": "nofilled"
                 },
                 {
-                  "type": "STRING",
-                  "value": "noborder"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "STRING",
+                    "value": "noborder"
+                  },
+                  "named": false,
+                  "value": "flag"
                 }
               ]
             },
@@ -16510,48 +16525,39 @@
               }
             },
             {
-              "type": "CHOICE",
+              "type": "SEQ",
               "members": [
                 {
                   "type": "ALIAS",
                   "content": {
                     "type": "PATTERN",
-                    "value": "nobox(e(d)?)?"
+                    "value": "(no)?box(e(d)?)?"
                   },
                   "named": false,
-                  "value": "noboxed"
+                  "value": "flag"
                 },
                 {
-                  "type": "SEQ",
+                  "type": "CHOICE",
                   "members": [
                     {
-                      "type": "STRING",
-                      "value": "boxed"
+                      "type": "FIELD",
+                      "name": "boxstyle",
+                      "content": {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "bs"
+                          },
+                          {
+                            "type": "SYMBOL",
+                            "name": "_expression"
+                          }
+                        ]
+                      }
                     },
                     {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "FIELD",
-                          "name": "boxstyle",
-                          "content": {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "STRING",
-                                "value": "bs"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_expression"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "type": "BLANK"
-                        }
-                      ]
+                      "type": "BLANK"
                     }
                   ]
                 }
@@ -16720,7 +16726,7 @@
                     "value": "norot(a(t(e)?)?)?"
                   },
                   "named": false,
-                  "value": "norotate"
+                  "value": "flag"
                 }
               ]
             },

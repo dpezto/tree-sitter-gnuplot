@@ -77,7 +77,6 @@
   "behind"
   "depthorder"
   "clip"
-  "noclip"
   "opaque"
   "font"
   "filled"
@@ -276,11 +275,8 @@
   "overlap"
   ; rotation
   "rotate"
-  "norotate"
   ; border / extend / range modifiers
   "border"
-  "noborder"
-  "noextend"
   "restore"
   ; pm3d
   "scanorder"
@@ -335,7 +331,6 @@
   "maxiter"
   "default"
   ; label / style
-  "boxed"
   ; set view
   "azimuth"
   "map"
@@ -368,7 +363,6 @@
   ; text / font / encoding
   "fontscale"
   "utf8"
-  "noboxed"
   ; fill / size style
   "empty"
   "square"
@@ -384,7 +378,6 @@
   "numeric"
   ; watch-label / surface options
   "point"
-  "nohidden3d"
   ; tics keyword (grid / paxis — covers xtics, ytics, ztics contexts)
   "tics"
   ; histogram fill style
