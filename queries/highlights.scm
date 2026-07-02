@@ -68,7 +68,6 @@
 [
   "front"
   "back"
-  "behind"
   "depthorder"
   "clip"
   "opaque"
@@ -356,10 +355,6 @@
   "separator"
   (hull)
   "units_opt"
-  "rectangle"
-  "circle"
-  "ellipse"
-  "polygon"
   ; fill / line style modes
   "solid"
   "dashed"

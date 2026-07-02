@@ -10735,136 +10735,7 @@
   {
     "type": "object",
     "named": true,
-    "fields": {
-      "fc": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "colorspec",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "lt",
-            "named": false
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "sa",
-            "named": false
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "index": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
@@ -10882,15 +10753,7 @@
           "named": true
         },
         {
-          "type": "dash_opts",
-          "named": true
-        },
-        {
           "type": "datablock",
-          "named": true
-        },
-        {
-          "type": "fill_style",
           "named": true
         },
         {
@@ -10910,11 +10773,15 @@
           "named": true
         },
         {
-          "type": "position",
+          "type": "range_block",
           "named": true
         },
         {
           "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "style_opts",
           "named": true
         },
         {
@@ -18178,10 +18045,6 @@
     "named": false
   },
   {
-    "type": "behind",
-    "named": false
-  },
-  {
     "type": "below",
     "named": false
   },
@@ -18239,10 +18102,6 @@
   },
   {
     "type": "center",
-    "named": false
-  },
-  {
-    "type": "circle",
     "named": false
   },
   {
@@ -18375,10 +18234,6 @@
   },
   {
     "type": "dy",
-    "named": false
-  },
-  {
-    "type": "ellipse",
     "named": false
   },
   {
@@ -18766,10 +18621,6 @@
     "named": false
   },
   {
-    "type": "polygon",
-    "named": false
-  },
-  {
     "type": "pop",
     "named": false
   },
@@ -18827,10 +18678,6 @@
   },
   {
     "type": "record",
-    "named": false
-  },
-  {
-    "type": "rectangle",
     "named": false
   },
   {

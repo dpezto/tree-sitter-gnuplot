@@ -1090,73 +1090,10 @@ module.exports = grammar({
 				$._expression,
 			),
 
-		// set object <index> <type> <type-props> {front|back|behind|depthorder}
-		//            {clip|noclip} {fc <colorspec>} {fs <fillstyle>}
-		//            {default} {lw <w>} {dt <dashtype>}
+		// set object <index> <shape> … — generic body (shape words, from/to/rto,
+		// arc + range_block, units xx/xy/yy, layer/clip flags, style attrs).
 		object: ($) =>
-			seq(
-				key("object", 3, "arg"),
-				field("index", $._expression),
-				optional(
-					choice(
-						// rectangle: from <pos> to <pos>  OR  center <pos> size <w>,<h>
-						seq(
-							key("rectangle", 3),
-							optional(
-								choice(
-									seq(alias("from", "kw_fn"), $.position, alias("to", "kw_fn"), $.position),
-									seq(
-										choice(alias("at", "kw_fn"), "center"),
-										$.position,
-										"size",
-										$._expression,
-										",",
-										$._expression,
-									),
-								),
-							),
-						),
-						// circle: {at|center} <pos> {size <r>} {arc [b:e]} {no{wedge}}
-						seq(
-							key("circle", 4),
-							optional(choice(alias("at", "kw_fn"), "center")),
-							$.position,
-							optional(seq("size", $._expression)),
-							optional(
-								seq(alias("arc", "arg"), "[", $._expression, ":", $._expression, "]"),
-							),
-							optional(key("wedge", 2, "flag", 1)),
-						),
-						// ellipse: {at|center} <pos> {size <w>,<h>} {angle <a>} {units xy|xx|yy}
-						seq(
-							key("ellipse", 3),
-							optional(choice(alias("at", "kw_fn"), "center")),
-							$.position,
-							optional(seq("size", $._expression, ",", $._expression)),
-							optional(seq("angle", $._expression)),
-							optional(seq("units", alias(choice("xy", "xx", "yy"), "units_opt"))),
-						),
-						// polygon: from <pos> to <pos> {to <pos>}*
-						seq(
-							key("polygon", 3),
-							alias("from", "kw_fn"),
-							$.position,
-							repeat1(seq(alias("to", "kw_fn"), $.position)),
-						),
-					),
-				),
-				repeat(
-					choice(
-						choice("front", "back", "behind", "depthorder"),
-						choice(alias("clip", "flag"), alias("noclip", "flag")),
-						$._fillcolor,
-						fillStyleOpt($),
-						"default",
-						$._sa,
-						seq($._dt, $.dash_opts),
-					),
-				),
-			),
+			prec.right(seq(key("object", 3, "arg"), optional($._gopts_style))),
 
 		offsets: ($) => $._gopts,
 

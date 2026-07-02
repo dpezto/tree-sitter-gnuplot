@@ -696,18 +696,16 @@ set object 1 rectangle from screen 0,0 to screen 1,1 behind fc rgb "gray" fs sol
 (source_file
   (cmd_set
     (object
-      index: (number)
-      (position
-        (system)
-        x: (number)
-        y: (number))
-      (position
-        (system)
-        x: (number)
-        y: (number))
-      fc: (colorspec
-        (string_literal))
-      (fill_style))))
+      (number)
+      (number)
+      (number)
+      (number)
+      (number)
+      (style_opts
+        fc: (colorspec
+          (string_literal)))
+      (style_opts
+        fs: (fill_style)))))
 
 ===========================================================================
   set object - circle with size
@@ -718,13 +716,12 @@ set object 2 circle center graph 0.5,0.5 size 0.1 fc "red"
 (source_file
   (cmd_set
     (object
-      index: (number)
-      (position
-        (system)
-        x: (number)
-        y: (number))
       (number)
-      fc: (string_literal))))
+      (number)
+      (number)
+      (number)
+      (style_opts
+        fc: (string_literal)))))
 
 ===========================================================================
   set origin - lower-left plot corner

@@ -326,6 +326,22 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"cycle", 5, KW_G_ARG, 0},
     // termoption
     {"fontscale", 9, KW_G_ARG, 0},
+    // object (before key: "to" must win over the "top" prefix row)
+    {"rectangle", 3, KW_G_MOD, 0},
+    {"circle", 4, KW_G_MOD, 0},
+    {"ellipse", 3, KW_G_MOD, 0},
+    {"polygon", 4, KW_G_MOD, 0},
+    {"from", 4, KW_G_ARG, 0},
+    {"rto", 3, KW_G_ARG, 0},
+    {"to", 2, KW_G_ARG, 0},
+    {"arc", 3, KW_G_ARG, 0},
+    {"angle", 5, KW_G_ARG, 0},
+    {"wedge", 2, KW_G_FLAG, 1},
+    {"units", 5, KW_G_ARG, 0},
+    {"xx", 2, KW_G_MOD, 0},
+    {"yy", 2, KW_G_MOD, 0},
+    {"depthorder", 5, KW_G_FLAG, 0},
+    {"clip", 4, KW_G_FLAG, 1},
     // key
     {"autotitle", 1, KW_G_ARG, 1},
     {"columnheader", 3, KW_G_ARG, 0},
@@ -714,9 +730,20 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
             return true;
           }
         }
+        lexer->result_symbol = GVAL_SEP;
+        return true;
       }
-      lexer->result_symbol = GVAL_SEP;
-      return true;
+      // Non-word ahead: emit the separator only for characters that can
+      // start an expression ('[' starts a range_block item, not a value).
+      {
+        int32_t c = lexer->lookahead;
+        if ((c >= '0' && c <= '9') || c == '.' || c == '"' || c == '\'' ||
+            c == '(' || c == '-' || c == '+' || c == '~' || c == '!' ||
+            c == '$' || c == '@') {
+          lexer->result_symbol = GVAL_SEP;
+          return true;
+        }
+      }
     }
     // Declined: fall through — other externals (next statement's command
     // keyword, datablock end, ...) may still match from here.
