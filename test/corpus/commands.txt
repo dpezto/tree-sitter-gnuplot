@@ -747,7 +747,7 @@ set o "test.tex"
 (source_file
   (cmd_set
     arg_opts: (output
-      name: (string_literal))))
+      (string_literal))))
 
 ===========================================================================
   set origin - minimum two-char abbreviation or
@@ -770,10 +770,8 @@ set pixmap 1 "bg.png" at screen 0,0 width 1.0 front
 (source_file
   (cmd_set
     (pixmap
-      index: (number)
+      (number)
       (string_literal)
-      (position
-        (system)
-        x: (number)
-        y: (number))
+      (number)
+      (number)
       (number))))

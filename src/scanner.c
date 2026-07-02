@@ -215,6 +215,96 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"palette", 3, KW_G_ARG, 0},
     // decimalsign
     {"locale", 6, KW_G_ARG, 0},
+    // coordinate systems (offsets, positions in converted bodies)
+    {"first", 3, KW_G_COORD, 0},
+    {"second", 3, KW_G_COORD, 0},
+    {"graph", 2, KW_G_COORD, 0},
+    {"screen", 2, KW_G_COORD, 0},
+    {"character", 4, KW_G_COORD, 0},
+    // history
+    {"quiet", 5, KW_G_ARG, 0},
+    {"numbers", 3, KW_G_ARG, 0},
+    {"full", 4, KW_G_MOD, 0},
+    {"trip", 4, KW_G_MOD, 0},
+    // hidden3d (offset toggle; trianglepattern; (no)undefined; alt/bent)
+    {"offset", 3, KW_G_ARG, 1},
+    {"trianglepattern", 15, KW_G_ARG, 0},
+    {"undefined", 5, KW_G_ARG, 1},
+    {"altdiagonal", 3, KW_G_FLAG, 1},
+    {"bentover", 4, KW_G_FLAG, 1},
+    {"defaults", 3, KW_G_MOD, 0},
+    // isosurface
+    {"mixed", 3, KW_G_ARG, 0},
+    {"triangles", 6, KW_G_ARG, 0},
+    {"insidecolor", 6, KW_G_ARG, 1},
+    // jitter
+    {"overlap", 4, KW_G_ARG, 0},
+    {"spread", 6, KW_G_ARG, 0},
+    {"wrap", 4, KW_G_ARG, 0},
+    {"swarm", 5, KW_G_MOD, 0},
+    // mapping
+    {"cartesian", 9, KW_G_MOD, 0},
+    {"spherical", 9, KW_G_MOD, 0},
+    {"cylindrical", 11, KW_G_MOD, 0},
+    // mouse ("do" must stay the do-loop command: doubleclick min 4)
+    {"doubleclick", 4, KW_G_ARG, 1},
+    {"zoomcoordinates", 6, KW_G_ARG, 1},
+    {"zoomfactors", 6, KW_G_ARG, 0},
+    {"ruler", 5, KW_G_ARG, 1},
+    {"polardistancedeg", 16, KW_G_ARG, 1},
+    {"polardistancetan", 16, KW_G_ARG, 1},
+    {"polardistance", 13, KW_G_ARG, 1},
+    {"mouseformat", 11, KW_G_ARG, 0},
+    {"function", 8, KW_G_ARG, 0},
+    {"labels", 3, KW_G_ARG, 1},
+    {"zoomjump", 5, KW_G_ARG, 1},
+    {"verbose", 3, KW_G_ARG, 1},
+    // cntrlabel
+    {"start", 5, KW_G_ARG, 0},
+    {"interval", 6, KW_G_ARG, 0},
+    {"onecolor", 8, KW_G_ARG, 0},
+    // errorbars
+    {"small", 5, KW_G_MOD, 0},
+    {"large", 5, KW_G_MOD, 0},
+    {"fullwidth", 9, KW_G_MOD, 0},
+    // walls
+    {"x0", 2, KW_G_MOD, 0},
+    {"x1", 2, KW_G_MOD, 0},
+    {"y0", 2, KW_G_MOD, 0},
+    {"y1", 2, KW_G_MOD, 0},
+    {"z0", 2, KW_G_MOD, 0},
+    // theta direction words (bare l/r/t/b resolve via other arg rows)
+    {"counterclockwise", 16, KW_G_MOD, 0},
+    {"clockwise", 9, KW_G_MOD, 0},
+    {"ccw", 3, KW_G_MOD, 0},
+    {"cw", 2, KW_G_MOD, 0},
+    {"left", 3, KW_G_ARG, 0},
+    {"right", 3, KW_G_ARG, 0},
+    {"top", 2, KW_G_ARG, 0},
+    {"bottom", 3, KW_G_ARG, 0},
+    // view
+    {"map", 3, KW_G_ARG, 0},
+    {"scale", 5, KW_G_ARG, 0},
+    {"projection", 10, KW_G_ARG, 0},
+    {"azimuth", 7, KW_G_ARG, 0},
+    {"equal", 5, KW_G_FLAG, 1},
+    {"xyz", 3, KW_G_MOD, 0},
+    {"xy", 2, KW_G_MOD, 0},
+    {"xz", 2, KW_G_MOD, 0},
+    {"yz", 2, KW_G_MOD, 0},
+    // size
+    {"ratio", 2, KW_G_ARG, 1},
+    // pixmap
+    {"width", 5, KW_G_ARG, 0},
+    {"height", 6, KW_G_ARG, 0},
+    {"center", 6, KW_G_ARG, 0},
+    {"behind", 6, KW_G_FLAG, 0},
+    {"at", 2, KW_G_ARG, 0},
+    {"colormap", 8, KW_G_ARG, 0},
+    // print
+    {"append", 6, KW_G_ARG, 0},
+    // colormap
+    {"new", 3, KW_G_ARG, 0},
     {NULL, 0, 0, 0},
 };
 

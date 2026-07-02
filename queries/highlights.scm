@@ -121,8 +121,6 @@
 [
   ; coordinate systems / axes
   "unit"
-  "plane"
-  "viewaxis"
   "axes_opts"
   ; time units (set xdata time / timefmt)
   "seconds"
@@ -229,12 +227,10 @@
   "length"
   "head"
   "inout"
-  "polardistance"
   ; offset / scale
   "offset"
   "nooffset"
   "scale"
-  "relative"
   ; orientation
   "vertical"
   "horizontal"
@@ -246,7 +242,6 @@
   "interpolate"
   "autofreq"
   "autojustify"
-  "overlap"
   ; rotation
   "rotate"
   ; border / extend / range modifiers
@@ -258,7 +253,6 @@
   "clustered"
   "rowstacked"
   "columnstacked"
-  "mixed"
   "nokeyseparators"
   ; smooth additions
   ; key/label placement
@@ -267,7 +261,6 @@
   ; fill pattern
   "pattern"
   ; 3d / surface
-  "triangles"
   "s"
   ; data / fit extras
   "variables"
@@ -283,23 +276,18 @@
   "maxrows"
   "maxcolors"
   ; coordinate planes / walls
-  "wall"
   "version"
   ; colorspec
   "rgbcolor"
   ; tics
   ; set size
-  "ratio"
   ; set fit
   "maxiter"
   "default"
   ; label / style
   ; set view
-  "azimuth"
   "map"
-  "projection"
   ; set theta direction
-  "theta_dir"
   ; palette model / presets / cubehelix options
   "cubehelix"
   "model"
@@ -315,8 +303,6 @@
   ; dgrid3d subtype (gauss/… value-modes → "mod")
   "splines"
   ; contour / cntrparam
-  "onecolor"
-  "interval"
   ; tics axes / modifiers
   "add"
   ; text / font / encoding
@@ -324,7 +310,6 @@
   "utf8"
   ; fill / size style
   "empty"
-  "square"
   ; layout / spacing / multiplot
   "layout"
   "spacing"
@@ -340,8 +325,6 @@
   ; histogram fill style
   "errorbars"
   ; jitter options
-  "spread"
-  "swarm"
   ; key command options
   "auto"
   ; paxis label keyword (key("label",3) with default aka="label")

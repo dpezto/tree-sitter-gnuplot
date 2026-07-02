@@ -168,23 +168,34 @@ module.exports = grammar({
 		// values float as flat sibling items (no per-keyword seq — the value-union
 		// trap measured in REWORK.md). Two flavors so bodies that never take style
 		// attributes cannot have identifiers like `pi` eaten by the style scanner.
+		// Comma-chained expression list, atomic: `0, 1, 5` is ONE item, so the
+		// boundary ambiguity below never fires in the middle of a list.
+		_gexprs: ($) =>
+			prec.right(seq($._expression, repeat(seq(",", $._expression)))),
 		_gopt_item: ($) =>
 			choice(
-				alias($.kw_g_arg, "arg"),
 				alias($.kw_g_flag, "flag"),
 				alias($.kw_g_mod, "mod"),
 				alias($.kw_g_coord, "coord"),
-				$._expression,
-				",",
+				// A value (identifier included) binds to the preceding arg keyword
+				// (prec.right), so `contourfill auto FOO` keeps FOO inside the body.
+				prec.right(seq(alias($.kw_g_arg, "arg"), optional($._gexprs))),
+				$._gexprs,
+				$.range_block,
 			),
-		_gopts: ($) => prec.right(repeat1($._gopt_item)),
+		// Bodies are prec.LEFT: at an ambiguous statement boundary (next word is
+		// an identifier that could start an assignment, or `$name` starting a
+		// datablock) the body STOPS instead of swallowing the next statement.
+		// Sub-keywords therefore MUST be in GOPT_KWS — an unlisted keyword
+		// degrades to an identifier and ends the body early.
+		_gopts: ($) => prec.left(repeat1($._gopt_item)),
 		_gopts_style: ($) =>
-			prec.right(
+			prec.left(
 				repeat1(
 					choice(
 						$._gopt_item,
 						alias($.kw_g_axisflag, "flag"),
-						$.style_opts,
+						prec.right(seq($.style_opts, optional(seq(",", $.style_opts)))),
 					),
 				),
 			),
@@ -770,17 +781,7 @@ module.exports = grammar({
 		color: ($) => alias("color", "arg"),
 
 		colormap: ($) =>
-			prec.left(
-				seq(
-					alias("colormap", "arg"),
-					optional(
-						choice(
-							seq(alias("new", "arg"), $._expression),
-							seq($._expression, $.range_block),
-						),
-					),
-				),
-			),
+			prec.right(seq(alias("colormap", "arg"), optional($._gopts))),
 
 		colorsequence: ($) =>
 			prec.right(seq(alias("colorsequence", "arg"), optional($._gopts))),
@@ -788,18 +789,7 @@ module.exports = grammar({
 		clip: ($) => prec.right(seq(alias("clip", "arg"), optional($._gopts))),
 
 		cntrlabel: ($) =>
-			seq(
-				key("cntrlabel", 5, "arg"),
-				repeat(
-					choice(
-						seq("format", $._expression),
-						$.fontspec,
-						seq("start", $._expression),
-						seq("interval", $._expression),
-						"onecolor",
-					),
-				),
-			),
+			prec.right(seq(key("cntrlabel", 5, "arg"), optional($._gopts_style))),
 
 		// Generic body (GOPT_KWS rows: linear/cubicspline/bspline/points/order/
 		// levels/auto/discrete/incremental/sorted/unsorted/firstlinetype).
@@ -891,16 +881,7 @@ module.exports = grammar({
 				alias("locale", "arg"),
 			),
 
-		errorbars: ($) =>
-			prec.left(
-				repeat1(
-					choice(
-						choice(alias("small", "mod"), alias("large", "mod"), alias("fullwidth", "mod"), field("size", $._expression)),
-						choice("front", "back"),
-						$.style_opts,
-					),
-				),
-			),
+		errorbars: ($) => $._gopts_style,
 
 		fit: ($) =>
 			repeat1(
@@ -939,50 +920,15 @@ module.exports = grammar({
 		grid: ($) =>
 			prec.right(seq(key("grid", 2, "arg"), optional($._gopts_style))),
 
-		hidden3d: ($) =>
-			choice(
-				key("defaults", 3, "mod"),
-				repeat1(
-					choice(
-						"front",
-						"back",
-						seq(key("offset", 3, "flag", 1), field("offset", $._expression)),
-						seq(alias("trianglepattern", "arg"), $._expression),
-						seq(key("undefined", 5, "arg"), $._expression),
-						key("noundefined", 5, "flag"),
-						key("altdiagonal", 3, "flag", 1),
-						key("bentover", 4, "flag", 1),
-					),
-				),
-			),
+		hidden3d: ($) => $._gopts,
 
-		history: ($) =>
-			repeat1(
-				choice(
-					field("size", seq("size", $._expression)),
-					choice("quiet", key("numbers", 3)),
-					choice(alias("full", "mod"), alias("trip", "mod")),
-					key("default", 3),
-				),
-			),
+		history: ($) => $._gopts,
 
 		isosamples: ($) => $._gopts,
 
-		isosurface: ($) =>
-			choice(
-				choice(key("mixed", 3), key("triangles", 6)),
-				choice(alias("noinsidecolor", "flag"), seq(key("insidecolor", 6, "arg"), $._expression)),
-			),
+		isosurface: ($) => $._gopts,
 
-		jitter: ($) =>
-			repeat1(
-				choice(
-					seq(key("overlap", 4), $._expression),
-					seq("spread", $._expression),
-					seq(alias("wrap", "arg"), $._expression),
-					choice("swarm", "square", key("vertical", 4)),
-				),
-			),
+		jitter: ($) => $._gopts,
 
 		key: ($) =>
 			seq(
@@ -1052,15 +998,12 @@ module.exports = grammar({
 				),
 			),
 
-		loadpath: ($) => seq(key("loadpath", 4, "arg"), $._expression),
+		loadpath: ($) =>
+			prec.right(seq(key("loadpath", 4, "arg"), optional($._gopts))),
 
-		locale: ($) =>
-			prec.left(
-				seq(
-					key("loadpath", 3, "arg"),
-					optional(field("locale", $._expression)),
-				),
-			),
+		// (the old body's head mistakenly read key("loadpath") — fixed by the
+		// generic body: `set locale "en_US"` now parses the string directly)
+		locale: ($) => $._gopts,
 
 		logscale: ($) => {
 			const axis = choice("x", "y", "z", "x2", "y2", "cb", "r");
@@ -1078,10 +1021,7 @@ module.exports = grammar({
 		},
 
 		mapping: ($) =>
-			seq(
-				key("mapping", 3, "arg"),
-				optional(choice(alias("cartesian", "mod"), alias("spherical", "mod"), alias("cylindrical", "mod"))),
-			),
+			prec.right(seq(key("mapping", 3, "arg"), optional($._gopts))),
 
 		margin: ($) => seq(key1("arg", /(l|r|t|b)?/, reg("margins", 3)), $._margin),
 
@@ -1102,38 +1042,12 @@ module.exports = grammar({
 				),
 			),
 
-		micro: ($) => prec.left(seq(alias("micro", "arg"), optional($._expression))),
+		micro: ($) => prec.right(seq(alias("micro", "arg"), optional($._gopts))),
 
 		monochrome: ($) =>
 			prec.left(seq(key("monochrome", 4, "arg"), optional($.line_style))),
 
-		mouse: ($) =>
-			repeat1(
-				choice(
-					seq(key("doubleclick", 2, "arg", 1), $._expression),
-					key("zoomcoordinates", 6, "arg", 1),
-					seq(
-						key("zoomfactors", 6, "arg"),
-						optional(seq($._expression, optional(seq(",", $._expression)))),
-					),
-					seq(key("ruler", undefined, "arg", 1), optional(atPos($))),
-					seq(
-						alias(/(no)?polardistance(deg|tan)?/, "polardistance"),
-						optional(choice(alias("deg", "mod"), alias("tan", "mod"))),
-					),
-					seq("format", field("format", $._expression)),
-					seq(
-						alias("mouseformat", "arg"),
-						choice(
-							seq(alias("function", "arg"), field("mouseformat_fn", $._expression)),
-							field("mouseformat", $._expression),
-						),
-					),
-					seq(key("labels", 3, "arg", 1), optional(field("labeloptions", $._expression))),
-					key("zoomjump", 5, "arg", 1),
-					key("verbose", 3, "arg", 1),
-				),
-			),
+		mouse: ($) => $._gopts,
 
 		multiplot: ($) =>
 			seq(
@@ -1300,33 +1214,12 @@ module.exports = grammar({
 				),
 			),
 
-		offsets: ($) =>
-			seq(
-				optional($.system), // NOTE: only needs graph
-				field("left", $._expression),
-				optional(
-					seq(
-						",",
-						optional($.system),
-						field("right", $._expression),
-						optional(
-							seq(
-								",",
-								optional($.system),
-								field("top", $._expression),
-								optional(
-									seq(",", optional($.system), field("bottom", $._expression)),
-								),
-							),
-						),
-					),
-				),
-			),
+		offsets: ($) => $._gopts,
 
 		// set origin <x>,<y>  — lower-left corner of plot within terminal
 		origin: ($) => $._gopts,
 
-		output: ($) => field("name", $._expression),
+		output: ($) => $._gopts,
 
 		overflow: ($) => choice(alias("float", "mod"), "NaN", alias("undefined", "mod")),
 
@@ -1447,26 +1340,7 @@ module.exports = grammar({
 		// set pixmap <index> {"filename" | colormap <name>} at <position>
 		//            {width <w> | height <h> | size <w>,<h>} {front|back|behind} {center}
 		pixmap: ($) =>
-			seq(
-				key("pixmap", 4, "arg"),
-				field("index", $._expression),
-				optional(
-					choice(
-						$.string_literal,
-						seq("colormap", $._expression),
-					),
-				),
-				repeat(
-					choice(
-						atPos($),
-						seq("width", $._expression),
-						seq("height", $._expression),
-						seq("size", $._expression, ",", $._expression),
-						choice("front", "back", "behind"),
-						"center",
-					),
-				),
-			),
+			prec.right(seq(key("pixmap", 4, "arg"), optional($._gopts))),
 
 		pm3d: ($) => seq(alias("pm3d", "arg"), optional($._pm3d)),
 
@@ -1518,20 +1392,10 @@ module.exports = grammar({
 			),
 
 		pointintervalbox: ($) =>
-			prec.left(
-				seq(
-					key("pointintervalbox", 8, "arg"),
-					field("arg_opts", optional($._expression)),
-				),
-			),
+			prec.right(seq(key("pointintervalbox", 8, "arg"), optional($._gopts))),
 
 		pointsize: ($) =>
-			prec.left(
-				seq(
-					key("pointsize", 3, "arg"),
-					field("arg_opts", optional(field("multiplier", $._expression))),
-				),
-			),
+			prec.right(seq(key("pointsize", 3, "arg"), optional($._gopts))),
 
 		polar: ($) =>
 			prec.left(
@@ -1554,30 +1418,15 @@ module.exports = grammar({
 				),
 			),
 
-		print: ($) => $._expression,
+		print: ($) => $._gopts,
 
-		psdir: ($) => $._expression,
+		psdir: ($) => $._gopts,
 
-		rgbmax: ($) => $._expression,
+		rgbmax: ($) => $._gopts,
 
 		samples: ($) => $._gopts,
 
-		size: ($) =>
-			prec.left(
-				repeat1(
-					choice(
-						choice(
-							key("square", undefined, "flag", 1),
-							seq(key("ratio", 2), $._expression),
-							key("noratio", 4, "flag"),
-						),
-						seq(
-							field("xscale", $._expression),
-							optional(seq(",", field("yscale", $._expression))),
-						),
-					),
-				),
-			),
+		size: ($) => $._gopts,
 
 		style: ($) =>
 			prec.left(
@@ -1726,7 +1575,7 @@ module.exports = grammar({
 				),
 			),
 
-		surface: ($) => choice(alias("implicit", "mod"), alias("explicit", "mod")),
+		surface: ($) => $._gopts,
 
 		table: ($) =>
 			prec.right(
@@ -1906,35 +1755,13 @@ module.exports = grammar({
 				),
 			),
 
-		theta: ($) =>
-			repeat1(
-				choice(
-					alias(K.r, "theta_dir"),
-					alias(K.t, "theta_dir"),
-					alias(K.l, "theta_dir"),
-					alias(K.b, "theta_dir"),
-					alias(/(counter)?clockwise|c?cw/, "theta_dir"),
-				),
-			),
+		theta: ($) => $._gopts,
 
 		tics: ($) => $.tics_opts,
 
-		timestamp: ($) =>
-			prec.left(
-				repeat1(
-					choice(
-						field("format", $._expression),
-						alias(K.t, "top"),
-						alias(K.b, "bot"),
-						key("rotate", 3, "flag", 1),
-						offsetPos($),
-						$.fontspec,
-						$._textcolor,
-					),
-				),
-			),
+		timestamp: ($) => $._gopts_style,
 
-		timefmt: ($) => field("format", $._expression),
+		timefmt: ($) => $._gopts,
 
 		title: ($) =>
 			prec.right(
@@ -1970,44 +1797,9 @@ module.exports = grammar({
 
 		vgrid: ($) => seq($.datablock, optional(seq("size", $._expression))),
 
-		view: ($) =>
-			prec.left(
-				repeat1(
-					choice(
-						seq(
-							$._expression,
-							optional(
-								seq(
-									",",
-									$._expression,
-									optional(
-										seq(",", $._expression, optional(seq(",", $._expression))),
-									),
-								),
-							),
-						),
-						seq("map", optional(seq("scale", $._expression))),
-						seq(
-							"projection",
-							optional(alias(choice("xy", "xz", "yz"), "plane")),
-						),
-						seq(
-							key("equal", undefined, "flag", 1),
-							optional(alias(choice("xy", "xyz"), "viewaxis")),
-						),
-						seq("azimuth", $._expression),
-					),
-				),
-			),
+		view: ($) => $._gopts,
 
-		walls: ($) =>
-			repeat1(
-				choice(
-					alias(choice("x0", "y0", "z0", "x1", "y1"), "wall"),
-					fillStyleOpt($),
-					$._fillcolor,
-				),
-			),
+		walls: ($) => $._gopts_style,
 
 		xdata: ($) =>
 			seq(key1("arg", K.axes, reg("data", 2)), optional(key("time", 1))),
@@ -2058,23 +1850,9 @@ module.exports = grammar({
 			),
 
 		xyplane: ($) =>
-			prec.left(
-				seq(
-					key("xyplane", 3, "arg"),
-					field(
-						"arg_opts",
-						optional(
-							choice(
-								$._expression,
-								seq(alias("at", "kw_fn"), field("zval", $._expression)),
-								seq("relative", field("val", $._expression)),
-							),
-						),
-					),
-				),
-			),
+			prec.right(seq(key("xyplane", 3, "arg"), optional($._gopts))),
 
-		zero: ($) => prec.left($._expression),
+		zero: ($) => $._gopts,
 
 		zeroaxis: ($) =>
 			seq(key1("arg", K.zaxes, reg("zeroaxis", 5)), optional($.style_opts)),

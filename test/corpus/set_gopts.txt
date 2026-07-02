@@ -81,3 +81,63 @@ plot x
   (cmd_plot
     (plot_element
       (identifier))))
+
+================================================================================
+generic body - assignment on next line not swallowed
+================================================================================
+set timestamp "%d/%m/%y"
+FILES = 5
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (timestamp
+      (string_literal
+        (format_specifier)
+        (format_specifier)
+        (format_specifier))))
+  (assignment
+    (def_var
+      (identifier)
+      (number))))
+
+================================================================================
+generic body - datablock on next line not swallowed
+================================================================================
+set output "f".ext
+$data << EOD
+1 2
+EOD
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (output
+      (binary_expression
+        (string_literal)
+        (operator)
+        (identifier))))
+  (assignment
+    (def_datablock
+      (datablock)
+      (datablock_start)
+      (number)
+      (number)
+      (datablock_end))))
+
+================================================================================
+generic body - identifier value binds to arg keyword
+================================================================================
+set contourfill auto FOO firstlinetype 10
+set samples nsamp, nsamp2
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (contourfill
+      (identifier)
+      (number)))
+  (cmd_set
+    (samples
+      (identifier)
+      (identifier))))
