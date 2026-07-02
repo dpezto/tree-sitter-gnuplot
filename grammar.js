@@ -180,7 +180,14 @@ module.exports = grammar({
 		// Comma-chained expression list, atomic: `0, 1, 5` is ONE item, so the
 		// boundary ambiguity below never fires in the middle of a list.
 		_gexprs: ($) =>
-			prec.right(seq($._expression, repeat(seq(",", $._expression)))),
+			prec.right(
+				seq(
+					$._expression,
+					// range_block as a chain element: contourfill
+					// `defined [a:b] c, [d:e] f` chains through the ranges
+					repeat(seq(",", choice($._expression, $.range_block))),
+				),
+			),
 		// Parenthesized tuple list with at least two juxtaposed groups —
 		// palette `defined (0 "blue", 1 "red")`, gradient/color 4-tuples.
 		// A single parenthesized expression never matches (≥2 groups), so
@@ -714,6 +721,13 @@ module.exports = grammar({
 					$.xyplane,
 					seq(key("zero", 1, "arg"), field("arg_opts", optional($.zero))),
 					$.zeroaxis,
+					// Fallback: unknown/future option words parse clean (plain
+					// identifier colour) instead of producing ERROR nodes. Known
+					// option keywords are tokens and always win over identifier.
+					prec.dynamic(
+						-1,
+						prec.right(seq(field("opt", $.identifier), optional($._gopts))),
+					),
 				),
 			),
 
@@ -1452,10 +1466,13 @@ module.exports = grammar({
 				choice("cm", "in", "inch", "mm", "pt", "pc", "bp", "dd", "cc"),
 				"unit",
 			);
-			return seq(
-				field("width", seq($._expression, optional(unit))),
-				",",
-				field("height", seq($._expression, optional(unit))),
+			// height optional: pict2e/pcl5 accept `size a4` / `size letter`
+			// (paper name parses as the width expression) — B15.
+			return prec.right(
+				seq(
+					field("width", seq($._expression, optional(unit))),
+					optional(seq(",", field("height", seq($._expression, optional(unit))))),
+				),
 			);
 		},
 		mono_color: ($) =>

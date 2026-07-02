@@ -949,7 +949,7 @@
     "fields": {
       "height": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "array",
@@ -2760,6 +2760,16 @@
             "named": true
           }
         ]
+      },
+      "opt": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
@@ -2771,11 +2781,19 @@
           "named": true
         },
         {
+          "type": "array",
+          "named": true
+        },
+        {
           "type": "arrow",
           "named": true
         },
         {
           "type": "autoscale",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
           "named": true
         },
         {
@@ -2819,6 +2837,10 @@
           "named": true
         },
         {
+          "type": "complex",
+          "named": true
+        },
+        {
           "type": "contour",
           "named": true
         },
@@ -2832,6 +2854,10 @@
         },
         {
           "type": "dashtype",
+          "named": true
+        },
+        {
+          "type": "datablock",
           "named": true
         },
         {
@@ -2855,7 +2881,15 @@
           "named": true
         },
         {
+          "type": "function",
+          "named": true
+        },
+        {
           "type": "grid",
+          "named": true
+        },
+        {
+          "type": "identifier",
           "named": true
         },
         {
@@ -2903,11 +2937,19 @@
           "named": true
         },
         {
+          "type": "number",
+          "named": true
+        },
+        {
           "type": "object",
           "named": true
         },
         {
           "type": "palette",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
           "named": true
         },
         {
@@ -2931,7 +2973,23 @@
           "named": true
         },
         {
+          "type": "range_block",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
           "type": "style",
+          "named": true
+        },
+        {
+          "type": "subscript",
+          "named": true
+        },
+        {
+          "type": "sum_block",
           "named": true
         },
         {
@@ -2943,7 +3001,19 @@
           "named": true
         },
         {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
           "type": "title",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
           "named": true
         },
         {
@@ -3122,14 +3192,28 @@
             "named": true
           }
         ]
+      },
+      "opt": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
           "type": "angles",
+          "named": true
+        },
+        {
+          "type": "array",
           "named": true
         },
         {
@@ -3138,6 +3222,10 @@
         },
         {
           "type": "autoscale",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
           "named": true
         },
         {
@@ -3181,6 +3269,10 @@
           "named": true
         },
         {
+          "type": "complex",
+          "named": true
+        },
+        {
           "type": "contour",
           "named": true
         },
@@ -3194,6 +3286,10 @@
         },
         {
           "type": "dashtype",
+          "named": true
+        },
+        {
+          "type": "datablock",
           "named": true
         },
         {
@@ -3213,7 +3309,15 @@
           "named": true
         },
         {
+          "type": "function",
+          "named": true
+        },
+        {
           "type": "grid",
+          "named": true
+        },
+        {
+          "type": "identifier",
           "named": true
         },
         {
@@ -3261,11 +3365,19 @@
           "named": true
         },
         {
+          "type": "number",
+          "named": true
+        },
+        {
           "type": "object",
           "named": true
         },
         {
           "type": "palette",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
           "named": true
         },
         {
@@ -3289,7 +3401,23 @@
           "named": true
         },
         {
+          "type": "range_block",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
           "type": "style",
+          "named": true
+        },
+        {
+          "type": "subscript",
+          "named": true
+        },
+        {
+          "type": "sum_block",
           "named": true
         },
         {
@@ -3301,7 +3429,19 @@
           "named": true
         },
         {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
           "type": "title",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
           "named": true
         },
         {
@@ -3762,6 +3902,16 @@
             "named": true
           }
         ]
+      },
+      "opt": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
@@ -3773,11 +3923,19 @@
           "named": true
         },
         {
+          "type": "array",
+          "named": true
+        },
+        {
           "type": "arrow",
           "named": true
         },
         {
           "type": "autoscale",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
           "named": true
         },
         {
@@ -3821,6 +3979,10 @@
           "named": true
         },
         {
+          "type": "complex",
+          "named": true
+        },
+        {
           "type": "contour",
           "named": true
         },
@@ -3834,6 +3996,10 @@
         },
         {
           "type": "dashtype",
+          "named": true
+        },
+        {
+          "type": "datablock",
           "named": true
         },
         {
@@ -3857,7 +4023,15 @@
           "named": true
         },
         {
+          "type": "function",
+          "named": true
+        },
+        {
           "type": "grid",
+          "named": true
+        },
+        {
+          "type": "identifier",
           "named": true
         },
         {
@@ -3905,11 +4079,19 @@
           "named": true
         },
         {
+          "type": "number",
+          "named": true
+        },
+        {
           "type": "object",
           "named": true
         },
         {
           "type": "palette",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
           "named": true
         },
         {
@@ -3933,7 +4115,23 @@
           "named": true
         },
         {
+          "type": "range_block",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
           "type": "style",
+          "named": true
+        },
+        {
+          "type": "subscript",
+          "named": true
+        },
+        {
+          "type": "sum_block",
           "named": true
         },
         {
@@ -3945,7 +4143,19 @@
           "named": true
         },
         {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
           "type": "title",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
           "named": true
         },
         {
@@ -15743,6 +15953,10 @@
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "range_block",
           "named": true
         },
         {
