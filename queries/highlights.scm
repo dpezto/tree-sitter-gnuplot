@@ -4,6 +4,8 @@
 "variable" @variable.parameter
 
 ; built-in named values (palette presets, special color names)
+; TODO: decide and collapse (bgnd & background same)
+; black/viridis constant?
 [
   "viridis"
   "black"
@@ -24,19 +26,17 @@
 
 (operator) @operator
 
-; separators and range/assign operators (anonymous tokens)
 [
+  "="
   ","
   ":"
 ] @operator
-
-; assignment = (anonymous; eventual grammar.js refactor will make it (operator))
-"=" @operator
 
 (keyword_op) @keyword.operator
 
 (ternary_op) @keyword.conditional.ternary
 
+; TODO: collapse
 [
   "for"
   "in"
@@ -48,29 +48,23 @@
 ; Commands
 "cmd" @keyword
 
+; TODO: decide and collapse
 [
   "newhistogram"
   "newspiderplot"
   "keyentry"
 ] @keyword
 
+; TODO: decide inverse, sample
 [
-  "via"
   "inverse"
   "sample"
-  "sum"
-  "at"
-  "from"
-  "to_rto"
-  "by"
-  "smooth"
+  "kw_fn"
 ] @keyword.function
 
-[
-  "if"
-  "else"
-] @keyword.conditional
+"kw_cond" @keyword.conditional
 
+; TODO: decide and collapse
 [
   "front"
   "back"
@@ -87,15 +81,23 @@
 ] @keyword.directive
 
 ; on/off toggle flags ({no}X) — alias "flag" (@keyword.modifier)
-"flag" @keyword.modifier
+"flag" @keyword.directive
+
+; enumerated VALUES / modes (alias "mod") — @constant
+; TODO: decide, constant?
+"mod" @constant
+
+; plot/splot ELEMENT modifiers (alias "attr") — @property
+; (title/notitle/with/using/index/every/axes/smooth in a plot command;
+;  distinct from set-option names which are @variable.member)
+"attr" @property
 
 ; -----------------------------------------------------------------------
-; Terminal output path
-"name" @variable.member
-
-; -----------------------------------------------------------------------
-; Style attribute shorthands (K constants + datafile keywords)
+; TODO: decide and collapse
 [
+  ; Terminal output path
+  "name"
+  ; Style attribute shorthands (K constants + datafile keywords)
   "sa"
   "dt"
   "fc"
@@ -106,20 +108,16 @@
   "pt"
   "tc"
   "skip"
-  "every"
-  "index"
-  "using"
-  "with"
   "expand"
   "title"
-  "notitle"
+  ; set/show argument keywords (all key("...", n, "arg") aliases)
+  "arg"
 ] @variable.member
 
-; set/show argument keywords (all key("...", n, "arg") aliases)
-"arg" @variable.member
 
 ; -----------------------------------------------------------------------
 ; Option keywords
+; TODO: decide and collapse
 [
   ; coordinate systems / axes
   "unit"
@@ -134,35 +132,19 @@
   "weeks"
   "months"
   "years"
-  ; smooth subtypes
+  ; smooth subtypes still emitted as own token (value-modes csplines/bezier/… → "mod")
   "discrete"
   "incremental"
-  "unique"
-  "frequency"
-  "fnormal"
-  "cumulative"
-  "cnormal"
-  "csplines"
-  "acsplines"
-  "mcsplines"
-  "bezier"
-  "sbezier"
-  "path"
   "kdensity"
-  "bandwidth"
-  "period"
   "closed"
   "between"
   "above"
   "below"
-  "unwrap"
-  "grid"
   ; plot / datafile misc
   "pixels"
   "whiskerbars"
   "beginning"
   "long"
-  "nogrid"
   ; positioning / key
   "base"
   "begin"
@@ -196,7 +178,6 @@
   "origin"
   "dx"
   "dy"
-  "dz"
   "width"
   "height"
   "level"
@@ -298,8 +279,6 @@
   "pattern"
   ; 3d / surface
   "triangles"
-  "surface"
-  "nosurface"
   "s"
   ; data / fit extras
   "variables"
@@ -309,14 +288,12 @@
   "commentschars"
   "functions"
   ; misc
-  "both"
   "positive"
   "negative"
   "one"
   "two"
   "user"
   "sorted"
-  "timedate"
   "maxrows"
   "maxcolors"
   ; coordinate planes / walls
@@ -349,8 +326,7 @@
   "primary"
   "specular"
   "spec2"
-  ; smooth / dgrid3d subtypes
-  "gauss"
+  ; dgrid3d subtype (gauss/… value-modes → "mod")
   "splines"
   ; contour / cntrparam
   "onecolor"
@@ -374,8 +350,6 @@
   "cb"
   ; filledcurves axis coordinate (x1, x2, y1, y2 etc.)
   "coordinate"
-  ; numeric format type
-  "numeric"
   ; watch-label / surface options
   "point"
   ; tics keyword (grid / paxis — covers xtics, ytics, ztics contexts)
@@ -386,12 +360,9 @@
   "spread"
   "swarm"
   ; key command options
-  "box"
   "auto"
   ; paxis label keyword (key("label",3) with default aka="label")
-  ; watchpoint style subcommand (key("labels",-1) covers singular "label" too)
   "label"
-  "labels"
   ; polar coordinate system and grid option
   "polar"
   ; polar grid axis ranges
@@ -407,8 +378,6 @@
   "z"
   ; grid mode
   "spiderplot"
-  ; binary filetype
-  "png"
   ; datafile option
   ; textbox / multiplot margins (anonymous "margins" string)
   "margins"
@@ -420,6 +389,7 @@
 
 ; -----------------------------------------------------------------------
 ; Presentation / style attributes
+; TODO: decide and collapse
 [
   "size"
   "monochrome"
@@ -440,19 +410,14 @@
   ; fill / line style modes
   "solid"
   "dashed"
-  "rounded"
   ; page orientation
   "landscape"
   "portrait"
-  "eps"
-  "pdf"
   ; terminal options
   "animate"
-  "noanimate"
   "input"
   "colortext"
   "blacktext"
-  "duplex"
   ; point type names (ps/tikz terminals)
   "texpoints"
   "normalpoints"
@@ -461,18 +426,15 @@
   "tinypoints"
   "pspoints"
   "nopspoints"
-  ; text formatting
-  "textnormal"
-  "defaultplex"
   ; key alignment (capitalised)
   "Left"
   "Right"
   ; layer / style misc
   "layerdefault"
-  "st_opt"
-] @attribute
 
-"plt_st" @attribute
+  "st_opt"
+  "plt_st"
+] @attribute
 
 [
   (auto)
@@ -532,7 +494,7 @@
 
 ((identifier) @variable.builtin
   (#match? @variable.builtin
-    "^((GPVAL|MOUSE|FIT)_\\w+|GNUTERM|NaN|VoxelDistance|GridDistance|pi|ARG\\w+)$"))
+    "^((GPVAL|MOUSE|FIT)_\\w+|GNUTERM|NaN|Inf|VoxelDistance|GridDistance|pi|ARG\\w+)$"))
 
 ; -----------------------------------------------------------------------
 ; Array definitions

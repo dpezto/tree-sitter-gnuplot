@@ -4985,32 +4985,16 @@
             "named": false
           },
           {
+            "type": "arg",
+            "named": false
+          },
+          {
             "type": "array",
             "named": true
           },
           {
-            "type": "avg",
-            "named": false
-          },
-          {
             "type": "binary_expression",
             "named": true
-          },
-          {
-            "type": "binrange",
-            "named": false
-          },
-          {
-            "type": "bins",
-            "named": false
-          },
-          {
-            "type": "binvalue",
-            "named": false
-          },
-          {
-            "type": "binwidth",
-            "named": false
           },
           {
             "type": "complex",
@@ -5027,6 +5011,10 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "mod",
+            "named": false
           },
           {
             "type": "number",
@@ -5047,10 +5035,6 @@
           {
             "type": "subscript",
             "named": true
-          },
-          {
-            "type": "sum",
-            "named": false
           },
           {
             "type": "sum_block",
@@ -8507,7 +8491,7 @@
         "required": false,
         "types": [
           {
-            "type": "at",
+            "type": "kw_fn",
             "named": false
           },
           {
@@ -8521,16 +8505,16 @@
         "required": false,
         "types": [
           {
+            "type": "arg",
+            "named": false
+          },
+          {
             "type": "array",
             "named": true
           },
           {
             "type": "binary_expression",
             "named": true
-          },
-          {
-            "type": "bs",
-            "named": false
           },
           {
             "type": "complex",
@@ -13345,12 +13329,12 @@
         "required": false,
         "types": [
           {
-            "type": "plot_style",
-            "named": true
+            "type": "attr",
+            "named": false
           },
           {
-            "type": "with",
-            "named": false
+            "type": "plot_style",
+            "named": true
           }
         ]
       }
@@ -15121,7 +15105,7 @@
             "named": true
           },
           {
-            "type": "nodraw",
+            "type": "mod",
             "named": false
           },
           {
@@ -15799,7 +15783,7 @@
             "named": true
           },
           {
-            "type": "nodraw",
+            "type": "mod",
             "named": false
           },
           {
@@ -17761,7 +17745,7 @@
         "required": false,
         "types": [
           {
-            "type": "at",
+            "type": "kw_fn",
             "named": false
           },
           {
@@ -18042,6 +18026,10 @@
             "named": true
           },
           {
+            "type": "attr",
+            "named": false
+          },
+          {
             "type": "binary_expression",
             "named": true
           },
@@ -18088,10 +18076,6 @@
           {
             "type": "unary_expression",
             "named": true
-          },
-          {
-            "type": "using",
-            "named": false
           }
         ]
       }
@@ -18581,10 +18565,6 @@
             "named": true
           },
           {
-            "type": "at",
-            "named": false
-          },
-          {
             "type": "binary_expression",
             "named": true
           },
@@ -18603,6 +18583,10 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "kw_fn",
+            "named": false
           },
           {
             "type": "number",
@@ -18919,19 +18903,7 @@
     "named": false
   },
   {
-    "type": "acsplines",
-    "named": false
-  },
-  {
     "type": "add",
-    "named": false
-  },
-  {
-    "type": "all",
-    "named": false
-  },
-  {
-    "type": "anchor",
     "named": false
   },
   {
@@ -18943,27 +18915,11 @@
     "named": false
   },
   {
-    "type": "ansi",
-    "named": false
-  },
-  {
-    "type": "ansi256",
-    "named": false
-  },
-  {
-    "type": "ansirgb",
-    "named": false
-  },
-  {
     "type": "any",
     "named": false
   },
   {
     "type": "append",
-    "named": false
-  },
-  {
-    "type": "arc",
     "named": false
   },
   {
@@ -18975,11 +18931,7 @@
     "named": false
   },
   {
-    "type": "aspect",
-    "named": false
-  },
-  {
-    "type": "at",
+    "type": "attr",
     "named": false
   },
   {
@@ -19001,14 +18953,6 @@
   {
     "type": "autotitle",
     "named": true
-  },
-  {
-    "type": "avg",
-    "named": false
-  },
-  {
-    "type": "axes",
-    "named": false
   },
   {
     "type": "axes_opts",
@@ -19035,15 +18979,7 @@
     "named": false
   },
   {
-    "type": "bandwidth",
-    "named": false
-  },
-  {
     "type": "base",
-    "named": false
-  },
-  {
-    "type": "bdefault",
     "named": false
   },
   {
@@ -19067,14 +19003,6 @@
     "named": false
   },
   {
-    "type": "beveled",
-    "named": false
-  },
-  {
-    "type": "bezier",
-    "named": false
-  },
-  {
     "type": "bgnd",
     "named": false
   },
@@ -19084,26 +19012,6 @@
   },
   {
     "type": "binary",
-    "named": false
-  },
-  {
-    "type": "bind",
-    "named": false
-  },
-  {
-    "type": "binrange",
-    "named": false
-  },
-  {
-    "type": "bins",
-    "named": false
-  },
-  {
-    "type": "binvalue",
-    "named": false
-  },
-  {
-    "type": "binwidth",
     "named": false
   },
   {
@@ -19123,23 +19031,7 @@
     "named": false
   },
   {
-    "type": "both",
-    "named": false
-  },
-  {
-    "type": "box",
-    "named": false
-  },
-  {
-    "type": "bs",
-    "named": false
-  },
-  {
     "type": "bspline",
-    "named": false
-  },
-  {
-    "type": "butt",
     "named": false
   },
   {
@@ -19155,23 +19047,11 @@
     "named": false
   },
   {
-    "type": "by",
-    "named": false
-  },
-  {
     "type": "c2c",
     "named": false
   },
   {
     "type": "candlesticks",
-    "named": false
-  },
-  {
-    "type": "cartesian",
-    "named": false
-  },
-  {
-    "type": "cauchy",
     "named": false
   },
   {
@@ -19191,15 +19071,7 @@
     "named": false
   },
   {
-    "type": "charsize",
-    "named": false
-  },
-  {
     "type": "circle",
-    "named": false
-  },
-  {
-    "type": "classic",
     "named": false
   },
   {
@@ -19231,10 +19103,6 @@
     "named": false
   },
   {
-    "type": "cnormal",
-    "named": false
-  },
-  {
     "type": "color",
     "named": false
   },
@@ -19255,10 +19123,6 @@
     "named": false
   },
   {
-    "type": "columnsfirst",
-    "named": false
-  },
-  {
     "type": "columnstacked",
     "named": false
   },
@@ -19275,10 +19139,6 @@
     "named": false
   },
   {
-    "type": "context",
-    "named": false
-  },
-  {
     "type": "coord",
     "named": false
   },
@@ -19291,10 +19151,6 @@
     "named": false
   },
   {
-    "type": "csplines",
-    "named": false
-  },
-  {
     "type": "cubehelix",
     "named": false
   },
@@ -19303,19 +19159,7 @@
     "named": false
   },
   {
-    "type": "cumulative",
-    "named": false
-  },
-  {
-    "type": "cycle",
-    "named": false
-  },
-  {
     "type": "cycles",
-    "named": false
-  },
-  {
-    "type": "cylindrical",
     "named": false
   },
   {
@@ -19347,27 +19191,11 @@
     "named": false
   },
   {
-    "type": "defaultplex",
-    "named": false
-  },
-  {
-    "type": "defaults",
-    "named": false
-  },
-  {
     "type": "defined",
     "named": false
   },
   {
-    "type": "deg",
-    "named": false
-  },
-  {
     "type": "degrees",
-    "named": false
-  },
-  {
-    "type": "delay",
     "named": false
   },
   {
@@ -19383,15 +19211,7 @@
     "named": false
   },
   {
-    "type": "downwards",
-    "named": false
-  },
-  {
     "type": "dt",
-    "named": false
-  },
-  {
-    "type": "duplex",
     "named": false
   },
   {
@@ -19403,23 +19223,7 @@
     "named": false
   },
   {
-    "type": "dynamic",
-    "named": false
-  },
-  {
-    "type": "dz",
-    "named": false
-  },
-  {
-    "type": "eject",
-    "named": false
-  },
-  {
     "type": "ellipse",
-    "named": false
-  },
-  {
-    "type": "else",
     "named": false
   },
   {
@@ -19435,10 +19239,6 @@
     "named": false
   },
   {
-    "type": "eps",
-    "named": false
-  },
-  {
     "type": "errorbars",
     "named": false
   },
@@ -19451,19 +19251,7 @@
     "named": true
   },
   {
-    "type": "every",
-    "named": false
-  },
-  {
-    "type": "exp",
-    "named": false
-  },
-  {
     "type": "expand",
-    "named": false
-  },
-  {
-    "type": "explicit",
     "named": false
   },
   {
@@ -19471,15 +19259,7 @@
     "named": false
   },
   {
-    "type": "file",
-    "named": false
-  },
-  {
     "type": "filetype",
-    "named": false
-  },
-  {
-    "type": "fillchar",
     "named": false
   },
   {
@@ -19495,23 +19275,7 @@
     "named": false
   },
   {
-    "type": "fit",
-    "named": false
-  },
-  {
-    "type": "fit2rgbformulae",
-    "named": false
-  },
-  {
     "type": "fit_out",
-    "named": false
-  },
-  {
-    "type": "fix",
-    "named": false
-  },
-  {
-    "type": "fixed",
     "named": false
   },
   {
@@ -19531,27 +19295,11 @@
     "named": false
   },
   {
-    "type": "float",
-    "named": false
-  },
-  {
-    "type": "flush",
-    "named": false
-  },
-  {
-    "type": "fnormal",
-    "named": false
-  },
-  {
     "type": "font",
     "named": false
   },
   {
     "type": "fontscale",
-    "named": false
-  },
-  {
-    "type": "fontsize",
     "named": false
   },
   {
@@ -19567,23 +19315,7 @@
     "named": true
   },
   {
-    "type": "fortran",
-    "named": false
-  },
-  {
     "type": "frac",
-    "named": false
-  },
-  {
-    "type": "fraction",
-    "named": false
-  },
-  {
-    "type": "frequency",
-    "named": false
-  },
-  {
-    "type": "from",
     "named": false
   },
   {
@@ -19595,19 +19327,7 @@
     "named": false
   },
   {
-    "type": "fsize",
-    "named": false
-  },
-  {
     "type": "full",
-    "named": false
-  },
-  {
-    "type": "fullwidth",
-    "named": false
-  },
-  {
-    "type": "function",
     "named": false
   },
   {
@@ -19619,55 +19339,11 @@
     "named": false
   },
   {
-    "type": "gap",
-    "named": false
-  },
-  {
-    "type": "gauss",
-    "named": false
-  },
-  {
-    "type": "geographic",
-    "named": false
-  },
-  {
-    "type": "giant",
-    "named": false
-  },
-  {
-    "type": "gnuplot",
-    "named": false
-  },
-  {
-    "type": "gradient",
-    "named": false
-  },
-  {
-    "type": "gray",
-    "named": false
-  },
-  {
-    "type": "grid",
-    "named": false
-  },
-  {
-    "type": "hann",
-    "named": false
-  },
-  {
     "type": "head",
     "named": false
   },
   {
-    "type": "header",
-    "named": false
-  },
-  {
     "type": "height",
-    "named": false
-  },
-  {
-    "type": "hex",
     "named": false
   },
   {
@@ -19683,20 +19359,8 @@
     "named": true
   },
   {
-    "type": "hypertext",
-    "named": false
-  },
-  {
     "type": "identifier",
     "named": true
-  },
-  {
-    "type": "if",
-    "named": false
-  },
-  {
-    "type": "implicit",
-    "named": false
   },
   {
     "type": "in",
@@ -19704,14 +19368,6 @@
   },
   {
     "type": "incremental",
-    "named": false
-  },
-  {
-    "type": "index",
-    "named": false
-  },
-  {
-    "type": "inlineimages",
     "named": false
   },
   {
@@ -19727,14 +19383,6 @@
     "named": false
   },
   {
-    "type": "insidecolor",
-    "named": false
-  },
-  {
-    "type": "int",
-    "named": false
-  },
-  {
     "type": "interpolate",
     "named": false
   },
@@ -19747,15 +19395,7 @@
     "named": false
   },
   {
-    "type": "jsdir",
-    "named": false
-  },
-  {
     "type": "kdensity",
-    "named": false
-  },
-  {
-    "type": "keepfix",
     "named": false
   },
   {
@@ -19775,27 +19415,19 @@
     "named": true
   },
   {
+    "type": "kw_cond",
+    "named": false
+  },
+  {
+    "type": "kw_fn",
+    "named": false
+  },
+  {
     "type": "label",
     "named": false
   },
   {
-    "type": "labels",
-    "named": false
-  },
-  {
-    "type": "lambda-factor",
-    "named": false
-  },
-  {
     "type": "landscape",
-    "named": false
-  },
-  {
-    "type": "large",
-    "named": false
-  },
-  {
-    "type": "latex",
     "named": false
   },
   {
@@ -19823,39 +19455,11 @@
     "named": false
   },
   {
-    "type": "level1",
-    "named": false
-  },
-  {
-    "type": "level3",
-    "named": false
-  },
-  {
-    "type": "leveldefault",
-    "named": false
-  },
-  {
     "type": "levels",
     "named": false
   },
   {
-    "type": "limit",
-    "named": false
-  },
-  {
-    "type": "limit_abs",
-    "named": false
-  },
-  {
-    "type": "linear",
-    "named": false
-  },
-  {
     "type": "little",
-    "named": false
-  },
-  {
-    "type": "locale",
     "named": false
   },
   {
@@ -19871,15 +19475,7 @@
     "named": false
   },
   {
-    "type": "loop",
-    "named": false
-  },
-  {
     "type": "lt",
-    "named": false
-  },
-  {
-    "type": "lw",
     "named": false
   },
   {
@@ -19888,10 +19484,6 @@
   },
   {
     "type": "map",
-    "named": false
-  },
-  {
-    "type": "margin",
     "named": false
   },
   {
@@ -19923,26 +19515,6 @@
     "named": false
   },
   {
-    "type": "mcsplines",
-    "named": false
-  },
-  {
-    "type": "medianlinewidth",
-    "named": false
-  },
-  {
-    "type": "medium",
-    "named": false
-  },
-  {
-    "type": "message",
-    "named": false
-  },
-  {
-    "type": "micro",
-    "named": false
-  },
-  {
     "type": "middle",
     "named": false
   },
@@ -19955,19 +19527,15 @@
     "named": false
   },
   {
-    "type": "mitered",
-    "named": false
-  },
-  {
     "type": "mixed",
     "named": false
   },
   {
-    "type": "model",
+    "type": "mod",
     "named": false
   },
   {
-    "type": "mono",
+    "type": "model",
     "named": false
   },
   {
@@ -19983,10 +19551,6 @@
     "named": false
   },
   {
-    "type": "mouseformat",
-    "named": false
-  },
-  {
     "type": "mpoints",
     "named": false
   },
@@ -19999,19 +19563,11 @@
     "named": false
   },
   {
-    "type": "new",
-    "named": false
-  },
-  {
     "type": "newhistogram",
     "named": false
   },
   {
     "type": "newspiderplot",
-    "named": false
-  },
-  {
-    "type": "noanimate",
     "named": false
   },
   {
@@ -20023,31 +19579,7 @@
     "named": false
   },
   {
-    "type": "nocontours",
-    "named": false
-  },
-  {
-    "type": "nodraw",
-    "named": false
-  },
-  {
     "type": "nofilled",
-    "named": false
-  },
-  {
-    "type": "nofpe_trap",
-    "named": false
-  },
-  {
-    "type": "nogrid",
-    "named": false
-  },
-  {
-    "type": "noheader",
-    "named": false
-  },
-  {
-    "type": "noinsidecolor",
     "named": false
   },
   {
@@ -20067,39 +19599,11 @@
     "named": false
   },
   {
-    "type": "nopoint",
-    "named": false
-  },
-  {
-    "type": "noproportional",
-    "named": false
-  },
-  {
-    "type": "nops_allcF",
-    "named": false
-  },
-  {
     "type": "nopspoints",
     "named": false
   },
   {
-    "type": "noratio",
-    "named": false
-  },
-  {
     "type": "normalpoints",
-    "named": false
-  },
-  {
-    "type": "nosurface",
-    "named": false
-  },
-  {
-    "type": "notitle",
-    "named": false
-  },
-  {
-    "type": "noundefined",
     "named": false
   },
   {
@@ -20111,19 +19615,7 @@
     "named": false
   },
   {
-    "type": "numeric",
-    "named": false
-  },
-  {
-    "type": "off",
-    "named": false
-  },
-  {
     "type": "offset",
-    "named": false
-  },
-  {
-    "type": "on",
     "named": false
   },
   {
@@ -20163,15 +19655,7 @@
     "named": false
   },
   {
-    "type": "palfuncparam",
-    "named": false
-  },
-  {
     "type": "parallel",
-    "named": false
-  },
-  {
-    "type": "path",
     "named": false
   },
   {
@@ -20179,19 +19663,7 @@
     "named": false
   },
   {
-    "type": "pdf",
-    "named": false
-  },
-  {
     "type": "pdp",
-    "named": false
-  },
-  {
-    "type": "period",
-    "named": false
-  },
-  {
-    "type": "perpendicular",
     "named": false
   },
   {
@@ -20203,39 +19675,11 @@
     "named": false
   },
   {
-    "type": "plot",
-    "named": false
-  },
-  {
-    "type": "plotsize",
-    "named": false
-  },
-  {
     "type": "plt_st",
     "named": false
   },
   {
-    "type": "png",
-    "named": false
-  },
-  {
-    "type": "podo",
-    "named": false
-  },
-  {
     "type": "point",
-    "named": false
-  },
-  {
-    "type": "points",
-    "named": false
-  },
-  {
-    "type": "pointscale",
-    "named": false
-  },
-  {
-    "type": "pointsmax",
     "named": false
   },
   {
@@ -20271,10 +19715,6 @@
     "named": false
   },
   {
-    "type": "prevnext",
-    "named": false
-  },
-  {
     "type": "primary",
     "named": false
   },
@@ -20287,10 +19727,6 @@
     "named": false
   },
   {
-    "type": "ps_allcF",
-    "named": false
-  },
-  {
     "type": "pspoints",
     "named": false
   },
@@ -20300,14 +19736,6 @@
   },
   {
     "type": "push",
-    "named": false
-  },
-  {
-    "type": "qnorm",
-    "named": false
-  },
-  {
-    "type": "quality",
     "named": false
   },
   {
@@ -20351,14 +19779,6 @@
     "named": false
   },
   {
-    "type": "reset",
-    "named": false
-  },
-  {
-    "type": "resolution",
-    "named": false
-  },
-  {
     "type": "restore",
     "named": false
   },
@@ -20380,14 +19800,6 @@
   },
   {
     "type": "rotate",
-    "named": false
-  },
-  {
-    "type": "rounded",
-    "named": false
-  },
-  {
-    "type": "rowsfirst",
     "named": false
   },
   {
@@ -20415,15 +19827,7 @@
     "named": false
   },
   {
-    "type": "sbezier",
-    "named": false
-  },
-  {
     "type": "scale",
-    "named": false
-  },
-  {
-    "type": "scan",
     "named": false
   },
   {
@@ -20431,19 +19835,7 @@
     "named": false
   },
   {
-    "type": "script",
-    "named": false
-  },
-  {
-    "type": "scroll",
-    "named": false
-  },
-  {
     "type": "seconds",
-    "named": false
-  },
-  {
-    "type": "separation",
     "named": false
   },
   {
@@ -20451,23 +19843,7 @@
     "named": false
   },
   {
-    "type": "session",
-    "named": false
-  },
-  {
-    "type": "set",
-    "named": false
-  },
-  {
-    "type": "simplex",
-    "named": false
-  },
-  {
     "type": "size",
-    "named": false
-  },
-  {
-    "type": "sjis",
     "named": false
   },
   {
@@ -20475,15 +19851,7 @@
     "named": false
   },
   {
-    "type": "small",
-    "named": false
-  },
-  {
     "type": "smallpoints",
-    "named": false
-  },
-  {
-    "type": "smooth",
     "named": false
   },
   {
@@ -20511,10 +19879,6 @@
     "named": false
   },
   {
-    "type": "spherical",
-    "named": false
-  },
-  {
     "type": "spiderplot",
     "named": false
   },
@@ -20539,22 +19903,6 @@
     "named": false
   },
   {
-    "type": "start-lambda",
-    "named": false
-  },
-  {
-    "type": "status",
-    "named": false
-  },
-  {
-    "type": "sum",
-    "named": false
-  },
-  {
-    "type": "surface",
-    "named": false
-  },
-  {
     "type": "swab",
     "named": false
   },
@@ -20575,15 +19923,7 @@
     "named": false
   },
   {
-    "type": "tan",
-    "named": false
-  },
-  {
     "type": "tc",
-    "named": false
-  },
-  {
-    "type": "terminal",
     "named": false
   },
   {
@@ -20591,31 +19931,7 @@
     "named": true
   },
   {
-    "type": "tex",
-    "named": false
-  },
-  {
-    "type": "texarrows",
-    "named": false
-  },
-  {
     "type": "texpoints",
-    "named": false
-  },
-  {
-    "type": "texthidden",
-    "named": false
-  },
-  {
-    "type": "textnormal",
-    "named": false
-  },
-  {
-    "type": "textrigid",
-    "named": false
-  },
-  {
-    "type": "textspecial",
     "named": false
   },
   {
@@ -20635,27 +19951,11 @@
     "named": false
   },
   {
-    "type": "timedate",
-    "named": false
-  },
-  {
-    "type": "tiny",
-    "named": false
-  },
-  {
     "type": "tinypoints",
     "named": false
   },
   {
     "type": "title",
-    "named": false
-  },
-  {
-    "type": "to",
-    "named": false
-  },
-  {
-    "type": "to_rto",
     "named": false
   },
   {
@@ -20671,10 +19971,6 @@
     "named": false
   },
   {
-    "type": "trianglepattern",
-    "named": false
-  },
-  {
     "type": "triangles",
     "named": false
   },
@@ -20683,23 +19979,7 @@
     "named": false
   },
   {
-    "type": "trip",
-    "named": false
-  },
-  {
     "type": "two",
-    "named": false
-  },
-  {
-    "type": "type",
-    "named": false
-  },
-  {
-    "type": "undefined",
-    "named": false
-  },
-  {
-    "type": "unique",
     "named": false
   },
   {
@@ -20719,23 +19999,7 @@
     "named": false
   },
   {
-    "type": "unsorted",
-    "named": false
-  },
-  {
-    "type": "unwrap",
-    "named": false
-  },
-  {
-    "type": "upwards",
-    "named": false
-  },
-  {
     "type": "user",
-    "named": false
-  },
-  {
-    "type": "using",
     "named": false
   },
   {
@@ -20756,10 +20020,6 @@
   },
   {
     "type": "vertical",
-    "named": false
-  },
-  {
-    "type": "via",
     "named": false
   },
   {
@@ -20799,26 +20059,6 @@
     "named": false
   },
   {
-    "type": "window",
-    "named": false
-  },
-  {
-    "type": "with",
-    "named": false
-  },
-  {
-    "type": "wrap",
-    "named": false
-  },
-  {
-    "type": "x",
-    "named": false
-  },
-  {
-    "type": "x2",
-    "named": false
-  },
-  {
     "type": "y",
     "named": false
   },
@@ -20828,10 +20068,6 @@
   },
   {
     "type": "z",
-    "named": false
-  },
-  {
-    "type": "zoomfactors",
     "named": false
   },
   {

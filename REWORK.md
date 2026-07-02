@@ -517,3 +517,60 @@ Original phase list (kept for reference; statuses in the Status table at top):
 4. `Scanner.terminal` for terminal-conditional options: scanner stores matched terminal name.
 5. PREC table: unchanged.
 6. `extras: ($) => [$.comment, /\s|\\|;/]`: unchanged.
+
+---
+
+## Highlight Capture Taxonomy (2026-06-16)
+
+Goal: keyword nodes are `alias()`-ed to a small set of **tier** names by their
+*function in context*, so `highlights.scm` captures ~8 tier names instead of ~400
+literals, and the SAME gnuplot word in two roles gets two aliases (correct colour
+per context). Aliasing is a relabel → parser.c stays flat (39 MB).
+
+| alias | capture | meaning | examples |
+|-------|---------|---------|----------|
+| `cmd` | `@keyword` | command verb | plot, set, splot |
+| `arg` | `@variable.member` | **option NAME** being configured (set/show + sub-options taking a value) | xlabel, fontsize, binwidth, separation, arc, bs |
+| `flag` | `@keyword.modifier` | boolean toggle / `(no)X` / per-axis tics | enhanced, noextend, xtics, mxtics, nogrid(splot) |
+| `mod` | `@constant` | **enumerated VALUE** (mode/kernel/order/unit/size/target) | implicit, cartesian, tiny, avg, rowsfirst, base/surface/both |
+| `coord` | `@keyword.directive` | coordinate system | first, second, graph, screen, polar |
+| `attr` | `@property` | **plot/splot ELEMENT modifier** | title/notitle/with/using/index/every/axes/smooth (in a plot command) |
+| `plt_st` | `@function.builtin` | plot style name | lines, points, candlesticks |
+
+Special: `NaN` → `@constant.builtin`.
+
+**Context-duplicate resolution (done):** `title` set→`arg` / plot→`attr`;
+`surface` set→`arg` / pm3d value→`mod` / splot `nosurface`→`flag`;
+`grid` set→`arg` / polar value→`mod` / splot `nogrid`→`flag`;
+`points` cntrparam(count)→`arg` / clip(mode)→`mod`; `terminal` set/show→`arg` /
+save+test target→`mod`; `undefined` `set undefined`→`arg` / overflow value→`mod`.
+
+**Result:** uncaptured anonymous nodes 151 → 3; `highlights.scm` option lists
+shrank (dead literals pruned). 92/92, pruebadefuego 0 ERROR/MISSING.
+**Detector** (re-run after any alias change):
+```
+node -e 'const nt=require("./src/node-types.json"),fs=require("fs");
+const caps=new Set([...fs.readFileSync("queries/highlights.scm","utf8")
+ .matchAll(/"((?:[^"\\]|\\.)*)"/g)].map(m=>m[1]));
+const ig=/^[()\[\]{}<>=+\-*\/%^~,;:|&!?.@$]+$|^["#\x27]$|^[a-z]$|^x2$/;
+console.log(nt.filter(n=>n.named===false).map(n=>n.type)
+ .filter(t=>!caps.has(t)&&!ig.test(t)).join(" "));'
+```
+
+### Open decisions for the user (alias as you prefer)
+
+- **`candlesticks`, `financebars`** — still uncaptured anonymous nodes (appear as
+  bare literals in a `set style`/fillstyle context, NOT via `kw_plt_st`). Per your
+  "keep plt_st as is" they were left alone. If you want them coloured, alias the
+  bare-literal sites to `plt_st`.
+- **`$vgridname`** — placeholder identifier literal in `vgrid`. Left uncaptured;
+  could become `@variable` or a named node.
+- **`default`** — left as bare `"default"` (NOT aliased) in `set colorsequence`
+  and a few value slots. Borderline mod vs arg; you flagged it for review. Decide:
+  `mod` (a preset value) or leave.
+- **`point` / `points`** — `point` (watchpoint subcmd) left bare; clip `points`→`mod`,
+  cntrparam `points`→`arg`. Confirm or adjust.
+- **`attr` capture target** — set to `@property`; in some nvim themes `@property`
+  shares colour with `@variable.member` (= `arg`), defeating the split. If they look
+  identical, change the single line `"attr" @property` → `@function.method` or
+  `@attribute`.
