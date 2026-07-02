@@ -4093,10 +4093,6 @@
           "named": true
         },
         {
-          "type": "position",
-          "named": true
-        },
-        {
           "type": "string_literal",
           "named": true
         },
@@ -7274,85 +7270,68 @@
   {
     "type": "grid",
     "named": true,
-    "fields": {
-      "angle": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "major": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "style_opts",
-            "named": true
-          }
-        ]
-      },
-      "minor": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "style_opts",
-            "named": true
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "array",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "complex",
+          "named": true
+        },
+        {
+          "type": "datablock",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "style_opts",
+          "named": true
+        },
+        {
+          "type": "subscript",
+          "named": true
+        },
+        {
+          "type": "sum_block",
+          "named": true
+        },
+        {
+          "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -19023,15 +19002,7 @@
     "named": false
   },
   {
-    "type": "border",
-    "named": false
-  },
-  {
     "type": "bot",
-    "named": false
-  },
-  {
-    "type": "bspline",
     "named": false
   },
   {
@@ -19155,10 +19126,6 @@
     "named": false
   },
   {
-    "type": "cubicspline",
-    "named": false
-  },
-  {
     "type": "cycles",
     "named": false
   },
@@ -19200,10 +19167,6 @@
   },
   {
     "type": "depthorder",
-    "named": false
-  },
-  {
-    "type": "discrete",
     "named": false
   },
   {
@@ -19367,10 +19330,6 @@
     "named": false
   },
   {
-    "type": "incremental",
-    "named": false
-  },
-  {
     "type": "inout",
     "named": false
   },
@@ -19431,10 +19390,6 @@
     "named": false
   },
   {
-    "type": "layerdefault",
-    "named": false
-  },
-  {
     "type": "layout",
     "named": false
   },
@@ -19452,10 +19407,6 @@
   },
   {
     "type": "level",
-    "named": false
-  },
-  {
-    "type": "levels",
     "named": false
   },
   {
@@ -19633,10 +19584,6 @@
   {
     "type": "operator",
     "named": true
-  },
-  {
-    "type": "order",
-    "named": false
   },
   {
     "type": "origin",
@@ -19879,10 +19826,6 @@
     "named": false
   },
   {
-    "type": "spiderplot",
-    "named": false
-  },
-  {
     "type": "splines",
     "named": false
   },
@@ -19996,10 +19939,6 @@
   },
   {
     "type": "unitweights",
-    "named": false
-  },
-  {
-    "type": "user",
     "named": false
   },
   {

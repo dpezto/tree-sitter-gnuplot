@@ -122,6 +122,12 @@ module.exports = grammar({
 		// distinct (different continuations). Aliased via the _sa / _lt.._tc rules.
 		$.kw_sa, $.kw_lt, $.kw_lc, $.kw_dt, $.kw_pt, $.kw_ps,
 		$.kw_fs, $.kw_fc, $.kw_tc,
+		// Generic set/show option-body tier tokens (GOPT_KWS in scanner.c).
+		// Sub-keywords of converted option bodies are matched by the scanner and
+		// tagged with their highlight tier; the bodies themselves share the
+		// _gopts/_gopts_style rules. kw_g_axisflag is the (no)?m?<axis>tics
+		// family ((no)mxtics/x2tics/...), valid only in style-flavor bodies.
+		$.kw_g_arg, $.kw_g_flag, $.kw_g_mod, $.kw_g_coord, $.kw_g_axisflag,
 	],
 
 	extras: ($) => [$.comment, /\s|\\|;/],
@@ -156,6 +162,32 @@ module.exports = grammar({
 		_fs: ($) => alias($.kw_fs, "fs"),
 		_fc: ($) => alias($.kw_fc, "fc"),
 		_tc: ($) => alias($.kw_tc, "tc"),
+
+		// Generic set/show option bodies. Converted options share these two rules:
+		// the scanner tags sub-keywords with their tier (arg/flag/mod/coord), and
+		// values float as flat sibling items (no per-keyword seq — the value-union
+		// trap measured in REWORK.md). Two flavors so bodies that never take style
+		// attributes cannot have identifiers like `pi` eaten by the style scanner.
+		_gopt_item: ($) =>
+			choice(
+				alias($.kw_g_arg, "arg"),
+				alias($.kw_g_flag, "flag"),
+				alias($.kw_g_mod, "mod"),
+				alias($.kw_g_coord, "coord"),
+				$._expression,
+				",",
+			),
+		_gopts: ($) => prec.right(repeat1($._gopt_item)),
+		_gopts_style: ($) =>
+			prec.right(
+				repeat1(
+					choice(
+						$._gopt_item,
+						alias($.kw_g_axisflag, "flag"),
+						$.style_opts,
+					),
+				),
+			),
 
 		_statement: ($) => choice($._command, $.assignment, $.macro),
 
@@ -802,60 +834,15 @@ module.exports = grammar({
 				),
 			),
 
+		// Generic body (GOPT_KWS rows: linear/cubicspline/bspline/points/order/
+		// levels/auto/discrete/incremental/sorted/unsorted/firstlinetype).
 		cntrparam: ($) =>
-			seq(
-				key("cntrparam", 5, "arg"),
-				repeat(
-					choice(
-						key("linear", 2, "mod"),
-						key("cubicspline", 1),
-						key("bspline", 1),
-						seq(key("points", 1, "arg"), $._expression),
-						seq(key("order", 1), $._expression),
-						seq(
-							key("levels", 2),
-							choice(
-								$._expression,
-								seq("auto", optional($._expression)),
-								seq("discrete", $._expression, repeat(seq(",", $._expression))),
-								seq(
-									key("incremental", 2),
-									$._expression,
-									",",
-									$._expression,
-									optional(seq(",", $._expression)),
-								),
-							),
-							optional(alias(/((un)?sorted)/, "sorted")),
-							optional(seq("firstlinetype", $._expression)),
-						),
-					),
-				),
-			),
+			prec.right(seq(key("cntrparam", 5, "arg"), optional($._gopts))),
 
+		// Generic body (GOPT_KWS rows: vertical/horizontal/invert/user/default/
+		// origin/size/front/back/noborder/bdefault/border/cbtics).
 		colorbox: ($) =>
-			seq(
-				key("colorbox", 6, "arg"),
-				repeat(
-					choice(
-						key("vertical", 1),
-						key("horizontal", 1),
-						key("invert", 3, "flag", 1),
-						key("user", 1),
-						key("default", 3),
-						seq(key("origin", 1), $.position),
-						seq(key("size", 1), $.position),
-						key("front", 2),
-						key("back", 2),
-						choice(
-							key("noborder", 4, "flag"),
-							key("bdefault", 2, "mod"),
-							seq(key("border", 2), choice($.style_opts, $._expression)),
-						),
-						seq("cbtics", $.style_opts),
-					),
-				),
-			),
+			prec.right(seq(key("colorbox", 6, "arg"), optional($._gopts_style))),
 
 		contour: ($) =>
 			seq(
@@ -1005,26 +992,10 @@ module.exports = grammar({
 				optional(alias(choice("numeric", "timedate", "geographic"), "mod")),
 			),
 
+		// Generic body (GOPT_KWS rows: polar/layerdefault/front/back/vertical/
+		// spiderplot; the (no)?m?<axis>tics family is kw_g_axisflag).
 		grid: ($) =>
-			seq(
-				key("grid", 2, "arg"),
-				repeat(
-					choice(
-						key1("flag", reg("m", 0, 1), K.axes, reg("tics", 0)),
-						seq(
-							key("polar", 2, "flag", 1),
-							optional(field("angle", $._expression)),
-						),
-						choice(key("layerdefault", 6), "front", "back"),
-						key("vertical", 4, "flag", 1),
-						seq(
-							field("major", $.style_opts),
-							optional(seq(",", field("minor", $.style_opts))),
-						),
-						key("spiderplot", 6),
-					),
-				),
-			),
+			prec.right(seq(key("grid", 2, "arg"), optional($._gopts_style))),
 
 		hidden3d: ($) =>
 			choice(

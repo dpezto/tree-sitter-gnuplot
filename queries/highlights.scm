@@ -133,8 +133,6 @@
   "months"
   "years"
   ; smooth subtypes still emitted as own token (value-modes csplines/bezier/… → "mod")
-  "discrete"
-  "incremental"
   "kdensity"
   "closed"
   "between"
@@ -246,7 +244,6 @@
   "radians"
   "radial"
   ; contour / palette / axis
-  "levels"
   "range"
   "defined"
   "missing"
@@ -257,7 +254,6 @@
   ; rotation
   "rotate"
   ; border / extend / range modifiers
-  "border"
   "restore"
   ; pm3d
   "scanorder"
@@ -267,11 +263,8 @@
   "rowstacked"
   "columnstacked"
   "mixed"
-  "order"
   "nokeyseparators"
   ; smooth additions
-  "bspline"
-  "cubicspline"
   ; key/label placement
   "inside"
   "outside"
@@ -292,7 +285,6 @@
   "negative"
   "one"
   "two"
-  "user"
   "sorted"
   "maxrows"
   "maxcolors"
@@ -377,7 +369,6 @@
   ; pm3d z-clip
   "z"
   ; grid mode
-  "spiderplot"
   ; datafile option
   ; textbox / multiplot margins (anonymous "margins" string)
   "margins"
@@ -430,7 +421,6 @@
   "Left"
   "Right"
   ; layer / style misc
-  "layerdefault"
 
   "st_opt"
   "plt_st"

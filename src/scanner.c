@@ -34,6 +34,12 @@ enum TokenType {
   KW_SA,
   KW_LT, KW_LC, KW_DT, KW_PT, KW_PS,
   KW_FS, KW_FC, KW_TC,
+  // Generic set/show option-body tier tokens. Sub-keywords of option bodies
+  // converted to the shared _gopts/_gopts_style grammar rules are matched here
+  // (GOPT_KWS) and tagged with their highlight tier. KW_G_AXISFLAG is the
+  // (no)?m?<axis>tics family ((no)mxtics, x2tics, ...), only valid in
+  // style-flavor bodies. Order MUST match the externals list in grammar.js.
+  KW_G_ARG, KW_G_FLAG, KW_G_MOD, KW_G_COORD, KW_G_AXISFLAG,
 };
 
 // Keyword table entry for prefix-abbreviation matching.
@@ -139,6 +145,106 @@ static int match_style_kw(const char* word, int wlen, const bool* valid_symbols)
       return e->symbol;
   }
   return -1;
+}
+
+// Generic option-body sub-keywords: one global table shared by every option
+// body converted to the _gopts/_gopts_style grammar rules. `symbol` is the
+// highlight tier token; `no_prefix` marks (no)?X toggles ("noinvert" etc.).
+// The tokens only fire in states where they are valid (inside converted
+// bodies), so rows never shadow words in bespoke rules. First match wins:
+// when one keyword is a prefix of another, the longer row comes first.
+typedef struct {
+  const char* keyword;
+  int min_chars;
+  int symbol;
+  int no_prefix;
+} GoptKwEntry;
+
+static const GoptKwEntry GOPT_KWS[] = {
+    // cntrparam
+    {"linear", 2, KW_G_MOD, 0},
+    {"levels", 2, KW_G_ARG, 0},
+    {"cubicspline", 1, KW_G_ARG, 0},
+    {"bspline", 1, KW_G_ARG, 0},
+    {"points", 1, KW_G_ARG, 0},
+    {"order", 1, KW_G_ARG, 0},
+    {"origin", 1, KW_G_ARG, 0},
+    {"auto", 4, KW_G_ARG, 0},
+    {"discrete", 8, KW_G_ARG, 0},
+    {"incremental", 2, KW_G_ARG, 0},
+    {"unsorted", 8, KW_G_ARG, 0},
+    {"sorted", 6, KW_G_ARG, 0},
+    {"firstlinetype", 5, KW_G_ARG, 0},
+    // colorbox
+    {"vertical", 1, KW_G_FLAG, 1},
+    {"horizontal", 1, KW_G_ARG, 0},
+    {"invert", 3, KW_G_FLAG, 1},
+    {"user", 1, KW_G_ARG, 0},
+    {"default", 3, KW_G_ARG, 0},
+    {"size", 1, KW_G_ARG, 0},
+    {"front", 2, KW_G_FLAG, 0},
+    {"back", 2, KW_G_FLAG, 0},
+    {"noborder", 4, KW_G_FLAG, 0},
+    {"bdefault", 2, KW_G_MOD, 0},
+    {"border", 2, KW_G_ARG, 0},
+    {"cbtics", 6, KW_G_ARG, 0},
+    // grid
+    {"polar", 2, KW_G_FLAG, 1},
+    {"layerdefault", 6, KW_G_ARG, 0},
+    {"spiderplot", 6, KW_G_ARG, 0},
+    {NULL, 0, 0, 0},
+};
+
+// Match word against GOPT_KWS honoring valid_symbols and (no)? prefixes.
+static int match_gopt_kw(const char* word, int wlen, const bool* valid_symbols) {
+  for (int pass = 0; pass < 2; pass++) {
+    const char* w = word;
+    int len = wlen;
+    if (pass == 1) {  // second pass: strip "no" for no_prefix rows
+      if (wlen < 3 || word[0] != 'n' || word[1] != 'o')
+        break;
+      w = word + 2;
+      len = wlen - 2;
+    }
+    for (int i = 0; GOPT_KWS[i].keyword != NULL; i++) {
+      const GoptKwEntry* e = &GOPT_KWS[i];
+      if (!valid_symbols[e->symbol])
+        continue;
+      if (pass == 1 && !e->no_prefix)
+        continue;
+      int klen = (int)strlen(e->keyword);
+      if (len >= e->min_chars && len <= klen && strncmp(w, e->keyword, (size_t)len) == 0)
+        return e->symbol;
+    }
+  }
+  return -1;
+}
+
+// (no)?m?<axis>tics — the per-axis tics toggle family (nomxtics, x2tics, ...).
+// <axis> is one of x2/y2/cb/vx/vy/vz/xy (2 chars, tried first) or
+// x/y/z/r/t/u/v; the trailing "tics" may be abbreviated to zero chars
+// (mirrors the old grid regex reg("m",0,1)+K.axes+reg("tics",0)).
+static bool match_axis_tics_flag(const char* word, int wlen) {
+  int i = 0;
+  if (wlen >= 2 && word[0] == 'n' && word[1] == 'o') i = 2;
+  if (i < wlen && word[i] == 'm') i++;
+  static const char* axes2[] = {"x2", "y2", "cb", "vx", "vy", "vz", "xy", NULL};
+  static const char axes1[] = "xyzrtuv";
+  for (int a = 0; axes2[a] != NULL; a++) {
+    if (wlen - i >= 2 && word[i] == axes2[a][0] && word[i + 1] == axes2[a][1]) {
+      int j = i + 2, k = 0;
+      while (j < wlen && k < 4 && word[j] == "tics"[k]) { j++; k++; }
+      if (j == wlen) return true;
+    }
+  }
+  for (int a = 0; axes1[a] != '\0'; a++) {
+    if (wlen - i >= 1 && word[i] == axes1[a]) {
+      int j = i + 1, k = 0;
+      while (j < wlen && k < 4 && word[j] == "tics"[k]) { j++; k++; }
+      if (j == wlen) return true;
+    }
+  }
+  return false;
 }
 
 // Command keyword table: maps each prefix-abbreviated command word to its
@@ -333,7 +439,7 @@ static bool is_assignment_context(TSLexer* lexer) {
 // valid), and tree-sitter resets the lexer between scanner invocations but NOT
 // between sub-scanners, so the word must be consumed exactly once.
 static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cmd_valid) {
-  char word[16];
+  char word[24];
   int word_len = read_word(lexer, word, sizeof(word));
   if (word_len < 0)
     return false;
@@ -364,6 +470,18 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
 
   // Style attribute keywords (lw/lt/ls/...).
   int sym = match_style_kw(word, word_len, valid_symbols);
+  if (sym >= 0) {
+    lexer->result_symbol = sym;
+    return true;
+  }
+
+  // Generic option-body sub-keywords (tier tokens). The per-axis tics family
+  // is tried first: it is more specific than any GOPT_KWS row.
+  if (valid_symbols[KW_G_AXISFLAG] && match_axis_tics_flag(word, word_len)) {
+    lexer->result_symbol = KW_G_AXISFLAG;
+    return true;
+  }
+  sym = match_gopt_kw(word, word_len, valid_symbols);
   if (sym >= 0) {
     lexer->result_symbol = sym;
     return true;
@@ -402,7 +520,12 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
       valid_symbols[KW_PS] || valid_symbols[KW_FS] || valid_symbols[KW_FC] ||
       valid_symbols[KW_TC];
 
-  if ((any_cmd_valid || any_style_valid) && scan_keywords(lexer, valid_symbols, any_cmd_valid)) {
+  bool any_gopt_valid =
+      valid_symbols[KW_G_ARG] || valid_symbols[KW_G_FLAG] || valid_symbols[KW_G_MOD] ||
+      valid_symbols[KW_G_COORD] || valid_symbols[KW_G_AXISFLAG];
+
+  if ((any_cmd_valid || any_style_valid || any_gopt_valid) &&
+      scan_keywords(lexer, valid_symbols, any_cmd_valid)) {
     return true;
   }
 
