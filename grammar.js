@@ -691,10 +691,7 @@ module.exports = grammar({
 			),
 
 		angles: ($) =>
-			seq(
-				key("angles", 2, "arg"),
-				optional(choice(key("degrees", 1), key("radians", 1))),
-			),
+			prec.right(seq(key("angles", 2, "arg"), optional($._gopts))),
 
 		arrow: ($) =>
 			prec.left(
@@ -765,26 +762,10 @@ module.exports = grammar({
 			),
 
 		boxwidth: ($) =>
-			prec.left(
-				seq(
-					key("boxwidth", 3, "arg"),
-					repeat(
-						choice(
-							field("width", $._expression),
-							key("absolute", 1),
-							key("relative", 1),
-						),
-					),
-				),
-			),
+			prec.right(seq(key("boxwidth", 3, "arg"), optional($._gopts))),
 
 		boxdepth: ($) =>
-			prec.left(
-				seq(
-					alias("boxdepth", "arg"),
-					repeat(choice(field("y_extent", $._expression), "square")),
-				),
-			),
+			prec.right(seq(alias("boxdepth", "arg"), optional($._gopts))),
 
 		color: ($) => alias("color", "arg"),
 
@@ -802,23 +783,9 @@ module.exports = grammar({
 			),
 
 		colorsequence: ($) =>
-			seq(
-				alias("colorsequence", "arg"),
-				optional(choice("default", alias("classic", "mod"), alias("podo", "mod"))),
-			),
+			prec.right(seq(alias("colorsequence", "arg"), optional($._gopts))),
 
-		clip: ($) =>
-			seq(
-				alias("clip", "arg"),
-				optional(
-					choice(
-						key("points", 1, "mod"),
-						key("one", 1),
-						key("two", 1),
-						key("radial", 1),
-					),
-				),
-			),
+		clip: ($) => prec.right(seq(alias("clip", "arg"), optional($._gopts))),
 
 		cntrlabel: ($) =>
 			seq(
@@ -845,25 +812,12 @@ module.exports = grammar({
 			prec.right(seq(key("colorbox", 6, "arg"), optional($._gopts_style))),
 
 		contour: ($) =>
-			seq(
-				key("contours", 5, "arg"),
-				optional(choice(key("base", 2, "mod"), key("surface", 1, "mod"), key("both", 2, "mod"))),
-			),
+			prec.right(seq(key("contours", 5, "arg"), optional($._gopts))),
 
 		cornerpoles: ($) => key("cornerpoles", 7, "arg"),
 
 		contourfill: ($) =>
-			seq(
-				alias("contourfill", "arg"),
-				repeat(
-					choice(
-						seq("auto", $._expression),
-						choice("ztics", "cbtics"),
-						key("palette", 3),
-						seq(key("firstlinetype", 5), $._expression),
-					),
-				),
-			),
+			prec.right(seq(alias("contourfill", "arg"), optional($._gopts))),
 
 		dashtype: ($) =>
 			prec.left(
@@ -896,14 +850,7 @@ module.exports = grammar({
 			),
 
 		decimalsign: ($) =>
-			prec.left(
-				seq(
-					key("decimalsign", 3, "arg"),
-					optional(
-						choice($._expression, seq(alias("locale", "arg"), optional($._expression))),
-					),
-				),
-			),
+			prec.right(seq(key("decimalsign", 3, "arg"), optional($._gopts))),
 
 		dgrid3d: ($) =>
 			prec.left(
@@ -931,12 +878,7 @@ module.exports = grammar({
 			),
 
 		dummy: ($) =>
-			prec.left(
-				seq(
-					key("dummy", 2, "arg"),
-					optional(seq($._expression, ",", $._expression)),
-				),
-			),
+			prec.right(seq(key("dummy", 2, "arg"), optional($._gopts))),
 
 		encoding: ($) =>
 			choice(
@@ -1024,8 +966,7 @@ module.exports = grammar({
 				),
 			),
 
-		isosamples: ($) =>
-			prec.left(seq($._expression, optional(seq(",", $._expression)))),
+		isosamples: ($) => $._gopts,
 
 		isosurface: ($) =>
 			choice(
@@ -1383,7 +1324,7 @@ module.exports = grammar({
 			),
 
 		// set origin <x>,<y>  — lower-left corner of plot within terminal
-		origin: ($) => seq($._expression, ",", $._expression),
+		origin: ($) => $._gopts,
 
 		output: ($) => field("name", $._expression),
 
@@ -1619,7 +1560,7 @@ module.exports = grammar({
 
 		rgbmax: ($) => $._expression,
 
-		samples: ($) => seq($._expression, optional(seq(",", $._expression))),
+		samples: ($) => $._gopts,
 
 		size: ($) =>
 			prec.left(

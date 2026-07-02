@@ -235,14 +235,10 @@
   "nooffset"
   "scale"
   "relative"
-  "absolute"
   ; orientation
   "vertical"
   "horizontal"
   ; angle units
-  "degrees"
-  "radians"
-  "radial"
   ; contour / palette / axis
   "range"
   "defined"
@@ -283,8 +279,6 @@
   ; misc
   "positive"
   "negative"
-  "one"
-  "two"
   "sorted"
   "maxrows"
   "maxcolors"
@@ -323,10 +317,7 @@
   ; contour / cntrparam
   "onecolor"
   "interval"
-  "firstlinetype"
   ; tics axes / modifiers
-  "ztics"
-  "cbtics"
   "add"
   ; text / font / encoding
   "fontscale"

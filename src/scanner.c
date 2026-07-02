@@ -192,6 +192,29 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"polar", 2, KW_G_FLAG, 1},
     {"layerdefault", 6, KW_G_ARG, 0},
     {"spiderplot", 6, KW_G_ARG, 0},
+    // angles
+    {"degrees", 1, KW_G_ARG, 0},
+    {"radians", 1, KW_G_ARG, 0},
+    // boxwidth / boxdepth
+    {"absolute", 1, KW_G_ARG, 0},
+    {"relative", 1, KW_G_ARG, 0},
+    {"square", 6, KW_G_FLAG, 1},
+    // clip
+    {"one", 1, KW_G_ARG, 0},
+    {"two", 1, KW_G_ARG, 0},
+    {"radial", 1, KW_G_ARG, 0},
+    // colorsequence
+    {"classic", 7, KW_G_MOD, 0},
+    {"podo", 4, KW_G_MOD, 0},
+    // contour (surface after size: bare "s" keeps meaning size)
+    {"base", 2, KW_G_MOD, 0},
+    {"both", 2, KW_G_MOD, 0},
+    {"surface", 1, KW_G_MOD, 0},
+    // contourfill
+    {"ztics", 5, KW_G_ARG, 0},
+    {"palette", 3, KW_G_ARG, 0},
+    // decimalsign
+    {"locale", 6, KW_G_ARG, 0},
     {NULL, 0, 0, 0},
 };
 
