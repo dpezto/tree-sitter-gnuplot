@@ -147,6 +147,9 @@ module.exports = grammar({
 		[$.assignment, $._var_rhs],
 		[$._tag_atom, $._expression],
 		[$._command, $.multiplot_block],
+		// palette `file "f" using 1:2 "fmt"`: using's trailing scanf format
+		// string vs a following string item in the generic palette body
+		[$.using],
 	],
 
 	rules: {
@@ -178,6 +181,11 @@ module.exports = grammar({
 		// boundary ambiguity below never fires in the middle of a list.
 		_gexprs: ($) =>
 			prec.right(seq($._expression, repeat(seq(",", $._expression)))),
+		// Parenthesized tuple list with at least two juxtaposed groups —
+		// palette `defined (0 "blue", 1 "red")`, gradient/color 4-tuples.
+		// A single parenthesized expression never matches (≥2 groups), so
+		// this coexists with parenthesized_expression in the same states.
+		tuple: ($) => surround("()", seq($._gexprs, repeat1($._gexprs))),
 		_gopt_item: ($) =>
 			choice(
 				alias($.kw_g_flag, "flag"),
@@ -186,7 +194,7 @@ module.exports = grammar({
 				// keyword only across the same-line _gval_sep, so
 				// `contourfill auto FOO` keeps FOO in the body while an
 				// identifier on the NEXT line starts a fresh statement.
-				prec.right(seq(alias($.kw_g_arg, "arg"), optional(seq($._gval_sep, $._gexprs)))),
+				prec.right(seq(alias($.kw_g_arg, "arg"), optional(seq($._gval_sep, choice($._gexprs, $.tuple))))),
 				prec.right(seq(alias($.kw_g_coord, "coord"), optional(seq($._gval_sep, $._gexprs)))),
 				$._gexprs,
 				$.range_block,
@@ -1104,88 +1112,31 @@ module.exports = grammar({
 
 		overflow: ($) => choice(alias("float", "mod"), "NaN", alias("undefined", "mod")),
 
+		// Generic items plus palette-only structural branches: the `defined`
+		// gradient list (parenthesized, not an expression), `file` + datafile
+		// modifiers, `model RGB|CMY|HSV` and `viridis` (both keep their
+		// dedicated highlight captures). Everything else is a GOPT_KWS row.
 		palette: ($) =>
-			seq(
-				key("palette", 3, "arg"),
-				repeat(
-					choice(
-						choice(alias("gray", "mod"), "color"),
-						seq("gamma", field("gamma", $._expression)),
-						// NOTE: next 3 are cmd_show only options
-						key("gradient", 3, "arg"),
-						key("fit2rgbformulae", 7, "arg"),
-						seq(
-							key("palette", 3),
-							optional($._expression),
-							optional(choice(alias("float", "mod"), alias("int", "mod"), alias("hex", "mod"))),
-						),
-						seq(
-							key("rgbformulae", 3),
-							field("r", $._expression),
-							",",
-							field("g", $._expression),
-							",",
-							field("b", $._expression),
-						),
-						seq(
-							key("defined", 3),
-							optional(
-								surround(
-									"()",
-									sep(
-										",",
+			prec.right(
+				seq(
+					key("palette", 3, "arg"),
+					optional(
+						prec.left(
+							repeat1(
+								choice(
+									$._gopt_item,
+									prec.right(
 										seq(
-											field("gray", $._expression),
-											field(
-												"color",
-												choice(
-													field(
-														"rgb",
-														seq($._expression, $._expression, $._expression),
-													),
-													field("namehex", $._expression),
-												),
-											),
+											alias("file", "arg"),
+											field("filename", $._expression),
+											optional($.datafile_modifiers),
 										),
 									),
+									seq(key("model", 2), choice("RGB", "CMY", "HSV")),
+									"viridis",
 								),
 							),
 						),
-						seq(
-							alias("file", "arg"),
-							field("filename", $._expression),
-							optional($.datafile_modifiers),
-						),
-						seq(key("colormap"), field("colormap_name", $._expression)),
-						seq(
-							key("functions", 4),
-							field("R", $._expression),
-							",",
-							field("G", $._expression),
-							",",
-							field("B", $._expression),
-						),
-						seq(
-							"cubehelix",
-							optional(seq("start", field("start", $._expression))),
-							optional(seq("cycles", field("cycles", $._expression))),
-							optional(seq("saturation", field("sat", $._expression))),
-						),
-						"viridis",
-						seq(
-							key("model", 2),
-							choice(
-								"RGB",
-								"CMY",
-								seq(
-									"HSV",
-									optional(seq("start", field("radians", $._expression))),
-								),
-							),
-						),
-						choice(key("positive", 3), key("negative", 3)),
-						choice(alias("nops_allcF", "mod"), alias("ps_allcF", "mod")),
-						seq(key("maxcolors", 4), field("maxcolors", $._expression)),
 					),
 				),
 			),
@@ -1309,6 +1260,10 @@ module.exports = grammar({
 
 		size: ($) => $._gopts,
 
+		// Selector heads keep their st_opt alias (colour); tails are generic.
+		// data/function/line/ellipse keep structural tails (plot_style,
+		// line_style, ellipse are shared with plot commands). `set style fill`
+		// reaches the bare $._gopts_style branch via the KW_FS style token.
 		style: ($) =>
 			prec.left(
 				1,
@@ -1316,130 +1271,20 @@ module.exports = grammar({
 					key("style", 2, "arg"),
 					optional(
 						choice(
-							seq(
-								key("arrow", 3, "st_opt"),
-								optional(field("index", $._expression)),
-								choice(key("defaults", 3, "mod"), $.arrow_opts),
-							),
-							seq(
-								alias("boxplot", "st_opt"),
-								repeat(
-									choice(
-										seq("range", field("range", $._expression)),
-										seq(alias("fraction", "arg"), field("fraction", $._expression)),
-										key("outliers", 3, "flag", 1),
-										seq($._pt, field("pt", $._expression)),
-										"candlesticks", // TODO
-										"financebars", // TODO
-										seq(alias("medianlinewidth", "arg"), field("medianlinewidth", $._expression)),
-										seq(alias("separation", "arg"), field("separation", $._expression)),
-										seq(alias("labels", "arg"), choice(alias("off", "mod"), "auto", alias("x", "mod"), alias("x2", "mod"))),
-										"sorted", // TODO
-										alias("unsorted", "mod"),
-									),
-								),
-							),
+							seq(key("arrow", 3, "st_opt"), optional($._gopts_style)),
+							seq(alias("boxplot", "st_opt"), optional($._gopts_style)),
 							seq(key("data", 1, "st_opt"), $.plot_style),
-							fillStyleOpt($),
 							seq(key("function", 1, "st_opt"), $.plot_style),
-							seq(
-								key("histogram", 4, "st_opt"),
-								choice(
-                  // TODO: clustered, errorbars, rowstacked, columnstacked, nokeyseparators, title
-									seq(key("clustered", 5), optional(seq(alias("gap", "arg"), $._expression))),
-									seq(
-										key("errorbars", 5),
-										repeat(
-											choice(
-												seq(alias("gap", "arg"), $._expression),
-												$._sa,
-											),
-										),
-									),
-									key("rowstacked", 4),
-									key("columnstacked", 7),
-									key("nokeyseparators", 5),
-									seq(key("title", 3), $.fontspec),
-								),
-							),
+							seq(key("histogram", 4, "st_opt"), optional($._gopts_style)),
 							seq(key("line", 1, "st_opt"), $.line_style),
-							seq(
-								key("circle", -2, "st_opt"),
-								repeat(
-									choice(
-                    // TODO: radius
-										seq(key("radius", 3), optional($.system), $._expression),
-										key("wedge", undefined, "flag", 1),
-										key("clip", undefined, "flag", 1),
-									),
-								),
-							),
-							seq(
-								key("rectangle", 4, "st_opt"),
-								repeat(
-									choice(
-                    // TODO front, back
-										"front",
-										"back",
-										seq(key("linewidth", 5, "sa"), field("lw", $._expression)),
-										seq(key("fillcolor", 5, "fc"), field("fc", $.colorspec)),
-										fillStyleOpt($),
-									),
-								),
-							),
+							seq(key("circle", -2, "st_opt"), optional($._gopts_style)),
+							seq(key("rectangle", 4, "st_opt"), optional($._gopts_style)),
 							seq(key("ellipse", 3, "st_opt"), optional($.ellipse)),
-							seq(
-								key("parallelaxis", -4, "st_opt"),
-								seq(optional(choice("front", "back")), optional($.style_opts)),
-							),
-							seq(
-								key("spiderplot", 6, "st_opt"),
-								repeat(
-									choice(
-										fillStyleOpt($),
-										$._sa,
-										seq(
-											$._lt,
-											field(
-												"lt",
-												choice($._expression, $.colorspec, "black", "background", alias("nodraw", "mod")),
-											),
-										),
-										$._sa,
-										$._linecolor,
-										seq($._dt, field("dt", $.dash_opts)),
-										seq($._pt, field("pt", $._expression)),
-										seq($._ps, field("ps", $._expression)),
-										$._sa,
-										$._sa,
-									),
-								),
-							),
-							seq(
-								alias("textbox", "st_opt"),
-								seq(
-									optional(field("index", $._expression)),
-									repeat(
-										choice(
-                      // TODO: opaque, transparent
-											choice("opaque", "transparent"),
-											$._fillcolor,
-											seq(
-												key("border", undefined, "flag", 1),
-												optional($._linecolor),
-											),
-											$._sa,
-                      // TODO margins
-											seq("margins", $._expression, ",", $._expression),
-										),
-									),
-								),
-							),
-							seq(
-								key("watchpoint", 5, "st_opt"),
-								key("labels", -1, "flag", 1),
-								optional($.label_opts),
-							),
+							seq(key("parallelaxis", -4, "st_opt"), optional($._gopts_style)),
+							seq(key("spiderplot", 6, "st_opt"), optional($._gopts_style)),
+							seq(alias("textbox", "st_opt"), optional($._gopts_style)),
+							seq(key("watchpoint", 5, "st_opt"), optional($._gopts_style)),
+							$._gopts_style,
 						),
 					),
 				),

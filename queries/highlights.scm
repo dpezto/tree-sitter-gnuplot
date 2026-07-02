@@ -70,7 +70,6 @@
   "back"
   "depthorder"
   "clip"
-  "opaque"
   "font"
   "filled"
   "nofilled"
@@ -206,7 +205,6 @@
   "trim"
   "full"
   ; pixmap
-  "colormap"
   ; coordinate axis-family prefix (the coord systems first/second/graph/screen/
   ; character/polar are aliased to (coord) -> @keyword.directive below)
   "axis"
@@ -216,7 +214,6 @@
   "rig"
   ; geometry / arrow options
   "angle"
-  "radius"
   "length"
   "head"
   "inout"
@@ -228,7 +225,6 @@
   ; angle units
   ; contour / palette / axis
   "range"
-  "defined"
   "missing"
   "interpolate"
   "autofreq"
@@ -241,10 +237,6 @@
   "scanorder"
   "position"
   ; histogram subtypes
-  "clustered"
-  "rowstacked"
-  "columnstacked"
-  "nokeyseparators"
   ; smooth additions
   ; key/label placement
   ; fill pattern
@@ -259,10 +251,6 @@
   "commentschars"
   "functions"
   ; misc
-  "positive"
-  "negative"
-  "sorted"
-  "maxcolors"
   ; coordinate planes / walls
   "version"
   ; colorspec
@@ -277,12 +265,7 @@
   "map"
   ; set theta direction
   ; palette model / presets / cubehelix options
-  "cubehelix"
   "model"
-  "start"
-  "gamma"
-  "cycles"
-  "saturation"
   ; pm3d / lighting
   "corners2color"
   "primary"
@@ -311,10 +294,8 @@
   ; tics keyword (grid / paxis — covers xtics, ytics, ztics contexts)
   "tics"
   ; histogram fill style
-  "errorbars"
   ; jitter options
   ; key command options
-  "auto"
   ; paxis label keyword (key("label",3) with default aka="label")
   "label"
   ; polar coordinate system and grid option
@@ -326,7 +307,6 @@
   ; stats output prefix
   "prefix"
   ; palette formula option
-  "rgbformulae"
   ; pm3d z-clip
   "z"
   ; grid mode

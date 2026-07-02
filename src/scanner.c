@@ -184,6 +184,12 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"unsorted", 8, KW_G_ARG, 0},
     {"sorted", 6, KW_G_ARG, 0},
     {"firstlinetype", 5, KW_G_ARG, 0},
+    // palette defined — before the default/defaults prefix rows ("def")
+    {"defined", 3, KW_G_ARG, 0},
+    // style histogram errorbars (option head is separate; row is body-only)
+    {"errorbars", 5, KW_G_ARG, 0},
+    // watch/textbox labels boxed toggle
+    {"boxed", 5, KW_G_FLAG, 1},
     // colorbox
     {"vertical", 1, KW_G_FLAG, 1},
     {"horizontal", 1, KW_G_ARG, 0},
@@ -326,6 +332,52 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"cycle", 5, KW_G_ARG, 0},
     // termoption
     {"fontscale", 9, KW_G_ARG, 0},
+    // palette
+    {"gray", 4, KW_G_MOD, 0},
+    {"color", 5, KW_G_MOD, 0},
+    {"gamma", 5, KW_G_ARG, 0},
+    {"gradient", 4, KW_G_ARG, 0},
+    {"fit2rgbformulae", 7, KW_G_ARG, 0},
+    {"rgbformulae", 3, KW_G_ARG, 0},
+    {"functions", 4, KW_G_ARG, 0},
+    {"cubehelix", 4, KW_G_ARG, 0},
+    {"cycles", 6, KW_G_ARG, 0},
+    {"saturation", 10, KW_G_ARG, 0},
+    {"positive", 3, KW_G_ARG, 0},
+    {"negative", 3, KW_G_ARG, 0},
+    {"nops_allcF", 10, KW_G_MOD, 0},
+    {"ps_allcF", 8, KW_G_MOD, 0},
+    {"maxcolors", 4, KW_G_ARG, 0},
+    // NOTE: no "int" row — int() is a builtin function; a row would split
+    // calls like `int(n/2)` inside bodies. "int" degrades to an identifier.
+    {"float", 5, KW_G_MOD, 0},
+    {"hex", 3, KW_G_MOD, 0},
+    // style (boxplot / histogram / circle / textbox / arrow tails)
+    {"range", 5, KW_G_ARG, 0},
+    {"fraction", 8, KW_G_ARG, 0},
+    // min 4, NOT 3: "out" is a common variable name (see "outside")
+    {"outliers", 4, KW_G_FLAG, 1},
+    {"medianlinewidth", 15, KW_G_ARG, 0},
+    {"separation", 10, KW_G_ARG, 0},
+    {"candlesticks", 12, KW_G_MOD, 0},
+    {"financebars", 11, KW_G_MOD, 0},
+    {"clustered", 5, KW_G_ARG, 0},
+    {"gap", 3, KW_G_ARG, 0},
+    {"rowstacked", 4, KW_G_ARG, 0},
+    {"columnstacked", 7, KW_G_ARG, 0},
+    {"nokeyseparators", 5, KW_G_ARG, 0},
+    {"radius", 3, KW_G_ARG, 0},
+    {"nodraw", 6, KW_G_MOD, 0},
+    {"margins", 7, KW_G_ARG, 0},
+    {"transparent", 5, KW_G_MOD, 0},
+    {"heads", 5, KW_G_FLAG, 1},
+    {"head", 4, KW_G_FLAG, 1},
+    {"backheads", 9, KW_G_FLAG, 0},
+    {"backhead", 8, KW_G_FLAG, 0},
+    {"filled", 6, KW_G_FLAG, 1},
+    {"empty", 5, KW_G_MOD, 0},
+    {"none", 4, KW_G_MOD, 0},
+    {"point", 5, KW_G_ARG, 0},
     // object (before key: "to" must win over the "top" prefix row)
     {"rectangle", 3, KW_G_MOD, 0},
     {"circle", 4, KW_G_MOD, 0},
@@ -716,7 +768,22 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
           consume(lexer);
         }
         peek[plen] = '\0';
-        if (!is_word_char(lexer->lookahead)) {
+        bool word_ended = !is_word_char(lexer->lookahead);
+        // If the word is immediately used in expression syntax (operator,
+        // call, subscript, comma), it is a VALUE even when it matches a
+        // keyword row: `palette functions gray,1,1`, `samples points(3)`.
+        {
+          int32_t c = lexer->lookahead;
+          while (c == ' ' || c == '\t') { consume(lexer); c = lexer->lookahead; }
+          if (c == ',' || c == '+' || c == '-' || c == '*' || c == '/' ||
+              c == '%' || c == '^' || c == '(' || c == '[' || c == '.' ||
+              c == '=' || c == '<' || c == '>' || c == '&' || c == '|' ||
+              c == '?' || c == ':') {
+            lexer->result_symbol = GVAL_SEP;
+            return true;
+          }
+        }
+        if (word_ended) {
           int s = match_style_kw(peek, plen, valid_symbols);
           if (s < 0 && valid_symbols[KW_G_AXISRANGE] && match_axis_word(peek, plen, 1))
             s = KW_G_AXISRANGE;
