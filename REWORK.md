@@ -13,12 +13,12 @@
 | 4 — `_argument_set_show` keywords | mostly stale: axis families already merged via `K.axes`. Only D3 minor-tics (6→1) remains as a clean small win. |
 | 5 — Command keyword abbreviations | partially done via scanner (`kw_cmd_bare/optexpr/exit/expr`, `cmd_*_kw`). |
 | 6 — Statement-terminator (`_eos`) redesign | **ATTEMPTED & REFUTED 2026-06-14.** Implemented faithfully in 4 variants (internal `/[;\n]/`, internal run-token, external `_eos` with `}`/EOF, and a correctness-complete `_line`/`_blank`). **All REGRESS parser.c** (38.18 MB baseline → 39.4–41.6 MB) and balloon STATE_COUNT +44–48 % (17.9k → 25–26k). The earlier "−38 %" was never reproducible (see refutation bullet). **Do not re-attempt without a new mechanism.** |
-| 7 — **Generic option bodies (scanner tier tokens)** | **DONE 2026-07-01, branch `feat/generic-set-show`.** The set/show architectural redesign that the cntrparam spike deemed "locked behind highlighting": sub-keywords are matched by the external scanner as tier tokens (`KW_G_ARG/FLAG/MOD/COORD` + `AXISFLAG`/`AXISRANGE` + zero-width `GVAL_SEP`), so highlighting survives at tier granularity while ~60 option bodies collapse into two shared rules (`_gopts`/`_gopts_style`). parser.c **39,846,248 → 25,251,632 B (−36.6 %)**, STATE 18,078 → **11,128**, SYMBOL 1,076 → **886**, TOKEN 801 → **633**. 105/105 corpus, pruebadefuego 0 ERROR/MISSING. Full mechanism + pitfalls below. |
+| 7 — **Generic option bodies (scanner tier tokens)** | **DONE 2026-07-01, branch `feat/generic-set-show`.** The set/show architectural redesign that the cntrparam spike deemed "locked behind highlighting": sub-keywords are matched by the external scanner as tier tokens (`KW_G_ARG/FLAG/MOD/COORD` + `AXISFLAG`/`AXISRANGE` + zero-width `GVAL_SEP`), so highlighting survives at tier granularity while ~60 option bodies collapse into two shared rules (`_gopts`/`_gopts_style`). parser.c **39,846,248 → 25,749,508 B (−35.4 %)**, STATE 18,078 → **11,128**, SYMBOL 1,076 → **886**, TOKEN 801 → **633**. 107/107 corpus, all gnuTestFiles 0 ERROR/MISSING. Full mechanism + pitfalls below. |
 
-Measured so far: parser.c 52.45 MB → **24.1 MiB (25,251,632 B)**; SYMBOL_COUNT
-1,236 → **886**; STATE_COUNT → **11,128**; TOKEN_COUNT → **633**;
-LARGE_STATE_COUNT → **4,517**. 105/105 corpus tests pass; `grammar.js`
-3,058 → 2,469 lines; `key()/key1()/reg()` calls 555 → 292; scanner.c 864 lines.
+Measured so far: parser.c 52.45 MB → **24.6 MiB (25,749,508 B)**; SYMBOL_COUNT
+1,236 → **886**; STATE_COUNT → **11,128** (pre-entry-gate; regen to confirm);
+TOKEN_COUNT → **633**. 107/107 corpus tests pass; `grammar.js` ~2,470 lines;
+`key()/key1()/reg()` calls 555 → 292; scanner.c 864 lines.
 
 **Terminal merge 2026-06-13 (Phase 3 — −13 %, the big win).** All 32 terminal
 names collapsed into one `TERM_NAME = token(choice(...))` aliased `"name"`, and all
@@ -501,6 +501,17 @@ Original phase list (kept for reference; statuses in the Status table at top):
     datablock) the body STOPS. `prec.right` bodies swallow next statements.
     Consequence: every sub-keyword MUST be a table row; an unlisted keyword
     degrades to identifier and ends the body early.
+  - **Body ENTRY is also gated by `_gval_sep` (fix 2026-07-01, styles.plt):**
+    every `optional(<body>)` is `optional(seq($._gval_sep, <body>))`. Without
+    the gate, an empty-bodied option (`unset colorbox`) swallows a next-line
+    function definition (`Gauss(x,…) = …`) as its first item — the wrapper's
+    prec.right entry decision, unlike the in-body prec.left boundary, preferred
+    entering. Works because the scanner's keyword-return path is
+    validity-gated: at entry positions only GVAL_SEP is valid, so it emits the
+    separator and the keyword lexes on the next call. Never add a bare
+    `$._gopts*` branch where tier tokens would become valid next to selector
+    heads (`set style` lost `function`/`rectangle` heads to GOPT rows —
+    replaced by `fillStyleOpt($)`).
   - **Value binding:** `seq(arg, optional(seq($._gval_sep, _gexprs|tuple)))`.
     `GVAL_SEP` is a ZERO-WIDTH external that fires only when the value is on
     the SAME logical line (spaces/`\`-continuations skipped; newline/`;`/`#`

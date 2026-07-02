@@ -4108,8 +4108,17 @@
                     "type": "CHOICE",
                     "members": [
                       {
-                        "type": "SYMBOL",
-                        "name": "_gopts"
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "_gval_sep"
+                          },
+                          {
+                            "type": "SYMBOL",
+                            "name": "_gopts"
+                          }
+                        ]
                       },
                       {
                         "type": "BLANK"
@@ -4142,8 +4151,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4327,29 +4345,38 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "PREC_LEFT",
-                "value": 0,
-                "content": {
-                  "type": "REPEAT1",
-                  "content": {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "_gopt_item"
-                      },
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "SYMBOL",
-                          "name": "kw_g_axisrange"
-                        },
-                        "named": false,
-                        "value": "arg"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "PREC_LEFT",
+                    "value": 0,
+                    "content": {
+                      "type": "REPEAT1",
+                      "content": {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "_gopt_item"
+                          },
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "SYMBOL",
+                              "name": "kw_g_axisrange"
+                            },
+                            "named": false,
+                            "value": "arg"
+                          }
+                        ]
                       }
-                    ]
+                    }
                   }
-                }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4378,8 +4405,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts_style"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts_style"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4408,8 +4444,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4438,8 +4483,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4477,8 +4531,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4507,8 +4570,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4537,8 +4609,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4567,8 +4648,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts_style"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts_style"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4597,8 +4687,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4627,8 +4726,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts_style"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts_style"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4657,8 +4765,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4696,8 +4813,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -4917,8 +5043,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -5138,8 +5273,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -5198,8 +5342,17 @@
       ]
     },
     "errorbars": {
-      "type": "SYMBOL",
-      "name": "_gopts_style"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts_style"
+        }
+      ]
     },
     "fit": {
       "type": "REPEAT1",
@@ -5486,8 +5639,17 @@
       }
     },
     "format": {
-      "type": "SYMBOL",
-      "name": "_gopts_style"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts_style"
+        }
+      ]
     },
     "grid": {
       "type": "PREC_RIGHT",
@@ -5508,8 +5670,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts_style"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts_style"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -5520,24 +5691,69 @@
       }
     },
     "hidden3d": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "history": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "isosamples": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "isosurface": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "jitter": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "key": {
       "type": "PREC_RIGHT",
@@ -5558,8 +5774,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts_style"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts_style"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -5638,8 +5863,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts_style"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts_style"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -5720,8 +5954,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -5732,8 +5975,17 @@
       }
     },
     "locale": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "logscale": {
       "type": "SEQ",
@@ -5845,8 +6097,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -5875,8 +6136,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -6011,8 +6281,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -6053,8 +6332,17 @@
       }
     },
     "mouse": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "multiplot": {
       "type": "SEQ",
@@ -6641,8 +6929,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts_style"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts_style"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -6653,16 +6950,43 @@
       }
     },
     "offsets": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "origin": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "output": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "overflow": {
       "type": "CHOICE",
@@ -6710,93 +7034,102 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "PREC_LEFT",
-                "value": 0,
-                "content": {
-                  "type": "REPEAT1",
-                  "content": {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "_gopt_item"
-                      },
-                      {
-                        "type": "PREC_RIGHT",
-                        "value": 0,
-                        "content": {
-                          "type": "SEQ",
-                          "members": [
-                            {
-                              "type": "ALIAS",
-                              "content": {
-                                "type": "STRING",
-                                "value": "file"
-                              },
-                              "named": false,
-                              "value": "arg"
-                            },
-                            {
-                              "type": "FIELD",
-                              "name": "filename",
-                              "content": {
-                                "type": "SYMBOL",
-                                "name": "_expression"
-                              }
-                            },
-                            {
-                              "type": "CHOICE",
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "PREC_LEFT",
+                    "value": 0,
+                    "content": {
+                      "type": "REPEAT1",
+                      "content": {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "_gopt_item"
+                          },
+                          {
+                            "type": "PREC_RIGHT",
+                            "value": 0,
+                            "content": {
+                              "type": "SEQ",
                               "members": [
                                 {
-                                  "type": "SYMBOL",
-                                  "name": "datafile_modifiers"
+                                  "type": "ALIAS",
+                                  "content": {
+                                    "type": "STRING",
+                                    "value": "file"
+                                  },
+                                  "named": false,
+                                  "value": "arg"
                                 },
                                 {
-                                  "type": "BLANK"
+                                  "type": "FIELD",
+                                  "name": "filename",
+                                  "content": {
+                                    "type": "SYMBOL",
+                                    "name": "_expression"
+                                  }
+                                },
+                                {
+                                  "type": "CHOICE",
+                                  "members": [
+                                    {
+                                      "type": "SYMBOL",
+                                      "name": "datafile_modifiers"
+                                    },
+                                    {
+                                      "type": "BLANK"
+                                    }
+                                  ]
                                 }
                               ]
                             }
-                          ]
-                        }
-                      },
-                      {
-                        "type": "SEQ",
-                        "members": [
-                          {
-                            "type": "ALIAS",
-                            "content": {
-                              "type": "PATTERN",
-                              "value": "mo(d(e(l)?)?)?"
-                            },
-                            "named": false,
-                            "value": "model"
                           },
                           {
-                            "type": "CHOICE",
+                            "type": "SEQ",
                             "members": [
                               {
-                                "type": "STRING",
-                                "value": "RGB"
+                                "type": "ALIAS",
+                                "content": {
+                                  "type": "PATTERN",
+                                  "value": "mo(d(e(l)?)?)?"
+                                },
+                                "named": false,
+                                "value": "model"
                               },
                               {
-                                "type": "STRING",
-                                "value": "CMY"
-                              },
-                              {
-                                "type": "STRING",
-                                "value": "HSV"
+                                "type": "CHOICE",
+                                "members": [
+                                  {
+                                    "type": "STRING",
+                                    "value": "RGB"
+                                  },
+                                  {
+                                    "type": "STRING",
+                                    "value": "CMY"
+                                  },
+                                  {
+                                    "type": "STRING",
+                                    "value": "HSV"
+                                  }
+                                ]
                               }
                             ]
+                          },
+                          {
+                            "type": "STRING",
+                            "value": "viridis"
                           }
                         ]
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "viridis"
                       }
-                    ]
+                    }
                   }
-                }
+                ]
               },
               {
                 "type": "BLANK"
@@ -7014,8 +7347,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -7439,8 +7781,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -7469,8 +7820,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -7650,24 +8010,69 @@
       }
     },
     "print": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "psdir": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "rgbmax": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "samples": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "size": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "style": {
       "type": "PREC_LEFT",
@@ -7706,8 +8111,17 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "SYMBOL",
-                            "name": "_gopts_style"
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gval_sep"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gopts_style"
+                              }
+                            ]
                           },
                           {
                             "type": "BLANK"
@@ -7732,8 +8146,17 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "SYMBOL",
-                            "name": "_gopts_style"
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gval_sep"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gopts_style"
+                              }
+                            ]
                           },
                           {
                             "type": "BLANK"
@@ -7794,8 +8217,17 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "SYMBOL",
-                            "name": "_gopts_style"
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gval_sep"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gopts_style"
+                              }
+                            ]
                           },
                           {
                             "type": "BLANK"
@@ -7838,8 +8270,17 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "SYMBOL",
-                            "name": "_gopts_style"
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gval_sep"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gopts_style"
+                              }
+                            ]
                           },
                           {
                             "type": "BLANK"
@@ -7864,8 +8305,17 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "SYMBOL",
-                            "name": "_gopts_style"
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gval_sep"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gopts_style"
+                              }
+                            ]
                           },
                           {
                             "type": "BLANK"
@@ -7916,8 +8366,17 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "SYMBOL",
-                            "name": "_gopts_style"
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gval_sep"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gopts_style"
+                              }
+                            ]
                           },
                           {
                             "type": "BLANK"
@@ -7942,8 +8401,17 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "SYMBOL",
-                            "name": "_gopts_style"
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gval_sep"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gopts_style"
+                              }
+                            ]
                           },
                           {
                             "type": "BLANK"
@@ -7968,8 +8436,17 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "SYMBOL",
-                            "name": "_gopts_style"
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gval_sep"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gopts_style"
+                              }
+                            ]
                           },
                           {
                             "type": "BLANK"
@@ -7994,8 +8471,17 @@
                         "type": "CHOICE",
                         "members": [
                           {
-                            "type": "SYMBOL",
-                            "name": "_gopts_style"
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gval_sep"
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "_gopts_style"
+                              }
+                            ]
                           },
                           {
                             "type": "BLANK"
@@ -8005,8 +8491,17 @@
                     ]
                   },
                   {
-                    "type": "SYMBOL",
-                    "name": "_gopts_style"
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_fs"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "fill_style"
+                      }
+                    ]
                   }
                 ]
               },
@@ -8118,8 +8613,17 @@
       }
     },
     "surface": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "table": {
       "type": "PREC_RIGHT",
@@ -10040,24 +10544,60 @@
       ]
     },
     "termoption": {
-      "type": "SYMBOL",
-      "name": "_gopts_style"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts_style"
+        }
+      ]
     },
     "theta": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "tics": {
       "type": "SYMBOL",
       "name": "tics_opts"
     },
     "timestamp": {
-      "type": "SYMBOL",
-      "name": "_gopts_style"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts_style"
+        }
+      ]
     },
     "timefmt": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "title": {
       "type": "PREC_RIGHT",
@@ -10078,8 +10618,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts_style"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts_style"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -10120,12 +10669,30 @@
       ]
     },
     "view": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "walls": {
-      "type": "SYMBOL",
-      "name": "_gopts_style"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts_style"
+        }
+      ]
     },
     "xdata": {
       "type": "SEQ",
@@ -10404,8 +10971,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_gopts"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_gopts"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -10416,8 +10992,17 @@
       }
     },
     "zero": {
-      "type": "SYMBOL",
-      "name": "_gopts"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
     },
     "zeroaxis": {
       "type": "SEQ",

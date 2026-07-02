@@ -13566,6 +13566,10 @@
           "named": true
         },
         {
+          "type": "fill_style",
+          "named": true
+        },
+        {
           "type": "function",
           "named": true
         },

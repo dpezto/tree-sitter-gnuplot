@@ -208,3 +208,77 @@ set futureopt 3, 4 "label"
     (number)
     (number)
     (string_literal)))
+
+================================================================================
+set style function - selector head not stolen by GOPT rows
+================================================================================
+set style function filledcurves y1=0
+set style data lines
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (style
+      (plot_style
+        (number))))
+  (cmd_set
+    (style
+      (plot_style))))
+
+================================================================================
+generic body - function definition after empty-bodied option
+================================================================================
+unset colorbox
+Gauss(x,mu,sigma) = 1./(sigma*sqrt(2*pi)) * exp( -(x-mu)**2 / (2*sigma**2) )
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_unset
+    (colorbox))
+  (assignment
+    (def_func
+      (function
+        (identifier)
+        (parameter_list
+          (identifier)
+          (identifier)
+          (identifier)))
+      (binary_expression
+        (binary_expression
+          (number)
+          (operator)
+          (parenthesized_expression
+            (binary_expression
+              (identifier)
+              (operator)
+              (function
+                (identifier)
+                (parameter_list
+                  (binary_expression
+                    (number)
+                    (operator)
+                    (identifier)))))))
+        (operator)
+        (function
+          (identifier)
+          (parameter_list
+            (binary_expression
+              (unary_expression
+                (operator)
+                (binary_expression
+                  (parenthesized_expression
+                    (binary_expression
+                      (identifier)
+                      (operator)
+                      (identifier)))
+                  (operator)
+                  (number)))
+              (operator)
+              (parenthesized_expression
+                (binary_expression
+                  (number)
+                  (operator)
+                  (binary_expression
+                    (identifier)
+                    (operator)
+                    (number)))))))))))
