@@ -40,6 +40,7 @@ enum TokenType {
   // (no)?m?<axis>tics family ((no)mxtics, x2tics, ...), only valid in
   // style-flavor bodies. Order MUST match the externals list in grammar.js.
   KW_G_ARG, KW_G_FLAG, KW_G_MOD, KW_G_COORD, KW_G_AXISFLAG,
+  KW_G_AXISRANGE,  // autoscale-only: <axis>{min|max|fix|fixmin|fixmax}?
 };
 
 // Keyword table entry for prefix-abbreviation matching.
@@ -305,6 +306,18 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"append", 6, KW_G_ARG, 0},
     // colormap
     {"new", 3, KW_G_ARG, 0},
+    // autoscale
+    {"fix", 3, KW_G_MOD, 0},
+    {"keepfix", 4, KW_G_MOD, 0},
+    {"noextend", 5, KW_G_FLAG, 0},
+    // format
+    {"numeric", 7, KW_G_MOD, 0},
+    {"timedate", 8, KW_G_MOD, 0},
+    {"geographic", 10, KW_G_MOD, 0},
+    // linetype
+    {"cycle", 5, KW_G_ARG, 0},
+    // termoption
+    {"fontscale", 9, KW_G_ARG, 0},
     {NULL, 0, 0, 0},
 };
 
@@ -333,28 +346,46 @@ static int match_gopt_kw(const char* word, int wlen, const bool* valid_symbols) 
   return -1;
 }
 
-// (no)?m?<axis>tics — the per-axis tics toggle family (nomxtics, x2tics, ...).
-// <axis> is one of x2/y2/cb/vx/vy/vz/xy (2 chars, tried first) or
-// x/y/z/r/t/u/v; the trailing "tics" may be abbreviated to zero chars
-// (mirrors the old grid regex reg("m",0,1)+K.axes+reg("tics",0)).
-static bool match_axis_tics_flag(const char* word, int wlen) {
+// Axis-word matchers. <axis> is one of x2/y2/cb/vx/vy/vz/xy (2 chars, tried
+// first) or x/y/z/r/t/u/v.
+//
+// match_axis_word(word, wlen, suffix_kind):
+//   kind 0: (no)?m?<axis><tics-prefix>  — nomxtics, x2tics, "tics" may
+//           abbreviate to zero chars (mirrors the old grid regex).
+//   kind 1: <axis>{min|max|fix|fixmin|fixmax}? — autoscale axis words. This
+//           kind is ONLY valid in the autoscale body (own token): words like
+//           "rmax"/"xmin" are common user variable names, so they must not
+//           become keywords in every generic body.
+static bool axis_word_suffix(const char* word, int j, int wlen, int kind) {
+  if (j == wlen) return true;  // bare axis
+  if (kind == 1) {
+    static const char* sfx[] = {"min", "max", "fix", "fixmin", "fixmax", NULL};
+    for (int s = 0; sfx[s] != NULL; s++)
+      if ((int)strlen(sfx[s]) == wlen - j && strncmp(word + j, sfx[s], (size_t)(wlen - j)) == 0)
+        return true;
+    return false;
+  }
+  int k = 0, i = j;
+  while (i < wlen && k < 4 && word[i] == "tics"[k]) { i++; k++; }
+  return i == wlen;
+}
+
+static bool match_axis_word(const char* word, int wlen, int kind) {
   int i = 0;
-  if (wlen >= 2 && word[0] == 'n' && word[1] == 'o') i = 2;
-  if (i < wlen && word[i] == 'm') i++;
+  if (kind == 0) {
+    if (wlen >= 2 && word[0] == 'n' && word[1] == 'o') i = 2;
+    if (i < wlen && word[i] == 'm') i++;
+  }
   static const char* axes2[] = {"x2", "y2", "cb", "vx", "vy", "vz", "xy", NULL};
   static const char axes1[] = "xyzrtuv";
   for (int a = 0; axes2[a] != NULL; a++) {
     if (wlen - i >= 2 && word[i] == axes2[a][0] && word[i + 1] == axes2[a][1]) {
-      int j = i + 2, k = 0;
-      while (j < wlen && k < 4 && word[j] == "tics"[k]) { j++; k++; }
-      if (j == wlen) return true;
+      if (axis_word_suffix(word, i + 2, wlen, kind)) return true;
     }
   }
   for (int a = 0; axes1[a] != '\0'; a++) {
     if (wlen - i >= 1 && word[i] == axes1[a]) {
-      int j = i + 1, k = 0;
-      while (j < wlen && k < 4 && word[j] == "tics"[k]) { j++; k++; }
-      if (j == wlen) return true;
+      if (axis_word_suffix(word, i + 1, wlen, kind)) return true;
     }
   }
   return false;
@@ -588,9 +619,13 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
     return true;
   }
 
-  // Generic option-body sub-keywords (tier tokens). The per-axis tics family
-  // is tried first: it is more specific than any GOPT_KWS row.
-  if (valid_symbols[KW_G_AXISFLAG] && match_axis_tics_flag(word, word_len)) {
+  // Generic option-body sub-keywords (tier tokens). The per-axis families
+  // are tried first: they are more specific than any GOPT_KWS row.
+  if (valid_symbols[KW_G_AXISRANGE] && match_axis_word(word, word_len, 1)) {
+    lexer->result_symbol = KW_G_AXISRANGE;
+    return true;
+  }
+  if (valid_symbols[KW_G_AXISFLAG] && match_axis_word(word, word_len, 0)) {
     lexer->result_symbol = KW_G_AXISFLAG;
     return true;
   }
@@ -635,7 +670,8 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
 
   bool any_gopt_valid =
       valid_symbols[KW_G_ARG] || valid_symbols[KW_G_FLAG] || valid_symbols[KW_G_MOD] ||
-      valid_symbols[KW_G_COORD] || valid_symbols[KW_G_AXISFLAG];
+      valid_symbols[KW_G_COORD] || valid_symbols[KW_G_AXISFLAG] ||
+      valid_symbols[KW_G_AXISRANGE];
 
   if ((any_cmd_valid || any_style_valid || any_gopt_valid) &&
       scan_keywords(lexer, valid_symbols, any_cmd_valid)) {

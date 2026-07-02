@@ -330,7 +330,6 @@
   ; paxis label keyword (key("label",3) with default aka="label")
   "label"
   ; polar coordinate system and grid option
-  "polar"
   ; polar grid axis ranges
   "theta"
   "r"

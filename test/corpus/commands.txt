@@ -219,7 +219,7 @@ set title "My Title"
 (source_file
   (cmd_set
     (title
-      title: (string_literal))))
+      (string_literal))))
 
 ===========================================================================
   plot - title string option
@@ -267,7 +267,7 @@ set title sprintf("Plot %d", n)
 (source_file
   (cmd_set
     (title
-      title: (function
+      (function
         name: (identifier)
         parameters: (parameter_list
           (string_literal

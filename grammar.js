@@ -128,6 +128,9 @@ module.exports = grammar({
 		// _gopts/_gopts_style rules. kw_g_axisflag is the (no)?m?<axis>tics
 		// family ((no)mxtics/x2tics/...), valid only in style-flavor bodies.
 		$.kw_g_arg, $.kw_g_flag, $.kw_g_mod, $.kw_g_coord, $.kw_g_axisflag,
+		// autoscale-only <axis>{min|max|fix|fixmin|fixmax}? words: private token
+		// so common variable names (rmax, xmin) stay identifiers elsewhere.
+		$.kw_g_axisrange,
 	],
 
 	extras: ($) => [$.comment, /\s|\\|;/],
@@ -177,9 +180,11 @@ module.exports = grammar({
 				alias($.kw_g_flag, "flag"),
 				alias($.kw_g_mod, "mod"),
 				alias($.kw_g_coord, "coord"),
-				// A value (identifier included) binds to the preceding arg keyword
-				// (prec.right), so `contourfill auto FOO` keeps FOO inside the body.
-				prec.right(seq(alias($.kw_g_arg, "arg"), optional($._gexprs))),
+				// A value (identifier included) binds to the preceding arg/coord
+				// keyword (prec.right), so `contourfill auto FOO` and
+				// `margin at screen FOO` keep FOO inside the body.
+				prec.right(1, seq(alias($.kw_g_arg, "arg"), optional($._gexprs))),
+				prec.right(1, seq(alias($.kw_g_coord, "coord"), optional($._gexprs))),
 				$._gexprs,
 				$.range_block,
 			),
@@ -734,43 +739,24 @@ module.exports = grammar({
 				),
 			),
 
+		// Generic body plus the autoscale-only axis-range token (xmin/rmax/…);
+		// fix/keepfix/noextend are ordinary GOPT_KWS rows.
 		autoscale: ($) =>
-			seq(
-				key("autoscale", 4, "arg"),
-				repeat(
-					choice(
-						alias(
-							token(
-								seq(
-									K.axes,
-									optional(choice("min", "max", "fixmin", "fixmax", "fix")),
-								),
+			prec.right(
+				seq(
+					key("autoscale", 4, "arg"),
+					optional(
+						prec.left(
+							repeat1(
+								choice($._gopt_item, alias($.kw_g_axisrange, "arg")),
 							),
-							"arg",
 						),
-						alias("fix", "mod"),
-						alias("keepfix", "mod"),
-						key("noextend", 5, "flag"),
 					),
 				),
 			),
 
 		border: ($) =>
-			prec.left(
-				seq(
-					key("border", 3, "arg"),
-					repeat(
-						choice(
-							$._expression,
-							"front",
-							"back",
-							"behind",
-							$.style_opts,
-							"polar",
-						),
-					),
-				),
-			),
+			prec.right(seq(key("border", 3, "arg"), optional($._gopts_style))),
 
 		boxwidth: ($) =>
 			prec.right(seq(key("boxwidth", 3, "arg"), optional($._gopts))),
@@ -908,12 +894,7 @@ module.exports = grammar({
 				),
 			),
 
-		format: ($) =>
-			seq(
-				optional(alias(K.axes, "axis")),
-				field("fmt_str", $._expression),
-				optional(alias(choice("numeric", "timedate", "geographic"), "mod")),
-			),
+		format: ($) => $._gopts_style,
 
 		// Generic body (GOPT_KWS rows: polar/layerdefault/front/back/vertical/
 		// spiderplot; the (no)?m?<axis>tics family is kw_g_axisflag).
@@ -983,12 +964,7 @@ module.exports = grammar({
 			),
 
 		linetype: ($) =>
-			prec.left(
-				seq(
-					alias($.kw_lt, "arg"),
-					optional(choice($.line_style, seq(alias("cycle", "arg"), $._expression))),
-				),
-			),
+			prec.right(seq(alias($.kw_lt, "arg"), optional($._gopts_style))),
 
 		link: ($) =>
 			repeat1(
@@ -1023,7 +999,10 @@ module.exports = grammar({
 		mapping: ($) =>
 			prec.right(seq(key("mapping", 3, "arg"), optional($._gopts))),
 
-		margin: ($) => seq(key1("arg", /(l|r|t|b)?/, reg("margins", 3)), $._margin),
+		margin: ($) =>
+			prec.right(
+				seq(key1("arg", /(l|r|t|b)?/, reg("margins", 3)), optional($._gopts)),
+			),
 
 		_margin: ($) =>
 			prec.left(
@@ -1743,17 +1722,7 @@ module.exports = grammar({
 				key("transparent", 5, "flag", 1), // NOTE: some need 6 instead of 5
 			),
 		// ----------------------------------------------------------------
-		termoption: ($) =>
-			repeat1(
-				choice(
-					key("enhanced", undefined, "flag", 1),
-					$.fontspec,
-					$.fontscale,
-					$._sa,
-					$._sa,
-					seq($._ps, $._expression),
-				),
-			),
+		termoption: ($) => $._gopts_style,
 
 		theta: ($) => $._gopts,
 
@@ -1764,36 +1733,7 @@ module.exports = grammar({
 		timefmt: ($) => $._gopts,
 
 		title: ($) =>
-			prec.right(
-				seq(
-					key("title", 3, "arg"),
-					optional(
-						choice(
-							seq(
-								field("title", $._expression),
-								repeat(
-									choice(
-										field("offset", offsetPos($)),
-										field("at", atPos($)),
-										$.fontspec,
-										$._textcolor,
-										key("enhanced", undefined, "flag", 1),
-									),
-								),
-							),
-							repeat1(
-								choice(
-									field("offset", offsetPos($)),
-									field("at", atPos($)),
-									$.fontspec,
-									$._textcolor,
-									key("enhanced", undefined, "flag", 1),
-								),
-							),
-						),
-					),
-				),
-			),
+			prec.right(seq(key("title", 3, "arg"), optional($._gopts_style))),
 
 		vgrid: ($) => seq($.datablock, optional(seq("size", $._expression))),
 
