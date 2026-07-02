@@ -131,6 +131,9 @@ module.exports = grammar({
 		// autoscale-only <axis>{min|max|fix|fixmin|fixmax}? words: private token
 		// so common variable names (rmax, xmin) stay identifiers elsewhere.
 		$.kw_g_axisrange,
+		// zero-width, same-line-only separator between an arg/coord keyword and
+		// its value (newline/';' ahead = no value: next line is a new statement)
+		$._gval_sep,
 	],
 
 	extras: ($) => [$.comment, /\s|\\|;/],
@@ -179,12 +182,12 @@ module.exports = grammar({
 			choice(
 				alias($.kw_g_flag, "flag"),
 				alias($.kw_g_mod, "mod"),
-				alias($.kw_g_coord, "coord"),
 				// A value (identifier included) binds to the preceding arg/coord
-				// keyword (prec.right), so `contourfill auto FOO` and
-				// `margin at screen FOO` keep FOO inside the body.
-				prec.right(1, seq(alias($.kw_g_arg, "arg"), optional($._gexprs))),
-				prec.right(1, seq(alias($.kw_g_coord, "coord"), optional($._gexprs))),
+				// keyword only across the same-line _gval_sep, so
+				// `contourfill auto FOO` keeps FOO in the body while an
+				// identifier on the NEXT line starts a fresh statement.
+				prec.right(seq(alias($.kw_g_arg, "arg"), optional(seq($._gval_sep, $._gexprs)))),
+				prec.right(seq(alias($.kw_g_coord, "coord"), optional(seq($._gval_sep, $._gexprs)))),
 				$._gexprs,
 				$.range_block,
 			),
@@ -912,45 +915,7 @@ module.exports = grammar({
 		jitter: ($) => $._gopts,
 
 		key: ($) =>
-			seq(
-				key("key", 1, "arg"),
-				prec.right(
-					repeat(
-						choice(
-							choice(alias("on", "mod"), alias("off", "mod")),
-							key("default", 3),
-							key("enhanced", 3, "flag", 1),
-							seq(key("autotitle", 1, $.autotitle, 1), optional(key("columnheader", 3, $.columnheader))),
-							seq(key("box", 3, "flag", 1), optional($.style_opts)),
-							seq(key("opaque", 6, "flag", 1), optional($._fillcolor)),
-							seq(key("width", 1), field("increment", $._expression)),
-							seq(key("height", 1), field("increment", $._expression)),
-							choice(key("vertical", 3), key("horizontal", 3)),
-							seq(key("maxcols", -1, $.maxcols), choice(key("auto", 1, $.auto), $._expression)),
-							seq(key("maxrows", -1), choice(key("auto", 1, $.auto), $._expression)),
-							seq(key("columns", 7), field("columns", $._expression)), // NOTE: limitation with columnheader, should be 3, not 7
-							seq(key("keywidth", 4), optional($.system), $._expression), // NOTE: system is just graph & screen
-							choice(key("Left", 1), key("Right", 1)),
-							key("reverse", 3, "flag", 1),
-							key("invert", 3, "flag", 1),
-							seq("samplen", field("length", $._expression)),
-							seq("spacing", field("spacing", $._expression)),
-							prec.right(
-								seq(key("title", 2, undefined, 1), optional($._expression)),
-							),
-							$.fontspec,
-							$._textcolor,
-							choice(key("inside", 3), key("outside", 1), alias("fixed", "mod")),
-							key1("arg", /(l|r|t|b)/, reg("margin", 1)),
-							atPos($),
-							// simplfy next two
-							choice(alias(K.c, "cen"), alias(K.l, "lef"), alias(K.r, "rig")),
-							choice(alias(K.t, "top"), alias(K.b, "bot"), alias(K.c, "cen")),
-							seq("offset", $.position),
-						),
-					),
-				),
-			),
+			prec.right(seq(key("key", 1, "arg"), optional($._gopts_style))),
 
 
 

@@ -8204,388 +8204,7 @@
   {
     "type": "key",
     "named": true,
-    "fields": {
-      "columns": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "fc": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "colorspec",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "lt",
-            "named": false
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "sa",
-            "named": false
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "increment": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "length": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "spacing": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "tc": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "colorspec",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "default",
-            "named": false
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "lt",
-            "named": false
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "sa",
-            "named": false
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          },
-          {
-            "type": "variable",
-            "named": false
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
@@ -8595,19 +8214,7 @@
           "named": true
         },
         {
-          "type": "auto",
-          "named": true
-        },
-        {
-          "type": "autotitle",
-          "named": true
-        },
-        {
           "type": "binary_expression",
-          "named": true
-        },
-        {
-          "type": "columnheader",
           "named": true
         },
         {
@@ -8619,19 +8226,11 @@
           "named": true
         },
         {
-          "type": "fontspec",
-          "named": true
-        },
-        {
           "type": "function",
           "named": true
         },
         {
           "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "maxcols",
           "named": true
         },
         {
@@ -8643,7 +8242,7 @@
           "named": true
         },
         {
-          "type": "position",
+          "type": "range_block",
           "named": true
         },
         {
@@ -8660,10 +8259,6 @@
         },
         {
           "type": "sum_block",
-          "named": true
-        },
-        {
-          "type": "system",
           "named": true
         },
         {
@@ -18487,19 +18082,11 @@
     "named": false
   },
   {
-    "type": "Left",
-    "named": false
-  },
-  {
     "type": "NaN",
     "named": false
   },
   {
     "type": "RGB",
-    "named": false
-  },
-  {
-    "type": "Right",
     "named": false
   },
   {
@@ -18551,20 +18138,12 @@
     "named": false
   },
   {
-    "type": "auto",
-    "named": true
-  },
-  {
     "type": "autofreq",
     "named": false
   },
   {
     "type": "autojustify",
     "named": false
-  },
-  {
-    "type": "autotitle",
-    "named": true
   },
   {
     "type": "axes_opts",
@@ -18628,10 +18207,6 @@
   },
   {
     "type": "blacktext",
-    "named": false
-  },
-  {
-    "type": "bot",
     "named": false
   },
   {
@@ -18713,10 +18288,6 @@
   {
     "type": "columnheader",
     "named": true
-  },
-  {
-    "type": "columns",
-    "named": false
   },
   {
     "type": "columnstacked",
@@ -18923,14 +18494,6 @@
     "named": false
   },
   {
-    "type": "height",
-    "named": false
-  },
-  {
-    "type": "horizontal",
-    "named": false
-  },
-  {
     "type": "hours",
     "named": false
   },
@@ -18955,10 +18518,6 @@
     "named": false
   },
   {
-    "type": "inside",
-    "named": false
-  },
-  {
     "type": "interpolate",
     "named": false
   },
@@ -18976,10 +18535,6 @@
   },
   {
     "type": "keypress",
-    "named": false
-  },
-  {
-    "type": "keywidth",
     "named": false
   },
   {
@@ -19067,15 +18622,7 @@
     "named": false
   },
   {
-    "type": "maxcols",
-    "named": true
-  },
-  {
     "type": "maxiter",
-    "named": false
-  },
-  {
-    "type": "maxrows",
     "named": false
   },
   {
@@ -19188,10 +18735,6 @@
   },
   {
     "type": "origin",
-    "named": false
-  },
-  {
-    "type": "outside",
     "named": false
   },
   {
@@ -19331,10 +18874,6 @@
     "named": false
   },
   {
-    "type": "samplen",
-    "named": false
-  },
-  {
     "type": "saturation",
     "named": false
   },
@@ -19451,10 +18990,6 @@
     "named": false
   },
   {
-    "type": "top",
-    "named": false
-  },
-  {
     "type": "transparent",
     "named": false
   },
@@ -19496,10 +19031,6 @@
   },
   {
     "type": "version",
-    "named": false
-  },
-  {
-    "type": "vertical",
     "named": false
   },
   {

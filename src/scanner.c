@@ -41,6 +41,11 @@ enum TokenType {
   // style-flavor bodies. Order MUST match the externals list in grammar.js.
   KW_G_ARG, KW_G_FLAG, KW_G_MOD, KW_G_COORD, KW_G_AXISFLAG,
   KW_G_AXISRANGE,  // autoscale-only: <axis>{min|max|fix|fixmin|fixmax}?
+  // Zero-width separator between an arg/coord keyword and its value inside
+  // generic bodies. Matches ONLY when the value is on the SAME logical line
+  // (spaces/tabs or a \-newline continuation ahead) — a raw newline or ';'
+  // declines, so a next-line identifier is a new statement, never a value.
+  GVAL_SEP,
 };
 
 // Keyword table entry for prefix-abbreviation matching.
@@ -162,6 +167,9 @@ typedef struct {
 } GoptKwEntry;
 
 static const GoptKwEntry GOPT_KWS[] = {
+    // on/off first: they must win over the one/offset prefix rows below
+    {"on", 2, KW_G_MOD, 0},
+    {"off", 3, KW_G_MOD, 0},
     // cntrparam
     {"linear", 2, KW_G_MOD, 0},
     {"levels", 2, KW_G_ARG, 0},
@@ -318,6 +326,29 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"cycle", 5, KW_G_ARG, 0},
     // termoption
     {"fontscale", 9, KW_G_ARG, 0},
+    // key
+    {"autotitle", 1, KW_G_ARG, 1},
+    {"columnheader", 3, KW_G_ARG, 0},
+    {"box", 3, KW_G_FLAG, 1},
+    {"opaque", 6, KW_G_FLAG, 1},
+    {"reverse", 3, KW_G_FLAG, 1},
+    {"samplen", 7, KW_G_ARG, 0},
+    {"spacing", 7, KW_G_ARG, 0},
+    {"keywidth", 4, KW_G_ARG, 0},
+    {"columns", 7, KW_G_ARG, 0},
+    {"maxcols", 6, KW_G_ARG, 0},
+    {"maxrows", 6, KW_G_ARG, 0},
+    {"inside", 3, KW_G_ARG, 0},
+    // min 4, NOT gnuplot's 1: "out" is a common variable name (output paths)
+    {"outside", 4, KW_G_ARG, 0},
+    {"Left", 2, KW_G_ARG, 0},
+    {"Right", 2, KW_G_ARG, 0},
+    {"fixed", 5, KW_G_MOD, 0},
+    {"title", 2, KW_G_ARG, 1},
+    {"lmargin", 2, KW_G_ARG, 0},
+    {"rmargin", 2, KW_G_ARG, 0},
+    {"tmargin", 2, KW_G_ARG, 0},
+    {"bmargin", 2, KW_G_ARG, 0},
     {NULL, 0, 0, 0},
 };
 
@@ -639,6 +670,58 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
 
 bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, const bool* valid_symbols) {
   Scanner* s = (Scanner*)payload;
+
+  // GVAL_SEP: zero-width, same-line only. Must run BEFORE skip_whitespaces
+  // (which also skips newlines and ';'). Skips spaces/tabs and \-newline
+  // continuations; succeeds iff the next content is on the same logical line.
+  if (valid_symbols[GVAL_SEP]) {
+    for (;;) {
+      if (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\r') {
+        skip(lexer);
+      } else if (lexer->lookahead == '\\') {
+        skip(lexer);
+        if (lexer->lookahead == '\r') skip(lexer);
+        if (lexer->lookahead == '\n') skip(lexer);
+      } else {
+        break;
+      }
+    }
+    if (lexer->lookahead != '\n' && lexer->lookahead != ';' && lexer->lookahead != 0 &&
+        lexer->lookahead != '#') {
+      lexer->mark_end(lexer);  // zero-width mark: the GVAL_SEP token itself
+      // If the next word is itself a keyword (style attr, per-axis word, or
+      // another option keyword), it is NOT a value: return THAT token
+      // directly (this scan call is the only chance to lex it externally).
+      if (is_word_char(lexer->lookahead)) {
+        char peek[24];
+        int plen = 0;
+        while (plen < (int)sizeof(peek) - 1 && is_word_char(lexer->lookahead)) {
+          peek[plen++] = (char)lexer->lookahead;
+          consume(lexer);
+        }
+        peek[plen] = '\0';
+        if (!is_word_char(lexer->lookahead)) {
+          int s = match_style_kw(peek, plen, valid_symbols);
+          if (s < 0 && valid_symbols[KW_G_AXISRANGE] && match_axis_word(peek, plen, 1))
+            s = KW_G_AXISRANGE;
+          if (s < 0 && valid_symbols[KW_G_AXISFLAG] && match_axis_word(peek, plen, 0))
+            s = KW_G_AXISFLAG;
+          if (s < 0)
+            s = match_gopt_kw(peek, plen, valid_symbols);
+          if (s >= 0) {
+            lexer->mark_end(lexer);  // extend token to cover the word
+            lexer->result_symbol = s;
+            return true;
+          }
+        }
+      }
+      lexer->result_symbol = GVAL_SEP;
+      return true;
+    }
+    // Declined: fall through — other externals (next statement's command
+    // keyword, datablock end, ...) may still match from here.
+  }
+
   skip_whitespaces(lexer);
 
   // Datablock end has highest priority: if we're inside an open datablock

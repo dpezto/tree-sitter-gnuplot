@@ -146,9 +146,6 @@
   "begin"
   "center"
   "end"
-  "keywidth"
-  "samplen"
-  "columns"
   ; pm3d / 3d options
   "clip1in"
   "clip4in"
@@ -175,7 +172,6 @@
   "dx"
   "dy"
   "width"
-  "height"
   "level"
   "matrix"
   "nonuniform"
@@ -216,11 +212,9 @@
   ; character/polar are aliased to (coord) -> @keyword.directive below)
   "axis"
   ; position direction aliases
-  "bot"
   "cen"
   "lef"
   "rig"
-  "top"
   ; geometry / arrow options
   "angle"
   "radius"
@@ -232,8 +226,6 @@
   "nooffset"
   "scale"
   ; orientation
-  "vertical"
-  "horizontal"
   ; angle units
   ; contour / palette / axis
   "range"
@@ -256,8 +248,6 @@
   "nokeyseparators"
   ; smooth additions
   ; key/label placement
-  "inside"
-  "outside"
   ; fill pattern
   "pattern"
   ; 3d / surface
@@ -273,7 +263,6 @@
   "positive"
   "negative"
   "sorted"
-  "maxrows"
   "maxcolors"
   ; coordinate planes / walls
   "version"
@@ -391,20 +380,12 @@
   "pspoints"
   "nopspoints"
   ; key alignment (capitalised)
-  "Left"
-  "Right"
   ; layer / style misc
 
   "st_opt"
   "plt_st"
 ] @attribute
 
-[
-  (auto)
-  (autotitle)
-  (columnheader)
-  (maxcols)
-] @variable.member
 
 ; binary filetype= value (png/jpg/gif/bin parsed as identifier in field)
 (binary_options
