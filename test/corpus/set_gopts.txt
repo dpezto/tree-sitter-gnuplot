@@ -1,0 +1,284 @@
+================================================================================
+set grid - axis tics flags, polar toggle, layer, style pair
+================================================================================
+set grid xtics mytics nopolar front lw 0.5 lt 3, lw 0.2
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (grid
+      (style_opts
+        (number))
+      (style_opts
+        (number))
+      (style_opts
+        (number)))))
+
+================================================================================
+set cntrparam - levels discrete list, sorted, firstlinetype
+================================================================================
+set cntrparam levels discrete 1,2,3.5 sorted firstlinetype 4
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (cntrparam
+      (number)
+      (number)
+      (number)
+      (number))))
+
+================================================================================
+set cntrparam - levels incremental with spaces
+================================================================================
+set cntrparam levels incremental 0, 1, 5 unsorted
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (cntrparam
+      (number)
+      (number)
+      (number))))
+
+================================================================================
+set colorbox - origin size invert border
+================================================================================
+set colorbox horizontal user origin 0.1,0.2 size 0.8,0.05 invert bdefault border 3
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (colorbox
+      (number)
+      (number)
+      (number)
+      (number)
+      (number))))
+
+================================================================================
+set colorbox - abbreviated vert, noinvert, cbtics style
+================================================================================
+set colorbox vert front noinvert cbtics lw 2
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (colorbox
+      (style_opts
+        (number)))))
+
+================================================================================
+set grid - next statement not swallowed
+================================================================================
+set grid
+plot x
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (grid))
+  (cmd_plot
+    (plot_element
+      (identifier))))
+
+================================================================================
+generic body - assignment on next line not swallowed
+================================================================================
+set timestamp "%d/%m/%y"
+FILES = 5
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (timestamp
+      (string_literal
+        (format_specifier)
+        (format_specifier)
+        (format_specifier))))
+  (assignment
+    (def_var
+      (identifier)
+      (number))))
+
+================================================================================
+generic body - datablock on next line not swallowed
+================================================================================
+set output "f".ext
+$data << EOD
+1 2
+EOD
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (output
+      (binary_expression
+        (string_literal)
+        (operator)
+        (identifier))))
+  (assignment
+    (def_datablock
+      (datablock)
+      (datablock_start)
+      (number)
+      (number)
+      (datablock_end))))
+
+================================================================================
+generic body - identifier value binds to arg keyword
+================================================================================
+set contourfill auto FOO firstlinetype 10
+set samples nsamp, nsamp2
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (contourfill
+      (identifier)
+      (number)))
+  (cmd_set
+    (samples
+      (identifier)
+      (identifier))))
+
+================================================================================
+set palette - defined gradient tuple
+================================================================================
+set palette defined (0 "blue", 0.5 "white", 1 "red") maxcolors 128
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (palette
+      (tuple
+        (number)
+        (string_literal)
+        (number)
+        (string_literal)
+        (number)
+        (string_literal))
+      (number))))
+
+================================================================================
+set key - box opaque position and style
+================================================================================
+set key box lt -1 lw 0.5 opaque at screen 0.95, screen 0.95 right top
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (key
+      (style_opts
+        (unary_expression
+          (operator)
+          (number)))
+      (style_opts
+        (number))
+      (number)
+      (identifier)
+      (number))))
+
+================================================================================
+set object - shapes with flat positions
+================================================================================
+set object 2 circle at 0.5,0.5 size 0.2 arc [0:90] wedge front
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (object
+      (number)
+      (number)
+      (number)
+      (number)
+      (range_block
+        (number)
+        (number)))))
+
+================================================================================
+set - unknown option fallback parses clean
+================================================================================
+set futureopt 3, 4 "label"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (identifier)
+    (number)
+    (number)
+    (string_literal)))
+
+================================================================================
+set style function - selector head not stolen by GOPT rows
+================================================================================
+set style function filledcurves y1=0
+set style data lines
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (style
+      (plot_style
+        (number))))
+  (cmd_set
+    (style
+      (plot_style))))
+
+================================================================================
+generic body - function definition after empty-bodied option
+================================================================================
+unset colorbox
+Gauss(x,mu,sigma) = 1./(sigma*sqrt(2*pi)) * exp( -(x-mu)**2 / (2*sigma**2) )
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_unset
+    (colorbox))
+  (assignment
+    (def_func
+      (function
+        (identifier)
+        (parameter_list
+          (identifier)
+          (identifier)
+          (identifier)))
+      (binary_expression
+        (binary_expression
+          (number)
+          (operator)
+          (parenthesized_expression
+            (binary_expression
+              (identifier)
+              (operator)
+              (function
+                (identifier)
+                (parameter_list
+                  (binary_expression
+                    (number)
+                    (operator)
+                    (identifier)))))))
+        (operator)
+        (function
+          (identifier)
+          (parameter_list
+            (binary_expression
+              (unary_expression
+                (operator)
+                (binary_expression
+                  (parenthesized_expression
+                    (binary_expression
+                      (identifier)
+                      (operator)
+                      (identifier)))
+                  (operator)
+                  (number)))
+              (operator)
+              (parenthesized_expression
+                (binary_expression
+                  (number)
+                  (operator)
+                  (binary_expression
+                    (identifier)
+                    (operator)
+                    (number)))))))))))

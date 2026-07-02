@@ -39,8 +39,5 @@ dist/
 *.tgz
 *.zip
 
-# Project-local dev doc (not part of the grammar package)
-CLAUDE.local.md
-
-*_md_ltex.json
-graphify-out/
+# Local nvim-treesitter queries/<lang>/ symlinks (rtp dev override)
+queries/gnuplot/

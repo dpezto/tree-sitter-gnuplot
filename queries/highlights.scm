@@ -4,6 +4,8 @@
 "variable" @variable.parameter
 
 ; built-in named values (palette presets, special color names)
+; TODO: decide and collapse (bgnd & background same)
+; black/viridis constant?
 [
   "viridis"
   "black"
@@ -24,19 +26,17 @@
 
 (operator) @operator
 
-; separators and range/assign operators (anonymous tokens)
 [
+  "="
   ","
   ":"
 ] @operator
-
-; assignment = (anonymous; eventual grammar.js refactor will make it (operator))
-"=" @operator
 
 (keyword_op) @keyword.operator
 
 (ternary_op) @keyword.conditional.ternary
 
+; TODO: collapse
 [
   "for"
   "in"
@@ -48,86 +48,77 @@
 ; Commands
 "cmd" @keyword
 
+; TODO: decide and collapse
 [
   "newhistogram"
   "newspiderplot"
   "keyentry"
 ] @keyword
 
+; TODO: decide inverse, sample
 [
-  "via"
   "inverse"
   "sample"
-  "sum"
-  "at"
-  "from"
-  "to_rto"
-  "by"
-  "smooth"
+  "kw_fn"
 ] @keyword.function
 
-[
-  "if"
-  "else"
-] @keyword.conditional
+"kw_cond" @keyword.conditional
 
+; TODO: decide and collapse
 [
   "front"
   "back"
-  "behind"
   "depthorder"
   "clip"
-  "noclip"
-  "opaque"
   "font"
   "filled"
   "nofilled"
   "parallel"
-  "reverse"
-  "invert"
-  "extend"
+  ; coordinate systems (first/second/graph/screen/character/polar) — alias "coord"
+  "coord"
 ] @keyword.directive
 
-; -----------------------------------------------------------------------
-; Terminal output path
-"name" @variable.member
+; on/off toggle flags ({no}X) — alias "flag" (@keyword.modifier)
+"flag" @keyword.directive
+
+; enumerated VALUES / modes (alias "mod") — @constant
+; TODO: decide, constant?
+"mod" @constant
+
+; plot/splot ELEMENT modifiers (alias "attr") — @property
+; (title/notitle/with/using/index/every/axes/smooth in a plot command;
+;  distinct from set-option names which are @variable.member)
+"attr" @property
 
 ; -----------------------------------------------------------------------
-; Style attribute shorthands (K constants + datafile keywords)
+; TODO: decide and collapse
 [
-  "as"
-  "dl"
+  ; Terminal output path
+  "name"
+  ; Style attribute shorthands (K constants + datafile keywords)
+  "sa"
   "dt"
   "fc"
   "fs"
   "lc"
-  "ls"
   "lt"
-  "lw"
-  "pi"
-  "pn"
   "ps"
   "pt"
   "tc"
   "skip"
-  "every"
-  "index"
-  "using"
-  "with"
   "expand"
+  "title"
+  ; set/show argument keywords (all key("...", n, "arg") aliases)
+  "arg"
 ] @variable.member
 
-; set/show argument keywords (all key("...", n, "arg") aliases)
-"arg" @variable.member
 
 ; -----------------------------------------------------------------------
 ; Option keywords
+; TODO: decide and collapse
 [
   ; coordinate systems / axes
   "unit"
-  "units_opt"
-  "plane"
-  "viewaxis"
   "axes_opts"
   ; time units (set xdata time / timefmt)
   "seconds"
@@ -137,49 +128,23 @@
   "weeks"
   "months"
   "years"
-  ; smooth subtypes
-  "discrete"
-  "incremental"
-  "unique"
-  "frequency"
-  "fnormal"
-  "cumulative"
-  "cnormal"
-  "csplines"
-  "acsplines"
-  "mcsplines"
-  "bezier"
-  "sbezier"
-  "path"
+  ; smooth subtypes still emitted as own token (value-modes csplines/bezier/… → "mod")
   "kdensity"
-  "bandwidth"
-  "period"
   "closed"
   "between"
   "above"
   "below"
-  "unwrap"
-  "grid"
   ; plot / datafile misc
   "pixels"
   "whiskerbars"
   "beginning"
   "long"
-  "nogrid"
-  ; colorspace
-  "RGB"
-  "CMY"
-  "HSV"
   ; positioning / key
   "base"
   "begin"
   "center"
   "end"
-  "keywidth"
-  "samplen"
-  "columns"
   ; pm3d / 3d options
-  "ftriangles"
   "clip1in"
   "clip4in"
   "c2c"
@@ -204,9 +169,7 @@
   "origin"
   "dx"
   "dy"
-  "dz"
   "width"
-  "height"
   "level"
   "matrix"
   "nonuniform"
@@ -242,79 +205,43 @@
   "trim"
   "full"
   ; pixmap
-  "colormap"
-  ; coordinate system prefixes (position context)
-  "first"
-  "second"
-  "graph"
-  "screen"
-  "character"
+  ; coordinate axis-family prefix (the coord systems first/second/graph/screen/
+  ; character/polar are aliased to (coord) -> @keyword.directive below)
   "axis"
   ; position direction aliases
-  "bot"
   "cen"
   "lef"
   "rig"
-  "top"
   ; geometry / arrow options
   "angle"
-  "radius"
   "length"
   "head"
   "inout"
-  "polardistance"
   ; offset / scale
   "offset"
   "nooffset"
   "scale"
-  "relative"
-  "absolute"
   ; orientation
-  "vertical"
-  "horizontal"
   ; angle units
-  "degrees"
-  "radians"
-  "radial"
   ; contour / palette / axis
-  "levels"
   "range"
-  "defined"
   "missing"
   "interpolate"
   "autofreq"
   "autojustify"
-  "overlap"
   ; rotation
   "rotate"
-  "norotate"
   ; border / extend / range modifiers
-  "border"
-  "noborder"
-  "noextend"
-  "writeback"
   "restore"
-  ; pm3d scan order
+  ; pm3d
   "scanorder"
+  "position"
   ; histogram subtypes
-  "clustered"
-  "rowstacked"
-  "columnstacked"
-  "mixed"
-  "order"
-  "nokeyseparators"
   ; smooth additions
-  "bspline"
-  "cubicspline"
   ; key/label placement
-  "inside"
-  "outside"
   ; fill pattern
   "pattern"
   ; 3d / surface
-  "triangles"
-  "surface"
-  "nosurface"
   "s"
   ; data / fit extras
   "variables"
@@ -324,72 +251,36 @@
   "commentschars"
   "functions"
   ; misc
-  "both"
-  "positive"
-  "negative"
-  "one"
-  "two"
-  "user"
-  "sorted"
-  "timedate"
-  "maxrows"
-  "maxcolors"
-  ; axes aliases / coordinate planes / walls
-  "xy"
-  "wall"
+  ; coordinate planes / walls
   "version"
   ; colorspec
   "rgbcolor"
   ; tics
-  "mirror"
   ; set size
-  "equal"
-  "ratio"
   ; set fit
-  "covariancevariables"
-  "errorvariables"
   "maxiter"
   "default"
   ; label / style
-  "boxed"
   ; set view
-  "azimuth"
   "map"
-  "projection"
   ; set theta direction
-  "theta_dir"
   ; palette model / presets / cubehelix options
-  "cubehelix"
   "model"
-  "start"
-  "gamma"
-  "cycles"
-  "saturation"
   ; pm3d / lighting
   "corners2color"
-  "lighting"
   "primary"
   "specular"
   "spec2"
-  ; smooth / dgrid3d subtypes
-  "gauss"
+  ; dgrid3d subtype (gauss/… value-modes → "mod")
   "splines"
   ; contour / cntrparam
-  "onecolor"
-  "interval"
-  "firstlinetype"
   ; tics axes / modifiers
-  "ztics"
-  "cbtics"
   "add"
-  "rangelimited"
   ; text / font / encoding
   "fontscale"
   "utf8"
-  "noboxed"
   ; fill / size style
   "empty"
-  "square"
   ; layout / spacing / multiplot
   "layout"
   "spacing"
@@ -398,27 +289,16 @@
   "cb"
   ; filledcurves axis coordinate (x1, x2, y1, y2 etc.)
   "coordinate"
-  ; numeric format type
-  "numeric"
   ; watch-label / surface options
   "point"
-  "nohidden3d"
   ; tics keyword (grid / paxis — covers xtics, ytics, ztics contexts)
   "tics"
   ; histogram fill style
-  "errorbars"
   ; jitter options
-  "spread"
-  "swarm"
   ; key command options
-  "box"
-  "auto"
   ; paxis label keyword (key("label",3) with default aka="label")
-  ; watchpoint style subcommand (key("labels",-1) covers singular "label" too)
   "label"
-  "labels"
   ; polar coordinate system and grid option
-  "polar"
   ; polar grid axis ranges
   "theta"
   "r"
@@ -427,15 +307,10 @@
   ; stats output prefix
   "prefix"
   ; palette formula option
-  "rgbformulae"
   ; pm3d z-clip
   "z"
   ; grid mode
-  "spiderplot"
-  ; binary filetype
-  "png"
   ; datafile option
-  "columnheaders"
   ; textbox / multiplot margins (anonymous "margins" string)
   "margins"
   ; datafile lc/fc palette shorthand
@@ -446,38 +321,31 @@
 
 ; -----------------------------------------------------------------------
 ; Presentation / style attributes
+; TODO: decide and collapse
 [
   "size"
   "monochrome"
   "color"
   "transparent"
-  "enhanced"
+  ; palette colour models (set palette model)
+  "RGB"
+  "CMY"
+  "HSV"
   "nobackground"
   "separator"
   (hull)
-  "title"
-  "notitle"
-  "rectangle"
-  "circle"
-  "ellipse"
-  "polygon"
+  "units_opt"
   ; fill / line style modes
   "solid"
   "dashed"
-  "rounded"
   ; page orientation
   "landscape"
   "portrait"
-  "eps"
-  "pdf"
   ; terminal options
   "animate"
-  "noanimate"
-  "standalone"
   "input"
   "colortext"
   "blacktext"
-  "duplex"
   ; point type names (ps/tikz terminals)
   "texpoints"
   "normalpoints"
@@ -486,26 +354,13 @@
   "tinypoints"
   "pspoints"
   "nopspoints"
-  ; text formatting
-  "textnormal"
-  "defaultplex"
   ; key alignment (capitalised)
-  "Left"
-  "Right"
   ; layer / style misc
-  "layerdefault"
+
   "st_opt"
-  "output"
+  "plt_st"
 ] @attribute
 
-"plt_st" @attribute
-
-[
-  (auto)
-  (autotitle)
-  (columnheader)
-  (maxcols)
-] @variable.member
 
 ; binary filetype= value (png/jpg/gif/bin parsed as identifier in field)
 (binary_options
@@ -558,7 +413,7 @@
 
 ((identifier) @variable.builtin
   (#match? @variable.builtin
-    "^((GPVAL|MOUSE|FIT)_\\w+|GNUTERM|NaN|VoxelDistance|GridDistance|pi|ARG\\w+)$"))
+    "^((GPVAL|MOUSE|FIT)_\\w+|GNUTERM|NaN|Inf|VoxelDistance|GridDistance|pi|ARG\\w+)$"))
 
 ; -----------------------------------------------------------------------
 ; Array definitions
