@@ -141,3 +141,70 @@ set samples nsamp, nsamp2
     (samples
       (identifier)
       (identifier))))
+
+================================================================================
+set palette - defined gradient tuple
+================================================================================
+set palette defined (0 "blue", 0.5 "white", 1 "red") maxcolors 128
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (palette
+      (tuple
+        (number)
+        (string_literal)
+        (number)
+        (string_literal)
+        (number)
+        (string_literal))
+      (number))))
+
+================================================================================
+set key - box opaque position and style
+================================================================================
+set key box lt -1 lw 0.5 opaque at screen 0.95, screen 0.95 right top
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (key
+      (style_opts
+        (unary_expression
+          (operator)
+          (number)))
+      (style_opts
+        (number))
+      (number)
+      (identifier)
+      (number))))
+
+================================================================================
+set object - shapes with flat positions
+================================================================================
+set object 2 circle at 0.5,0.5 size 0.2 arc [0:90] wedge front
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (object
+      (number)
+      (number)
+      (number)
+      (number)
+      (range_block
+        (number)
+        (number)))))
+
+================================================================================
+set - unknown option fallback parses clean
+================================================================================
+set futureopt 3, 4 "label"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (identifier)
+    (number)
+    (number)
+    (string_literal)))

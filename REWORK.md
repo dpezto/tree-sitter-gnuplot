@@ -13,9 +13,12 @@
 | 4 — `_argument_set_show` keywords | mostly stale: axis families already merged via `K.axes`. Only D3 minor-tics (6→1) remains as a clean small win. |
 | 5 — Command keyword abbreviations | partially done via scanner (`kw_cmd_bare/optexpr/exit/expr`, `cmd_*_kw`). |
 | 6 — Statement-terminator (`_eos`) redesign | **ATTEMPTED & REFUTED 2026-06-14.** Implemented faithfully in 4 variants (internal `/[;\n]/`, internal run-token, external `_eos` with `}`/EOF, and a correctness-complete `_line`/`_blank`). **All REGRESS parser.c** (38.18 MB baseline → 39.4–41.6 MB) and balloon STATE_COUNT +44–48 % (17.9k → 25–26k). The earlier "−38 %" was never reproducible (see refutation bullet). **Do not re-attempt without a new mechanism.** |
+| 7 — **Generic option bodies (scanner tier tokens)** | **DONE 2026-07-01, branch `feat/generic-set-show`.** The set/show architectural redesign that the cntrparam spike deemed "locked behind highlighting": sub-keywords are matched by the external scanner as tier tokens (`KW_G_ARG/FLAG/MOD/COORD` + `AXISFLAG`/`AXISRANGE` + zero-width `GVAL_SEP`), so highlighting survives at tier granularity while ~60 option bodies collapse into two shared rules (`_gopts`/`_gopts_style`). parser.c **39,846,248 → 25,251,632 B (−36.6 %)**, STATE 18,078 → **11,128**, SYMBOL 1,076 → **886**, TOKEN 801 → **633**. 105/105 corpus, pruebadefuego 0 ERROR/MISSING. Full mechanism + pitfalls below. |
 
-Measured so far: parser.c 52.45 MB → **39.95 MB**; SYMBOL_COUNT 1,236 → **1,076**;
-STATE_COUNT → **17,532**; TOKEN_COUNT → **809**. 92/92 corpus tests pass.
+Measured so far: parser.c 52.45 MB → **24.1 MiB (25,251,632 B)**; SYMBOL_COUNT
+1,236 → **886**; STATE_COUNT → **11,128**; TOKEN_COUNT → **633**;
+LARGE_STATE_COUNT → **4,517**. 105/105 corpus tests pass; `grammar.js`
+3,058 → 2,469 lines; `key()/key1()/reg()` calls 555 → 292; scanner.c 864 lines.
 
 **Terminal merge 2026-06-13 (Phase 3 — −13 %, the big win).** All 32 terminal
 names collapsed into one `TERM_NAME = token(choice(...))` aliased `"name"`, and all
@@ -482,9 +485,58 @@ Original phase list (kept for reference; statuses in the Status table at top):
   TERM_NAME merge, −13%); not single regexes and not shared literals.
 - **Size is up to 38.20 MB (2026-06-15) by design:** empty-bound ranges, nested
   `for`, `remultiplot`, and scanf `using` formats (commit bba188a) add real
-  capability. Correctness over size. The clean N→1 merges (plot styles, kw_sa,
-  terminals, commands) remain the only banked size wins; the generic set/show body
-  rewrite (−10..−15 MB, kills option highlighting) is the only untaken lever.
+  capability. Correctness over size.
+- **Generic option bodies LANDED 2026-07-01 (−36.6 %, the redesign works once the
+  scanner owns sub-keywords).** The 2026-06-14 verdict ("kills option
+  highlighting") was about `repeat($._expression)` bodies where sub-keywords
+  become bare `(identifier)`. The fix: sub-keywords are external tier tokens
+  from one global `GOPT_KWS` table (word → `KW_G_ARG`/`FLAG`/`MOD`/`COORD`,
+  first-match, per-row `min_chars` + `(no)?` flag), aliased in-grammar to the
+  taxonomy tier names, so colours are unchanged. ~60 bodies now share TWO rules:
+  `_gopts` (plain) and `_gopts_style` (adds `style_opts`, comma'd style pairs,
+  and the `(no)?m?<axis>tics` token `KW_G_AXISFLAG`). Mechanism notes, all
+  measured the hard way:
+  - **Boundary rule:** bodies are `prec.left` repeat — at an ambiguous
+    statement boundary (identifier that could open an assignment, `$name`
+    datablock) the body STOPS. `prec.right` bodies swallow next statements.
+    Consequence: every sub-keyword MUST be a table row; an unlisted keyword
+    degrades to identifier and ends the body early.
+  - **Value binding:** `seq(arg, optional(seq($._gval_sep, _gexprs|tuple)))`.
+    `GVAL_SEP` is a ZERO-WIDTH external that fires only when the value is on
+    the SAME logical line (spaces/`\`-continuations skipped; newline/`;`/`#`
+    decline) — so `contourfill auto FOO` binds FOO but `set key off ⏎ out = 1`
+    does not eat `out`. When the next word is itself a keyword row, the scanner
+    returns THAT token directly (a declined external can't be re-lexed in the
+    same call); a keyword-row word followed by operator syntax (`, + - ( [` …)
+    is treated as a value (`palette functions gray,1,1`, `samples points(3)`).
+  - **Comma chains are atomic items** (`_gexprs = expr ("," (expr|range))*`) —
+    prevents mid-list boundary forks and covers `contourfill defined
+    [a:b] c, [d:e] f`.
+  - **`(tuple)`** = parenthesized ≥2 juxtaposed expr-groups; coexists with
+    `parenthesized_expression` in the same states because both are plain
+    shift alternatives of one choice (`palette defined (0 "b", 1 "r")`). A
+    `defined`-branch with `optional($.gradient)` CANNOT work: the reduce
+    barrier at the optional drops the gradient items (measured; prec/dynamic
+    don't help).
+  - **Private tokens for common-variable collisions:** autoscale's
+    `<axis>{min|max|fix…}` words are `KW_G_AXISRANGE`, valid ONLY in the
+    autoscale body — `rmax`/`xmin` are real variable names and briefly became
+    keywords everywhere (broke `rmax = 10` after any style-flavor body).
+    Same class: `outside`/`outliers` need `min_chars` 4 ("out" is a variable),
+    `doubleclick` min 4 ("do" is the loop command), `on`/`off` rows precede
+    `one`/`offset`, `defined` precedes `default`/`defaults`, `to` precedes
+    `top`; no `int` row (builtin function).
+  - **Known accepted corners:** single-letter rows (`p`/`o`/`u`/`s`/`v`/`h`,
+    theta's `r`/`t`/`b`) shadow same-named bare variables inside converted
+    bodies (mis-tier, still parses); `l` at a body boundary lexes as the
+    `load` command abbreviation (`set theta l` errors — write `lef`/full);
+    the unknown-option fallback (`set futureopt 3, 4 "x"`, prec.dynamic −1)
+    covers expression arguments but unknown sub-KEYWORDS still end the body.
+  - **Bespoke keepers:** terminal/t_opts, xrange/xlabel families, label,
+    tics bodies, datafile/table (binary/separator), nonlinear, paxis,
+    multiplot, dgrid3d/polar (the `exp` kernel word is a builtin function),
+    fit (hyphenated words can't be scanner words), encoding/logscale
+    (composite regex tokens), monochrome, overflow, vgrid.
 - Parse-table entries are sparse-initialized — removing a token column only saves
   the entries where that token was actually valid.
   Savings ≈ (tokens merged − 1) × (states where the token was valid).
