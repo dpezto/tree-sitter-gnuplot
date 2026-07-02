@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-gnuplot",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "description": "Gnuplot grammar for tree-sitter",
   "main": "bindings/node",
   "types": "bindings/node",
