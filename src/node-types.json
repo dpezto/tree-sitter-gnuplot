@@ -739,6 +739,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -759,11 +763,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -941,136 +957,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "canvas_size",
-    "named": true,
-    "fields": {
-      "height": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          },
-          {
-            "type": "unit",
-            "named": false
-          }
-        ]
-      },
-      "width": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          },
-          {
-            "type": "unit",
-            "named": false
-          }
-        ]
-      }
     }
   },
   {
@@ -4360,6 +4246,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -4380,11 +4270,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -4511,6 +4413,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -4531,11 +4437,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -6512,6 +6430,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -6532,11 +6454,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -7467,70 +7401,6 @@
     }
   },
   {
-    "type": "fontscale",
-    "named": true,
-    "fields": {
-      "scale": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "fontspec",
     "named": true,
     "fields": {
@@ -7805,6 +7675,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -7825,11 +7699,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -7906,6 +7792,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -7926,11 +7816,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -8516,6 +8418,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -8536,11 +8442,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -9132,6 +9050,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -9152,11 +9074,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -11079,6 +11013,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -11099,11 +11037,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -13550,6 +13500,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -13578,7 +13532,15 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
           "type": "line_style",
+          "named": true
+        },
+        {
+          "type": "mono_color",
           "named": true
         },
         {
@@ -13591,6 +13553,10 @@
         },
         {
           "type": "plot_style",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -14337,258 +14303,7 @@
   {
     "type": "t_opts",
     "named": true,
-    "fields": {
-      "dpi": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "header": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "height": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          },
-          {
-            "type": "unit",
-            "named": false
-          }
-        ]
-      },
-      "n": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "number",
-            "named": true
-          }
-        ]
-      },
-      "width": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          },
-          {
-            "type": "unit",
-            "named": false
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": false,
@@ -14606,23 +14321,11 @@
           "named": true
         },
         {
-          "type": "canvas_size",
-          "named": true
-        },
-        {
           "type": "complex",
           "named": true
         },
         {
           "type": "datablock",
-          "named": true
-        },
-        {
-          "type": "fontscale",
-          "named": true
-        },
-        {
-          "type": "fontspec",
           "named": true
         },
         {
@@ -14654,7 +14357,15 @@
           "named": true
         },
         {
+          "type": "range_block",
+          "named": true
+        },
+        {
           "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "style_opts",
           "named": true
         },
         {
@@ -14667,6 +14378,10 @@
         },
         {
           "type": "ternary_expression",
+          "named": true
+        },
+        {
+          "type": "tuple",
           "named": true
         },
         {
@@ -14782,6 +14497,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -14802,11 +14521,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -15782,6 +15513,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -15802,11 +15537,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -15857,6 +15604,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -15877,11 +15628,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -16298,6 +16061,10 @@
           "named": true
         },
         {
+          "type": "background",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -16318,11 +16085,23 @@
           "named": true
         },
         {
+          "type": "line_drawing_method",
+          "named": true
+        },
+        {
+          "type": "mono_color",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "position",
           "named": true
         },
         {
@@ -16945,10 +16724,6 @@
     "named": false
   },
   {
-    "type": "blacktext",
-    "named": false
-  },
-  {
     "type": "button1",
     "named": false
   },
@@ -17005,10 +16780,6 @@
     "named": false
   },
   {
-    "type": "colortext",
-    "named": false
-  },
-  {
     "type": "columnheader",
     "named": true
   },
@@ -17034,10 +16805,6 @@
   },
   {
     "type": "corners2color",
-    "named": false
-  },
-  {
-    "type": "dashed",
     "named": false
   },
   {
@@ -17145,10 +16912,6 @@
     "named": false
   },
   {
-    "type": "fontscale",
-    "named": false
-  },
-  {
     "type": "for",
     "named": false
   },
@@ -17242,10 +17005,6 @@
   },
   {
     "type": "label",
-    "named": false
-  },
-  {
-    "type": "landscape",
     "named": false
   },
   {
@@ -17345,10 +17104,6 @@
     "named": false
   },
   {
-    "type": "mpoints",
-    "named": false
-  },
-  {
     "type": "name",
     "named": false
   },
@@ -17382,14 +17137,6 @@
   },
   {
     "type": "nooffset",
-    "named": false
-  },
-  {
-    "type": "nopspoints",
-    "named": false
-  },
-  {
-    "type": "normalpoints",
     "named": false
   },
   {
@@ -17445,10 +17192,6 @@
     "named": false
   },
   {
-    "type": "portrait",
-    "named": false
-  },
-  {
     "type": "position",
     "named": false
   },
@@ -17462,10 +17205,6 @@
   },
   {
     "type": "ps",
-    "named": false
-  },
-  {
-    "type": "pspoints",
     "named": false
   },
   {
@@ -17549,10 +17288,6 @@
     "named": false
   },
   {
-    "type": "smallpoints",
-    "named": false
-  },
-  {
     "type": "solid",
     "named": false
   },
@@ -17605,10 +17340,6 @@
     "named": true
   },
   {
-    "type": "texpoints",
-    "named": false
-  },
-  {
     "type": "theta",
     "named": false
   },
@@ -17618,10 +17349,6 @@
   },
   {
     "type": "time",
-    "named": false
-  },
-  {
-    "type": "tinypoints",
     "named": false
   },
   {
@@ -17638,10 +17365,6 @@
   },
   {
     "type": "trim",
-    "named": false
-  },
-  {
-    "type": "unit",
     "named": false
   },
   {
@@ -17694,10 +17417,6 @@
   },
   {
     "type": "whitespace",
-    "named": false
-  },
-  {
-    "type": "width",
     "named": false
   },
   {

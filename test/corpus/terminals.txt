@@ -8,12 +8,13 @@ set terminal domterm font 'Arial,12' fontscale 1.5 rounded lw 2 background '#000
   (cmd_set
     (terminal
       (t_opts
-        (fontspec
-          font: (string_literal))
-        (fontscale
-          scale: (number))
-        (line_drawing_method)
+        (style_opts
+          (fontspec
+            font: (string_literal)))
         (number)
+        (line_drawing_method)
+        (style_opts
+          (number))
         (background
           color: (string_literal))))))
 
@@ -27,17 +28,18 @@ set terminal emf color enhanced rounded lw 2 dl 1.5 size 800,600 background '#ff
   (cmd_set
     (terminal
       (t_opts
-        (mono_color)
         (line_drawing_method)
+        (style_opts
+          (number))
+        (style_opts
+          (number))
         (number)
         (number)
-        (canvas_size
-          width: (number)
-          height: (number))
         (background
           color: (string_literal))
-        (fontspec
-          font: (string_literal))))))
+        (style_opts
+          (fontspec
+            font: (string_literal)))))))
 
 ===========================================================================
   terminal fig
@@ -49,10 +51,10 @@ set terminal fig color landscape big pointsmax 500 font 'Times,10'
   (cmd_set
     (terminal
       (t_opts
-        (mono_color)
         (number)
-        (fontspec
-          font: (string_literal))))))
+        (style_opts
+          (fontspec
+            font: (string_literal)))))))
 
 ===========================================================================
   terminal hpgl
@@ -64,9 +66,8 @@ set terminal hpgl 8 eject fontscale 1.5
   (cmd_set
     (terminal
       (t_opts
-        n: (number)
-        (fontscale
-          scale: (number))))))
+        (number)
+        (number)))))
 
 ===========================================================================
   terminal jpeg
@@ -79,11 +80,11 @@ set terminal jpeg enhanced interlace rounded font 'Arial,12' size 800,600 backgr
     (terminal
       (t_opts
         (line_drawing_method)
-        (fontspec
-          font: (string_literal))
-        (canvas_size
-          width: (number)
-          height: (number))
+        (style_opts
+          (fontspec
+            font: (string_literal)))
+        (number)
+        (number)
         (background
           color: (string_literal))))))
 
@@ -97,11 +98,12 @@ set terminal pcl5 landscape enhanced font 'Univers,12' pspoints linewidth 2 colo
   (cmd_set
     (terminal
       (t_opts
-        (fontspec
-          font: (string_literal))
-        (number)
-        (mono_color)
-        n: (number)))))
+        (style_opts
+          (fontspec
+            font: (string_literal)))
+        (style_opts
+          (number))
+        (number)))))
 
 ===========================================================================
   terminal pict2e
@@ -113,13 +115,13 @@ set terminal pict2e font 'Helvetica,10' size 5in,3.5in color linewidth 2 rounded
   (cmd_set
     (terminal
       (t_opts
-        (fontspec
-          font: (string_literal))
-        (canvas_size
-          width: (number)
-          height: (number))
-        (mono_color)
+        (style_opts
+          (fontspec
+            font: (string_literal)))
         (number)
+        (number)
+        (style_opts
+          (number))
         (line_drawing_method)))))
 
 ===========================================================================
@@ -132,12 +134,14 @@ set terminal postscript landscape enhanced level3 color colortext dashlength 1.5
   (cmd_set
     (terminal
       (t_opts
-        (mono_color)
-        (number)
-        (number)
+        (style_opts
+          (number))
+        (style_opts
+          (number))
         (line_drawing_method)
-        (fontspec
-          font: (string_literal))))))
+        (style_opts
+          (fontspec
+            font: (string_literal)))))))
 
 ===========================================================================
   terminal webp with animate
@@ -149,11 +153,11 @@ set terminal webp size 800,600 font 'Arial,12' enhanced background '#fff' animat
   (cmd_set
     (terminal
       (t_opts
-        (canvas_size
-          width: (number)
-          height: (number))
-        (fontspec
-          font: (string_literal))
+        (number)
+        (number)
+        (style_opts
+          (fontspec
+            font: (string_literal)))
         (background
           color: (string_literal))
         (number)

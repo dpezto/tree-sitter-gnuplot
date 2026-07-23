@@ -118,7 +118,6 @@
 ; TODO: decide and collapse
 [
   ; coordinate systems / axes
-  "unit"
   "axes_opts"
   ; time units (set xdata time / timefmt)
   "seconds"
@@ -169,7 +168,6 @@
   "origin"
   "dx"
   "dy"
-  "width"
   "level"
   "matrix"
   "nonuniform"
@@ -277,7 +275,6 @@
   ; tics axes / modifiers
   "add"
   ; text / font / encoding
-  "fontscale"
   "utf8"
   ; fill / size style
   "empty"
@@ -337,23 +334,11 @@
   "units_opt"
   ; fill / line style modes
   "solid"
-  "dashed"
   ; page orientation
-  "landscape"
-  "portrait"
   ; terminal options
   "animate"
   "input"
-  "colortext"
-  "blacktext"
   ; point type names (ps/tikz terminals)
-  "texpoints"
-  "normalpoints"
-  "mpoints"
-  "smallpoints"
-  "tinypoints"
-  "pspoints"
-  "nopspoints"
   ; key alignment (capitalised)
   ; layer / style misc
 

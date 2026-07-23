@@ -43,26 +43,6 @@ const K = {
 	// highlights.scm is unchanged.
 };
 
-// Shared terminal-option fragments — factored out of the ~30 `t_*` rules to cut
-// their heavy duplication. Pure source dedup: each fragment expands to the exact
-// same node(s) it replaced (identical token/min_chars), so the CST and corpus
-// tests are unchanged. Forms that differ between terminals (e.g. `persist` with
-// different min_chars) are left inline on purpose — functionality is preserved.
-const T_ENH = key("enhanced", 3, "flag", 1); // {no}enhanced
-const T_CROP = key("crop", undefined, "flag", 1); // {no}crop
-const T_TRUECOLOR = key("truecolor", 4, "flag", 1); // {no}truecolor
-const T_INTERLACE = key("interlace", 5, "flag", 1); // {no}interlace
-const T_GDSIZES = choice(
-	alias("tiny", "mod"),
-	alias("small", "mod"),
-	alias("medium", "mod"),
-	alias("large", "mod"),
-	alias("giant", "mod"),
-);
-const T_ANCHOR = choice(key("anchor", undefined, "mod"), key("scroll", undefined, "flag"));
-// $-dependent fragments return arrays meant to be spread into a choice():
-const tFont = ($) => [$.fontspec, $.fontscale];
-
 // Shared option fragments (DRY; expand inline, so the CST is unchanged at each
 // site). `separator <whitespace|tab|comma|"str">` is identical in `set datafile`
 // and `table`.
@@ -219,6 +199,27 @@ module.exports = grammar({
 						$._gopt_item,
 						alias($.kw_g_axisflag, "flag"),
 						prec.right(seq($.style_opts, optional(seq(",", $.style_opts)))),
+						// terminal-flavored keepers (t_opts = this rule): words
+						// deliberately without GOPT_KWS rows — structured values,
+						// command collisions (reset/raise), common variable names
+						$.background,
+						$.mono_color,
+						$.line_drawing_method,
+						seq("position", $.position),
+						seq("name", $._expression),
+						key("eps", undefined, "mod"),
+						key("reset", undefined, "mod"),
+						key("raise", undefined, "flag", 1),
+						key("input", undefined),
+						seq(
+							key("animate", undefined),
+							repeat(choice(
+								seq(alias("delay", "arg"), $._expression),
+								seq(alias("loop", "arg"), $._expression),
+								seq(alias("quality", "arg"), $._expression),
+							)),
+						),
+						key("noanimate", undefined, "flag"),
 					),
 				),
 			),
@@ -1317,7 +1318,6 @@ module.exports = grammar({
 		ellipse: ($) =>
 			repeat1(
 				choice(
-          // TODO: units, size, angle
 					seq("units", alias(choice("xx", "xy", "yy"), "units_opt")),
 					seq("size", $.position, optional(seq(",", $.position))),
 					field("angle", seq("angle", $._expression)),
@@ -1346,149 +1346,36 @@ module.exports = grammar({
 				seq(
 					key("terminal", 1, "arg"),
 					optional(choice(
-						seq(alias(TERM_NAME, "name"), optional($.t_opts)),
+						// _gval_sep gates the body to the same (continued) line,
+						// so a next-line `reset`/`raise` stays a command
+						seq(alias(TERM_NAME, "name"), optional(seq($._gval_sep, $.t_opts))),
 						"push",
 						"pop",
 					)),
 				),
 			),
 
-		// Single permissive option list shared by every terminal. A highlighter
-		// does not need to reject terminal/option mismatches, so the grammar no
-		// longer tracks which terminal an option belongs to. This collapsed the
-		// 32 terminal-name tokens into one `TERM_NAME` token and the 30 `t_*`
-		// rules into this one. Options whose abbreviation min_chars differed
-		// between terminals use the loosest form here (superset — every formerly
-		// valid spelling still parses).
-		t_opts: ($) =>
-			prec.left(
-				repeat1(
-					choice(
-						// shared structured options
-						$.canvas_size,
-						$.background,
-						$.fontspec,
-						$.fontscale,
-						$.mono_color,
-						$.line_drawing_method, // rounded / butt / square
-						$._sa,
-						$._sa,
-						seq($._ps, $._expression),
-						// value-taking options
-						field("n", $.number),
-						seq(key("title", undefined, "arg"), $._expression),
-						seq("position", $.position),
-						seq(key("window", undefined, "arg"), $._expression),
-						seq("name", $._expression),
-						seq(alias("fsize", "arg"), $._expression),
-						seq(key("width", undefined), $._expression),
-						seq(key("pointsmax", undefined, "arg"), $._expression),
-						seq(key("fontsize", undefined, "arg"), $._expression),
-						seq(key("pointscale", undefined, "arg"), $._expression),
-						seq(key("scale", undefined), $._size),
-						seq(key("plotsize", undefined, "arg"), $._size),
-						seq(key("charsize", undefined, "arg"), $._size),
-						seq(alias("resolution", "arg"), field("dpi", $._expression)),
-						seq(
-							key("palfuncparam", undefined, "arg"),
-							$._expression,
-							optional(seq(",", $._expression)),
-						),
-						seq(alias("aspect", "arg"), $._expression, optional(seq(",", $._expression))),
-						seq(key("fillchar", undefined, "arg"), choice("solid", $._expression)),
-						seq(alias("jsdir", "arg"), $._expression),
-						// flags
-						T_ENH,
-						T_CROP,
-						T_TRUECOLOR,
-						T_INTERLACE,
-						T_ANCHOR,
-						T_GDSIZES,
-						key("rotate", undefined, "flag", 1),
-						key("timestamp", undefined, "flag", 1),
-						key("attributes", undefined, "flag", 1),
-						key("feed", undefined, "flag", 1),
-						key("replotonresize", undefined, "flag", 1),
-						key("antialias", undefined, "flag", 1),
-						key("persist", undefined, "flag", 1),
-						key("raise", undefined, "flag", 1),
-						key("ctrl", undefined, "flag", 1),
-						key("ctrlq", undefined, "flag", 1),
-						key("close", undefined),
-						key("reset", undefined, "mod"),
-						key("eject", undefined, "mod"),
-						key("noproportional", undefined, "flag"),
-						key("default", undefined),
-						key("originreset", undefined, "flag", 1),
-						key("gparrows", undefined, "flag", 1),
-						key("gppoints", undefined, "flag", 1),
-						key("picenvironment", undefined, "flag", 1),
-						key("tightboundingbox", undefined, "flag", 1),
-						key("fulldoc", undefined, "flag", 1),
-						key("standalone", undefined, "flag", 1),
-						key("tikzarrows", undefined, "flag", 1),
-						key("externalimages", undefined, "flag", 1),
-						key("inlineimages", undefined, "flag"),
-						key("noanimate", undefined, "flag"),
-						key("auxfile", undefined, "flag", 1),
-						key("clip", undefined, "flag", 1), // clip / noclip
-						key("input", undefined),
-						// output format / level / text
-						key("eps", undefined, "mod"),
-						alias("pdf", "mod"),
-						alias("png", "mod"),
-						choice(alias("level1", "mod"), alias("leveldefault", "mod"), alias("level3", "mod")),
-						key("blacktext", undefined),
-						key("colortext", undefined),
-						key("colourtext", undefined, "colortext"),
-						choice(seq(alias("header", "arg"), field("header", $._expression)), alias("noheader", "flag")),
-						// orientation / mode / style
-						choice(key("landscape", undefined), key("portrait", undefined)),
-						alias("big", "mod"), // "small" handled by T_GDSIZES (tiny/small/medium/large/giant)
-						choice(key("solid", undefined), key("dashed", undefined)),
-						choice(key("defaultplex", undefined, "mod"), key("simplex", undefined, "mod"), key("duplex", undefined, "mod")),
-						choice(alias("mitered", "mod"), alias("beveled", "mod")),
-						choice(key("mpoints", undefined), key("texpoints", undefined)),
-						alias("texarrows", "mod"),
-						choice(key("smallpoints", undefined), key("tinypoints", undefined), key("normalpoints", undefined)),
-						choice(key("textnormal", undefined, "mod"), alias("textspecial", "mod"), alias("texthidden", "mod"), alias("textrigid", "mod")),
-						choice(alias("mono", "mod"), alias("ansi", "mod"), alias("ansi256", "mod"), alias("ansirgb", "mod")),
-						choice(key("pspoints", undefined), key("nopspoints", undefined)),
-						choice(key("latex", undefined, "mod"), key("tex", undefined, "mod"), key("context", undefined, "mod")),
-						"mouse",
-						choice(alias("fixed", "mod"), alias("dynamic", "mod")),
-						seq(
-							key("animate", undefined),
-							repeat(choice(
-								seq(alias("delay", "arg"), $._expression),
-								seq(alias("loop", "arg"), $._expression),
-								seq(alias("quality", "arg"), $._expression),
-							)),
-						),
-					),
-				),
-			),
+		// Terminal options (the 2026-06 terminal merge collapsed 32 terminal
+		// name tokens into one TERM_NAME and 30 t_* rules into one body; the
+		// generic-body conversion then moved the option keywords into GOPT_KWS
+		// scanner rows — see the terminal section there for which words are
+		// deliberately absent and why). `size a4` (B15) parses via the
+		// identifier fallback; unit-suffixed sizes (10cm) lex inside `number`.
+		// t_opts IS the shared style body: a separate rule (even with identical
+		// items) duplicates the whole expression sub-automaton for its states —
+		// measured +0.97 MB / +415 states vs this alias. The terminal-only
+		// keepers live in _gopts_style itself; the permissiveness cost (those
+		// words become valid in every style body) is the usual generic-body
+		// tradeoff and is bounded by the same-line _gval_sep gates.
+		t_opts: ($) => $._gopts_style,
 
 		// shared terminal options ----------------------------------------
-		canvas_size: ($) => seq(key("size", 2), $._size),
-		_size: ($) => {
-			const unit = alias(
-				choice("cm", "in", "inch", "mm", "pt", "pc", "bp", "dd", "cc"),
-				"unit",
-			);
-			// height optional: pict2e/pcl5 accept `size a4` / `size letter`
-			// (paper name parses as the width expression) — B15.
-			return prec.right(
-				seq(
-					field("width", seq($._expression, optional(unit))),
-					optional(seq(",", field("height", seq($._expression, optional(unit))))),
-				),
-			);
-		},
+		// canvas_size/_size/fontscale were dropped with the t_opts generic
+		// conversion: `size`/`scale`/`fontscale` are GOPT_KWS rows, so those
+		// branches could never lex again (the external scanner wins).
 		mono_color: ($) =>
 			choice(key("monochrome", 4), key("color", 3), key("colour", 3, "color")),
 		line_drawing_method: ($) => choice(key("rounded", -2, "mod"), alias("butt", "mod"), alias("square", "mod")),
-		fontscale: ($) => seq("fontscale", field("scale", $._expression)),
 		background: ($) =>
 			choice(
 				seq(key("background", 5), field("color", $._expression)),
@@ -1805,7 +1692,6 @@ module.exports = grammar({
 			),
 
 		style_opts: ($) =>
-			// NOTE: sólo para plot_element?
 			prec.left(
 				repeat1(
 					choice(
@@ -2243,7 +2129,16 @@ module.exports = grammar({
 				seq(decimal_integer_literal, exponent_part),
 				decimal_digits,
 			);
-			return token(choice(decimal_literal, hex_literal, octal_literal));
+			// Optional ATTACHED unit suffix (10cm, 3.0in): replaces the old
+			// canvas_size unit handling for `set term ... size 10cm,5in`.
+			// Folded into the number token (not a separate item/token) — a
+			// standalone unit word or a value-level choice both measured badly
+			// (boundary misparse / state split). Permissive: a suffixed
+			// number lexes everywhere, not just in size values.
+			const unit = choice("cm", "in", "inch", "mm", "pt", "pc", "bp", "dd", "cc");
+			return token(
+				seq(choice(decimal_literal, hex_literal, octal_literal), optional(unit)),
+			);
 		},
 
 		complex: ($) =>
