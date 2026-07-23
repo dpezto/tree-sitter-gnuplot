@@ -41,3 +41,7 @@ dist/
 
 # Local nvim-treesitter queries/<lang>/ symlinks (rtp dev override)
 queries/gnuplot/
+
+# Cargo.lock: library crate — not committed (release bumps Cargo.toml, not the
+# lock, so a tracked lock goes stale and trips cargo publish's dirty check).
+/Cargo.lock
