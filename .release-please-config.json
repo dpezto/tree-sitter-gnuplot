@@ -6,7 +6,6 @@
   "packages": {
     ".": {
       "extra-files": [
-        { "type": "json", "path": "tree-sitter.json", "jsonpath": "$.metadata.version" },
         { "type": "generic", "path": "Cargo.toml" },
         { "type": "generic", "path": "pyproject.toml" },
         { "type": "generic", "path": "Makefile" },
