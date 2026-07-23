@@ -4,8 +4,8 @@
  * @see {@link http://gnuplot.info/docs_6.0/Gnuplot_6.pdf}
  *
  * Scanner-first: gnuplot keyword-abbreviation matching lives in src/scanner.c
- * (STYLE_KWS / PLT_STYLE_KWS / CMD_KWS), not in reg()/key() here. The v2
- * size-reduction plan, phase status, and measurements are in REWORK.md.
+ * (STYLE_KWS / PLT_STYLE_KWS / CMD_KWS / GOPT_KWS), not in reg()/key() here.
+ * Deferred design work is documented in docs/deferred.md.
  * */
 
 const PREC = {
@@ -37,10 +37,10 @@ const K = {
 	t: reg("top", 1),
 	b: reg("bottom", 1),
 	c: reg("center", 1),
-	// Style attribute keywords (lw/lt/ls/lc/dt/dl/pt/ps/pi/pn/as/fs/fc/tc) moved
-	// to the external scanner (REWORK Phase 1) — see STYLE_KWS in scanner.c and
-	// the `_lw`..`_tc` hidden rules below. Aliased to the same names, so
-	// highlights.scm is unchanged.
+	// Style attribute keywords (lw/lt/ls/lc/dt/dl/pt/ps/pi/pn/as/fs/fc/tc) live
+	// in the external scanner — see STYLE_KWS in scanner.c and the `_lw`..`_tc`
+	// hidden rules below. Aliased to the same names, so highlights.scm is
+	// unchanged.
 };
 
 // Shared option fragments (DRY; expand inline, so the CST is unchanged at each
@@ -121,10 +121,6 @@ module.exports = grammar({
 	word: ($) => $.identifier,
 
 	conflicts: ($) => [
-		[$.paxis, $.tics_opts],
-		// `(expr` may open a tuple group or a parenthesized expression;
-		// prec.dynamic on tuple resolves the lone-`(expr)` overlap
-		[$.tuple, $.parenthesized_expression],
 		[$._paxis_label],
 		[$.plot_element, $.style_opts],
 		[$.assignment, $._var_rhs],
@@ -138,8 +134,8 @@ module.exports = grammar({
 	rules: {
 		// Statements abut with no terminator token. A `_eos` terminator redesign to
 		// collapse the expression-tail follow set was attempted and REFUTED — it
-		// regresses parser.c (see REWORK.md Phase 6). Size wins instead come from
-		// N→1 token merges with identical continuations (e.g. $._sa below, kw_plt_st).
+		// regresses parser.c (+44-48% states, four variants). Size wins instead come
+		// from N→1 token merges with identical continuations ($._sa, kw_plt_st).
 		source_file: ($) => repeat($._statement),
 
 		// Style attribute keywords: hidden rules aliasing the external scanner
@@ -157,8 +153,8 @@ module.exports = grammar({
 
 		// Generic set/show option bodies. Converted options share these two rules:
 		// the scanner tags sub-keywords with their tier (arg/flag/mod/coord), and
-		// values float as flat sibling items (no per-keyword seq — the value-union
-		// trap measured in REWORK.md). Two flavors so bodies that never take style
+		// values float as flat sibling items (no per-keyword seq — the measured
+		// value-union state explosion). Two flavors so bodies that never take style
 		// attributes cannot have identifiers like `pi` eaten by the style scanner.
 		// Comma-chained expression list, atomic: `0, 1, 5` is ONE item, so the
 		// boundary ambiguity below never fires in the middle of a list.

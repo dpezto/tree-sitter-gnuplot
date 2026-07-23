@@ -14174,14 +14174,6 @@
   ],
   "conflicts": [
     [
-      "paxis",
-      "tics_opts"
-    ],
-    [
-      "tuple",
-      "parenthesized_expression"
-    ],
-    [
       "_paxis_label"
     ],
     [

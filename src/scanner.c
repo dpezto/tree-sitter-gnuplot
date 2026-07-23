@@ -23,8 +23,8 @@ enum TokenType {
   KW_CMD_EXPR,     // commands with required expression: cd/evaluate
   // Style attribute keywords (was K.* regex tokens in grammar.js). Each has a
   // distinct grammar continuation, so they are distinct tokens (no N->1 merge);
-  // moved to the scanner to retire the reg() machinery (scanner-first, REWORK
-  // Phase 1). Order MUST match the externals list in grammar.js.
+  // moved to the scanner to retire the reg() machinery (scanner-first).
+  // Order MUST match the externals list in grammar.js.
   // KW_SA: the style attrs whose continuation is exactly `<kw> <expression>`
   // (linewidth/linestyle/pointinterval/pointnumber/arrowstyle/dashlength) collapsed
   // into ONE token (6->1, identical continuation -> shrinks the table). The rest
@@ -110,9 +110,9 @@ static bool match_kw_table(const char* word, int wlen, const KwEntry* table) {
   return false;
 }
 
-// Style attribute keywords (REWORK Phase 1). Like KwEntry but each maps to its
-// own token (distinct grammar continuations). min_chars/alt mirror the old
-// K.* reg() calls in grammar.js.
+// Style attribute keywords. Like KwEntry but each maps to its own token
+// (distinct grammar continuations). min_chars/alt mirror the old K.* reg()
+// calls in grammar.js.
 typedef struct {
   const char* keyword;
   const char* alt;
