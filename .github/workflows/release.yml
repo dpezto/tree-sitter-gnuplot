@@ -18,9 +18,23 @@ jobs:
       release_created: ${{ steps.rp.outputs.release_created }}
       tag_name: ${{ steps.rp.outputs.tag_name }}
     steps:
+      # Mint a GitHub App token so release-please's PRs/tags are created as the
+      # App, not GITHUB_TOKEN. GITHUB_TOKEN-created PRs cannot trigger CI, so the
+      # release PR otherwise has no status checks and can't satisfy branch
+      # protection (needed admin-merge). The App token makes the release PR
+      # trigger CI and auto-merge normally.
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        # Tolerate missing App secrets: fall back to GITHUB_TOKEN below (release
+        # still works, but the release PR won't get CI and needs an admin merge).
+        continue-on-error: true
+        with:
+          app-id: ${{ secrets.RELEASE_PLEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_PLEASE_APP_KEY }}
       - id: rp
         uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5
         with:
+          token: ${{ steps.app-token.outputs.token || secrets.GITHUB_TOKEN }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
 
@@ -39,8 +53,12 @@ jobs:
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'
     uses: tree-sitter/workflows/.github/workflows/package-crates.yml@main
+    # generate:false — the committed src/ is complete and tracked, so cargo
+    # publishes from it directly. generate:true made the job cargo-install the
+    # CLI into an in-workspace CARGO_HOME, whose .crates.toml/.crates2.json then
+    # tripped `cargo publish`'s uncommitted-changes check.
     with:
-      generate: true
+      generate: false
     secrets:
       CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 
