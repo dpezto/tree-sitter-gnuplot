@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tree-sitter-gnuplot"
 description = "A tree-sitter grammar for gnuplot"
-version = "2.0.0" # x-release-please-version
+version = "2.0.1" # x-release-please-version
 keywords = ["incremental", "parsing", "tree-sitter", "gnuplot"]
 classifiers = [
   "Intended Audience :: Developers",
