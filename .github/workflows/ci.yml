@@ -3,21 +3,21 @@ name: CI
 on:
   push:
     branches: [main]
-    paths:
+    paths: &ci-paths
       - grammar.js
       - src/**
       - test/**
       - bindings/**
       - binding.gyp
+      - Cargo.toml
+      - Cargo.lock
+      - go.mod
+      - go.sum
+      - package.json
+      - pyproject.toml
       - .github/workflows/ci.yml
   pull_request:
-    paths:
-      - grammar.js
-      - src/**
-      - test/**
-      - bindings/**
-      - binding.gyp
-      - .github/workflows/ci.yml
+    paths: *ci-paths
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
