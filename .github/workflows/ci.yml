@@ -49,11 +49,19 @@ jobs:
         with:
           test-rust: true
           test-go: true
-          # node/python/swift binding smoke tests are disabled pending binding
-          # wiring: bindings/node is async-ESM (index.js top-level await) while
-          # binding_test.js is still CommonJS `require` -> ERR_REQUIRE_ASYNC_MODULE;
-          # python/swift load tests are not yet verified. Re-enable per binding
-          # once each is migrated. Registry publishing does not depend on these.
+          # Load smoke tests for node/python/swift are off; the binding builds
+          # themselves are fixed (scanner.c now compiled, index.js back to CJS).
+          # Remaining blockers before re-enabling each:
+          # - node:   parser regenerates at ABI 15 but the `tree-sitter` node
+          #           peerDependency is ^0.21 (ABI <=14) -> setLanguage throws
+          #           in initializeLanguageNodeClasses. Needs peer bump to an
+          #           ABI-15 runtime (>=0.25) + node-addon-api 8; verify native
+          #           builds on all 3 OS.
+          # - python: needs verification against tree_sitter ~=0.24.
+          # - swift:  Package.swift test target references SwiftTreeSitter with no
+          #           explicit `.product(name:package:)` declaration.
+          # nvim-treesitter consumes the C parser, not these bindings; registry
+          # publishing is independent of these smoke tests.
           test-node: false
           test-python: false
           test-swift: false
