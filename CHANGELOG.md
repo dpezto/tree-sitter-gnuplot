@@ -4,6 +4,13 @@ All notable changes are documented here. This file is maintained automatically b
 [release-please](https://github.com/googleapis/release-please) from Conventional-Commit
 history; do not edit it by hand.
 
+## [2.0.2](https://github.com/dpezto/tree-sitter-gnuplot/compare/v2.0.1...v2.0.2) (2026-07-23)
+
+
+### Bug Fixes
+
+* **release:** repair npm + crates publishing, use App token for release-please ([#8](https://github.com/dpezto/tree-sitter-gnuplot/issues/8)) ([a27b849](https://github.com/dpezto/tree-sitter-gnuplot/commit/a27b8497fb673783ba7e1bbdd99cd8a5b266e19e))
+
 ## [2.0.1](https://github.com/dpezto/tree-sitter-gnuplot/compare/v2.0.0...v2.0.1) (2026-07-23)
 
 
