@@ -1,6 +1,10 @@
 # tree-sitter-gnuplot
 [![CI](https://github.com/dpezto/tree-sitter-gnuplot/actions/workflows/ci.yml/badge.svg)](https://github.com/dpezto/tree-sitter-gnuplot/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/dpezto/tree-sitter-gnuplot/branch/main/graph/badge.svg)](https://codecov.io/gh/dpezto/tree-sitter-gnuplot)
+[![npm](https://img.shields.io/npm/v/tree-sitter-gnuplot?logo=npm)](https://www.npmjs.com/package/tree-sitter-gnuplot)
+[![crates.io](https://img.shields.io/crates/v/tree-sitter-gnuplot?logo=rust)](https://crates.io/crates/tree-sitter-gnuplot)
+[![PyPI](https://img.shields.io/pypi/v/tree-sitter-gnuplot?logo=pypi)](https://pypi.org/project/tree-sitter-gnuplot/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PRs Welcome][prs-badge]](https://makeapullrequest.com)
 
 A tree-sitter grammar for [gnuplot 6.x](http://gnuplot.info).
