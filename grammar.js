@@ -2313,8 +2313,11 @@ module.exports = grammar({
 		unary_expression: ($) =>
 			choice(
 				...[
-					["-", PREC.UNARY],
-					["+", PREC.UNARY],
+					// +/- merged into one regex token; identical pattern in the
+					// binary PLUS row below dedups to the SAME lexer token, so
+					// unary and binary +/- share it (−1 token, CST unchanged:
+					// alias keeps node type `operator` with the matched text)
+					[/[-+]/, PREC.UNARY],
 					["~", PREC.BIT_NOT],
 					["!", PREC.UNARY],
 				].map(([operator, precedence]) =>
@@ -2334,18 +2337,18 @@ module.exports = grammar({
 		binary_expression: ($) =>
 			choice(
 				...[
+					// Same-precedence operator groups merged into single regex
+					// tokens (parser-size/generate-RAM lever: each distinct
+					// token appears in ~4-5k expression-tail states). Longer
+					// alternatives first (maximal munch). NOT merged: `*`
+					// (ranges/array decl), `<<`/`>>` (`<<` shared with
+					// def_datablock), `^`/`|` (`|` doubles as unary abs),
+					// `&&`/`||` (different precedence — merge changes parses).
 					["**", PREC.POWER],
 					["*", PREC.TIMES],
-					["/", PREC.TIMES],
-					["%", PREC.TIMES],
-					["+", PREC.PLUS],
-					["-", PREC.PLUS],
-					["==", PREC.COMPARE],
-					["!=", PREC.COMPARE],
-					["<", PREC.COMPARE],
-					["<=", PREC.COMPARE],
-					[">", PREC.COMPARE],
-					[">=", PREC.COMPARE],
+					[/[\/%]/, PREC.TIMES],
+					[/[-+]/, PREC.PLUS],
+					[/==|!=|<=|>=|<|>/, PREC.COMPARE],
 					[">>", PREC.SHIFT],
 					["<<", PREC.SHIFT],
 					["&", PREC.BIT_AND],
@@ -2363,8 +2366,11 @@ module.exports = grammar({
 					),
 				),
 				...[
-					["eq", PREC.COMPARE],
-					["ne", PREC.COMPARE],
+					// eq/ne merged; regex (not strings) opts out of keyword
+					// extraction — safe: the op token is only expected in
+					// after-expression states where identifier is not valid,
+					// and maximal munch keeps `equals`/`next` as identifiers
+					[/eq|ne/, PREC.COMPARE],
 				].map(([operator, precedence]) =>
 					prec.left(
 						precedence,
