@@ -23,7 +23,7 @@
     "prebuildify": "prebuildify --napi --strip"
   },
   "author": "Dai López Jacinto",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "node-addon-api": "^7.1.0",
     "node-gyp-build": "^4.8.0"
