@@ -40,27 +40,34 @@ jobs:
 
   # Registry publish is gated in THIS run, not a separate tag-triggered workflow:
   # a tag pushed by the default GITHUB_TOKEN cannot trigger another workflow.
+  # Local OIDC-enabled copy of package-npm.yml (see the pypi job below and
+  # tree-sitter/workflows#54). No NODE_AUTH_TOKEN passed -> npm publishes via
+  # the OIDC id-token.
   npm:
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'
-    uses: tree-sitter/workflows/.github/workflows/package-npm.yml@main
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/package-npm.yml
     with:
       generate: true
-    secrets:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+  # Local OIDC-enabled copy of package-crates.yml. No CARGO_REGISTRY_TOKEN
+  # passed -> crates-io-auth-action mints a short-lived token via OIDC.
   crates:
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'
-    uses: tree-sitter/workflows/.github/workflows/package-crates.yml@main
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/package-crates.yml
     # generate:false — the committed src/ is complete and tracked, so cargo
     # publishes from it directly. generate:true made the job cargo-install the
     # CLI into an in-workspace CARGO_HOME, whose .crates.toml/.crates2.json then
     # tripped `cargo publish`'s uncommitted-changes check.
     with:
       generate: false
-    secrets:
-      CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 
   # Local copy of tree-sitter/workflows' package-pypi.yml, patched for OIDC
   # trusted publishing (upstream PR tree-sitter/workflows#54, unmerged). No

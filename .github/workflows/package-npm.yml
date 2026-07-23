@@ -1,0 +1,156 @@
+# Vendored from tree-sitter/workflows/.github/workflows/package-npm.yml, with
+# OIDC trusted publishing enabled (upstream PR #54, unmerged): NODE_AUTH_TOKEN is
+# optional and the publish job carries `id-token: write`. npm is upgraded to a
+# release that supports trusted publishing (>= 11.5.1; the default Node ships an
+# older npm). `workflow_call` only, so it never runs on its own. Re-sync from
+# upstream if the build matrix drifts.
+name: Publish package (npm)
+
+on:
+  workflow_call:
+    inputs:
+      package-name:
+        description: The name of the package
+        default: ${{github.event.repository.name}}
+        type: string
+      environment-name:
+        description: The name of the environment
+        default: npm
+        type: string
+      node-version:
+        description: The NodeJS version
+        default: ${{vars.NODE_VERSION || '22'}}
+        type: string
+      generate:
+        description: Generate the parser artifacts
+        default: false
+        type: boolean
+      abi-version:
+        description: The tree-sitter ABI version
+        default: 15
+        type: number
+    secrets:
+      # Optional: unset -> OIDC trusted publishing; set -> classic token (rollback)
+      NODE_AUTH_TOKEN:
+        description: An authentication token for npm
+        required: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build_wasm:
+    name: Build Wasm binaries
+    runs-on: ubuntu-24.04
+    continue-on-error: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Set up NodeJS
+        uses: actions/setup-node@v6
+        with:
+          cache: npm
+          node-version: ${{inputs.node-version}}
+      - name: Install dependencies
+        run: npm i --omit peer --omit optional
+      - name: Regenerate parser
+        if: ${{inputs.generate}}
+        run: |
+          while read -r grammar_dir; do
+            pushd "$grammar_dir"
+            npm x -- tree-sitter generate
+            popd > /dev/null
+          done < <(jq -r '.grammars[].path // "."' tree-sitter.json)
+        env:
+          TREE_SITTER_ABI_VERSION: ${{inputs.abi-version}}
+      - name: Build Wasm binaries
+        run: |-
+          while read -r grammar_dir; do
+            npm x -- tree-sitter build --wasm "$grammar_dir"
+          done < <(jq -r '.grammars[].path // "."' tree-sitter.json)
+      - name: Upload binaries
+        uses: actions/upload-artifact@v7
+        with:
+          path: "*.wasm"
+          name: prebuilds-wasm
+          retention-days: 2
+
+  build_node:
+    name: Build NodeJS binaries on ${{matrix.os}}
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os:
+          - windows-2022
+          - windows-11-arm
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+          - macos-15
+          - macos-15-intel
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Set up NodeJS
+        uses: actions/setup-node@v6
+        with:
+          cache: npm
+          node-version: ${{inputs.node-version}}
+      - name: Install dependencies
+        run: npm i --omit peer --omit optional
+      - name: Regenerate parser
+        if: ${{inputs.generate}}
+        shell: bash
+        run: |
+          while read -r grammar_dir; do
+            grammar_dir="${grammar_dir%$'\r'}"
+            pushd "$grammar_dir"
+            npm x -- tree-sitter generate
+            popd > /dev/null
+          done < <(jq -r '.grammars[].path // "."' tree-sitter.json)
+      - name: Build binary
+        run: npm x -- prebuildify -t 20.19.5
+      - name: Upload binaries
+        uses: actions/upload-artifact@v7
+        with:
+          path: prebuilds/**
+          name: prebuilds-${{matrix.os}}
+          retention-days: 2
+
+  package:
+    name: Publish NodeJS package
+    needs: [build_wasm, build_node]
+    runs-on: ubuntu-24.04
+    environment:
+      name: ${{inputs.environment-name}}
+      url: https://www.npmjs.com/package/${{inputs.package-name}}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Set up NodeJS
+        uses: actions/setup-node@v6
+        with:
+          cache: npm
+          node-version: ${{inputs.node-version}}
+          registry-url: https://registry.npmjs.org/
+      - name: Download binaries
+        uses: actions/download-artifact@v8
+        with:
+          path: prebuilds
+          pattern: prebuilds-*
+          merge-multiple: true
+      - name: Check binaries
+        run: tree prebuilds
+      - name: Move Wasm binaries to root
+        continue-on-error: true
+        run: mv -v prebuilds/*.wasm .
+      # Trusted publishing requires npm >= 11.5.1; the bundled npm is older.
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
