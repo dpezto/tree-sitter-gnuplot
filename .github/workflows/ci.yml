@@ -71,7 +71,7 @@ jobs:
         # run from here. parser.c is generated, so only the scanner is reported.
         run: gcov ~/.cache/tree-sitter/lib/*-scanner.gcda
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./scanner.c.gcov
