@@ -123,6 +123,23 @@
                   "type": "CHOICE",
                   "members": [
                     {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "kw_g_coord"
+                      },
+                      "named": false,
+                      "value": "coord"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
                       "type": "SYMBOL",
                       "name": "_expression"
                     },

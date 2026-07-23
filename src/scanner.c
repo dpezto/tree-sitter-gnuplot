@@ -559,6 +559,9 @@ static const GoptKwEntry GOPT_KWS[] = {
     // glues to the bracket as an array subscript. Bare `r [0:1]` keeps that
     // limitation — `r` is far too common a variable for a global row.
     {"theta", 5, KW_G_ARG, 0},
+    // surface (explicit min 4 — exp() is a builtin)
+    {"implicit", 3, KW_G_MOD, 0},
+    {"explicit", 4, KW_G_MOD, 0},
     {NULL, 0, 0, 0},
 };
 
@@ -914,10 +917,13 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
         // If the word is immediately used in expression syntax (operator,
         // call, subscript, comma), it is a VALUE even when it matches a
         // keyword row: `palette functions gray,1,1`, `samples points(3)`.
+        // '-'/'+' are NOT in this set: a following sign is far more often a
+        // signed value of the keyword (`levels incremental -20, 5, 20`) than
+        // `kw - x` arithmetic on a variable shadowing a keyword name.
         {
           int32_t c = lexer->lookahead;
           while (c == ' ' || c == '\t') { consume(lexer); c = lexer->lookahead; }
-          if (c == ',' || c == '+' || c == '-' || c == '*' || c == '/' ||
+          if (c == ',' || c == '*' || c == '/' ||
               c == '%' || c == '^' || c == '(' || c == '[' || c == '.' ||
               c == '=' || c == '<' || c == '>' || c == '&' || c == '|' ||
               c == '?' || c == ':') {

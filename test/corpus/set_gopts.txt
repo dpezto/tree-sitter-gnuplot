@@ -176,7 +176,6 @@ set key box lt -1 lw 0.5 opaque at screen 0.95, screen 0.95 right top
       (style_opts
         (number))
       (number)
-      (identifier)
       (number))))
 
 ================================================================================

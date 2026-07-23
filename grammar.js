@@ -167,8 +167,17 @@ module.exports = grammar({
 				seq(
 					$._expression,
 					// range_block as a chain element: contourfill
-					// `defined [a:b] c, [d:e] f` chains through the ranges
-					repeat(seq(",", choice($._expression, $.range_block))),
+					// `defined [a:b] c, [d:e] f` chains through the ranges.
+					// Optional coord prefix per element: `set offsets
+					// graph 0, 0, graph 0.1, graph 0.1` (the leading coord
+					// comes in via the _gopt_item coord branch instead).
+					repeat(
+						seq(
+							",",
+							optional(alias($.kw_g_coord, "coord")),
+							choice($._expression, $.range_block),
+						),
+					),
 				),
 			),
 		// Parenthesized tuple list — palette `defined (0 "blue", 1 "red")`,
