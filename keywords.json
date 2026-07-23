@@ -26,6 +26,7 @@
 			"kw": "angles",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"angles"
 			]
@@ -47,6 +48,7 @@
 			"kw": "arrow",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"arrow",
 				"style"
@@ -90,6 +92,7 @@
 			"kw": "autoscale",
 			"tier": "arg",
 			"min": 4,
+			"head": true,
 			"parents": [
 				"autoscale"
 			]
@@ -109,14 +112,45 @@
 			"min": 7
 		},
 		{
+			"kw": "bars",
+			"tier": "arg",
+			"min": 1,
+			"head": true,
+			"parents": [
+				"_argument_set_show"
+			]
+		},
+		{
+			"kw": "binrange",
+			"tier": "arg",
+			"min": 8
+		},
+		{
+			"kw": "bins",
+			"tier": "arg",
+			"min": 4
+		},
+		{
+			"kw": "binvalue",
+			"tier": "arg",
+			"min": 8
+		},
+		{
+			"kw": "binwidth",
+			"tier": "arg",
+			"min": 8
+		},
+		{
 			"kw": "bmargin",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"head": true
 		},
 		{
 			"kw": "border",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"_pm3d",
 				"border",
@@ -131,12 +165,24 @@
 			"min": 3
 		},
 		{
+			"kw": "boxdepth",
+			"tier": "arg",
+			"min": 8,
+			"head": true
+		},
+		{
 			"kw": "boxwidth",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"boxwidth"
 			]
+		},
+		{
+			"kw": "bs",
+			"tier": "arg",
+			"min": 2
 		},
 		{
 			"kw": "bspline",
@@ -152,9 +198,40 @@
 			"min": 2
 		},
 		{
+			"kw": "cbdata",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "cbdtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "cblabel",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "cbmtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "cbrange",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
 			"kw": "cbtics",
 			"tier": "arg",
-			"min": 6
+			"min": 5,
+			"head": true
 		},
 		{
 			"kw": "center",
@@ -170,6 +247,17 @@
 			]
 		},
 		{
+			"kw": "clip",
+			"tier": "arg",
+			"min": 4,
+			"head": true,
+			"parents": [
+				"ellipse",
+				"style",
+				"t_opts"
+			]
+		},
+		{
 			"kw": "clustered",
 			"tier": "arg",
 			"min": 5,
@@ -181,6 +269,7 @@
 			"kw": "cntrlabel",
 			"tier": "arg",
 			"min": 5,
+			"head": true,
 			"parents": [
 				"cntrlabel"
 			]
@@ -189,14 +278,25 @@
 			"kw": "cntrparam",
 			"tier": "arg",
 			"min": 5,
+			"head": true,
 			"parents": [
 				"cntrparam"
+			]
+		},
+		{
+			"kw": "color",
+			"tier": "arg",
+			"min": 5,
+			"head": true,
+			"parents": [
+				"mono_color"
 			]
 		},
 		{
 			"kw": "colorbox",
 			"tier": "arg",
 			"min": 6,
+			"head": true,
 			"parents": [
 				"colorbox"
 			]
@@ -205,6 +305,7 @@
 			"kw": "colormap",
 			"tier": "arg",
 			"min": 8,
+			"head": true,
 			"parents": [
 				"palette"
 			]
@@ -216,6 +317,12 @@
 			"parents": [
 				"cmd_show"
 			]
+		},
+		{
+			"kw": "colorsequence",
+			"tier": "arg",
+			"min": 13,
+			"head": true
 		},
 		{
 			"kw": "columnheader",
@@ -243,9 +350,16 @@
 			]
 		},
 		{
+			"kw": "contourfill",
+			"tier": "arg",
+			"min": 11,
+			"head": true
+		},
+		{
 			"kw": "contours",
 			"tier": "arg",
 			"min": 5,
+			"head": true,
 			"parents": [
 				"contour"
 			]
@@ -254,6 +368,7 @@
 			"kw": "cornerpoles",
 			"tier": "arg",
 			"min": 7,
+			"head": true,
 			"parents": [
 				"cornerpoles"
 			]
@@ -285,6 +400,7 @@
 			"kw": "datafile",
 			"tier": "arg",
 			"min": 5,
+			"head": true,
 			"parents": [
 				"datafile"
 			]
@@ -293,6 +409,7 @@
 			"kw": "decimalsign",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"decimalsign"
 			]
@@ -328,9 +445,15 @@
 			]
 		},
 		{
+			"kw": "delay",
+			"tier": "arg",
+			"min": 5
+		},
+		{
 			"kw": "dgrid3d",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"dgrid3d"
 			]
@@ -353,6 +476,7 @@
 			"kw": "dummy",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"dummy"
 			]
@@ -361,6 +485,7 @@
 			"kw": "encoding",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
@@ -369,9 +494,15 @@
 			"kw": "errorbars",
 			"tier": "arg",
 			"min": 5,
+			"head": true,
 			"parents": [
 				"style"
 			]
+		},
+		{
+			"kw": "file",
+			"tier": "arg",
+			"min": 4
 		},
 		{
 			"kw": "fillchar",
@@ -390,12 +521,23 @@
 			]
 		},
 		{
+			"kw": "fit",
+			"tier": "arg",
+			"min": 3,
+			"head": true
+		},
+		{
 			"kw": "fit2rgbformulae",
 			"tier": "arg",
 			"min": 7,
 			"parents": [
 				"palette"
 			]
+		},
+		{
+			"kw": "flush",
+			"tier": "arg",
+			"min": 5
 		},
 		{
 			"kw": "fontscale",
@@ -414,6 +556,7 @@
 			"kw": "format",
 			"tier": "arg",
 			"min": 4,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
@@ -473,6 +616,7 @@
 			"kw": "grid",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"grid"
 			]
@@ -495,6 +639,7 @@
 			"kw": "hidden3d",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"_argument_set_show",
 				"_pm3d"
@@ -504,6 +649,7 @@
 			"kw": "history",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"_argument_set_show",
 				"cmd_history"
@@ -552,6 +698,7 @@
 			"kw": "isosamples",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
@@ -560,10 +707,23 @@
 			"kw": "isosurface",
 			"tier": "arg",
 			"min": 7,
+			"head": true,
 			"parents": [
 				"_argument_set_show",
 				"plot_style"
 			]
+		},
+		{
+			"kw": "isotropic",
+			"tier": "arg",
+			"min": 9,
+			"head": true
+		},
+		{
+			"kw": "jitter",
+			"tier": "arg",
+			"min": 6,
+			"head": true
 		},
 		{
 			"kw": "jsdir",
@@ -574,6 +734,7 @@
 			"kw": "key",
 			"tier": "arg",
 			"min": 1,
+			"head": true,
 			"parents": [
 				"key"
 			]
@@ -590,6 +751,7 @@
 			"kw": "label",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"_paxis_label",
 				"label",
@@ -647,14 +809,22 @@
 			"min": 9
 		},
 		{
+			"kw": "link",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
 			"kw": "lmargin",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"head": true
 		},
 		{
 			"kw": "loadpath",
 			"tier": "arg",
 			"min": 4,
+			"head": true,
 			"parents": [
 				"loadpath",
 				"locale"
@@ -663,7 +833,8 @@
 		{
 			"kw": "locale",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"head": true
 		},
 		{
 			"kw": "logfile",
@@ -678,10 +849,16 @@
 			"kw": "logscale",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"logscale",
 				"tics_opts"
 			]
+		},
+		{
+			"kw": "loop",
+			"tier": "arg",
+			"min": 4
 		},
 		{
 			"kw": "map",
@@ -692,6 +869,7 @@
 			"kw": "mapping",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"mapping"
 			]
@@ -699,7 +877,8 @@
 		{
 			"kw": "margins",
 			"tier": "arg",
-			"min": 7,
+			"min": 3,
+			"head": true,
 			"parents": [
 				"margin"
 			]
@@ -734,14 +913,27 @@
 			]
 		},
 		{
+			"kw": "mcbtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
 			"kw": "medianlinewidth",
 			"tier": "arg",
 			"min": 15
 		},
 		{
+			"kw": "micro",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
 			"kw": "minussign",
 			"tier": "arg",
 			"min": 5,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
@@ -758,6 +950,7 @@
 			"kw": "monochrome",
 			"tier": "arg",
 			"min": 4,
+			"head": true,
 			"parents": [
 				"mono_color",
 				"monochrome"
@@ -767,6 +960,7 @@
 			"kw": "mouse",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
@@ -777,12 +971,90 @@
 			"min": 11
 		},
 		{
+			"kw": "mrtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "mttics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
 			"kw": "multiplot",
 			"tier": "arg",
 			"min": 5,
 			"parents": [
 				"multiplot"
 			]
+		},
+		{
+			"kw": "mutics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "mvtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "mvxtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "mvytics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "mvztics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "mx2tics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "mxtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "mxytics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "my2tics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "mytics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "mztics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
 		},
 		{
 			"kw": "negative",
@@ -809,6 +1081,7 @@
 			"kw": "nonlinear",
 			"tier": "arg",
 			"min": 5,
+			"head": true,
 			"parents": [
 				"nonlinear"
 			]
@@ -826,6 +1099,7 @@
 			"kw": "object",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"object"
 			]
@@ -843,6 +1117,7 @@
 			"kw": "offsets",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
@@ -872,6 +1147,7 @@
 			"kw": "origin",
 			"tier": "arg",
 			"min": 1,
+			"head": true,
 			"parents": [
 				"_argument_set_show",
 				"colorbox"
@@ -881,6 +1157,7 @@
 			"kw": "output",
 			"tier": "arg",
 			"min": 1,
+			"head": true,
 			"parents": [
 				"_argument_set_show",
 				"cmd_stats"
@@ -895,6 +1172,12 @@
 			]
 		},
 		{
+			"kw": "overflow",
+			"tier": "arg",
+			"min": 8,
+			"head": true
+		},
+		{
 			"kw": "overlap",
 			"tier": "arg",
 			"min": 4,
@@ -906,6 +1189,7 @@
 			"kw": "palette",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"colorspec",
 				"contourfill",
@@ -926,14 +1210,22 @@
 			"kw": "parametric",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
 		},
 		{
+			"kw": "paxis",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
 			"kw": "pixmap",
 			"tier": "arg",
 			"min": 4,
+			"head": true,
 			"parents": [
 				"pixmap"
 			]
@@ -955,6 +1247,15 @@
 			]
 		},
 		{
+			"kw": "pm3d",
+			"tier": "arg",
+			"min": 4,
+			"head": true,
+			"parents": [
+				"plot_style"
+			]
+		},
+		{
 			"kw": "point",
 			"tier": "arg",
 			"min": 5
@@ -963,6 +1264,7 @@
 			"kw": "pointintervalbox",
 			"tier": "arg",
 			"min": 8,
+			"head": true,
 			"parents": [
 				"pointintervalbox"
 			]
@@ -988,6 +1290,7 @@
 			"kw": "pointsize",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"pointsize"
 			]
@@ -1004,6 +1307,7 @@
 			"kw": "polar",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"_argument_set_show",
 				"grid"
@@ -1039,6 +1343,7 @@
 			"kw": "print",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
@@ -1049,9 +1354,20 @@
 			"min": 10
 		},
 		{
+			"kw": "psdir",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
 			"kw": "qnorm",
 			"tier": "arg",
 			"min": 5
+		},
+		{
+			"kw": "quality",
+			"tier": "arg",
+			"min": 7
 		},
 		{
 			"kw": "quiet",
@@ -1108,9 +1424,22 @@
 			"kw": "raxis",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
+		},
+		{
+			"kw": "rdata",
+			"tier": "arg",
+			"min": 3,
+			"head": true
+		},
+		{
+			"kw": "rdtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
 		},
 		{
 			"kw": "relative",
@@ -1134,6 +1463,12 @@
 			]
 		},
 		{
+			"kw": "rgbmax",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
 			"kw": "right",
 			"tier": "arg",
 			"min": 3,
@@ -1150,9 +1485,22 @@
 			]
 		},
 		{
+			"kw": "rlabel",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
 			"kw": "rmargin",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"head": true
+		},
+		{
+			"kw": "rmtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
 		},
 		{
 			"kw": "rowstacked",
@@ -1161,6 +1509,18 @@
 			"parents": [
 				"style"
 			]
+		},
+		{
+			"kw": "rrange",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "rtics",
+			"tier": "arg",
+			"min": 4,
+			"head": true
 		},
 		{
 			"kw": "rto",
@@ -1185,6 +1545,7 @@
 			"kw": "samples",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
@@ -1203,6 +1564,11 @@
 			]
 		},
 		{
+			"kw": "scan",
+			"tier": "arg",
+			"min": 4
+		},
+		{
 			"kw": "separation",
 			"tier": "arg",
 			"min": 10
@@ -1211,6 +1577,7 @@
 			"kw": "size",
 			"tier": "arg",
 			"min": 1,
+			"head": true,
 			"parents": [
 				"_argument_set_show",
 				"canvas_size",
@@ -1231,6 +1598,7 @@
 			"kw": "spiderplot",
 			"tier": "arg",
 			"min": 6,
+			"head": true,
 			"parents": [
 				"_argument_set_show",
 				"grid",
@@ -1251,6 +1619,7 @@
 			"kw": "style",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"style"
 			]
@@ -1259,6 +1628,7 @@
 			"kw": "surface",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"_argument_set_show",
 				"contour"
@@ -1268,28 +1638,50 @@
 			"kw": "table",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"table"
 			]
 		},
 		{
+			"kw": "tdata",
+			"tier": "arg",
+			"min": 3,
+			"head": true
+		},
+		{
+			"kw": "tdtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
 			"kw": "terminal",
 			"tier": "arg",
 			"min": 1,
+			"head": true,
 			"parents": [
 				"cmd_save",
 				"terminal"
 			]
 		},
 		{
+			"kw": "termoption",
+			"tier": "arg",
+			"min": 10,
+			"head": true
+		},
+		{
 			"kw": "theta",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"head": true
 		},
 		{
 			"kw": "tics",
 			"tier": "arg",
 			"min": -1,
+			"head": true,
 			"parents": [
 				"_argument_set_show",
 				"grid",
@@ -1304,6 +1696,7 @@
 			"kw": "timefmt",
 			"tier": "arg",
 			"min": 5,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
@@ -1312,6 +1705,7 @@
 			"kw": "timestamp",
 			"tier": "arg",
 			"min": 5,
+			"head": true,
 			"parents": [
 				"_argument_set_show",
 				"t_opts"
@@ -1322,6 +1716,7 @@
 			"tier": "arg",
 			"min": 2,
 			"no": true,
+			"head": true,
 			"parents": [
 				"key",
 				"multiplot",
@@ -1332,9 +1727,22 @@
 			]
 		},
 		{
+			"kw": "tlabel",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
 			"kw": "tmargin",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"head": true
+		},
+		{
+			"kw": "tmtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
 		},
 		{
 			"kw": "to",
@@ -1345,6 +1753,12 @@
 			"kw": "top",
 			"tier": "arg",
 			"min": 2
+		},
+		{
+			"kw": "trange",
+			"tier": "arg",
+			"min": 4,
+			"head": true
 		},
 		{
 			"kw": "trianglepattern",
@@ -1360,12 +1774,42 @@
 			]
 		},
 		{
+			"kw": "ttics",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
 			"kw": "two",
 			"tier": "arg",
 			"min": 1,
 			"parents": [
 				"clip"
 			]
+		},
+		{
+			"kw": "udata",
+			"tier": "arg",
+			"min": 3,
+			"head": true
+		},
+		{
+			"kw": "udtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "ulabel",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "umtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
 		},
 		{
 			"kw": "undefined",
@@ -1387,12 +1831,24 @@
 			"min": 8
 		},
 		{
+			"kw": "urange",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
 			"kw": "user",
 			"tier": "arg",
 			"min": 1,
 			"parents": [
 				"colorbox"
 			]
+		},
+		{
+			"kw": "utics",
+			"tier": "arg",
+			"min": 4,
+			"head": true
 		},
 		{
 			"kw": "variables",
@@ -1402,6 +1858,18 @@
 				"cmd_save",
 				"cmd_show"
 			]
+		},
+		{
+			"kw": "vdata",
+			"tier": "arg",
+			"min": 3,
+			"head": true
+		},
+		{
+			"kw": "vdtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
 		},
 		{
 			"kw": "verbose",
@@ -1421,17 +1889,157 @@
 			]
 		},
 		{
+			"kw": "vgrid",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
 			"kw": "view",
 			"tier": "arg",
 			"min": 2,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
 		},
 		{
+			"kw": "vlabel",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "vmtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "vrange",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "vtics",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "vxdata",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "vxdtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "vxlabel",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "vxmtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "vxrange",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "vxtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "vydata",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "vydtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "vylabel",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "vymtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "vyrange",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "vytics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "vzdata",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "vzdtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "vzlabel",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "vzmtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "vzrange",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "vztics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
 			"kw": "walls",
 			"tier": "arg",
 			"min": -1,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
@@ -1459,20 +2067,259 @@
 			"min": 4
 		},
 		{
+			"kw": "x2data",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "x2dtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "x2label",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "x2mtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "x2range",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "x2tics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "x2zeroaxis",
+			"tier": "arg",
+			"min": 7,
+			"head": true
+		},
+		{
+			"kw": "xdata",
+			"tier": "arg",
+			"min": 3,
+			"head": true
+		},
+		{
+			"kw": "xdtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "xlabel",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "xmtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "xrange",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "xtics",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "xydata",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "xydtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "xylabel",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "xymtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
 			"kw": "xyplane",
 			"tier": "arg",
 			"min": 3,
+			"head": true,
 			"parents": [
 				"xyplane"
 			]
 		},
 		{
+			"kw": "xyrange",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "xytics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "xzeroaxis",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "y2data",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "y2dtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "y2label",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "y2mtics",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "y2range",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "y2tics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "y2zeroaxis",
+			"tier": "arg",
+			"min": 7,
+			"head": true
+		},
+		{
+			"kw": "ydata",
+			"tier": "arg",
+			"min": 3,
+			"head": true
+		},
+		{
+			"kw": "ydtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "ylabel",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "ymtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
+			"kw": "yrange",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "ytics",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "yzeroaxis",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "zdata",
+			"tier": "arg",
+			"min": 3,
+			"head": true
+		},
+		{
+			"kw": "zdtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
+		},
+		{
 			"kw": "zero",
 			"tier": "arg",
 			"min": 1,
+			"head": true,
 			"parents": [
 				"_argument_set_show"
 			]
+		},
+		{
+			"kw": "zeroaxis",
+			"tier": "arg",
+			"min": 5,
+			"head": true,
+			"parents": [
+				"zeroaxis"
+			]
+		},
+		{
+			"kw": "zlabel",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "zmtics",
+			"tier": "arg",
+			"min": 5,
+			"head": true
 		},
 		{
 			"kw": "zoomcoordinates",
@@ -1501,8 +2348,31 @@
 			]
 		},
 		{
+			"kw": "zrange",
+			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
 			"kw": "ztics",
 			"tier": "arg",
+			"min": 4,
+			"head": true
+		},
+		{
+			"kw": "zzeroaxis",
+			"tier": "arg",
+			"min": 6,
+			"head": true
+		},
+		{
+			"kw": "axes",
+			"tier": "attr",
+			"min": 4
+		},
+		{
+			"kw": "every",
+			"tier": "attr",
 			"min": 5
 		},
 		{
@@ -1520,6 +2390,11 @@
 			"parents": [
 				"plot_element"
 			]
+		},
+		{
+			"kw": "smooth",
+			"tier": "attr",
+			"min": 6
 		},
 		{
 			"kw": "title",
@@ -1551,9 +2426,19 @@
 			]
 		},
 		{
+			"kw": "bind",
+			"tier": "cmd",
+			"min": 4
+		},
+		{
 			"kw": "break",
 			"tier": "cmd",
 			"min": 5
+		},
+		{
+			"kw": "call",
+			"tier": "cmd",
+			"min": 4
 		},
 		{
 			"kw": "cd",
@@ -1598,6 +2483,11 @@
 				"_argument_set_show",
 				"cmd_history"
 			]
+		},
+		{
+			"kw": "import",
+			"tier": "cmd",
+			"min": 6
 		},
 		{
 			"kw": "load",
@@ -1669,6 +2559,14 @@
 			"min": 6
 		},
 		{
+			"kw": "reset",
+			"tier": "cmd",
+			"min": 5,
+			"parents": [
+				"t_opts"
+			]
+		},
+		{
 			"kw": "save",
 			"tier": "cmd",
 			"min": 2,
@@ -1697,6 +2595,16 @@
 			"kw": "splot",
 			"tier": "cmd",
 			"min": 2
+		},
+		{
+			"kw": "stats",
+			"tier": "cmd",
+			"min": 5
+		},
+		{
+			"kw": "test",
+			"tier": "cmd",
+			"min": 4
 		},
 		{
 			"kw": "toggle",
@@ -1747,6 +2655,15 @@
 			"min": 2,
 			"parents": [
 				"position"
+			]
+		},
+		{
+			"kw": "polar",
+			"tier": "coord",
+			"min": 5,
+			"parents": [
+				"_argument_set_show",
+				"grid"
 			]
 		},
 		{
@@ -2094,6 +3011,11 @@
 			]
 		},
 		{
+			"kw": "hypertext",
+			"tier": "flag",
+			"min": 9
+		},
+		{
 			"kw": "inlineimages",
 			"tier": "flag",
 			"min": 12,
@@ -2162,6 +3084,11 @@
 			]
 		},
 		{
+			"kw": "nocontours",
+			"tier": "flag",
+			"min": 10
+		},
+		{
 			"kw": "noextend",
 			"tier": "flag",
 			"min": 5,
@@ -2170,12 +3097,27 @@
 			]
 		},
 		{
+			"kw": "nofpe_trap",
+			"tier": "flag",
+			"min": 10
+		},
+		{
+			"kw": "nogrid",
+			"tier": "flag",
+			"min": 6
+		},
+		{
 			"kw": "nohidden3d",
 			"tier": "flag",
 			"min": -2,
 			"parents": [
 				"style_opts"
 			]
+		},
+		{
+			"kw": "nopoint",
+			"tier": "flag",
+			"min": 7
 		},
 		{
 			"kw": "noproportional",
@@ -2454,6 +3396,11 @@
 			]
 		},
 		{
+			"kw": "all",
+			"tier": "mod",
+			"min": 3
+		},
+		{
 			"kw": "anchor",
 			"tier": "mod",
 			"min": 6
@@ -2472,6 +3419,11 @@
 			"kw": "ansirgb",
 			"tier": "mod",
 			"min": 7
+		},
+		{
+			"kw": "avg",
+			"tier": "mod",
+			"min": 3
 		},
 		{
 			"kw": "axis",
@@ -2500,9 +3452,19 @@
 			"min": 7
 		},
 		{
+			"kw": "bezier",
+			"tier": "mod",
+			"min": 6
+		},
+		{
 			"kw": "big",
 			"tier": "mod",
 			"min": 3
+		},
+		{
+			"kw": "bind",
+			"tier": "mod",
+			"min": 4
 		},
 		{
 			"kw": "blacktext",
@@ -2524,6 +3486,11 @@
 			"kw": "brief",
 			"tier": "mod",
 			"min": 5
+		},
+		{
+			"kw": "butt",
+			"tier": "mod",
+			"min": 4
 		},
 		{
 			"kw": "candlesticks",
@@ -2576,6 +3543,11 @@
 			]
 		},
 		{
+			"kw": "cnormal",
+			"tier": "mod",
+			"min": 7
+		},
+		{
 			"kw": "color",
 			"tier": "mod",
 			"min": 5,
@@ -2600,6 +3572,11 @@
 			]
 		},
 		{
+			"kw": "columnsfirst",
+			"tier": "mod",
+			"min": 12
+		},
+		{
 			"kw": "context",
 			"tier": "mod",
 			"min": 7,
@@ -2619,6 +3596,11 @@
 			"parents": [
 				"smooth_options"
 			]
+		},
+		{
+			"kw": "cumulative",
+			"tier": "mod",
+			"min": 10
 		},
 		{
 			"kw": "cw",
@@ -2665,6 +3647,11 @@
 			]
 		},
 		{
+			"kw": "downwards",
+			"tier": "mod",
+			"min": 9
+		},
+		{
 			"kw": "duplex",
 			"tier": "mod",
 			"min": 6,
@@ -2708,6 +3695,11 @@
 			]
 		},
 		{
+			"kw": "errors",
+			"tier": "mod",
+			"min": 6
+		},
+		{
 			"kw": "explicit",
 			"tier": "mod",
 			"min": 4
@@ -2716,6 +3708,11 @@
 			"kw": "financebars",
 			"tier": "mod",
 			"min": 11
+		},
+		{
+			"kw": "fit",
+			"tier": "mod",
+			"min": 3
 		},
 		{
 			"kw": "fix",
@@ -2733,12 +3730,22 @@
 			"min": 5
 		},
 		{
+			"kw": "fnormal",
+			"tier": "mod",
+			"min": 7
+		},
+		{
 			"kw": "fortran",
 			"tier": "mod",
 			"min": 4,
 			"parents": [
 				"datafile"
 			]
+		},
+		{
+			"kw": "frequency",
+			"tier": "mod",
+			"min": 9
 		},
 		{
 			"kw": "full",
@@ -2769,9 +3776,22 @@
 			"min": 5
 		},
 		{
+			"kw": "gnuplot",
+			"tier": "mod",
+			"min": 7
+		},
+		{
 			"kw": "gray",
 			"tier": "mod",
 			"min": 4
+		},
+		{
+			"kw": "grid",
+			"tier": "mod",
+			"min": 4,
+			"parents": [
+				"grid"
+			]
 		},
 		{
 			"kw": "hann",
@@ -2949,6 +3969,11 @@
 			"min": 8
 		},
 		{
+			"kw": "path",
+			"tier": "mod",
+			"min": 4
+		},
+		{
 			"kw": "pdf",
 			"tier": "mod",
 			"min": 3
@@ -3015,6 +4040,16 @@
 			]
 		},
 		{
+			"kw": "rowsfirst",
+			"tier": "mod",
+			"min": 9
+		},
+		{
+			"kw": "sbezier",
+			"tier": "mod",
+			"min": 7
+		},
+		{
 			"kw": "script",
 			"tier": "mod",
 			"min": 6
@@ -3025,6 +4060,20 @@
 			"min": 3,
 			"parents": [
 				"mxtics"
+			]
+		},
+		{
+			"kw": "session",
+			"tier": "mod",
+			"min": 7
+		},
+		{
+			"kw": "set",
+			"tier": "mod",
+			"min": 3,
+			"parents": [
+				"_set_multiplot",
+				"cmd_set"
 			]
 		},
 		{
@@ -3066,6 +4115,19 @@
 			"kw": "splines",
 			"tier": "mod",
 			"min": 7
+		},
+		{
+			"kw": "square",
+			"tier": "mod",
+			"min": 6,
+			"parents": [
+				"size"
+			]
+		},
+		{
+			"kw": "sum",
+			"tier": "mod",
+			"min": 3
 		},
 		{
 			"kw": "surface",
@@ -3165,6 +4227,29 @@
 			"kw": "trip",
 			"tier": "mod",
 			"min": 4
+		},
+		{
+			"kw": "undefined",
+			"tier": "mod",
+			"min": 9,
+			"parents": [
+				"hidden3d"
+			]
+		},
+		{
+			"kw": "unique",
+			"tier": "mod",
+			"min": 6
+		},
+		{
+			"kw": "unwrap",
+			"tier": "mod",
+			"min": 6
+		},
+		{
+			"kw": "upwards",
+			"tier": "mod",
+			"min": 7
 		},
 		{
 			"kw": "v4",
@@ -3736,6 +4821,11 @@
 			]
 		},
 		{
+			"kw": "boxplot",
+			"tier": "st_opt",
+			"min": 7
+		},
+		{
 			"kw": "circle",
 			"tier": "st_opt",
 			"min": -2,
@@ -3812,6 +4902,11 @@
 				"grid",
 				"style"
 			]
+		},
+		{
+			"kw": "textbox",
+			"tier": "st_opt",
+			"min": 7
 		},
 		{
 			"kw": "watchpoint",
