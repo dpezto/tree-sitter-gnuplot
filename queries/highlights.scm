@@ -1,8 +1,6 @@
 ; highlights.scm
 (comment) @comment @spell
-
 "variable" @variable.parameter
-
 ; built-in named values (palette presets, special color names)
 ; TODO: decide and collapse (bgnd & background same)
 ; black/viridis constant?
@@ -12,9 +10,7 @@
   "bgnd"
   "background"
 ] @variable.parameter.builtin
-
 (identifier) @variable
-
 [
   "["
   "]"
@@ -23,19 +19,14 @@
   "{"
   "}"
 ] @punctuation.bracket
-
 (operator) @operator
-
 [
   "="
   ","
   ":"
 ] @operator
-
 (keyword_op) @keyword.operator
-
 (ternary_op) @keyword.conditional.ternary
-
 ; TODO: collapse
 [
   "for"
@@ -43,27 +34,22 @@
   "do"
   "while"
 ] @keyword.repeat
-
 ; -----------------------------------------------------------------------
 ; Commands
 "cmd" @keyword
-
 ; TODO: decide and collapse
 [
   "newhistogram"
   "newspiderplot"
   "keyentry"
 ] @keyword
-
 ; TODO: decide inverse, sample
 [
   "inverse"
   "sample"
   "kw_fn"
 ] @keyword.function
-
 "kw_cond" @keyword.conditional
-
 ; TODO: decide and collapse
 [
   "front"
@@ -73,23 +59,18 @@
   "font"
   "filled"
   "nofilled"
-  "parallel"
   ; coordinate systems (first/second/graph/screen/character/polar) — alias "coord"
   "coord"
 ] @keyword.directive
-
 ; on/off toggle flags ({no}X) — alias "flag" (@keyword.modifier)
 "flag" @keyword.directive
-
 ; enumerated VALUES / modes (alias "mod") — @constant
 ; TODO: decide, constant?
 "mod" @constant
-
 ; plot/splot ELEMENT modifiers (alias "attr") — @property
 ; (title/notitle/with/using/index/every/axes/smooth in a plot command;
 ;  distinct from set-option names which are @variable.member)
 "attr" @property
-
 ; -----------------------------------------------------------------------
 ; TODO: decide and collapse
 [
@@ -111,8 +92,6 @@
   ; set/show argument keywords (all key("...", n, "arg") aliases)
   "arg"
 ] @variable.member
-
-
 ; -----------------------------------------------------------------------
 ; Option keywords
 ; TODO: decide and collapse
@@ -120,15 +99,7 @@
   ; coordinate systems / axes
   "axes_opts"
   ; time units (set xdata time / timefmt)
-  "seconds"
-  "minutes"
-  "hours"
-  "days"
-  "weeks"
-  "months"
-  "years"
   ; smooth subtypes still emitted as own token (value-modes csplines/bezier/… → "mod")
-  "kdensity"
   "closed"
   "between"
   "above"
@@ -214,10 +185,8 @@
   "angle"
   "length"
   "head"
-  "inout"
   ; offset / scale
   "offset"
-  "nooffset"
   "scale"
   ; orientation
   ; angle units
@@ -225,8 +194,6 @@
   "range"
   "missing"
   "interpolate"
-  "autofreq"
-  "autojustify"
   ; rotation
   "rotate"
   ; border / extend / range modifiers
@@ -243,20 +210,16 @@
   "s"
   ; data / fit extras
   "variables"
-  "logfile"
-  "nologfile"
   "datablocks"
   "commentschars"
   "functions"
   ; misc
   ; coordinate planes / walls
-  "version"
   ; colorspec
   "rgbcolor"
   ; tics
   ; set size
   ; set fit
-  "maxiter"
   "default"
   ; label / style
   ; set view
@@ -270,12 +233,9 @@
   "specular"
   "spec2"
   ; dgrid3d subtype (gauss/… value-modes → "mod")
-  "splines"
   ; contour / cntrparam
   ; tics axes / modifiers
-  "add"
   ; text / font / encoding
-  "utf8"
   ; fill / size style
   "empty"
   ; layout / spacing / multiplot
@@ -297,8 +257,6 @@
   "label"
   ; polar coordinate system and grid option
   ; polar grid axis ranges
-  "theta"
-  "r"
   ; ellipses style
   "units"
   ; stats output prefix
@@ -313,9 +271,7 @@
   ; datafile lc/fc palette shorthand
   "palette"
   ; set fit quiet / results / verbose / brief
-  "fit_out"
 ] @variable.member
-
 ; -----------------------------------------------------------------------
 ; Presentation / style attributes
 ; TODO: decide and collapse
@@ -341,32 +297,24 @@
   ; point type names (ps/tikz terminals)
   ; key alignment (capitalised)
   ; layer / style misc
-
   "st_opt"
   "plt_st"
 ] @attribute
-
-
 ; binary filetype= value (png/jpg/gif/bin parsed as identifier in field)
 (binary_options
   filetype: (identifier) @attribute)
-
 ; -----------------------------------------------------------------------
 ; Macro / datablock identifiers
 (macro) @function.macro
-
 (datablock) @module
-
 [
   (datablock_start)
   (datablock_end)
 ] @label
-
 ; -----------------------------------------------------------------------
 ; Functions
 (function
   name: (identifier) @function)
-
 ((function
   name: (identifier) @function.builtin)
   (#any-of? @function.builtin
@@ -381,39 +329,29 @@
     "timecolumn" "tm_hour" "tm_mday" "tm_min" "tm_mon" "tm_sec" "tm_wday" "tm_week" "tm_yday"
     "tm_year" "weekday_iso" "weekday_cdc" "column" "columnhead" "exists" "hsv2rgb" "index" "palette"
     "rgbcolor" "stringcolumn" "valid" "value" "voxel"))
-
 ; -----------------------------------------------------------------------
 ; Built-in variables (stats output, GPVAL_*, etc.)
 ((identifier) @variable.builtin
   (#match? @variable.builtin
     "^\\w+_(records|headers|outofrange|invalid|blank|blocks|columns|column_header|index_(min|max)(_x|_y)?|(min|max)(_x|_y)?|mean(_err)?(_x|_y)?|stddev(_err)?(_x|_y)?)$"))
-
 ((identifier) @variable.builtin
   (#match? @variable.builtin
     "^\\w+_(sdd(_x|_y)?|(lo|up)_quartile(_x|_y)?|median(_x|_y)?|sum(sq)?(_x|_y)?|skewness(_err)?(_x|_y)?)$"))
-
 ((identifier) @variable.builtin
   (#match? @variable.builtin
     "^\\w+_(kurtosis(_err)?(_x|_y)?|adev(_x|_y)?|correlation|slope(_err)?|intercept(_err)?|sumxy|pos_(min|max)_y|size(_x|_y))$"))
-
 ((identifier) @variable.builtin
   (#match? @variable.builtin
     "^((GPVAL|MOUSE|FIT)_\\w+|GNUTERM|NaN|Inf|VoxelDistance|GridDistance|pi|ARG\\w+)$"))
-
 ; -----------------------------------------------------------------------
 ; Array definitions
 (def_array
   "array" @keyword.function)
-
 (array
   (identifier) @function)
-
 ; -----------------------------------------------------------------------
 ; Literals
 (number) @number
-
 (string_literal) @string
-
 (escape_sequence) @string.escape
-
 (format_specifier) @string.special

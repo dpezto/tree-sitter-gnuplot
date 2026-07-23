@@ -523,6 +523,42 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"format", 6, KW_G_ARG, 0},
     {"logscale", 4, KW_G_FLAG, 1},
     {"rangelimited", 5, KW_G_FLAG, 1},
+    // fit ("log"/"min"/"exp" stay identifiers — builtins; "error" hits the
+    // errorbars row first: mislabeled tier, still parses)
+    {"logfile", 4, KW_G_ARG, 1},
+    {"results", 7, KW_G_MOD, 0},
+    {"brief", 5, KW_G_MOD, 0},
+    {"errorvariables", 3, KW_G_FLAG, 1},
+    {"covariancevariables", 3, KW_G_FLAG, 1},
+    {"errorscaling", 6, KW_G_FLAG, 1},
+    {"prescale", 8, KW_G_FLAG, 1},
+    {"maxiter", 7, KW_G_ARG, 0},
+    {"limit_abs", 9, KW_G_ARG, 0},
+    {"limit", 5, KW_G_ARG, 0},
+    {"script", 6, KW_G_MOD, 0},
+    {"v4", 2, KW_G_MOD, 0},
+    {"v5", 2, KW_G_MOD, 0},
+    // dgrid3d / polar grid kernels
+    {"splines", 7, KW_G_MOD, 0},
+    {"qnorm", 5, KW_G_ARG, 0},
+    {"gauss", 5, KW_G_MOD, 0},
+    {"cauchy", 6, KW_G_MOD, 0},
+    {"hann", 4, KW_G_MOD, 0},
+    {"kdensity", 8, KW_G_MOD, 0},
+    // mxtics time units ("sec".."second" abbreviations hit the coord row)
+    {"seconds", 3, KW_G_MOD, 0},
+    {"minutes", 4, KW_G_MOD, 0},
+    {"hours", 4, KW_G_MOD, 0},
+    {"days", 3, KW_G_MOD, 0},
+    {"weeks", 4, KW_G_MOD, 0},
+    {"months", 3, KW_G_MOD, 0},
+    {"years", 4, KW_G_MOD, 0},
+    // x*label
+    {"parallel", 8, KW_G_MOD, 0},
+    // polar grid theta range (`theta [0:pi]`): without a row the identifier
+    // glues to the bracket as an array subscript. Bare `r [0:1]` keeps that
+    // limitation — `r` is far too common a variable for a global row.
+    {"theta", 5, KW_G_ARG, 0},
     {NULL, 0, 0, 0},
 };
 

@@ -864,71 +864,26 @@ module.exports = grammar({
 		decimalsign: ($) =>
 			prec.right(seq(key("decimalsign", 3, "arg"), optional(seq($._gval_sep, $._gopts)))),
 
+		// Generic body (rows: splines/qnorm/gauss/cauchy/hann/kdensity; `exp`
+		// stays an identifier — exp() is a builtin, same rule as int/log)
 		dgrid3d: ($) =>
-			prec.left(
-				seq(
-					key("dgrid3d", 2, "arg"),
-					repeat(
-						choice(
-							seq(
-								field("rows", $._expression),
-								optional(seq(",", field("cols", $._expression))),
-							),
-							choice(
-								"splines",
-								seq(alias("qnorm", "arg"), $._expression),
-								seq(
-									choice(alias("gauss", "mod"), alias("cauchy", "mod"), alias("exp", "mod"), alias("box", "mod"), alias("hann", "mod")),
-									optional("kdensity"),
-									optional($._expression),
-									optional(seq(",", $._expression)),
-								),
-							),
-						),
-					),
-				),
-			),
+			prec.right(seq(key("dgrid3d", 2, "arg"), optional(seq($._gval_sep, $._gopts)))),
 
 		dummy: ($) =>
 			prec.right(seq(key("dummy", 2, "arg"), optional(seq($._gval_sep, $._gopts)))),
 
-		encoding: ($) =>
-			choice(
-				key("defaults", 3, "mod"),
-				/iso_8859_(1|15|2|9)/,
-				/koi8(r|u)/,
-				/cp(437|85(0|2)|950|125(0|1|2|4))/,
-				alias("sjis", "mod"),
-				"utf8",
-				alias("locale", "arg"),
-			),
+		// Generic body: encoding names (iso_8859_*, koi8*, cp*, sjis, utf8)
+		// parse as identifier items; defaults/locale are existing rows
+		encoding: ($) => seq($._gval_sep, $._gopts),
 
 		errorbars: ($) => seq($._gval_sep, $._gopts_style),
 
-		fit: ($) =>
-			repeat1(
-				choice(
-					choice(
-						key("nologfile", 5),
-						seq(key("logfile", 3), choice($._expression, "default")),
-					),
-					key1("fit_out", reg("quiet", 5, 1), /|results|brief|verbose/),
-					key("errorvariables", 3, "flag", 1),
-					key("covariancevariables", 3, "flag", 1),
-					key("errorscaling", 6, "flag", 1),
-					key("prescale", undefined, "flag", 1),
-					seq("maxiter", choice(field("value", $._expression), "default")),
-					seq(alias("limit", "arg"), choice(field("epsilon", $._expression), "default")),
-					seq(alias("limit_abs", "arg"), field("epsilon_abs", $._expression)),
-					seq(alias("start-lambda", "arg"), choice($._expression, "default")),
-					seq(alias("lambda-factor", "arg"), choice($._expression, "default")),
-					seq(
-						alias("script", "mod"),
-						optional(choice(field("command", $._expression), "default")),
-					),
-					alias(choice("v4", "v5"), "version"),
-				),
-			),
+		// Generic body (rows: logfile min 4 — bare `log` is a builtin —
+		// results/brief/errorvariables/covariancevariables/errorscaling/
+		// prescale/maxiter/limit/limit_abs/script/v4/v5; quiet/verbose/
+		// default rows exist). `start-lambda`/`lambda-factor` parse via the
+		// start row / identifier plus a minus-expression — permissive.
+		fit: ($) => seq($._gval_sep, $._gopts),
 
 		format: ($) => seq($._gval_sep, $._gopts_style),
 
@@ -1086,29 +1041,14 @@ module.exports = grammar({
 
 		_unset_multiplot: ($) => seq(key("unset", 3, "cmd"), $.multiplot),
 
+		// Generic body (time-unit rows seconds/minutes min 4 — min() is a
+		// builtin — hours/days/weeks/months/years; `time` and freq exprs are
+		// plain items; sec–second abbreviations hit the coord row first)
 		mxtics: ($) =>
-			prec.left(
+			prec.right(
 				seq(
 					key1("flag", "m", K.axes, reg("tics", -1)),
-					optional(
-						choice(
-							field("freq", $._expression),
-							key("default", 3),
-							seq(
-								optional("time"),
-								field("N", $._expression),
-								choice(
-									key("seconds", 3),
-									key("minutes", 3),
-									key("hours", 4),
-									key("days", 3),
-									key("weeks", 4),
-									key("months", 3),
-									key("years", 4),
-								),
-							),
-						),
-					),
+					optional(seq($._gval_sep, $._gopts)),
 				),
 			),
 
@@ -1257,26 +1197,10 @@ module.exports = grammar({
 		pointsize: ($) =>
 			prec.right(seq(key("pointsize", 3, "arg"), optional(seq($._gval_sep, $._gopts)))),
 
+		// `set polar grid …` — generic body (kernel words share the dgrid3d
+		// rows; theta/r + range_blocks and scale exprs are plain items)
 		polar: ($) =>
-			prec.left(
-				seq(
-					alias("grid", "mod"),
-					repeat(
-						choice(
-							$.dgrid3d,
-							seq("scale", $._expression),
-							seq("theta", $.range_block),
-							seq("r", $.range_block),
-							seq(
-								choice(alias("gauss", "mod"), alias("cauchy", "mod"), alias("exp", "mod"), alias("box", "mod"), alias("hann", "mod")),
-								optional("kdensity"),
-								optional($._expression),
-								optional(seq(",", $._expression)),
-							),
-						),
-					),
-				),
-			),
+			prec.right(seq(alias("grid", "mod"), optional(seq($._gval_sep, $._gopts)))),
 
 		print: ($) => seq($._gval_sep, $._gopts),
 
@@ -1415,25 +1339,12 @@ module.exports = grammar({
 		xdtics: ($) => key1("flag", K.axes, "d", reg("tics", -1)),
 
 		xlabel: ($) =>
+			// Generic style body: label text is a plain expression item;
+			// offset/rotate-by/textcolor/font/enhanced arrive via style_opts,
+			// `parallel` via its row
 			seq(
 				key1("arg", K.axes, reg("label", 3)),
-				prec.right(
-					repeat1(
-						choice(
-							field("label", $._expression),
-							offsetPos($),
-							seq(
-								key("rotate", 3, "flag", 1),
-								optional(
-									choice(seq(alias("by", "kw_fn"), field("angle", $._expression)), "parallel"),
-								),
-							),
-							$._textcolor,
-							$.fontspec,
-							key("enhanced", undefined, "flag", 1),
-						),
-					),
-				),
+				optional(seq($._gval_sep, $._gopts_style)),
 			),
 
 		xmtics: ($) => key1("flag", K.axes, "m", reg("tics", -1)),
