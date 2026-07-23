@@ -4,6 +4,13 @@ All notable changes are documented here. This file is maintained automatically b
 [release-please](https://github.com/googleapis/release-please) from Conventional-Commit
 history; do not edit it by hand.
 
+## [2.0.3](https://github.com/dpezto/tree-sitter-gnuplot/compare/v2.0.2...v2.0.3) (2026-07-23)
+
+
+### Bug Fixes
+
+* **release:** drop npm prepare script and untrack Cargo.lock ([#10](https://github.com/dpezto/tree-sitter-gnuplot/issues/10)) ([e8914b3](https://github.com/dpezto/tree-sitter-gnuplot/commit/e8914b3427848356816b0faf0c6fbd794a484a73))
+
 ## [2.0.2](https://github.com/dpezto/tree-sitter-gnuplot/compare/v2.0.1...v2.0.2) (2026-07-23)
 
 
