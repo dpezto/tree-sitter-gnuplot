@@ -509,6 +509,20 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"tex", 3, KW_G_MOD, 0},
     {"context", 7, KW_G_MOD, 0},
     {"dynamic", 7, KW_G_MOD, 0},
+    // tics (tics_opts generic conversion). rotate/enhanced/offset/justify
+    // arrive via existing rows or the style_opts branch. NOT rows: in/out
+    // (for-loop keyword / common variable — degrade to identifier items),
+    // "log" alone (log() is a builtin: logscale min 4, like the no-int rule)
+    {"axis", 4, KW_G_MOD, 0},
+    {"mirror", 6, KW_G_FLAG, 1},
+    {"add", 3, KW_G_ARG, 0},
+    {"autofreq", 4, KW_G_ARG, 0},
+    // effective from "autoj": shorter prefixes hit the autotitle row first
+    {"autojustify", 2, KW_G_ARG, 0},
+    {"by", 2, KW_G_ARG, 0},
+    {"format", 6, KW_G_ARG, 0},
+    {"logscale", 4, KW_G_FLAG, 1},
+    {"rangelimited", 5, KW_G_FLAG, 1},
     {NULL, 0, 0, 0},
 };
 

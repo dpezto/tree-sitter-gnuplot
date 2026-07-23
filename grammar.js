@@ -122,6 +122,9 @@ module.exports = grammar({
 
 	conflicts: ($) => [
 		[$.paxis, $.tics_opts],
+		// `(expr` may open a tuple group or a parenthesized expression;
+		// prec.dynamic on tuple resolves the lone-`(expr)` overlap
+		[$.tuple, $.parenthesized_expression],
 		[$._paxis_label],
 		[$.plot_element, $.style_opts],
 		[$.assignment, $._var_rhs],
@@ -168,11 +171,13 @@ module.exports = grammar({
 					repeat(seq(",", choice($._expression, $.range_block))),
 				),
 			),
-		// Parenthesized tuple list with at least two juxtaposed groups —
-		// palette `defined (0 "blue", 1 "red")`, gradient/color 4-tuples.
-		// A single parenthesized expression never matches (≥2 groups), so
-		// this coexists with parenthesized_expression in the same states.
-		tuple: ($) => surround("()", seq($._gexprs, repeat1($._gexprs))),
+		// Parenthesized tuple list — palette `defined (0 "blue", 1 "red")`,
+		// gradient 4-tuples, tics `(1, 2, 3)` / `("lbl" 1, "x" 2 1)`: one or
+		// more juxtaposed comma-chain groups. A lone `(expr)` also matches;
+		// prec.dynamic(-1) cedes that overlap to parenthesized_expression
+		// (which cannot hold a comma, so every real list lands here).
+		tuple: ($) =>
+			prec.dynamic(-1, surround("()", seq($._gexprs, repeat($._gexprs)))),
 		_gopt_item: ($) =>
 			choice(
 				alias($.kw_g_flag, "flag"),
@@ -184,6 +189,8 @@ module.exports = grammar({
 				prec.right(seq(alias($.kw_g_arg, "arg"), optional(seq($._gval_sep, choice($._gexprs, $.tuple))))),
 				prec.right(seq(alias($.kw_g_coord, "coord"), optional(seq($._gval_sep, $._gexprs)))),
 				$._gexprs,
+				// bare label/position list: `set xtics ("NE" 72, "S" 42)`
+				$.tuple,
 				$.range_block,
 			),
 		// Bodies are prec.LEFT: at an ambiguous statement boundary (next word is
@@ -1184,7 +1191,7 @@ module.exports = grammar({
 							),
 						),
 					),
-					optional(seq(key("tics", 3), optional($.tics_opts))),
+					optional(seq(key("tics", 3), optional(seq($._gval_sep, $.tics_opts)))),
 					optional($._paxis_label),
 					optional(offsetPos($)),
 				),
@@ -1387,7 +1394,7 @@ module.exports = grammar({
 
 		theta: ($) => seq($._gval_sep, $._gopts),
 
-		tics: ($) => $.tics_opts,
+		tics: ($) => seq($._gval_sep, $.tics_opts),
 
 		timestamp: ($) => seq($._gval_sep, $._gopts_style),
 
@@ -1447,7 +1454,10 @@ module.exports = grammar({
 
 		xtics: ($) =>
 			prec.left(
-				seq(key1("flag", K.axes, reg("tics", -1)), optional($.tics_opts)),
+				seq(
+					key1("flag", K.axes, reg("tics", -1)),
+					optional(seq($._gval_sep, $.tics_opts)),
+				),
 			),
 
 		xyplane: ($) =>
@@ -1789,75 +1799,13 @@ module.exports = grammar({
 				),
 			),
 
-		tics_opts: ($) =>
-			prec.left(
-				repeat1(
-					choice(
-						alias(choice("axis", "border"), "axis"),
-						key("mirror", undefined, "flag", 1),
-						alias(choice("in", "out"), "inout"),
-						seq(
-							"scale",
-							optional(
-								choice(
-									key("default", 3),
-									seq($._expression, optional(seq(",", $._expression))),
-								),
-							),
-						),
-						choice(
-							seq(key("rotate", 3), seq(alias("by", "kw_fn"), field("angle", $._expression))),
-							key("norotate", 5, "flag"),
-						),
-						choice(
-							field("offset", offsetPos($)),
-							key("nooffset", 5),
-						),
-						choice(
-							alias(K.c, "cen"),
-							alias(K.l, "lef"),
-							alias(K.r, "rig"),
-							key("autojustify", 2),
-						),
-						"add",
-						choice(
-							key("autofreq", 4),
-							$._expression,
-							seq(
-								field("start", $._expression),
-								",",
-								field("incr", $._expression),
-								optional(seq(",", field("end", $._expression))),
-							),
-							surround(
-								"()",
-								sep(
-									",",
-									choice(
-										field("pos", $._expression),
-										seq(
-											field("label", $._expression),
-											field("pos", $._expression),
-										),
-										seq(
-											field("label", $._expression),
-											field("pos", $._expression),
-											field("level", $._expression),
-										),
-									),
-								),
-							),
-						),
-						seq("format", $._expression),
-						$.fontspec,
-						key("enhanced", undefined, "flag", 1),
-						alias(choice("numeric", "timedate", "geographic"), "mod"),
-						key("logscale", 3, "log", 1),
-						key("rangelimited", 5, "flag", 1),
-						$._textcolor,
-					),
-				),
-			),
+		// Tics options are the shared style body (same alias-don't-clone rule
+		// as t_opts): sub-keywords live as GOPT_KWS rows (tics section);
+		// rotate/enhanced/offset/justify/font/textcolor arrive via style_opts.
+		// `in`/`out` and bare l/r/c justify letters degrade to identifier items
+		// (no rows: common variable names / for-loop keyword). start,incr,end
+		// chains are _gexprs; `("label" pos level, ...)` lists are `tuple`.
+		tics_opts: ($) => $._gopts_style,
 
 		line_style: ($) =>
 			prec.left(
