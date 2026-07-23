@@ -10,6 +10,7 @@
   ],
   "files": [
     "grammar.js",
+    "keywords.json",
     "binding.gyp",
     "prebuilds/**",
     "bindings/node/*",
@@ -17,6 +18,7 @@
     "src/**"
   ],
   "scripts": {
+    "gen:keywords": "node scripts/gen-keywords.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "node-gyp-build",
     "prebuildify": "prebuildify --napi --strip"
