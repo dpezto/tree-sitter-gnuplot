@@ -4,7 +4,10 @@
 		{
 			"kw": "absolute",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"boxwidth"
+			]
 		},
 		{
 			"kw": "add",
@@ -14,17 +17,26 @@
 		{
 			"kw": "angle",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"arrow"
+			]
 		},
 		{
 			"kw": "angles",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"angles"
+			]
 		},
 		{
 			"kw": "append",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"cmd_history"
+			]
 		},
 		{
 			"kw": "arc",
@@ -34,7 +46,11 @@
 		{
 			"kw": "arrow",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"arrow",
+				"style"
+			]
 		},
 		{
 			"kw": "aspect",
@@ -49,28 +65,43 @@
 		{
 			"kw": "auto",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "autofreq",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"tics_opts"
+			]
 		},
 		{
 			"kw": "autojustify",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"tics_opts"
+			]
 		},
 		{
 			"kw": "autoscale",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"autoscale"
+			]
 		},
 		{
 			"kw": "autotitle",
 			"tier": "arg",
 			"min": 1,
-			"no": true
+			"no": true,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "azimuth",
@@ -85,7 +116,14 @@
 		{
 			"kw": "border",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"_pm3d",
+				"border",
+				"colorbox",
+				"fill_style",
+				"style"
+			]
 		},
 		{
 			"kw": "bottom",
@@ -95,12 +133,18 @@
 		{
 			"kw": "boxwidth",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"boxwidth"
+			]
 		},
 		{
 			"kw": "bspline",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"cntrparam"
+			]
 		},
 		{
 			"kw": "by",
@@ -120,62 +164,99 @@
 		{
 			"kw": "charsize",
 			"tier": "arg",
-			"min": 8
+			"min": 8,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "clustered",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "cntrlabel",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"cntrlabel"
+			]
 		},
 		{
 			"kw": "cntrparam",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"cntrparam"
+			]
 		},
 		{
 			"kw": "colorbox",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"colorbox"
+			]
 		},
 		{
 			"kw": "colormap",
 			"tier": "arg",
-			"min": 8
+			"min": 8,
+			"parents": [
+				"palette"
+			]
 		},
 		{
 			"kw": "colornames",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"cmd_show"
+			]
 		},
 		{
 			"kw": "columnheader",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"key",
+				"plot_element"
+			]
 		},
 		{
 			"kw": "columns",
 			"tier": "arg",
-			"min": 7
+			"min": 7,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "columnstacked",
 			"tier": "arg",
-			"min": 7
+			"min": 7,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "contours",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"contour"
+			]
 		},
 		{
 			"kw": "cornerpoles",
 			"tier": "arg",
-			"min": 7
+			"min": 7,
+			"parents": [
+				"cornerpoles"
+			]
 		},
 		{
 			"kw": "cubehelix",
@@ -185,7 +266,10 @@
 		{
 			"kw": "cubicspline",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"cntrparam"
+			]
 		},
 		{
 			"kw": "cycle",
@@ -200,32 +284,56 @@
 		{
 			"kw": "datafile",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"datafile"
+			]
 		},
 		{
 			"kw": "decimalsign",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"decimalsign"
+			]
 		},
 		{
 			"kw": "default",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"colorbox",
+				"history",
+				"key",
+				"line_style",
+				"mxtics",
+				"t_opts",
+				"tics_opts"
+			]
 		},
 		{
 			"kw": "defined",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"palette"
+			]
 		},
 		{
 			"kw": "degrees",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"angles"
+			]
 		},
 		{
 			"kw": "dgrid3d",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"dgrid3d"
+			]
 		},
 		{
 			"kw": "discrete",
@@ -236,37 +344,58 @@
 			"kw": "doubleclick",
 			"tier": "arg",
 			"min": 4,
-			"no": true
+			"no": true,
+			"parents": [
+				"mouse"
+			]
 		},
 		{
 			"kw": "dummy",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"dummy"
+			]
 		},
 		{
 			"kw": "encoding",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "errorbars",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "fillchar",
 			"tier": "arg",
-			"min": 8
+			"min": 8,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "firstlinetype",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"contourfill"
+			]
 		},
 		{
 			"kw": "fit2rgbformulae",
 			"tier": "arg",
-			"min": 7
+			"min": 7,
+			"parents": [
+				"palette"
+			]
 		},
 		{
 			"kw": "fontscale",
@@ -276,12 +405,18 @@
 		{
 			"kw": "fontsize",
 			"tier": "arg",
-			"min": 8
+			"min": 8,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "format",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "fraction",
@@ -301,12 +436,20 @@
 		{
 			"kw": "function",
 			"tier": "arg",
-			"min": 8
+			"min": 8,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "functions",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"cmd_save",
+				"cmd_show",
+				"palette"
+			]
 		},
 		{
 			"kw": "gamma",
@@ -321,12 +464,18 @@
 		{
 			"kw": "gradient",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"palette"
+			]
 		},
 		{
 			"kw": "grid",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"grid"
+			]
 		},
 		{
 			"kw": "header",
@@ -337,38 +486,62 @@
 		{
 			"kw": "height",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "hidden3d",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"_argument_set_show",
+				"_pm3d"
+			]
 		},
 		{
 			"kw": "history",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"_argument_set_show",
+				"cmd_history"
+			]
 		},
 		{
 			"kw": "horizontal",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"colorbox",
+				"key"
+			]
 		},
 		{
 			"kw": "incremental",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"cntrparam"
+			]
 		},
 		{
 			"kw": "inside",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "insidecolor",
 			"tier": "arg",
 			"min": 6,
-			"no": true
+			"no": true,
+			"parents": [
+				"isosurface"
+			]
 		},
 		{
 			"kw": "interval",
@@ -378,12 +551,19 @@
 		{
 			"kw": "isosamples",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "isosurface",
 			"tier": "arg",
-			"min": 7
+			"min": 7,
+			"parents": [
+				"_argument_set_show",
+				"plot_style"
+			]
 		},
 		{
 			"kw": "jsdir",
@@ -393,28 +573,47 @@
 		{
 			"kw": "key",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "keywidth",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "label",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"_paxis_label",
+				"label",
+				"xlabel"
+			]
 		},
 		{
 			"kw": "labels",
 			"tier": "arg",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"mouse",
+				"plot_style",
+				"style"
+			]
 		},
 		{
 			"kw": "layerdefault",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"grid"
+			]
 		},
 		{
 			"kw": "left",
@@ -424,12 +623,18 @@
 		{
 			"kw": "Left",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "levels",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"cntrparam"
+			]
 		},
 		{
 			"kw": "limit",
@@ -449,7 +654,11 @@
 		{
 			"kw": "loadpath",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"loadpath",
+				"locale"
+			]
 		},
 		{
 			"kw": "locale",
@@ -460,12 +669,19 @@
 			"kw": "logfile",
 			"tier": "arg",
 			"min": 4,
-			"no": true
+			"no": true,
+			"parents": [
+				"fit"
+			]
 		},
 		{
 			"kw": "logscale",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"logscale",
+				"tics_opts"
+			]
 		},
 		{
 			"kw": "map",
@@ -475,22 +691,34 @@
 		{
 			"kw": "mapping",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"mapping"
+			]
 		},
 		{
 			"kw": "margins",
 			"tier": "arg",
-			"min": 7
+			"min": 7,
+			"parents": [
+				"margin"
+			]
 		},
 		{
 			"kw": "maxcolors",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"palette"
+			]
 		},
 		{
 			"kw": "maxcols",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "maxiter",
@@ -500,7 +728,10 @@
 		{
 			"kw": "maxrows",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "medianlinewidth",
@@ -510,22 +741,35 @@
 		{
 			"kw": "minussign",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "mixed",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"isosurface"
+			]
 		},
 		{
 			"kw": "monochrome",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"mono_color",
+				"monochrome"
+			]
 		},
 		{
 			"kw": "mouse",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "mouseformat",
@@ -535,12 +779,18 @@
 		{
 			"kw": "multiplot",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"multiplot"
+			]
 		},
 		{
 			"kw": "negative",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"palette"
+			]
 		},
 		{
 			"kw": "new",
@@ -550,38 +800,60 @@
 		{
 			"kw": "nokeyseparators",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "nonlinear",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"nonlinear"
+			]
 		},
 		{
 			"kw": "numbers",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"cmd_history",
+				"history"
+			]
 		},
 		{
 			"kw": "object",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"object"
+			]
 		},
 		{
 			"kw": "offset",
 			"tier": "arg",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"hidden3d"
+			]
 		},
 		{
 			"kw": "offsets",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "one",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"clip"
+			]
 		},
 		{
 			"kw": "onecolor",
@@ -591,57 +863,96 @@
 		{
 			"kw": "order",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"cntrparam"
+			]
 		},
 		{
 			"kw": "origin",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"_argument_set_show",
+				"colorbox"
+			]
 		},
 		{
 			"kw": "output",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"_argument_set_show",
+				"cmd_stats"
+			]
 		},
 		{
 			"kw": "outside",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "overlap",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"jitter"
+			]
 		},
 		{
 			"kw": "palette",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"colorspec",
+				"contourfill",
+				"line_style",
+				"palette",
+				"style_opts"
+			]
 		},
 		{
 			"kw": "palfuncparam",
 			"tier": "arg",
-			"min": 12
+			"min": 12,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "parametric",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "pixmap",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"pixmap"
+			]
 		},
 		{
 			"kw": "plot",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"cmd_show"
+			]
 		},
 		{
 			"kw": "plotsize",
 			"tier": "arg",
-			"min": 8
+			"min": 8,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "point",
@@ -651,32 +962,52 @@
 		{
 			"kw": "pointintervalbox",
 			"tier": "arg",
-			"min": 8
+			"min": 8,
+			"parents": [
+				"pointintervalbox"
+			]
 		},
 		{
 			"kw": "points",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"clip",
+				"cntrparam"
+			]
 		},
 		{
 			"kw": "pointscale",
 			"tier": "arg",
-			"min": 10
+			"min": 10,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "pointsize",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"pointsize"
+			]
 		},
 		{
 			"kw": "pointsmax",
 			"tier": "arg",
-			"min": 9
+			"min": 9,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "polar",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"_argument_set_show",
+				"grid"
+			]
 		},
 		{
 			"kw": "polardistance",
@@ -699,12 +1030,18 @@
 		{
 			"kw": "positive",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"palette"
+			]
 		},
 		{
 			"kw": "print",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "projection",
@@ -719,43 +1056,69 @@
 		{
 			"kw": "quiet",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"cmd_history",
+				"fit"
+			]
 		},
 		{
 			"kw": "radial",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"clip"
+			]
 		},
 		{
 			"kw": "radians",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"angles"
+			]
 		},
 		{
 			"kw": "radius",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "range",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"paxis",
+				"xrange"
+			]
 		},
 		{
 			"kw": "ratio",
 			"tier": "arg",
 			"min": 2,
-			"no": true
+			"no": true,
+			"parents": [
+				"size"
+			]
 		},
 		{
 			"kw": "raxis",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "relative",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"boxwidth"
+			]
 		},
 		{
 			"kw": "resolution",
@@ -765,17 +1128,26 @@
 		{
 			"kw": "rgbformulae",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"palette"
+			]
 		},
 		{
 			"kw": "right",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"style_opts"
+			]
 		},
 		{
 			"kw": "Right",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "rmargin",
@@ -785,7 +1157,10 @@
 		{
 			"kw": "rowstacked",
 			"tier": "arg",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "rto",
@@ -796,7 +1171,10 @@
 			"kw": "ruler",
 			"tier": "arg",
 			"min": 5,
-			"no": true
+			"no": true,
+			"parents": [
+				"mouse"
+			]
 		},
 		{
 			"kw": "samplen",
@@ -806,7 +1184,10 @@
 		{
 			"kw": "samples",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "saturation",
@@ -816,7 +1197,10 @@
 		{
 			"kw": "scale",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "separation",
@@ -826,7 +1210,12 @@
 		{
 			"kw": "size",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"_argument_set_show",
+				"canvas_size",
+				"colorbox"
+			]
 		},
 		{
 			"kw": "sorted",
@@ -841,7 +1230,12 @@
 		{
 			"kw": "spiderplot",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"_argument_set_show",
+				"grid",
+				"style"
+			]
 		},
 		{
 			"kw": "spread",
@@ -856,22 +1250,36 @@
 		{
 			"kw": "style",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "surface",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"_argument_set_show",
+				"contour"
+			]
 		},
 		{
 			"kw": "table",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"table"
+			]
 		},
 		{
 			"kw": "terminal",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"cmd_save",
+				"terminal"
+			]
 		},
 		{
 			"kw": "theta",
@@ -881,23 +1289,47 @@
 		{
 			"kw": "tics",
 			"tier": "arg",
-			"min": -1
+			"min": -1,
+			"parents": [
+				"_argument_set_show",
+				"grid",
+				"mxtics",
+				"paxis",
+				"xdtics",
+				"xmtics",
+				"xtics"
+			]
 		},
 		{
 			"kw": "timefmt",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "timestamp",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"_argument_set_show",
+				"t_opts"
+			]
 		},
 		{
 			"kw": "title",
 			"tier": "arg",
 			"min": 2,
-			"no": true
+			"no": true,
+			"parents": [
+				"key",
+				"multiplot",
+				"plot_element",
+				"style",
+				"t_opts",
+				"title"
+			]
 		},
 		{
 			"kw": "tmargin",
@@ -922,18 +1354,27 @@
 		{
 			"kw": "triangles",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"isosurface"
+			]
 		},
 		{
 			"kw": "two",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"clip"
+			]
 		},
 		{
 			"kw": "undefined",
 			"tier": "arg",
 			"min": 5,
-			"no": true
+			"no": true,
+			"parents": [
+				"hidden3d"
+			]
 		},
 		{
 			"kw": "units",
@@ -948,43 +1389,69 @@
 		{
 			"kw": "user",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"colorbox"
+			]
 		},
 		{
 			"kw": "variables",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"cmd_save",
+				"cmd_show"
+			]
 		},
 		{
 			"kw": "verbose",
 			"tier": "arg",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"mouse"
+			]
 		},
 		{
 			"kw": "version",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"cmd_show"
+			]
 		},
 		{
 			"kw": "view",
 			"tier": "arg",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "walls",
 			"tier": "arg",
-			"min": -1
+			"min": -1,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "width",
 			"tier": "arg",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"key",
+				"t_opts"
+			]
 		},
 		{
 			"kw": "window",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "wrap",
@@ -994,29 +1461,44 @@
 		{
 			"kw": "xyplane",
 			"tier": "arg",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"xyplane"
+			]
 		},
 		{
 			"kw": "zero",
 			"tier": "arg",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "zoomcoordinates",
 			"tier": "arg",
 			"min": 6,
-			"no": true
+			"no": true,
+			"parents": [
+				"mouse"
+			]
 		},
 		{
 			"kw": "zoomfactors",
 			"tier": "arg",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"mouse"
+			]
 		},
 		{
 			"kw": "zoomjump",
 			"tier": "arg",
 			"min": 5,
-			"no": true
+			"no": true,
+			"parents": [
+				"mouse"
+			]
 		},
 		{
 			"kw": "ztics",
@@ -1026,27 +1508,47 @@
 		{
 			"kw": "index",
 			"tier": "attr",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"index"
+			]
 		},
 		{
 			"kw": "notitle",
 			"tier": "attr",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"plot_element"
+			]
 		},
 		{
 			"kw": "title",
 			"tier": "attr",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"key",
+				"multiplot",
+				"plot_element",
+				"style",
+				"t_opts",
+				"title"
+			]
 		},
 		{
 			"kw": "using",
 			"tier": "attr",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"using"
+			]
 		},
 		{
 			"kw": "with",
 			"tier": "attr",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"plot_element"
+			]
 		},
 		{
 			"kw": "break",
@@ -1091,7 +1593,11 @@
 		{
 			"kw": "history",
 			"tier": "cmd",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"_argument_set_show",
+				"cmd_history"
+			]
 		},
 		{
 			"kw": "load",
@@ -1111,12 +1617,18 @@
 		{
 			"kw": "plot",
 			"tier": "cmd",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"cmd_show"
+			]
 		},
 		{
 			"kw": "print",
 			"tier": "cmd",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "pwd",
@@ -1131,7 +1643,10 @@
 		{
 			"kw": "raise",
 			"tier": "cmd",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "refresh",
@@ -1156,17 +1671,27 @@
 		{
 			"kw": "save",
 			"tier": "cmd",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"cmd_save"
+			]
 		},
 		{
 			"kw": "set",
 			"tier": "cmd",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"_set_multiplot",
+				"cmd_set"
+			]
 		},
 		{
 			"kw": "show",
 			"tier": "cmd",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"cmd_show"
+			]
 		},
 		{
 			"kw": "splot",
@@ -1181,12 +1706,19 @@
 		{
 			"kw": "undefine",
 			"tier": "cmd",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"cmd_undefine"
+			]
 		},
 		{
 			"kw": "unset",
 			"tier": "cmd",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"_unset_multiplot",
+				"cmd_unset"
+			]
 		},
 		{
 			"kw": "vclear",
@@ -1196,27 +1728,42 @@
 		{
 			"kw": "character",
 			"tier": "coord",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"position"
+			]
 		},
 		{
 			"kw": "first",
 			"tier": "coord",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"position"
+			]
 		},
 		{
 			"kw": "graph",
 			"tier": "coord",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"position"
+			]
 		},
 		{
 			"kw": "screen",
 			"tier": "coord",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"position"
+			]
 		},
 		{
 			"kw": "second",
 			"tier": "coord",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"position"
+			]
 		},
 		{
 			"kw": "dashtype",
@@ -1228,36 +1775,54 @@
 			"kw": "fillcolor",
 			"tier": "fc",
 			"min": 5,
-			"alt": "fc"
+			"alt": "fc",
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "altdiagonal",
 			"tier": "flag",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"hidden3d"
+			]
 		},
 		{
 			"kw": "antialias",
 			"tier": "flag",
 			"min": 9,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "attributes",
 			"tier": "flag",
 			"min": 10,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "auxfile",
 			"tier": "flag",
 			"min": 7,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "back",
 			"tier": "flag",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"colorbox"
+			]
 		},
 		{
 			"kw": "backhead",
@@ -1278,49 +1843,79 @@
 			"kw": "bentover",
 			"tier": "flag",
 			"min": 4,
-			"no": true
+			"no": true,
+			"parents": [
+				"hidden3d"
+			]
 		},
 		{
 			"kw": "border",
 			"tier": "flag",
 			"min": 2,
-			"no": true
+			"no": true,
+			"parents": [
+				"_pm3d",
+				"border",
+				"colorbox",
+				"fill_style",
+				"style"
+			]
 		},
 		{
 			"kw": "box",
 			"tier": "flag",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "boxed",
 			"tier": "flag",
 			"min": -2,
-			"no": true
+			"no": true,
+			"parents": [
+				"label_opts"
+			]
 		},
 		{
 			"kw": "clip",
 			"tier": "flag",
 			"min": 4,
-			"no": true
+			"no": true,
+			"parents": [
+				"ellipse",
+				"style",
+				"t_opts"
+			]
 		},
 		{
 			"kw": "clipcb",
 			"tier": "flag",
 			"min": 6,
-			"no": true
+			"no": true,
+			"parents": [
+				"_pm3d"
+			]
 		},
 		{
 			"kw": "columnheaders",
 			"tier": "flag",
 			"min": -3,
-			"no": true
+			"no": true,
+			"parents": [
+				"datafile"
+			]
 		},
 		{
 			"kw": "covariancevariables",
 			"tier": "flag",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"fit"
+			]
 		},
 		{
 			"kw": "crop",
@@ -1332,60 +1927,99 @@
 			"kw": "ctrl",
 			"tier": "flag",
 			"min": 4,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "ctrlq",
 			"tier": "flag",
 			"min": 5,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "depthorder",
 			"tier": "flag",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"_pm3d"
+			]
 		},
 		{
 			"kw": "enhanced",
 			"tier": "flag",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"key",
+				"label_opts",
+				"multiplot",
+				"plot_element",
+				"style_opts",
+				"termoption",
+				"tics_opts",
+				"title",
+				"xlabel"
+			]
 		},
 		{
 			"kw": "equal",
 			"tier": "flag",
 			"min": 5,
-			"no": true
+			"no": true,
+			"parents": [
+				"view"
+			]
 		},
 		{
 			"kw": "errorscaling",
 			"tier": "flag",
 			"min": 6,
-			"no": true
+			"no": true,
+			"parents": [
+				"fit"
+			]
 		},
 		{
 			"kw": "errorvariables",
 			"tier": "flag",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"fit"
+			]
 		},
 		{
 			"kw": "extend",
 			"tier": "flag",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"paxis",
+				"xrange"
+			]
 		},
 		{
 			"kw": "externalimages",
 			"tier": "flag",
 			"min": 14,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "feed",
 			"tier": "flag",
 			"min": 4,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "filled",
@@ -1396,31 +2030,46 @@
 		{
 			"kw": "front",
 			"tier": "flag",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"colorbox"
+			]
 		},
 		{
 			"kw": "ftriangles",
 			"tier": "flag",
 			"min": 10,
-			"no": true
+			"no": true,
+			"parents": [
+				"_pm3d"
+			]
 		},
 		{
 			"kw": "fulldoc",
 			"tier": "flag",
 			"min": 7,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "gparrows",
 			"tier": "flag",
 			"min": 8,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "gppoints",
 			"tier": "flag",
 			"min": 8,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "head",
@@ -1438,12 +2087,19 @@
 			"kw": "hidden3d",
 			"tier": "flag",
 			"min": 2,
-			"no": true
+			"no": true,
+			"parents": [
+				"_argument_set_show",
+				"_pm3d"
+			]
 		},
 		{
 			"kw": "inlineimages",
 			"tier": "flag",
-			"min": 12
+			"min": 12,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "interlace",
@@ -1455,139 +2111,222 @@
 			"kw": "invert",
 			"tier": "flag",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"colorbox",
+				"key"
+			]
 		},
 		{
 			"kw": "lighting",
 			"tier": "flag",
 			"min": 5,
-			"no": true
+			"no": true,
+			"parents": [
+				"_pm3d"
+			]
 		},
 		{
 			"kw": "logscale",
 			"tier": "flag",
 			"min": 4,
-			"no": true
+			"no": true,
+			"parents": [
+				"logscale",
+				"tics_opts"
+			]
 		},
 		{
 			"kw": "mirror",
 			"tier": "flag",
 			"min": 6,
-			"no": true
+			"no": true,
+			"parents": [
+				"tics_opts"
+			]
 		},
 		{
 			"kw": "noanimate",
 			"tier": "flag",
-			"min": 9
+			"min": 9,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "noborder",
 			"tier": "flag",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"colorbox"
+			]
 		},
 		{
 			"kw": "noextend",
 			"tier": "flag",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"autoscale"
+			]
 		},
 		{
 			"kw": "nohidden3d",
 			"tier": "flag",
-			"min": -2
+			"min": -2,
+			"parents": [
+				"style_opts"
+			]
 		},
 		{
 			"kw": "noproportional",
 			"tier": "flag",
-			"min": 14
+			"min": 14,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "nosurface",
 			"tier": "flag",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"style_opts"
+			]
 		},
 		{
 			"kw": "opaque",
 			"tier": "flag",
 			"min": 6,
-			"no": true
+			"no": true,
+			"parents": [
+				"key"
+			]
 		},
 		{
 			"kw": "originreset",
 			"tier": "flag",
 			"min": 11,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "outliers",
 			"tier": "flag",
 			"min": 4,
-			"no": true
+			"no": true,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "output",
 			"tier": "flag",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"_argument_set_show",
+				"cmd_stats"
+			]
 		},
 		{
 			"kw": "persist",
 			"tier": "flag",
 			"min": 7,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "picenvironment",
 			"tier": "flag",
 			"min": 14,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "polar",
 			"tier": "flag",
 			"min": 2,
-			"no": true
+			"no": true,
+			"parents": [
+				"_argument_set_show",
+				"grid"
+			]
 		},
 		{
 			"kw": "prescale",
 			"tier": "flag",
 			"min": 8,
-			"no": true
+			"no": true,
+			"parents": [
+				"fit"
+			]
 		},
 		{
 			"kw": "pspoints",
 			"tier": "flag",
 			"min": 8,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "raise",
 			"tier": "flag",
 			"min": 5,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "rangelimited",
 			"tier": "flag",
 			"min": 5,
-			"no": true
+			"no": true,
+			"parents": [
+				"tics_opts"
+			]
 		},
 		{
 			"kw": "replotonresize",
 			"tier": "flag",
 			"min": 14,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "reverse",
 			"tier": "flag",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"key",
+				"paxis",
+				"xrange"
+			]
 		},
 		{
 			"kw": "rotate",
 			"tier": "flag",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"label_opts",
+				"style_opts",
+				"t_opts",
+				"tics_opts",
+				"timestamp",
+				"xlabel"
+			]
 		},
 		{
 			"kw": "scroll",
@@ -1598,37 +2337,57 @@
 			"kw": "square",
 			"tier": "flag",
 			"min": 6,
-			"no": true
+			"no": true,
+			"parents": [
+				"size"
+			]
 		},
 		{
 			"kw": "standalone",
 			"tier": "flag",
 			"min": 10,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "tightboundingbox",
 			"tier": "flag",
 			"min": 16,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "tikzarrows",
 			"tier": "flag",
 			"min": 10,
-			"no": true
+			"no": true,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "timestamp",
 			"tier": "flag",
 			"min": 9,
-			"no": true
+			"no": true,
+			"parents": [
+				"_argument_set_show",
+				"t_opts"
+			]
 		},
 		{
 			"kw": "transparent",
 			"tier": "flag",
 			"min": 5,
-			"no": true
+			"no": true,
+			"parents": [
+				"background",
+				"fill_style"
+			]
 		},
 		{
 			"kw": "truecolor",
@@ -1640,19 +2399,33 @@
 			"kw": "vertical",
 			"tier": "flag",
 			"min": 1,
-			"no": true
+			"no": true,
+			"parents": [
+				"colorbox",
+				"grid",
+				"jitter",
+				"key"
+			]
 		},
 		{
 			"kw": "wedge",
 			"tier": "flag",
 			"min": 2,
-			"no": true
+			"no": true,
+			"parents": [
+				"object",
+				"style"
+			]
 		},
 		{
 			"kw": "writeback",
 			"tier": "flag",
 			"min": 3,
-			"no": true
+			"no": true,
+			"parents": [
+				"paxis",
+				"xrange"
+			]
 		},
 		{
 			"kw": "fillstyle",
@@ -1675,7 +2448,10 @@
 		{
 			"kw": "acsplines",
 			"tier": "mod",
-			"min": -1
+			"min": -1,
+			"parents": [
+				"smooth_options"
+			]
 		},
 		{
 			"kw": "anchor",
@@ -1705,12 +2481,18 @@
 		{
 			"kw": "base",
 			"tier": "mod",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"contour"
+			]
 		},
 		{
 			"kw": "bdefault",
 			"tier": "mod",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"colorbox"
+			]
 		},
 		{
 			"kw": "beveled",
@@ -1725,12 +2507,18 @@
 		{
 			"kw": "blacktext",
 			"tier": "mod",
-			"min": 9
+			"min": 9,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "both",
 			"tier": "mod",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"contour"
+			]
 		},
 		{
 			"kw": "brief",
@@ -1740,7 +2528,10 @@
 		{
 			"kw": "candlesticks",
 			"tier": "mod",
-			"min": 12
+			"min": 12,
+			"parents": [
+				"plot_style"
+			]
 		},
 		{
 			"kw": "cartesian",
@@ -1760,7 +2551,11 @@
 		{
 			"kw": "circle",
 			"tier": "mod",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"object",
+				"style"
+			]
 		},
 		{
 			"kw": "classic",
@@ -1775,27 +2570,42 @@
 		{
 			"kw": "close",
 			"tier": "mod",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "color",
 			"tier": "mod",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"mono_color"
+			]
 		},
 		{
 			"kw": "colortext",
 			"tier": "mod",
-			"min": 9
+			"min": 9,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "colourtext",
 			"tier": "mod",
-			"min": 10
+			"min": 10,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "context",
 			"tier": "mod",
-			"min": 7
+			"min": 7,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "counterclockwise",
@@ -1805,7 +2615,10 @@
 		{
 			"kw": "csplines",
 			"tier": "mod",
-			"min": -1
+			"min": -1,
+			"parents": [
+				"smooth_options"
+			]
 		},
 		{
 			"kw": "cw",
@@ -1820,27 +2633,44 @@
 		{
 			"kw": "dashed",
 			"tier": "mod",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "days",
 			"tier": "mod",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"mxtics"
+			]
 		},
 		{
 			"kw": "defaultplex",
 			"tier": "mod",
-			"min": 11
+			"min": 11,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "defaults",
 			"tier": "mod",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"encoding",
+				"hidden3d",
+				"style"
+			]
 		},
 		{
 			"kw": "duplex",
 			"tier": "mod",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "dynamic",
@@ -1850,12 +2680,19 @@
 		{
 			"kw": "eject",
 			"tier": "mod",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "ellipse",
 			"tier": "mod",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"object",
+				"style"
+			]
 		},
 		{
 			"kw": "empty",
@@ -1865,7 +2702,10 @@
 		{
 			"kw": "eps",
 			"tier": "mod",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "explicit",
@@ -1895,12 +2735,18 @@
 		{
 			"kw": "fortran",
 			"tier": "mod",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"datafile"
+			]
 		},
 		{
 			"kw": "full",
 			"tier": "mod",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"cmd_history"
+			]
 		},
 		{
 			"kw": "fullwidth",
@@ -1940,7 +2786,10 @@
 		{
 			"kw": "hours",
 			"tier": "mod",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"mxtics"
+			]
 		},
 		{
 			"kw": "implicit",
@@ -1960,7 +2809,10 @@
 		{
 			"kw": "landscape",
 			"tier": "mod",
-			"min": 9
+			"min": 9,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "large",
@@ -1970,7 +2822,10 @@
 		{
 			"kw": "latex",
 			"tier": "mod",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "level1",
@@ -1990,12 +2845,18 @@
 		{
 			"kw": "linear",
 			"tier": "mod",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"cntrparam"
+			]
 		},
 		{
 			"kw": "mcsplines",
 			"tier": "mod",
-			"min": -1
+			"min": -1,
+			"parents": [
+				"smooth_options"
+			]
 		},
 		{
 			"kw": "medium",
@@ -2005,7 +2866,10 @@
 		{
 			"kw": "minutes",
 			"tier": "mod",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"mxtics"
+			]
 		},
 		{
 			"kw": "mitered",
@@ -2020,17 +2884,26 @@
 		{
 			"kw": "months",
 			"tier": "mod",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"mxtics"
+			]
 		},
 		{
 			"kw": "mouse",
 			"tier": "mod",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"_argument_set_show"
+			]
 		},
 		{
 			"kw": "mpoints",
 			"tier": "mod",
-			"min": 7
+			"min": 7,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "nodraw",
@@ -2050,7 +2923,10 @@
 		{
 			"kw": "normalpoints",
 			"tier": "mod",
-			"min": 12
+			"min": 12,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "numeric",
@@ -2090,12 +2966,18 @@
 		{
 			"kw": "polygon",
 			"tier": "mod",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"object"
+			]
 		},
 		{
 			"kw": "portrait",
 			"tier": "mod",
-			"min": 8
+			"min": 8,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "ps_allcF",
@@ -2105,12 +2987,19 @@
 		{
 			"kw": "rectangle",
 			"tier": "mod",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"object",
+				"style"
+			]
 		},
 		{
 			"kw": "reset",
 			"tier": "mod",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "results",
@@ -2120,7 +3009,10 @@
 		{
 			"kw": "rounded",
 			"tier": "mod",
-			"min": -2
+			"min": -2,
+			"parents": [
+				"line_drawing_method"
+			]
 		},
 		{
 			"kw": "script",
@@ -2130,12 +3022,18 @@
 		{
 			"kw": "seconds",
 			"tier": "mod",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"mxtics"
+			]
 		},
 		{
 			"kw": "simplex",
 			"tier": "mod",
-			"min": 7
+			"min": 7,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "small",
@@ -2145,12 +3043,19 @@
 		{
 			"kw": "smallpoints",
 			"tier": "mod",
-			"min": 11
+			"min": 11,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "solid",
 			"tier": "mod",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"fill_style",
+				"t_opts"
+			]
 		},
 		{
 			"kw": "spherical",
@@ -2165,7 +3070,11 @@
 		{
 			"kw": "surface",
 			"tier": "mod",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"_argument_set_show",
+				"contour"
+			]
 		},
 		{
 			"kw": "swarm",
@@ -2175,12 +3084,19 @@
 		{
 			"kw": "terminal",
 			"tier": "mod",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"cmd_save",
+				"terminal"
+			]
 		},
 		{
 			"kw": "tex",
 			"tier": "mod",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "texarrows",
@@ -2190,7 +3106,10 @@
 		{
 			"kw": "texpoints",
 			"tier": "mod",
-			"min": 9
+			"min": 9,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "texthidden",
@@ -2200,7 +3119,10 @@
 		{
 			"kw": "textnormal",
 			"tier": "mod",
-			"min": 10
+			"min": 10,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "textrigid",
@@ -2225,12 +3147,19 @@
 		{
 			"kw": "tinypoints",
 			"tier": "mod",
-			"min": 10
+			"min": 10,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "transparent",
 			"tier": "mod",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"background",
+				"fill_style"
+			]
 		},
 		{
 			"kw": "trip",
@@ -2250,7 +3179,10 @@
 		{
 			"kw": "weeks",
 			"tier": "mod",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"mxtics"
+			]
 		},
 		{
 			"kw": "x0",
@@ -2295,7 +3227,10 @@
 		{
 			"kw": "years",
 			"tier": "mod",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"mxtics"
+			]
 		},
 		{
 			"kw": "yy",
@@ -2330,7 +3265,10 @@
 		{
 			"kw": "context",
 			"tier": "name",
-			"min": 2
+			"min": 2,
+			"parents": [
+				"t_opts"
+			]
 		},
 		{
 			"kw": "domterm",
@@ -2505,7 +3443,10 @@
 		{
 			"kw": "candlesticks",
 			"tier": "plt_st",
-			"min": 12
+			"min": 12,
+			"parents": [
+				"plot_style"
+			]
 		},
 		{
 			"kw": "circles",
@@ -2525,17 +3466,26 @@
 		{
 			"kw": "ellipses",
 			"tier": "plt_st",
-			"min": 8
+			"min": 8,
+			"parents": [
+				"plot_style"
+			]
 		},
 		{
 			"kw": "filledcurves",
 			"tier": "plt_st",
-			"min": 7
+			"min": 7,
+			"parents": [
+				"plot_style"
+			]
 		},
 		{
 			"kw": "fillsteps",
 			"tier": "plt_st",
-			"min": 9
+			"min": 9,
+			"parents": [
+				"plot_style"
+			]
 		},
 		{
 			"kw": "financebars",
@@ -2560,7 +3510,10 @@
 		{
 			"kw": "image",
 			"tier": "plt_st",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"plot_style"
+			]
 		},
 		{
 			"kw": "impulses",
@@ -2570,12 +3523,21 @@
 		{
 			"kw": "isosurface",
 			"tier": "plt_st",
-			"min": 10
+			"min": 10,
+			"parents": [
+				"_argument_set_show",
+				"plot_style"
+			]
 		},
 		{
 			"kw": "labels",
 			"tier": "plt_st",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"mouse",
+				"plot_style",
+				"style"
+			]
 		},
 		{
 			"kw": "lines",
@@ -2601,12 +3563,19 @@
 		{
 			"kw": "pm3d",
 			"tier": "plt_st",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"plot_style"
+			]
 		},
 		{
 			"kw": "points",
 			"tier": "plt_st",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"clip",
+				"cntrparam"
+			]
 		},
 		{
 			"kw": "polygons",
@@ -2631,7 +3600,12 @@
 		{
 			"kw": "spiderplot",
 			"tier": "plt_st",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"_argument_set_show",
+				"grid",
+				"style"
+			]
 		},
 		{
 			"kw": "steps",
@@ -2641,17 +3615,27 @@
 		{
 			"kw": "surface",
 			"tier": "plt_st",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"_argument_set_show",
+				"contour"
+			]
 		},
 		{
 			"kw": "table",
 			"tier": "plt_st",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"table"
+			]
 		},
 		{
 			"kw": "vectors",
 			"tier": "plt_st",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"plot_style"
+			]
 		},
 		{
 			"kw": "xerrorbars",
@@ -2692,7 +3676,10 @@
 			"kw": "pointsize",
 			"tier": "ps",
 			"min": 6,
-			"alt": "ps"
+			"alt": "ps",
+			"parents": [
+				"pointsize"
+			]
 		},
 		{
 			"kw": "pointtype",
@@ -2722,7 +3709,10 @@
 			"kw": "linewidth",
 			"tier": "sa",
 			"min": 5,
-			"alt": "lw"
+			"alt": "lw",
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "pointinterval",
@@ -2739,57 +3729,97 @@
 		{
 			"kw": "arrow",
 			"tier": "st_opt",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"arrow",
+				"style"
+			]
 		},
 		{
 			"kw": "circle",
 			"tier": "st_opt",
-			"min": -2
+			"min": -2,
+			"parents": [
+				"object",
+				"style"
+			]
 		},
 		{
 			"kw": "data",
 			"tier": "st_opt",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"style",
+				"xdata"
+			]
 		},
 		{
 			"kw": "ellipse",
 			"tier": "st_opt",
-			"min": 3
+			"min": 3,
+			"parents": [
+				"object",
+				"style"
+			]
 		},
 		{
 			"kw": "function",
 			"tier": "st_opt",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "histogram",
 			"tier": "st_opt",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "line",
 			"tier": "st_opt",
-			"min": 1
+			"min": 1,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "parallelaxis",
 			"tier": "st_opt",
-			"min": -4
+			"min": -4,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "rectangle",
 			"tier": "st_opt",
-			"min": 4
+			"min": 4,
+			"parents": [
+				"object",
+				"style"
+			]
 		},
 		{
 			"kw": "spiderplot",
 			"tier": "st_opt",
-			"min": 6
+			"min": 6,
+			"parents": [
+				"_argument_set_show",
+				"grid",
+				"style"
+			]
 		},
 		{
 			"kw": "watchpoint",
 			"tier": "st_opt",
-			"min": 5
+			"min": 5,
+			"parents": [
+				"style"
+			]
 		},
 		{
 			"kw": "textcolor",

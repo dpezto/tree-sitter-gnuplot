@@ -43,6 +43,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          # full history: the generator mines the pre-redesign grammar
+          # revision (git show <rev>:grammar.js) for the option-parent map
+          fetch-depth: 0
       - name: Regenerate keyword dictionary
         run: node scripts/gen-keywords.mjs
       - name: Check keywords.json is current
