@@ -1,0 +1,48 @@
+name: Bug report
+description: A gnuplot construct parses wrong (ERROR / MISSING nodes) or highlights wrong
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: tree-sitter-gnuplot version / commit
+      placeholder: "v2.0.0 or a commit SHA"
+    validations:
+      required: true
+  - type: input
+    id: ts
+    attributes:
+      label: tree-sitter CLI version
+      placeholder: "tree-sitter 0.26.11 (tree-sitter --version)"
+    validations:
+      required: true
+  - type: input
+    id: editor
+    attributes:
+      label: Editor / integration
+      placeholder: "nvim-treesitter (main) / Neovim 0.11 / helix / tree-sitter CLI only"
+    validations:
+      required: true
+  - type: textarea
+    id: snippet
+    attributes:
+      label: Minimal gnuplot snippet
+      description: Smallest valid gnuplot 6 input that misparses. Confirm it is accepted by `gnuplot`.
+      render: gnuplot
+    validations:
+      required: true
+  - type: textarea
+    id: parse
+    attributes:
+      label: "`tree-sitter parse` output"
+      description: Output of `tree-sitter parse yourfile.plt` showing the ERROR/MISSING node (or the wrong tree).
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected vs actual
+      description: What the CST / highlight should be versus what you got.
+    validations:
+      required: true
