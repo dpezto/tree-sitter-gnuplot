@@ -1215,3 +1215,142 @@ plot d using 1:2:3:4:5 with candlesticks whisker 0.5 lt 3
       (number)
       (style_opts
         (number)))))
+
+===========================================================================
+  plot binary array= RHS shapes (bare N / NxM dims / tuple records)
+===========================================================================
+plot "f.bin" binary array=10 format="%float" with lines
+plot "f.bin" binary array=10x20 flipx
+plot "f.bin" binary array=(10,10):(5,5) format="%f"
+plot "f.bin" binary array=10x20:30 with image
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (string_literal)
+      (datafile_modifiers
+        (binary_options
+          (number)
+          (string_literal
+            (format_specifier))))
+      (plot_style)))
+  (cmd_plot
+    (plot_element
+      (string_literal)
+      (datafile_modifiers
+        (binary_options
+          (number)))))
+  (cmd_plot
+    (plot_element
+      (string_literal)
+      (datafile_modifiers
+        (binary_options
+          (parameter_list
+            (number)
+            (number))
+          (parameter_list
+            (number)
+            (number))
+          (string_literal
+            (format_specifier))))))
+  (cmd_plot
+    (plot_element
+      (string_literal)
+      (datafile_modifiers
+        (binary_options
+          (number)
+          (number)))
+      (plot_style))))
+
+===========================================================================
+  splot binary perpendicular= 3-tuple
+===========================================================================
+splot "f.bin" binary array=(10,10) perpendicular=(0,0,1) with pm3d
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_splot
+    (plot_element
+      (string_literal)
+      (datafile_modifiers
+        (binary_options
+          (parameter_list
+            (number)
+            (number))
+          (parameter_list
+            (number)
+            (number)
+            (number))))
+      (plot_style))))
+
+===========================================================================
+  plot binary rotate= angle-unit suffixes
+===========================================================================
+plot "f.bin" binary rotate=90deg dx=2
+plot "f.bin" binary rotate=0.5pi
+plot "f.bin" binary rotate=45 deg transpose
+plot "f.bin" binary rotate=(45)degrees
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (string_literal)
+      (datafile_modifiers
+        (binary_options
+          (number)
+          (number)))))
+  (cmd_plot
+    (plot_element
+      (string_literal)
+      (datafile_modifiers
+        (binary_options
+          (number)))))
+  (cmd_plot
+    (plot_element
+      (string_literal)
+      (datafile_modifiers
+        (binary_options
+          (number)))))
+  (cmd_plot
+    (plot_element
+      (string_literal)
+      (datafile_modifiers
+        (binary_options
+          (parenthesized_expression
+            (number)))))))
+
+===========================================================================
+  plot text matrix columnheaders / rowheaders
+===========================================================================
+plot $d matrix columnheaders using 1:2
+plot $d matrix rowheaders columnheaders with lines
+plot $d matrix every 2 columnhead u 1:2
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (datablock)
+      (datafile_modifiers
+        (matrix_options)
+        (using
+          (number)
+          (number)))))
+  (cmd_plot
+    (plot_element
+      (datablock)
+      (datafile_modifiers
+        (matrix_options))
+      (plot_style)))
+  (cmd_plot
+    (plot_element
+      (datablock)
+      (datafile_modifiers
+        (matrix_options)
+        (every
+          (number))
+        (using
+          (number)
+          (number))))))

@@ -675,6 +675,10 @@
             "named": true
           },
           {
+            "type": "operator",
+            "named": true
+          },
+          {
             "type": "parameter_list",
             "named": true
           },
@@ -711,6 +715,20 @@
           {
             "type": "identifier",
             "named": true
+          }
+        ]
+      },
+      "unit": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "degrees",
+            "named": false
+          },
+          {
+            "type": "pi",
+            "named": false
           }
         ]
       }
@@ -15281,7 +15299,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "array",
@@ -16179,6 +16197,10 @@
     "named": true
   },
   {
+    "type": "columnheaders",
+    "named": false
+  },
+  {
     "type": "comma",
     "named": false
   },
@@ -16216,6 +16238,10 @@
   },
   {
     "type": "default",
+    "named": false
+  },
+  {
+    "type": "degrees",
     "named": false
   },
   {
@@ -16523,6 +16549,10 @@
     "named": false
   },
   {
+    "type": "pi",
+    "named": false
+  },
+  {
     "type": "pixels",
     "named": false
   },
@@ -16600,6 +16630,10 @@
   },
   {
     "type": "rotate",
+    "named": false
+  },
+  {
+    "type": "rowheaders",
     "named": false
   },
   {
