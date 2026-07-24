@@ -48,7 +48,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
       - name: Set up NodeJS
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           cache: npm
           node-version: ${{inputs.node-version}}
@@ -92,7 +92,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
       - name: Set up NodeJS
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           cache: npm
           node-version: ${{inputs.node-version}}
@@ -131,7 +131,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
       - name: Set up NodeJS
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           cache: npm
           node-version: ${{inputs.node-version}}
