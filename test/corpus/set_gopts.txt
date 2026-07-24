@@ -281,3 +281,51 @@ Gauss(x,mu,sigma) = 1./(sigma*sqrt(2*pi)) * exp( -(x-mu)**2 / (2*sigma**2) )
                     (identifier)
                     (operator)
                     (number)))))))))))
+
+================================================================================
+set fit - no-form abbreviations (nolog nocov noerr)
+================================================================================
+set fit nolog cov err maxiter default
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (fit)))
+
+================================================================================
+set style watchpoint - font after labels lexes as fontspec, not bound value
+================================================================================
+set style watchpoint labels font "Helvetica,10"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (style
+      (style_opts
+        (fontspec
+          font: (string_literal))))))
+
+================================================================================
+set cntrparam - levels incremental with leading-dot values
+================================================================================
+set cntrparam levels incremental .1,.1,1
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (cntrparam
+      (number)
+      (number)
+      (number))))
+
+================================================================================
+set style watchpoint - leading-dot offset after labels
+================================================================================
+set style watchpoint labels offset .5,.5
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (style
+      (number)
+      (number))))

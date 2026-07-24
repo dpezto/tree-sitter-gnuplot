@@ -114,6 +114,11 @@ module.exports = grammar({
 		// zero-width, same-line-only separator between an arg/coord keyword and
 		// its value (newline/';' ahead = no value: next line is a new statement)
 		$._gval_sep,
+		// same shape, but exclusively for VALUE binding inside _gopts items
+		// (the ~70 option-head body gates keep _gval_sep). The scanner declines
+		// _gval_bind before grammar-literal keywords like `font` so they start
+		// a new item instead of binding as the previous keyword's value.
+		$._gval_bind,
 	],
 
 	extras: ($) => [$.comment, /\s|\\|;/],
@@ -191,8 +196,8 @@ module.exports = grammar({
 				// keyword only across the same-line _gval_sep, so
 				// `contourfill auto FOO` keeps FOO in the body while an
 				// identifier on the NEXT line starts a fresh statement.
-				prec.right(seq(alias($.kw_g_arg, "arg"), optional(seq($._gval_sep, choice($._gexprs, $.tuple))))),
-				prec.right(seq(alias($.kw_g_coord, "coord"), optional(seq($._gval_sep, $._gexprs)))),
+				prec.right(seq(alias($.kw_g_arg, "arg"), optional(seq($._gval_bind, choice($._gexprs, $.tuple))))),
+				prec.right(seq(alias($.kw_g_coord, "coord"), optional(seq($._gval_bind, $._gexprs)))),
 				$._gexprs,
 				// bare label/position list: `set xtics ("NE" 72, "S" 42)`
 				$.tuple,
@@ -355,7 +360,7 @@ module.exports = grammar({
 					optional(
 						choice(
 							alias("gnuplot", "mod"),
-							seq(alias(choice("message", "status"), "arg"), optional($._expression)),
+							seq(choice("message", "status"), optional($._expression)),
 						),
 					),
 				),
@@ -525,7 +530,20 @@ module.exports = grammar({
 									),
 								),
 							),
-							alias("nogrid", "flag"), // NOTE: splot only option https://stackoverflow.com/questions/74586626/gnuplot-how-to-splot-surface-and-points-with-dgrid3d
+							// p. 129 watchpoints: watch mouse | watch {x|y|z|F(...)} = <value> {label <expr>}
+						seq(
+							alias("watch", "attr"),
+							choice(
+								alias("mouse", "mod"),
+								seq(
+									field("target", choice($.function, $.identifier)),
+									"=",
+									field("value", $._expression),
+									optional(seq(alias("label", "attr"), field("label", $._expression))),
+								),
+							),
+						),
+						alias("nogrid", "flag"), // NOTE: splot only option https://stackoverflow.com/questions/74586626/gnuplot-how-to-splot-surface-and-points-with-dgrid3d
 							field("with", seq(key("with", 1, "attr"), $.plot_style)),
 							$.style_opts,
 						),
@@ -563,7 +581,7 @@ module.exports = grammar({
 										seq(
 											alias(
 												choice("x1", "x2", "y1", "y2", "y", "r"),
-												"coordinate",
+												"axis",
 											),
 											optional(seq("=", $._expression)),
 										),
@@ -575,7 +593,7 @@ module.exports = grammar({
 					seq(
 						key("fillsteps", 9, "plt_st"),
 						optional(choice("above", "below")),
-						optional(seq("y", "=", $._expression)),
+						optional(seq(alias("y", "axis"), "=", $._expression)),
 					),
 					seq(key("image", 3, "plt_st"), optional("pixels")),
 					seq(key("pm3d", 4, "plt_st"), optional(alias($._pm3d, $.pm3d))),
@@ -643,88 +661,88 @@ module.exports = grammar({
 					$.dgrid3d,
 					$.dummy,
 					seq(
-						key("encoding", 3, "arg"),
+						key("encoding", 3, "opt"),
 						field("arg_opts", optional($.encoding)),
 					),
 					seq(
-						key1("arg", "errorbars", /|/, reg("bars", 1)),
+						key1("opt", "errorbars", /|/, reg("bars", 1)),
 						field("arg_opts", optional($.errorbars)),
 					),
-					seq(alias("fit", "arg"), field("arg_opts", optional($.fit))),
-					seq(key("format", 4, "arg"), field("arg_opts", optional($.format))),
+					seq(alias("fit", "opt"), field("arg_opts", optional($.fit))),
+					seq(key("format", 4, "opt"), field("arg_opts", optional($.format))),
 					$.grid,
 					seq(
-						key("hidden3d", 3, "arg"),
+						key("hidden3d", 3, "opt"),
 						field("arg_opts", optional($.hidden3d)),
 					),
-					seq(key("history", 3, "arg"), field("arg_opts", optional($.history))),
+					seq(key("history", 3, "opt"), field("arg_opts", optional($.history))),
 					seq(
-						key("isosamples", 3, "arg"),
+						key("isosamples", 3, "opt"),
 						field("arg_opts", optional($.isosamples)),
 					),
 					seq(
-						key("isosurface", 7, "arg"),
+						key("isosurface", 7, "opt"),
 						field("arg_opts", optional($.isosurface)),
 					),
-					alias("isotropic", "arg"),
-					seq(alias("jitter", "arg"), field("arg_opts", optional($.jitter))),
+					alias("isotropic", "opt"),
+					seq(alias("jitter", "opt"), field("arg_opts", optional($.jitter))),
 					$.key,
 					$.label,
 					$.linetype,
-					seq(alias("link", "arg"), field("arg_opts", optional($.link))),
+					seq(alias("link", "opt"), field("arg_opts", optional($.link))),
 					$.loadpath,
-					seq(alias("locale", "arg"), field("arg_opts", optional($.locale))),
+					seq(alias("locale", "opt"), field("arg_opts", optional($.locale))),
 					$.logscale,
 					$.mapping,
 					$.margin,
-					seq(alias("micro", "arg"), field("arg_opts", optional($.micro))),
-					key("minussign", 5, "arg"),
+					seq(alias("micro", "opt"), field("arg_opts", optional($.micro))),
+					key("minussign", 5, "opt"),
 					$.monochrome,
-					seq(key("mouse", 2, "arg"), field("arg_opts", optional($.mouse))),
+					seq(key("mouse", 2, "opt"), field("arg_opts", optional($.mouse))),
 					$.mxtics,
 					$.nonlinear,
 					$.object,
-					seq(key("offsets", 3, "arg"), field("arg_opts", optional($.offsets))),
-					seq(key("origin", 2, "arg"), field("arg_opts", optional($.origin))),
-					seq(key("output", 1, "arg"), field("arg_opts", optional($.output))),
+					seq(key("offsets", 3, "opt"), field("arg_opts", optional($.offsets))),
+					seq(key("origin", 2, "opt"), field("arg_opts", optional($.origin))),
+					seq(key("output", 1, "opt"), field("arg_opts", optional($.output))),
 					seq(
-						alias("overflow", "arg"),
+						alias("overflow", "opt"),
 						field("arg_opts", optional($.overflow)),
 					),
 					$.palette,
-					key("parametric", 2, "arg"),
+					key("parametric", 2, "opt"),
 					$.paxis,
 					$.pixmap,
 					$.pm3d,
 					$.pointintervalbox,
 					$.pointsize,
-					seq(key("polar", 3, "arg"), field("arg_opts", optional($.polar))),
-					seq(key("print", 2, "arg"), field("arg_opts", optional($.print))),
-					seq(alias("psdir", "arg"), field("arg_opts", optional($.psdir))),
-					key("raxis", 2, "arg"),
-					seq(alias("rgbmax", "arg"), field("arg_opts", optional($.rgbmax))),
-					seq(key("samples", 3, "arg"), field("arg_opts", optional($.samples))),
-					seq(key("size", 2, "arg"), field("arg_opts", optional($.size))),
-					key("spiderplot", 6, "arg"),
+					seq(key("polar", 3, "opt"), field("arg_opts", optional($.polar))),
+					seq(key("print", 2, "opt"), field("arg_opts", optional($.print))),
+					seq(alias("psdir", "opt"), field("arg_opts", optional($.psdir))),
+					key("raxis", 2, "opt"),
+					seq(alias("rgbmax", "opt"), field("arg_opts", optional($.rgbmax))),
+					seq(key("samples", 3, "opt"), field("arg_opts", optional($.samples))),
+					seq(key("size", 2, "opt"), field("arg_opts", optional($.size))),
+					key("spiderplot", 6, "opt"),
 					$.style,
-					seq(key("surface", 2, "arg"), field("arg_opts", optional($.surface))),
+					seq(key("surface", 2, "opt"), field("arg_opts", optional($.surface))),
 					$.table,
 					$.terminal,
 					seq(
-						alias("termoption", "arg"),
+						alias("termoption", "opt"),
 						field("arg_opts", optional($.termoption)),
 					),
-					seq(alias("theta", "arg"), field("arg_opts", optional($.theta))),
-					seq(key("tics", -1, "arg"), field("arg_opts", optional($.tics))),
+					seq(alias("theta", "opt"), field("arg_opts", optional($.theta))),
+					seq(key("tics", -1, "opt"), field("arg_opts", optional($.tics))),
 					seq(
-						key("timestamp", 5, "arg"),
+						key("timestamp", 5, "opt"),
 						field("arg_opts", optional($.timestamp)),
 					),
-					seq(key("timefmt", 5, "arg"), field("arg_opts", optional($.timefmt))),
+					seq(key("timefmt", 5, "opt"), field("arg_opts", optional($.timefmt))),
 					$.title,
-					seq(alias("vgrid", "arg"), field("arg_opts", optional($.vgrid))),
-					seq(key("view", 2, "arg"), field("arg_opts", optional($.view))),
-					seq(key("walls", -1, "arg"), field("arg_opts", optional($.walls))),
+					seq(alias("vgrid", "opt"), field("arg_opts", optional($.vgrid))),
+					seq(key("view", 2, "opt"), field("arg_opts", optional($.view))),
+					seq(key("walls", -1, "opt"), field("arg_opts", optional($.walls))),
 					$.xdata,
 					$.xdtics,
 					$.xlabel,
@@ -732,7 +750,7 @@ module.exports = grammar({
 					$.xrange,
 					$.xtics,
 					$.xyplane,
-					seq(key("zero", 1, "arg"), field("arg_opts", optional($.zero))),
+					seq(key("zero", 1, "opt"), field("arg_opts", optional($.zero))),
 					$.zeroaxis,
 					// Fallback: unknown/future option words parse clean (plain
 					// identifier colour) instead of producing ERROR nodes. Known
@@ -745,12 +763,12 @@ module.exports = grammar({
 			),
 
 		angles: ($) =>
-			prec.right(seq(key("angles", 2, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("angles", 2, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		arrow: ($) =>
 			prec.left(
 				seq(
-					key("arrow", 3, "arg"),
+					key("arrow", 3, "opt"),
 					optional(
 						seq(
 							optional(field("tag", $._expression)),
@@ -782,7 +800,7 @@ module.exports = grammar({
 		autoscale: ($) =>
 			prec.right(
 				seq(
-					key("autoscale", 4, "arg"),
+					key("autoscale", 4, "opt"),
 					optional(
 						seq(
 							$._gval_sep,
@@ -797,49 +815,49 @@ module.exports = grammar({
 			),
 
 		border: ($) =>
-			prec.right(seq(key("border", 3, "arg"), optional(seq($._gval_sep, $._gopts_style)))),
+			prec.right(seq(key("border", 3, "opt"), optional(seq($._gval_sep, $._gopts_style)))),
 
 		boxwidth: ($) =>
-			prec.right(seq(key("boxwidth", 3, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("boxwidth", 3, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		boxdepth: ($) =>
-			prec.right(seq(alias("boxdepth", "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(alias("boxdepth", "opt"), optional(seq($._gval_sep, $._gopts)))),
 
-		color: ($) => alias("color", "arg"),
+		color: ($) => alias("color", "opt"),
 
 		colormap: ($) =>
-			prec.right(seq(alias("colormap", "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(alias("colormap", "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		colorsequence: ($) =>
-			prec.right(seq(alias("colorsequence", "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(alias("colorsequence", "opt"), optional(seq($._gval_sep, $._gopts)))),
 
-		clip: ($) => prec.right(seq(alias("clip", "arg"), optional(seq($._gval_sep, $._gopts)))),
+		clip: ($) => prec.right(seq(alias("clip", "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		cntrlabel: ($) =>
-			prec.right(seq(key("cntrlabel", 5, "arg"), optional(seq($._gval_sep, $._gopts_style)))),
+			prec.right(seq(key("cntrlabel", 5, "opt"), optional(seq($._gval_sep, $._gopts_style)))),
 
 		// Generic body (GOPT_KWS rows: linear/cubicspline/bspline/points/order/
 		// levels/auto/discrete/incremental/sorted/unsorted/firstlinetype).
 		cntrparam: ($) =>
-			prec.right(seq(key("cntrparam", 5, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("cntrparam", 5, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		// Generic body (GOPT_KWS rows: vertical/horizontal/invert/user/default/
 		// origin/size/front/back/noborder/bdefault/border/cbtics).
 		colorbox: ($) =>
-			prec.right(seq(key("colorbox", 6, "arg"), optional(seq($._gval_sep, $._gopts_style)))),
+			prec.right(seq(key("colorbox", 6, "opt"), optional(seq($._gval_sep, $._gopts_style)))),
 
 		contour: ($) =>
-			prec.right(seq(key("contours", 5, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("contours", 5, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
-		cornerpoles: ($) => key("cornerpoles", 7, "arg"),
+		cornerpoles: ($) => key("cornerpoles", 7, "opt"),
 
 		contourfill: ($) =>
-			prec.right(seq(alias("contourfill", "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(alias("contourfill", "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		dashtype: ($) =>
 			prec.left(
 				seq(
-					alias($.kw_dt, "arg"),
+					alias($.kw_dt, "opt"),
 					field("tag", $._expression),
 					optional($.dash_opts),
 				),
@@ -848,7 +866,7 @@ module.exports = grammar({
 		datafile: ($) =>
 			prec.left(
 				seq(
-					key("datafile", 5, "arg"),
+					key("datafile", 5, "opt"),
 					repeat(
 						choice(
 							key("columnheaders", -3, "flag", 1),
@@ -867,15 +885,15 @@ module.exports = grammar({
 			),
 
 		decimalsign: ($) =>
-			prec.right(seq(key("decimalsign", 3, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("decimalsign", 3, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		// Generic body (rows: splines/qnorm/gauss/cauchy/hann/kdensity; `exp`
 		// stays an identifier — exp() is a builtin, same rule as int/log)
 		dgrid3d: ($) =>
-			prec.right(seq(key("dgrid3d", 2, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("dgrid3d", 2, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		dummy: ($) =>
-			prec.right(seq(key("dummy", 2, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("dummy", 2, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		// Generic body: encoding names (iso_8859_*, koi8*, cp*, sjis, utf8)
 		// parse as identifier items; defaults/locale are existing rows
@@ -895,7 +913,7 @@ module.exports = grammar({
 		// Generic body (GOPT_KWS rows: polar/layerdefault/front/back/vertical/
 		// spiderplot; the (no)?m?<axis>tics family is kw_g_axisflag).
 		grid: ($) =>
-			prec.right(seq(key("grid", 2, "arg"), optional(seq($._gval_sep, $._gopts_style)))),
+			prec.right(seq(key("grid", 2, "opt"), optional(seq($._gval_sep, $._gopts_style)))),
 
 		hidden3d: ($) => seq($._gval_sep, $._gopts),
 
@@ -908,21 +926,21 @@ module.exports = grammar({
 		jitter: ($) => seq($._gval_sep, $._gopts),
 
 		key: ($) =>
-			prec.right(seq(key("key", 1, "arg"), optional(seq($._gval_sep, $._gopts_style)))),
+			prec.right(seq(key("key", 1, "opt"), optional(seq($._gval_sep, $._gopts_style)))),
 
 
 
 		label: ($) =>
 			prec.right(
 				seq(
-					key("label", 3, "arg"),
+					key("label", 3, "opt"),
 					optional(prec.dynamic(2, field("tag", $._tag_atom))),
 					optional($.label_opts),
 				),
 			),
 
 		linetype: ($) =>
-			prec.right(seq(alias($.kw_lt, "arg"), optional(seq($._gval_sep, $._gopts_style)))),
+			prec.right(seq(alias($.kw_lt, "opt"), optional(seq($._gval_sep, $._gopts_style)))),
 
 		link: ($) =>
 			repeat1(
@@ -933,7 +951,7 @@ module.exports = grammar({
 			),
 
 		loadpath: ($) =>
-			prec.right(seq(key("loadpath", 4, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("loadpath", 4, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		// (the old body's head mistakenly read key("loadpath") — fixed by the
 		// generic body: `set locale "en_US"` now parses the string directly)
@@ -942,7 +960,7 @@ module.exports = grammar({
 		logscale: ($) => {
 			const axis = choice("x", "y", "z", "x2", "y2", "cb", "r");
 			return seq(
-				key("logscale", 3, "arg"),
+				key("logscale", 3, "opt"),
 				optional(
 					prec.left(
 						seq(
@@ -955,11 +973,11 @@ module.exports = grammar({
 		},
 
 		mapping: ($) =>
-			prec.right(seq(key("mapping", 3, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("mapping", 3, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		margin: ($) =>
 			prec.right(
-				seq(key1("arg", /(l|r|t|b)?/, reg("margins", 3)), optional(seq($._gval_sep, $._gopts))),
+				seq(key1("opt", /(l|r|t|b)?/, reg("margins", 3)), optional(seq($._gval_sep, $._gopts))),
 			),
 
 		_margin: ($) =>
@@ -979,16 +997,16 @@ module.exports = grammar({
 				),
 			),
 
-		micro: ($) => prec.right(seq(alias("micro", "arg"), optional(seq($._gval_sep, $._gopts)))),
+		micro: ($) => prec.right(seq(alias("micro", "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		monochrome: ($) =>
-			prec.left(seq(key("monochrome", 4, "arg"), optional($.line_style))),
+			prec.left(seq(key("monochrome", 4, "opt"), optional($.line_style))),
 
 		mouse: ($) => seq($._gval_sep, $._gopts),
 
 		multiplot: ($) =>
 			seq(
-				key("multiplot", 5, "arg"),
+				key("multiplot", 5, "opt"),
 				repeat(
 					choice(
 						seq(
@@ -1052,7 +1070,7 @@ module.exports = grammar({
 		mxtics: ($) =>
 			prec.right(
 				seq(
-					key1("flag", "m", K.axes, reg("tics", -1)),
+					key1("opt", "m", K.axes, reg("tics", -1)),
 					optional(seq($._gval_sep, $._gopts)),
 				),
 			),
@@ -1060,8 +1078,8 @@ module.exports = grammar({
 		// set nonlinear <axis> via f(axis) inverse g(axis)
 		nonlinear: ($) =>
 			seq(
-				key("nonlinear", 5, "arg"),
-				K.axes,
+				key("nonlinear", 5, "opt"),
+				alias(K.axes, "axis"),
 				alias("via", "kw_fn"),
 				$._expression,
 				"inverse",
@@ -1071,7 +1089,7 @@ module.exports = grammar({
 		// set object <index> <shape> … — generic body (shape words, from/to/rto,
 		// arc + range_block, units xx/xy/yy, layer/clip flags, style attrs).
 		object: ($) =>
-			prec.right(seq(key("object", 3, "arg"), optional(seq($._gval_sep, $._gopts_style)))),
+			prec.right(seq(key("object", 3, "opt"), optional(seq($._gval_sep, $._gopts_style)))),
 
 		offsets: ($) => seq($._gval_sep, $._gopts),
 
@@ -1089,7 +1107,7 @@ module.exports = grammar({
 		palette: ($) =>
 			prec.right(
 				seq(
-					key("palette", 3, "arg"),
+					key("palette", 3, "opt"),
 					optional(
 						seq(
 						$._gval_sep,
@@ -1120,7 +1138,7 @@ module.exports = grammar({
 		paxis: ($) =>
 			prec.left(
 				seq(
-					alias("paxis", "arg"),
+					alias("paxis", "opt"),
 					field("axisno", $._expression),
 					optional(
 						seq(
@@ -1145,9 +1163,9 @@ module.exports = grammar({
 		// set pixmap <index> {"filename" | colormap <name>} at <position>
 		//            {width <w> | height <h> | size <w>,<h>} {front|back|behind} {center}
 		pixmap: ($) =>
-			prec.right(seq(key("pixmap", 4, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("pixmap", 4, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
-		pm3d: ($) => seq(alias("pm3d", "arg"), optional($._pm3d)),
+		pm3d: ($) => seq(alias("pm3d", "opt"), optional($._pm3d)),
 
 		_pm3d: ($) =>
 			// recycle code for pm3d plot_style
@@ -1170,7 +1188,7 @@ module.exports = grammar({
 					),
 					seq(alias("flush", "arg"), choice("begin", "center", "end")),
 					key("ftriangles", undefined, "flag", 1),
-					choice(seq("clip", optional("z")), "clip1in", "clip4in"),
+					choice(seq("clip", optional(alias("z", "axis"))), "clip1in", "clip4in"),
 					key("clipcb", undefined, "flag", 1),
 					seq(
 						"corners2color",
@@ -1187,6 +1205,18 @@ module.exports = grammar({
 						),
 					),
 					seq(
+						key("spotlight", 4, "arg"),
+						repeat(
+							choice(
+								seq(key("rgbcolor", 3), field("color", $._expression)),
+								seq("rot_x", field("angle", $._expression)),
+								seq("rot_z", field("angle", $._expression)),
+								seq("Phong", field("exponent", $._expression)),
+								"default",
+							),
+						),
+					),
+					seq(
 						key("border", undefined, "flag", 1),
 						optional("retrace"),
 						optional($.style_opts),
@@ -1197,10 +1227,10 @@ module.exports = grammar({
 			),
 
 		pointintervalbox: ($) =>
-			prec.right(seq(key("pointintervalbox", 8, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("pointintervalbox", 8, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		pointsize: ($) =>
-			prec.right(seq(key("pointsize", 3, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("pointsize", 3, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		// `set polar grid …` — generic body (kernel words share the dgrid3d
 		// rows; theta/r + range_blocks and scale exprs are plain items)
@@ -1225,7 +1255,7 @@ module.exports = grammar({
 			prec.left(
 				1,
 				seq(
-					key("style", 2, "arg"),
+					key("style", 2, "opt"),
 					optional(
 						choice(
 							seq(key("arrow", 3, "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
@@ -1266,7 +1296,7 @@ module.exports = grammar({
 		table: ($) =>
 			prec.right(
 				seq(
-					key("table", 2, "arg"),
+					key("table", 2, "opt"),
 					repeat(
 						choice(
 							choice($.string_literal, $.datablock),
@@ -1280,7 +1310,7 @@ module.exports = grammar({
 		terminal: ($) =>
 			prec.right(
 				seq(
-					key("terminal", 1, "arg"),
+					key("terminal", 1, "opt"),
 					optional(choice(
 						// _gval_sep gates the body to the same (continued) line,
 						// so a next-line `reset`/`raise` stays a command
@@ -1330,7 +1360,7 @@ module.exports = grammar({
 		timefmt: ($) => seq($._gval_sep, $._gopts),
 
 		title: ($) =>
-			prec.right(seq(key("title", 3, "arg"), optional(seq($._gval_sep, $._gopts_style)))),
+			prec.right(seq(key("title", 3, "opt"), optional(seq($._gval_sep, $._gopts_style)))),
 
 		vgrid: ($) => seq($.datablock, optional(seq("size", $._expression))),
 
@@ -1339,24 +1369,24 @@ module.exports = grammar({
 		walls: ($) => seq($._gval_sep, $._gopts_style),
 
 		xdata: ($) =>
-			seq(key1("arg", K.axes, reg("data", 2)), optional(key("time", 1))),
+			seq(key1("opt", K.axes, reg("data", 2)), optional(key("time", 1))),
 
-		xdtics: ($) => key1("flag", K.axes, "d", reg("tics", -1)),
+		xdtics: ($) => key1("opt", K.axes, "d", reg("tics", -1)),
 
 		xlabel: ($) =>
 			// Generic style body: label text is a plain expression item;
 			// offset/rotate-by/textcolor/font/enhanced arrive via style_opts,
 			// `parallel` via its row
 			seq(
-				key1("arg", K.axes, reg("label", 3)),
+				key1("opt", K.axes, reg("label", 3)),
 				optional(seq($._gval_sep, $._gopts_style)),
 			),
 
-		xmtics: ($) => key1("flag", K.axes, "m", reg("tics", -1)),
+		xmtics: ($) => key1("opt", K.axes, "m", reg("tics", -1)),
 
 		xrange: ($) =>
 			seq(
-				key1("arg", K.axes, reg("range", 3)),
+				key1("opt", K.axes, reg("range", 3)),
 				repeat(
 					choice(
 						$.range_block,
@@ -1369,20 +1399,23 @@ module.exports = grammar({
 			),
 
 		xtics: ($) =>
+			// "opt" tier: as a set/show/unset option head, <axis>tics is an
+			// option name like any other (body occurrences — grid, autoscale —
+			// keep the kw_g_axisflag "flag" tier)
 			prec.left(
 				seq(
-					key1("flag", K.axes, reg("tics", -1)),
+					key1("opt", K.axes, reg("tics", -1)),
 					optional(seq($._gval_sep, $.tics_opts)),
 				),
 			),
 
 		xyplane: ($) =>
-			prec.right(seq(key("xyplane", 3, "arg"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("xyplane", 3, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
 		zero: ($) => seq($._gval_sep, $._gopts),
 
 		zeroaxis: ($) =>
-			seq(key1("arg", K.zaxes, reg("zeroaxis", 5)), optional($.style_opts)),
+			seq(key1("opt", K.zaxes, reg("zeroaxis", 5)), optional($.style_opts)),
 
 		cmd_show: ($) =>
 			seq(
@@ -1390,11 +1423,11 @@ module.exports = grammar({
 				choice(
 					$._argument_set_show,
 					$.multiplot,
-					key("colornames", 6, "arg"),
-					key("functions", 3, "arg"),
-					key("plot", 1, "arg"),
-					key("variables", 1, "arg"),
-					seq(key("version", 2, "arg"), optional(key("long", 1))),
+					key("colornames", 6, "opt"),
+					key("functions", 3, "opt"),
+					key("plot", 1, "opt"),
+					key("variables", 1, "opt"),
+					seq(key("version", 2, "opt"), optional(key("long", 1))),
 				),
 			),
 
@@ -1527,10 +1560,10 @@ module.exports = grammar({
 						repeat1(
 							choice(
 								seq(choice("record", "format", "rotate"), "=", field("opt", $._expression)),
-								seq(alias(choice("dx", "dy", "dz", "perpendicular", "skip"), "arg"), "=", field("opt", sep(":", $._expression))),
+								seq(alias(choice("dx", "dy", "dz", "perpendicular", "skip"), "attr"), "=", field("opt", sep(":", $._expression))),
 								seq(choice("array", "origin", "center"), "=", field("opt", sep(":", $.parameter_list))),
 								seq("filetype", "=", field("filetype", $.identifier)),
-								seq(alias("scan", "arg"), "=", field("scan", $.identifier)),
+								seq(alias("scan", "attr"), "=", field("scan", $.identifier)),
 								seq(key("endian", 3), "=", field("endian", choice("little", "big", "default", "swap", "swab", "middle", "pdp"))),
 								"flipx",
 								"flipy",
@@ -1592,7 +1625,7 @@ module.exports = grammar({
 							alias("kdensity", "mod"),
 							optional(
 								seq(
-									alias(choice("bandwidth", "period"), "arg"),
+									alias(choice("bandwidth", "period"), "attr"),
 									field("bandwidth_period", $._expression),
 								),
 							),
@@ -1606,11 +1639,11 @@ module.exports = grammar({
 			prec.right(
 				repeat1(
 					choice(
-						seq(alias("bins", "arg"), optional(seq("=", $._expression))),
-						seq(alias("binrange", "arg"), $.range_block),
-						seq(alias("binwidth", "arg"), "=", $._expression),
+						seq(alias("bins", "attr"), optional(seq("=", $._expression))),
+						seq(alias("binrange", "attr"), $.range_block),
+						seq(alias("binwidth", "attr"), "=", $._expression),
 						seq(
-							alias("binvalue", "arg"),
+							alias("binvalue", "attr"),
 							optional(seq("=", choice(alias("sum", "mod"), alias("avg", "mod")))),
 						),
 					),
@@ -1819,8 +1852,8 @@ module.exports = grammar({
 						optional(
 							choice(
 								seq("frac", field("val", $._expression)),
-								seq("cb", field("val", $._expression)),
-								"z",
+								seq(alias("cb", "axis"), field("val", $._expression)),
+								alias("z", "axis"),
 							),
 						),
 					),

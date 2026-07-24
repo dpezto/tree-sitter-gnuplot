@@ -232,7 +232,7 @@
                     "members": [
                       {
                         "type": "SYMBOL",
-                        "name": "_gval_sep"
+                        "name": "_gval_bind"
                       },
                       {
                         "type": "CHOICE",
@@ -280,7 +280,7 @@
                     "members": [
                       {
                         "type": "SYMBOL",
-                        "name": "_gval_sep"
+                        "name": "_gval_bind"
                       },
                       {
                         "type": "SYMBOL",
@@ -1188,22 +1188,17 @@
                     "type": "SEQ",
                     "members": [
                       {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "STRING",
-                              "value": "message"
-                            },
-                            {
-                              "type": "STRING",
-                              "value": "status"
-                            }
-                          ]
-                        },
-                        "named": false,
-                        "value": "arg"
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "STRING",
+                            "value": "message"
+                          },
+                          {
+                            "type": "STRING",
+                            "value": "status"
+                          }
+                        ]
                       },
                       {
                         "type": "CHOICE",
@@ -2345,6 +2340,98 @@
                   ]
                 },
                 {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "STRING",
+                        "value": "watch"
+                      },
+                      "named": false,
+                      "value": "attr"
+                    },
+                    {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "STRING",
+                            "value": "mouse"
+                          },
+                          "named": false,
+                          "value": "mod"
+                        },
+                        {
+                          "type": "SEQ",
+                          "members": [
+                            {
+                              "type": "FIELD",
+                              "name": "target",
+                              "content": {
+                                "type": "CHOICE",
+                                "members": [
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "function"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "identifier"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "="
+                            },
+                            {
+                              "type": "FIELD",
+                              "name": "value",
+                              "content": {
+                                "type": "SYMBOL",
+                                "name": "_expression"
+                              }
+                            },
+                            {
+                              "type": "CHOICE",
+                              "members": [
+                                {
+                                  "type": "SEQ",
+                                  "members": [
+                                    {
+                                      "type": "ALIAS",
+                                      "content": {
+                                        "type": "STRING",
+                                        "value": "label"
+                                      },
+                                      "named": false,
+                                      "value": "attr"
+                                    },
+                                    {
+                                      "type": "FIELD",
+                                      "name": "label",
+                                      "content": {
+                                        "type": "SYMBOL",
+                                        "name": "_expression"
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "BLANK"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
                   "type": "ALIAS",
                   "content": {
                     "type": "STRING",
@@ -2632,7 +2719,7 @@
                                       ]
                                     },
                                     "named": false,
-                                    "value": "coordinate"
+                                    "value": "axis"
                                   },
                                   {
                                     "type": "CHOICE",
@@ -2713,8 +2800,13 @@
                     "type": "SEQ",
                     "members": [
                       {
-                        "type": "STRING",
-                        "value": "y"
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "STRING",
+                          "value": "y"
+                        },
+                        "named": false,
+                        "value": "axis"
                       },
                       {
                         "type": "STRING",
@@ -3126,7 +3218,7 @@
                   "value": "enc(o(d(i(n(g)?)?)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3156,7 +3248,7 @@
                   "value": "errorbars|b(a(r(s)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3186,7 +3278,7 @@
                   "value": "fit"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3216,7 +3308,7 @@
                   "value": "form(a(t)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3250,7 +3342,7 @@
                   "value": "hid(d(e(n(3(d)?)?)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3280,7 +3372,7 @@
                   "value": "his(t(o(r(y)?)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3310,7 +3402,7 @@
                   "value": "iso(s(a(m(p(l(e(s)?)?)?)?)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3340,7 +3432,7 @@
                   "value": "isosurf(a(c(e)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3367,7 +3459,7 @@
               "value": "isotropic"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "SEQ",
@@ -3379,7 +3471,7 @@
                   "value": "jitter"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3421,7 +3513,7 @@
                   "value": "link"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3455,7 +3547,7 @@
                   "value": "locale"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3497,7 +3589,7 @@
                   "value": "micro"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3524,7 +3616,7 @@
               "value": "minus(s(i(g(n)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "SYMBOL",
@@ -3540,7 +3632,7 @@
                   "value": "mo(u(s(e)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3582,7 +3674,7 @@
                   "value": "off(s(e(t(s)?)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3612,7 +3704,7 @@
                   "value": "or(i(g(i(n)?)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3642,7 +3734,7 @@
                   "value": "o(u(t(p(u(t)?)?)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3672,7 +3764,7 @@
                   "value": "overflow"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3703,7 +3795,7 @@
               "value": "pa(r(a(m(e(t(r(i(c)?)?)?)?)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "SYMBOL",
@@ -3735,7 +3827,7 @@
                   "value": "pol(a(r)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3765,7 +3857,7 @@
                   "value": "pr(i(n(t)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3795,7 +3887,7 @@
                   "value": "psdir"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3822,7 +3914,7 @@
               "value": "ra(x(i(s)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "SEQ",
@@ -3834,7 +3926,7 @@
                   "value": "rgbmax"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3864,7 +3956,7 @@
                   "value": "sam(p(l(e(s)?)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3894,7 +3986,7 @@
                   "value": "si(z(e)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3921,7 +4013,7 @@
               "value": "spider(p(l(o(t)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "SYMBOL",
@@ -3937,7 +4029,7 @@
                   "value": "su(r(f(a(c(e)?)?)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -3975,7 +4067,7 @@
                   "value": "termoption"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -4005,7 +4097,7 @@
                   "value": "theta"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -4035,7 +4127,7 @@
                   "value": "tic(s)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -4065,7 +4157,7 @@
                   "value": "times(t(a(m(p)?)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -4095,7 +4187,7 @@
                   "value": "timef(m(t)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -4129,7 +4221,7 @@
                   "value": "vgrid"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -4159,7 +4251,7 @@
                   "value": "vi(e(w)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -4189,7 +4281,7 @@
                   "value": "wall(s)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -4247,7 +4339,7 @@
                   "value": "z(e(r(o)?)?)?"
                 },
                 "named": false,
-                "value": "arg"
+                "value": "opt"
               },
               {
                 "type": "FIELD",
@@ -4329,7 +4421,7 @@
               "value": "an(g(l(e(s)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4368,7 +4460,7 @@
               "value": "arr(o(w)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4523,7 +4615,7 @@
               "value": "auto(s(c(a(l(e)?)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4583,7 +4675,7 @@
               "value": "bor(d(e(r)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4622,7 +4714,7 @@
               "value": "box(w(i(d(t(h)?)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4661,7 +4753,7 @@
               "value": "boxdepth"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4694,7 +4786,7 @@
         "value": "color"
       },
       "named": false,
-      "value": "arg"
+      "value": "opt"
     },
     "colormap": {
       "type": "PREC_RIGHT",
@@ -4709,7 +4801,7 @@
               "value": "colormap"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4748,7 +4840,7 @@
               "value": "colorsequence"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4787,7 +4879,7 @@
               "value": "clip"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4826,7 +4918,7 @@
               "value": "cntrl(a(b(e(l)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4865,7 +4957,7 @@
               "value": "cntrp(a(r(a(m)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4904,7 +4996,7 @@
               "value": "colorb(o(x)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4943,7 +5035,7 @@
               "value": "conto(u(r(s)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -4976,7 +5068,7 @@
         "value": "cornerp(o(l(e(s)?)?)?)?"
       },
       "named": false,
-      "value": "arg"
+      "value": "opt"
     },
     "contourfill": {
       "type": "PREC_RIGHT",
@@ -4991,7 +5083,7 @@
               "value": "contourfill"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -5030,7 +5122,7 @@
               "name": "kw_dt"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "FIELD",
@@ -5068,7 +5160,7 @@
               "value": "dataf(i(l(e)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "REPEAT",
@@ -5221,7 +5313,7 @@
               "value": "dec(i(m(a(l(s(i(g(n)?)?)?)?)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -5260,7 +5352,7 @@
               "value": "dg(r(i(d(3(d)?)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -5299,7 +5391,7 @@
               "value": "du(m(m(y)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -5390,7 +5482,7 @@
               "value": "gr(i(d)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -5494,7 +5586,7 @@
               "value": "k(e(y)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -5533,7 +5625,7 @@
               "value": "lab(e(l)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -5583,7 +5675,7 @@
               "name": "kw_lt"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -5674,7 +5766,7 @@
               "value": "load(p(a(t(h)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -5723,7 +5815,7 @@
             "value": "log(s(c(a(l(e)?)?)?)?)?"
           },
           "named": false,
-          "value": "arg"
+          "value": "opt"
         },
         {
           "type": "CHOICE",
@@ -5817,7 +5909,7 @@
               "value": "map(p(i(n(g)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -5856,7 +5948,7 @@
               "value": "(l|r|t|b)?mar(g(i(n(s)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -6001,7 +6093,7 @@
               "value": "micro"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -6040,7 +6132,7 @@
               "value": "mono(c(h(r(o(m(e)?)?)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -6080,7 +6172,7 @@
             "value": "multi(p(l(o(t)?)?)?)?"
           },
           "named": false,
-          "value": "arg"
+          "value": "opt"
         },
         {
           "type": "REPEAT",
@@ -6469,7 +6561,7 @@
               "value": "m(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)tic(s)?"
             },
             "named": false,
-            "value": "flag"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -6505,11 +6597,16 @@
             "value": "nonli(n(e(a(r)?)?)?)?"
           },
           "named": false,
-          "value": "arg"
+          "value": "opt"
         },
         {
-          "type": "PATTERN",
-          "value": "(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)"
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)"
+          },
+          "named": false,
+          "value": "axis"
         },
         {
           "type": "ALIAS",
@@ -6547,7 +6644,7 @@
               "value": "obj(e(c(t)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -6652,7 +6749,7 @@
               "value": "pal(e(t(t(e)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -6802,7 +6899,7 @@
               "value": "paxis"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "FIELD",
@@ -6974,7 +7071,7 @@
               "value": "pixm(a(p)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -7010,7 +7107,7 @@
             "value": "pm3d"
           },
           "named": false,
-          "value": "arg"
+          "value": "opt"
         },
         {
           "type": "CHOICE",
@@ -7207,8 +7304,13 @@
                     "type": "CHOICE",
                     "members": [
                       {
-                        "type": "STRING",
-                        "value": "z"
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "STRING",
+                          "value": "z"
+                        },
+                        "named": false,
+                        "value": "axis"
                       },
                       {
                         "type": "BLANK"
@@ -7334,6 +7436,105 @@
                 "type": "ALIAS",
                 "content": {
                   "type": "PATTERN",
+                  "value": "spot(l(i(g(h(t)?)?)?)?)?"
+                },
+                "named": false,
+                "value": "arg"
+              },
+              {
+                "type": "REPEAT",
+                "content": {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "PATTERN",
+                            "value": "rgb(c(o(l(o(r)?)?)?)?)?"
+                          },
+                          "named": false,
+                          "value": "rgbcolor"
+                        },
+                        {
+                          "type": "FIELD",
+                          "name": "color",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_expression"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "rot_x"
+                        },
+                        {
+                          "type": "FIELD",
+                          "name": "angle",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_expression"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "rot_z"
+                        },
+                        {
+                          "type": "FIELD",
+                          "name": "angle",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_expression"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "Phong"
+                        },
+                        {
+                          "type": "FIELD",
+                          "name": "exponent",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_expression"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "default"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "PATTERN",
                   "value": "(no)?border"
                 },
                 "named": false,
@@ -7408,7 +7609,7 @@
               "value": "pointint(e(r(v(a(l(b(o(x)?)?)?)?)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -7447,7 +7648,7 @@
               "value": "poi(n(t(s(i(z(e)?)?)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -7590,7 +7791,7 @@
               "value": "st(y(l(e)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -8141,7 +8342,7 @@
               "value": "ta(b(l(e)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "REPEAT",
@@ -8228,7 +8429,7 @@
               "value": "t(e(r(m(i(n(a(l)?)?)?)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -8620,7 +8821,7 @@
               "value": "tit(l(e)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -8712,7 +8913,7 @@
             "value": "(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)da(t(a)?)?"
           },
           "named": false,
-          "value": "arg"
+          "value": "opt"
         },
         {
           "type": "CHOICE",
@@ -8740,7 +8941,7 @@
         "value": "(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)dtic(s)?"
       },
       "named": false,
-      "value": "flag"
+      "value": "opt"
     },
     "xlabel": {
       "type": "SEQ",
@@ -8752,7 +8953,7 @@
             "value": "(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)lab(e(l)?)?"
           },
           "named": false,
-          "value": "arg"
+          "value": "opt"
         },
         {
           "type": "CHOICE",
@@ -8784,7 +8985,7 @@
         "value": "(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)mtic(s)?"
       },
       "named": false,
-      "value": "flag"
+      "value": "opt"
     },
     "xrange": {
       "type": "SEQ",
@@ -8796,7 +8997,7 @@
             "value": "(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)ran(g(e)?)?"
           },
           "named": false,
-          "value": "arg"
+          "value": "opt"
         },
         {
           "type": "REPEAT",
@@ -8856,7 +9057,7 @@
               "value": "(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)tic(s)?"
             },
             "named": false,
-            "value": "flag"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -8895,7 +9096,7 @@
               "value": "xyp(l(a(n(e)?)?)?)?"
             },
             "named": false,
-            "value": "arg"
+            "value": "opt"
           },
           {
             "type": "CHOICE",
@@ -8944,7 +9145,7 @@
             "value": "(x|y|z|x2|y2)?zeroa(x(i(s)?)?)?"
           },
           "named": false,
-          "value": "arg"
+          "value": "opt"
         },
         {
           "type": "CHOICE",
@@ -8990,7 +9191,7 @@
                 "value": "colorn(a(m(e(s)?)?)?)?"
               },
               "named": false,
-              "value": "arg"
+              "value": "opt"
             },
             {
               "type": "ALIAS",
@@ -8999,7 +9200,7 @@
                 "value": "fun(c(t(i(o(n(s)?)?)?)?)?)?"
               },
               "named": false,
-              "value": "arg"
+              "value": "opt"
             },
             {
               "type": "ALIAS",
@@ -9008,7 +9209,7 @@
                 "value": "p(l(o(t)?)?)?"
               },
               "named": false,
-              "value": "arg"
+              "value": "opt"
             },
             {
               "type": "ALIAS",
@@ -9017,7 +9218,7 @@
                 "value": "v(a(r(i(a(b(l(e(s)?)?)?)?)?)?)?)?"
               },
               "named": false,
-              "value": "arg"
+              "value": "opt"
             },
             {
               "type": "SEQ",
@@ -9029,7 +9230,7 @@
                     "value": "ve(r(s(i(o(n)?)?)?)?)?"
                   },
                   "named": false,
-                  "value": "arg"
+                  "value": "opt"
                 },
                 {
                   "type": "CHOICE",
@@ -9860,7 +10061,7 @@
                             ]
                           },
                           "named": false,
-                          "value": "arg"
+                          "value": "attr"
                         },
                         {
                           "type": "STRING",
@@ -9983,7 +10184,7 @@
                             "value": "scan"
                           },
                           "named": false,
-                          "value": "arg"
+                          "value": "attr"
                         },
                         {
                           "type": "STRING",
@@ -10412,7 +10613,7 @@
                               ]
                             },
                             "named": false,
-                            "value": "arg"
+                            "value": "attr"
                           },
                           {
                             "type": "FIELD",
@@ -10463,7 +10664,7 @@
                     "value": "bins"
                   },
                   "named": false,
-                  "value": "arg"
+                  "value": "attr"
                 },
                 {
                   "type": "CHOICE",
@@ -10498,7 +10699,7 @@
                     "value": "binrange"
                   },
                   "named": false,
-                  "value": "arg"
+                  "value": "attr"
                 },
                 {
                   "type": "SYMBOL",
@@ -10516,7 +10717,7 @@
                     "value": "binwidth"
                   },
                   "named": false,
-                  "value": "arg"
+                  "value": "attr"
                 },
                 {
                   "type": "STRING",
@@ -10538,7 +10739,7 @@
                     "value": "binvalue"
                   },
                   "named": false,
-                  "value": "arg"
+                  "value": "attr"
                 },
                 {
                   "type": "CHOICE",
@@ -11894,8 +12095,13 @@
                         "type": "SEQ",
                         "members": [
                           {
-                            "type": "STRING",
-                            "value": "cb"
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "STRING",
+                              "value": "cb"
+                            },
+                            "named": false,
+                            "value": "axis"
                           },
                           {
                             "type": "FIELD",
@@ -11908,8 +12114,13 @@
                         ]
                       },
                       {
-                        "type": "STRING",
-                        "value": "z"
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "STRING",
+                          "value": "z"
+                        },
+                        "named": false,
+                        "value": "axis"
                       }
                     ]
                   },
@@ -14317,6 +14528,10 @@
     {
       "type": "SYMBOL",
       "name": "_gval_sep"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_gval_bind"
     }
   ],
   "inline": [],
