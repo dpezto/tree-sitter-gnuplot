@@ -1033,7 +1033,17 @@
   {
     "type": "cmd_bare",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "plot_element",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "cmd_bind",
@@ -6158,63 +6168,7 @@
       "required": false,
       "types": [
         {
-          "type": "array",
-          "named": true
-        },
-        {
-          "type": "binary_expression",
-          "named": true
-        },
-        {
-          "type": "complex",
-          "named": true
-        },
-        {
-          "type": "datablock",
-          "named": true
-        },
-        {
-          "type": "function",
-          "named": true
-        },
-        {
           "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "parenthesized_expression",
-          "named": true
-        },
-        {
-          "type": "range_block",
-          "named": true
-        },
-        {
-          "type": "string_literal",
-          "named": true
-        },
-        {
-          "type": "subscript",
-          "named": true
-        },
-        {
-          "type": "sum_block",
-          "named": true
-        },
-        {
-          "type": "ternary_expression",
-          "named": true
-        },
-        {
-          "type": "tuple",
-          "named": true
-        },
-        {
-          "type": "unary_expression",
           "named": true
         }
       ]
@@ -11531,6 +11485,64 @@
           }
         ]
       },
+      "fraction": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "datablock",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "subscript",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
       "function": {
         "multiple": false,
         "required": false,
@@ -12421,6 +12433,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "range_block",
+          "named": true
+        },
         {
           "type": "style_opts",
           "named": true
@@ -16127,6 +16143,10 @@
     "named": false
   },
   {
+    "type": "changes",
+    "named": false
+  },
+  {
     "type": "clip",
     "named": false
   },
@@ -16607,6 +16627,10 @@
     "named": false
   },
   {
+    "type": "sharpen",
+    "named": false
+  },
+  {
     "type": "size",
     "named": false
   },
@@ -16728,6 +16752,10 @@
   },
   {
     "type": "whitespace",
+    "named": false
+  },
+  {
+    "type": "zclip",
     "named": false
   },
   {

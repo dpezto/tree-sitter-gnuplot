@@ -64,18 +64,28 @@ const offsetPos = ($) => seq(key("offset", 3), $.position); // `offset <pos>` (�
 // All terminal names collapsed into ONE token (was 32 separate `key()` tokens).
 // `token(choice(...))` forces a single terminal symbol; abbreviation min_chars
 // are the same reg() calls the old per-terminal `key(..., "name")` used.
+// NOTE: gen-keywords.mjs mines this block textually — no comments inside it.
+// kittycairo min "kit": gnuplot 6 resolves that shared prefix to kittycairo
+// (probed live on 6.0.4), not an ambiguity error. tek40xx/tek410x are the
+// literal names (trailing letter x's — the old \d\d digit-tail regex matched
+// neither); kc-tek40xx / km-tek40xx are build-conditional, docs-verified only,
+// full name required. Other min_chars (vttek 1, xterm 2, texdraw 3,
+// tkcanvas 2, pstricks 4) mirror gnuplot 6.0.4's accepted abbreviations.
 const TERM_NAME = token(
 	choice(
 		reg("cairolatex", 3), reg("canvas", 3), reg("cgm", 2), reg("context", 2),
 		reg("domterm", 2), reg("dumb", 2), reg("dxf", 2), reg("emf", 2),
 		reg("epscairo", 1), reg("epslatex", 4), reg("fig", 1), reg("gif", 1),
-		reg("hpgl", 1), reg("jpeg", 1), reg("kittycairo", -4), reg("kittygd", -1),
+		reg("hpgl", 1), reg("jpeg", 1),
+		reg("kittycairo", 3), reg("kittygd", -1),
 		reg("lua", 1), reg("pcl5", 2), reg("pdfcairo", 2), reg("pict2e", 2),
 		"png", reg("pngcairo", 4), reg("postscript", 2),
-		reg("pslatex", 3), reg("pstex", -1),
+		reg("pslatex", 3), reg("pstex", -1), reg("pstricks", 4),
 		reg("qt", 1), reg("sixelgd", 1), reg("svg", 2),
-		/tek4(0|1|2)\d\d/, reg("tikz", 2), reg("unknown", 1),
-		reg("webp", 1), reg("wxt", 2), reg("x11", 1),
+		/k[cm]-tek40xx/, reg("tek40xx", 5), reg("tek410x", 5),
+		reg("texdraw", 3), reg("tikz", 2), reg("tkcanvas", 2), reg("unknown", 1),
+		reg("vttek", 1), reg("webp", 1), reg("wxt", 2), reg("x11", 1),
+		reg("xterm", 2),
 	),
 );
 
@@ -134,6 +144,10 @@ module.exports = grammar({
 		// palette `file "f" using 1:2 "fmt"`: using's trailing scanf format
 		// string vs a following string item in the generic palette body
 		[$.using],
+		// `set view 60,30`: full-slot comma lists parse as a _gexprs chain OR
+		// as _view_angles slots; dynamic prec on _view_angles picks the slot
+		// form, keeping the empty-slot shapes (`,,0.5`, `60,`) in one rule
+		[$._gexprs, $._view_slot],
 	],
 
 	rules: {
@@ -191,7 +205,11 @@ module.exports = grammar({
 		_gopt_item: ($) =>
 			choice(
 				alias($.kw_g_flag, "flag"),
-				alias($.kw_g_mod, "mod"),
+				// Optional `, <exprs>` tail: tics time-series `"start", 1 month,
+				// "end"` — the unit word (mod row) sits mid-chain, so the chain
+				// resumes after it. Superset elsewhere (a mod directly followed
+				// by a comma was previously an ERROR in every body).
+				prec.right(seq(alias($.kw_g_mod, "mod"), optional(seq(",", $._gexprs)))),
 				// A value (identifier included) binds to the preceding arg/coord
 				// keyword only across the same-line _gval_sep, so
 				// `contourfill auto FOO` keeps FOO in the body while an
@@ -321,9 +339,12 @@ module.exports = grammar({
 			prec.right(
 				seq(
 					alias("bind", "cmd"),
+					// `allwindows` (min "all") applies the binding to every plot
+					// window; bare `bind allwindows` just lists bindings, so the
+					// key is independent of the modifier.
+					optional(key("allwindows", 3, "mod")),
 					optional(
 						seq(
-							optional(alias("all", "mod")),
 							field("key", $._expression),
 							optional(field("commands", $._expression)),
 						),
@@ -331,18 +352,30 @@ module.exports = grammar({
 				),
 			),
 
-		// break/clear/continue/pwd/replot/reread/refresh — one scanner token,
-		// identical (empty) continuation. See KW_CMD_BARE in scanner.c.
-		cmd_bare: ($) => alias($.kw_cmd_bare, "cmd"),
+		// break/clear/continue/pwd/replot/reread/refresh — one scanner token. See
+		// KW_CMD_BARE in scanner.c. `replot` takes a same-line plot-element tail
+		// (appended to the previous plot/splot command); the one-token collapse
+		// extends the tail permissively to the other bare commands. The _gval_sep
+		// gate keeps the tail same-line, so the next line always starts a fresh
+		// statement. (The runtime also accepts `replot [range] ...`; '[' does not
+		// open the gate, so that form stays unparsed.)
+		cmd_bare: ($) =>
+			seq(
+				alias($.kw_cmd_bare, "cmd"),
+				optional(seq($._gval_sep, sep(",", $.plot_element))),
+			),
 
 		// raise/lower/vclear/toggle — one scanner token + optional expression
 		// ("all" is only meaningful for toggle; accepted permissively for the rest).
+		// `warn` (message to stderr, one optional string) shares the shape; the
+		// runtime accepts no abbreviation, so it stays a grammar literal. The
+		// _gval_sep gate keeps the argument same-line: `vclear $grid` binds the
+		// datablock, `raise <winid>` binds the identifier, while a datablock
+		// definition or assignment on the next line starts a fresh statement.
 		cmd_opt_expr: ($) =>
-			prec.left(
-				seq(
-					alias($.kw_cmd_optexpr, "cmd"),
-					optional(choice($._expression, alias("all", "mod"))),
-				),
+			seq(
+				choice(alias($.kw_cmd_optexpr, "cmd"), alias("warn", "cmd")),
+				optional(seq($._gval_sep, choice($._expression, alias("all", "mod")))),
 			),
 
 		// cd/evaluate — one scanner token + required expression.
@@ -544,6 +577,10 @@ module.exports = grammar({
 							),
 						),
 						alias("nogrid", "flag"), // NOTE: splot only option https://stackoverflow.com/questions/74586626/gnuplot-how-to-splot-surface-and-points-with-dgrid3d
+							// candlesticks/boxplot whisker clause — floats here because
+							// 6.0.4 accepts it on either side of style opts. Probed
+							// minimum: whisker (7); optional bar-width fraction.
+							seq(key("whiskerbars", 7), optional(field("fraction", $._expression))),
 							field("with", seq(key("with", 1, "attr"), $.plot_style)),
 							$.style_opts,
 						),
@@ -556,7 +593,14 @@ module.exports = grammar({
 				choice(
 					// Plain styles (no style-specific continuation) are matched by the
 					// external scanner as one token — see PLT_STYLE_KWS in scanner.c.
-					alias($.kw_plt_st, "plt_st"),
+					// `at base` trails contourfill (6.0.4 accepts base abbreviated to
+					// any prefix incl. `b`; `at surface`/`both` REJECTED). Attached to
+					// the whole kw_plt_st token — permissive for the other plain
+					// styles, like `nogrid` in plot_element.
+					seq(
+						alias($.kw_plt_st, "plt_st"),
+						optional(seq(alias("at", "kw_fn"), key("base", 1))),
+					),
 					// Styles with trailing options keep their own regex token:
 					seq(key("labels", 3, "plt_st"), optional($.label_opts)),
 					seq(key("vectors", 3, "plt_st"), optional($.arrow_opts)),
@@ -564,9 +608,24 @@ module.exports = grammar({
 						key("isosurface", 10, "plt_st"),
 						optional(seq("level", $._expression)),
 					),
+					// `whiskerbars {<fraction>}` floats in the plot_element repeat
+					// (6.0.4 accepts it before AND after style opts: `candlesticks
+					// lt 3 whiskerbars 0.5` and `whiskerbars 0.5 lt 3`).
+					key("candlesticks", 12, "plt_st"),
+					// hsteps (6.0): options repeat in any order, but only BEFORE
+					// style opts (`hsteps lw 2 baseline` is rejected by 6.0.4).
+					// Probed minima: base(line) 4, fo(rward) 2, ba(ckward) 2,
+					// link/nolink full-word only.
 					seq(
-						key("candlesticks", 12, "plt_st"),
-						optional(key("whiskerbars", -1)),
+						key("hsteps", 2, "plt_st"),
+						repeat(
+							choice(
+								key("baseline", 4, "mod"),
+								key("forward", 2, "mod"),
+								key("backward", 2, "mod"),
+								key("link", 4, "mod", 1),
+							),
+						),
 					),
 					seq(key("ellipses", 8, "plt_st"), optional($.ellipse)),
 					seq(
@@ -600,7 +659,14 @@ module.exports = grammar({
 				),
 			),
 
-		cmd_print: ($) => seq(alias($.cmd_print_kw, "cmd"), sep(",", $._expression)),
+		// `printerr` is print-to-stderr with the identical argument list; the
+		// runtime accepts no abbreviation, so it stays a grammar literal beside
+		// the scanner's pr/pri/prin/print token.
+		cmd_print: ($) =>
+			seq(
+				choice(alias($.cmd_print_kw, "cmd"), alias("printerr", "cmd")),
+				sep(",", $._expression),
+			),
 
 		cmd_reset: ($) =>
 			prec.right(seq(alias("reset", "cmd"), optional(choice(alias("bind", "mod"), alias("errors", "mod"), alias("session", "mod"))))),
@@ -612,6 +678,9 @@ module.exports = grammar({
 					choice(
 						key("functions", 3),
 						key("variables", 3),
+						// `save changes` (6.0) — only settings changed from defaults;
+						// the runtime accepts "change" but not "chang", hence min 6.
+						key("changes", 6),
 						key("terminal", 3, "mod"),
 						alias("set", "mod"),
 						alias("fit", "mod"),
@@ -892,8 +961,27 @@ module.exports = grammar({
 		dgrid3d: ($) =>
 			prec.right(seq(key("dgrid3d", 2, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
+		// Bespoke body: operands are variable NAMES, not option keywords — the
+		// generic body's rows shadow short names (`u`, `v`, `t`). Slots may be
+		// empty (`set dummy ,v` keeps x) and a trailing comma is accepted;
+		// gnuplot 6.0.4 takes any arity (probed up to 6).
 		dummy: ($) =>
-			prec.right(seq(key("dummy", 2, "opt"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("dummy", 2, "opt"), optional(seq($._gval_sep, $._dummy_vars)))),
+
+		// The slot is a NAMED hidden rule so its prec.right reaches the
+		// productions: the empty-optional production must lose to shifting the
+		// identifier, or `set dummy foo, bar` stops after the comma (the
+		// statement-boundary reduce wins by default; inline annotations inside
+		// repeat() are dropped during flattening).
+		_dummy_vars: ($) =>
+			prec.right(
+				choice(
+					seq($.identifier, repeat($._dummy_slot)),
+					repeat1($._dummy_slot),
+				),
+			),
+
+		_dummy_slot: ($) => prec.right(seq(",", optional($.identifier))),
 
 		// Generic body: encoding names (iso_8859_*, koi8*, cp*, sjis, utf8)
 		// parse as identifier items; defaults/locale are existing rows
@@ -1065,8 +1153,9 @@ module.exports = grammar({
 		_unset_multiplot: ($) => seq(key("unset", 3, "cmd"), $.multiplot),
 
 		// Generic body (time-unit rows seconds/minutes min 4 — min() is a
-		// builtin — hours/days/weeks/months/years; `time` and freq exprs are
-		// plain items; sec–second abbreviations hit the coord row first)
+		// builtin — hours/days/weeks/months/years; `time` is a mod row (full
+		// word), freq exprs are plain items; sec–second abbreviations hit the
+		// coord row first)
 		mxtics: ($) =>
 			prec.right(
 				seq(
@@ -1190,6 +1279,12 @@ module.exports = grammar({
 					key("ftriangles", undefined, "flag", 1),
 					choice(seq("clip", optional(alias("z", "axis"))), "clip1in", "clip4in"),
 					key("clipcb", undefined, "flag", 1),
+					// splot `with pm3d zclip [min:max]` (6.0): range is MANDATORY
+					// ("expecting zclip [min:max]"), open/starred ends accepted;
+					// no abbreviation; runtime rejects it in `set pm3d` and demands
+					// it be the last with-pm3d option (grammar stays permissive on
+					// both, matching the shared-body convention).
+					seq("zclip", $.range_block),
 					seq(
 						"corners2color",
 						alias(/(geo|har)?mean|rms|m(edian|in|ax)|c(1|2|3|4)/, "c2c"),
@@ -1199,7 +1294,11 @@ module.exports = grammar({
 						repeat(
 							choice(
 								seq("primary", field("fraction", $._expression)),
-								seq("specular", field("fraction", $._expression)),
+								// probed 6.0.4 minima: spec(ular) 4; primary and spec2
+								// are full-word only (p/pr/pri/prim and sp2/spe2 all
+								// rejected). `spec2` outlasts the 4-char `spec` match
+								// by token length, so the two never collide.
+								seq(key("specular", 4), field("fraction", $._expression)),
 								seq("spec2", field("fraction", $._expression)),
 							),
 						),
@@ -1260,7 +1359,19 @@ module.exports = grammar({
 						choice(
 							seq(key("arrow", 3, "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
 							seq(alias("boxplot", "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
-							seq(key("data", 1, "st_opt"), $.plot_style),
+							// data also takes the generic errorbar/errorline names,
+							// which resolve to yerrorbars/yerrorlines at runtime and
+							// are rejected by `set style function` ("style not usable
+							// for function plots"). Probed minima: e(rrorbars) 1,
+							// errorl(ines) 6.
+							seq(
+								key("data", 1, "st_opt"),
+								choice(
+									$.plot_style,
+									key("errorbars", 1, "plt_st"),
+									key("errorlines", 6, "plt_st"),
+								),
+							),
 							seq(key("function", 1, "st_opt"), $.plot_style),
 							seq(key("histogram", 4, "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
 							seq(key("line", 1, "st_opt"), $.line_style),
@@ -1364,7 +1475,24 @@ module.exports = grammar({
 
 		vgrid: ($) => seq($.datablock, optional(seq("size", $._expression))),
 
-		view: ($) => seq($._gval_sep, $._gopts),
+		// `set view` positional slots may be EMPTY (`,,0.5`, `60,,,1.5`, bare
+		// trailing commas) — gnuplot keeps the previous value for each skipped
+		// slot. Any comma-bearing form goes through _view_angles (dynamic prec
+		// wins the full-slot overlap with the _gopts expression chain); keyword
+		// forms (map/equal/azimuth/projection) and comma-less `set view 60`
+		// stay in the generic body. Angles and keywords do NOT mix (probed:
+		// `set view 60,30 equal xy` is rejected by 6.0.4).
+		view: ($) => seq($._gval_sep, choice($._view_angles, $._gopts)),
+
+		// Named slot rule for the same reason as _dummy_slot: the empty-slot
+		// production must lose to shifting an expression after a comma.
+		_view_angles: ($) =>
+			prec.dynamic(1, seq(optional($._expression), repeat1($._view_slot))),
+
+		// Trade-off: after a TRAILING comma an identifier on the next line is
+		// swallowed as a slot value (`set view 60,` + `w = 1`); the reverse
+		// choice would break same-line identifier angles (`set view rx, rz`).
+		_view_slot: ($) => prec.right(seq(",", optional($._expression))),
 
 		walls: ($) => seq($._gval_sep, $._gopts_style),
 
@@ -1426,7 +1554,13 @@ module.exports = grammar({
 					key("colornames", 6, "opt"),
 					key("functions", 3, "opt"),
 					key("plot", 1, "opt"),
-					key("variables", 1, "opt"),
+					// `show variables` — bare, `all` (include GPVAL_*), or a name
+					// prefix. The _gval_sep gate keeps the operand same-line, so an
+					// identifier on the next line starts a fresh statement.
+					seq(
+						key("variables", 1, "opt"),
+						optional(seq($._gval_sep, choice(alias("all", "mod"), $.identifier))),
+					),
 					seq(key("version", 2, "opt"), optional(key("long", 1))),
 				),
 			),
@@ -1545,6 +1679,9 @@ module.exports = grammar({
 					field("smooth_data", $.smooth_options),
 					field("bins", $._bins),
 					"mask",
+					// 6.0 filter, full-word only, no argument; plot-only at runtime
+					// (splot rejects it) and accepted on function plots too.
+					"sharpen",
 					"volatile",
 					"zsort",
 					"noautoscale",
@@ -1617,7 +1754,8 @@ module.exports = grammar({
 						alias("cnormal", "mod"),
 						key("csplines", -1, "mod"),
 						key("acsplines", -1, "mod"),
-						key("mcsplines", -1, "mod"),
+						// probed 6.0.4 minimum: mcs (3); every longer prefix accepted.
+						key("mcsplines", 3, "mod"),
 						alias("path", "mod"),
 						alias("bezier", "mod"),
 						alias("sbezier", "mod"),
@@ -1753,7 +1891,9 @@ module.exports = grammar({
 		// rotate/enhanced/offset/justify/font/textcolor arrive via style_opts.
 		// `in`/`out` and bare l/r/c justify letters degrade to identifier items
 		// (no rows: common variable names / for-loop keyword). start,incr,end
-		// chains are _gexprs; `("label" pos level, ...)` lists are `tuple`.
+		// chains are _gexprs — a mid-chain time unit (`"start", 1 month, "end"`)
+		// resumes via the mod branch's comma tail; `("label" pos level, ...)`
+		// lists are `tuple`.
 		tics_opts: ($) => $._gopts_style,
 
 		line_style: ($) =>

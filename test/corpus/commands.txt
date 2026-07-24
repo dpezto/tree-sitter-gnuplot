@@ -818,3 +818,400 @@ plot FOO watch y=50 label "50" watch y=100 label "100"
       (identifier)
       (number)
       (string_literal))))
+
+===========================================================================
+  printerr - expression list to stderr
+===========================================================================
+printerr "to stderr", A, sin(1)
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_print
+    (string_literal)
+    (identifier)
+    (function
+      (identifier)
+      (parameter_list
+        (number)))))
+
+===========================================================================
+  warn - optional message string
+===========================================================================
+warn "watch out"
+warn
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_opt_expr
+    (string_literal))
+  (cmd_opt_expr))
+
+===========================================================================
+  vclear - bare and with grid datablock
+===========================================================================
+vclear
+vclear $grid
+$d << EOD
+1 2
+EOD
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_opt_expr)
+  (cmd_opt_expr
+    (datablock))
+  (assignment
+    (def_datablock
+      (datablock)
+      (datablock_start)
+      (number)
+      (number)
+      (datablock_end))))
+
+===========================================================================
+  show variables - all and name prefix
+===========================================================================
+show variables all
+show var GPVAL
+show variables
+plot sin(x)
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_show)
+  (cmd_show
+    (identifier))
+  (cmd_show)
+  (cmd_plot
+    (plot_element
+      (function
+        (identifier)
+        (parameter_list
+          (identifier))))))
+
+===========================================================================
+  save changes - changed settings only
+===========================================================================
+save changes "changed.gp"
+save change "changed.gp" append
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_save
+    (string_literal))
+  (cmd_save
+    (string_literal)))
+
+===========================================================================
+  replot - appended plot elements
+===========================================================================
+plot sin(x)
+replot x/2 with lines lw 2, cos(x) title "half"
+rep x/2
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (function
+        (identifier)
+        (parameter_list
+          (identifier)))))
+  (cmd_bare
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (number))
+      (plot_style)
+      (style_opts
+        (number)))
+    (plot_element
+      (function
+        (identifier)
+        (parameter_list
+          (identifier)))
+      (string_literal)))
+  (cmd_bare
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (number)))))
+
+===========================================================================
+  replot - bare keeps next statement separate
+===========================================================================
+replot
+foo = 1
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_bare)
+  (assignment
+    (def_var
+      (identifier)
+      (number))))
+
+===========================================================================
+  bind - allwindows modifier and abbreviations
+===========================================================================
+bind allwindows 'a' "replot"
+bind allw 'a' "replot"
+bind all 'a' "replot"
+bind allwindows
+bind 'a' ""
+bind
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_bind
+    (string_literal)
+    (string_literal))
+  (cmd_bind
+    (string_literal)
+    (string_literal))
+  (cmd_bind
+    (string_literal)
+    (string_literal))
+  (cmd_bind)
+  (cmd_bind
+    (string_literal)
+    (string_literal))
+  (cmd_bind))
+
+===========================================================================
+  with hsteps - direction/baseline/link options and abbreviations
+===========================================================================
+plot d using 1:2 with hsteps
+plot d using 1:2 with hsteps forward baseline nolink
+plot d using 1:2 with hsteps baseline link lw 2
+plot d using 1:2 with hs base ba fo link title "h"
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)))
+      (plot_style)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)))
+      (plot_style)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)))
+      (plot_style)
+      (style_opts
+        (number))))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)))
+      (plot_style)
+      (string_literal))))
+
+===========================================================================
+  sharpen filter - function and data plots
+===========================================================================
+plot sqrt(sin(x)) sharpen
+plot d using 1:2 sharpen
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (function
+        (identifier)
+        (parameter_list
+          (function
+            (identifier)
+            (parameter_list
+              (identifier)))))
+      (datafile_modifiers)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number))))))
+
+===========================================================================
+  with pm3d zclip - closed, open and starred range
+===========================================================================
+splot x*y with pm3d zclip [-1:1]
+splot x*y with pm3d zclip [:1]
+splot x*y with pm3d zclip [*:*]
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_splot
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))
+      (plot_style
+        (pm3d
+          (range_block
+            (unary_expression
+              (operator)
+              (number))
+            (number))))))
+  (cmd_splot
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))
+      (plot_style
+        (pm3d
+          (range_block
+            (number))))))
+  (cmd_splot
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))
+      (plot_style
+        (pm3d
+          (range_block))))))
+
+===========================================================================
+  with contourfill at base - full and abbreviated, before style opts
+===========================================================================
+splot x*y with contourfill at base
+splot x*y with contourfill at b fs solid 0.5
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_splot
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))
+      (plot_style)))
+  (cmd_splot
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))
+      (plot_style)
+      (style_opts
+        (fill_style
+          (number))))))
+
+===========================================================================
+  smooth mcs - abbreviations of mcsplines
+===========================================================================
+plot d using 1:2 smooth mcs
+plot d using 1:2 smooth mcspl
+plot d using 1:2 smooth mcsplines
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number))
+        (smooth_options))))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number))
+        (smooth_options))))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number))
+        (smooth_options)))))
+
+===========================================================================
+  candlesticks whiskerbars - optional fraction on either side of style opts
+===========================================================================
+plot d using 1:2:3:4:5 with candlesticks whiskerbars
+plot d using 1:2:3:4:5 with candlesticks whiskerbars 0.5
+plot d using 1:2:3:4:5 with candlesticks lt 3 whiskerbars 0.5
+plot d using 1:2:3:4:5 with candlesticks whisker 0.5 lt 3
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)
+          (number)
+          (number)
+          (number)))
+      (plot_style)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)
+          (number)
+          (number)
+          (number)))
+      (plot_style)
+      (number)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)
+          (number)
+          (number)
+          (number)))
+      (plot_style)
+      (style_opts
+        (number))
+      (number)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)
+          (number)
+          (number)
+          (number)))
+      (plot_style)
+      (number)
+      (style_opts
+        (number)))))

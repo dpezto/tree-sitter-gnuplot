@@ -1275,6 +1275,11 @@
 			]
 		},
 		{
+			"kw": "printerr",
+			"tier": "cmd",
+			"min": 8
+		},
+		{
 			"kw": "pwd",
 			"tier": "cmd",
 			"min": 3
@@ -1386,6 +1391,11 @@
 			"kw": "vclear",
 			"tier": "cmd",
 			"min": 6
+		},
+		{
+			"kw": "warn",
+			"tier": "cmd",
+			"min": 4
 		},
 		{
 			"kw": "character",
@@ -1778,6 +1788,11 @@
 			]
 		},
 		{
+			"kw": "interactive",
+			"tier": "flag",
+			"min": 11
+		},
+		{
 			"kw": "interlace",
 			"tier": "flag",
 			"min": 5,
@@ -1972,6 +1987,11 @@
 			]
 		},
 		{
+			"kw": "psarrows",
+			"tier": "flag",
+			"min": 8
+		},
+		{
 			"kw": "pspoints",
 			"tier": "flag",
 			"min": 8,
@@ -2031,6 +2051,12 @@
 				"timestamp",
 				"xlabel"
 			]
+		},
+		{
+			"kw": "rottext",
+			"tier": "flag",
+			"min": 7,
+			"no": true
 		},
 		{
 			"kw": "scroll",
@@ -2163,6 +2189,11 @@
 			"min": 3
 		},
 		{
+			"kw": "allwindows",
+			"tier": "mod",
+			"min": 3
+		},
+		{
 			"kw": "anchor",
 			"tier": "mod",
 			"min": 6
@@ -2193,12 +2224,22 @@
 			"min": 4
 		},
 		{
+			"kw": "backward",
+			"tier": "mod",
+			"min": 2
+		},
+		{
 			"kw": "base",
 			"tier": "mod",
 			"min": 2,
 			"parents": [
 				"contour"
 			]
+		},
+		{
+			"kw": "baseline",
+			"tier": "mod",
+			"min": 4
 		},
 		{
 			"kw": "bdefault",
@@ -2505,6 +2546,11 @@
 			]
 		},
 		{
+			"kw": "forward",
+			"tier": "mod",
+			"min": 2
+		},
+		{
 			"kw": "frequency",
 			"tier": "mod",
 			"min": 9
@@ -2530,7 +2576,7 @@
 		{
 			"kw": "geographic",
 			"tier": "mod",
-			"min": 10
+			"min": 3
 		},
 		{
 			"kw": "giant",
@@ -2633,9 +2679,15 @@
 			]
 		},
 		{
+			"kw": "link",
+			"tier": "mod",
+			"min": 4,
+			"no": true
+		},
+		{
 			"kw": "mcsplines",
 			"tier": "mod",
-			"min": -1,
+			"min": 3,
 			"parents": [
 				"smooth_options"
 			]
@@ -2741,6 +2793,26 @@
 			"min": 3
 		},
 		{
+			"kw": "pdftricks2",
+			"tier": "mod",
+			"min": 10
+		},
+		{
+			"kw": "perl",
+			"tier": "mod",
+			"min": 4
+		},
+		{
+			"kw": "perltkx",
+			"tier": "mod",
+			"min": 7
+		},
+		{
+			"kw": "pixels",
+			"tier": "mod",
+			"min": 6
+		},
+		{
 			"kw": "png",
 			"tier": "mod",
 			"min": 3
@@ -2772,6 +2844,16 @@
 			"min": 8
 		},
 		{
+			"kw": "pstricks",
+			"tier": "mod",
+			"min": 8
+		},
+		{
+			"kw": "python",
+			"tier": "mod",
+			"min": 6
+		},
+		{
 			"kw": "rectangle",
 			"tier": "mod",
 			"min": 3,
@@ -2794,6 +2876,11 @@
 			"min": 7
 		},
 		{
+			"kw": "rexx",
+			"tier": "mod",
+			"min": 4
+		},
+		{
 			"kw": "rounded",
 			"tier": "mod",
 			"min": -2,
@@ -2805,6 +2892,11 @@
 			"kw": "rowsfirst",
 			"tier": "mod",
 			"min": 9
+		},
+		{
+			"kw": "ruby",
+			"tier": "mod",
+			"min": 4
 		},
 		{
 			"kw": "sbezier",
@@ -2906,6 +2998,11 @@
 			"min": 5
 		},
 		{
+			"kw": "tcl",
+			"tier": "mod",
+			"min": 3
+		},
+		{
 			"kw": "terminal",
 			"tier": "mod",
 			"min": 3,
@@ -2959,6 +3056,14 @@
 			"min": 11
 		},
 		{
+			"kw": "time",
+			"tier": "mod",
+			"min": 4,
+			"parents": [
+				"xdata"
+			]
+		},
+		{
 			"kw": "timedate",
 			"tier": "mod",
 			"min": 8
@@ -3002,6 +3107,12 @@
 			"kw": "unique",
 			"tier": "mod",
 			"min": 6
+		},
+		{
+			"kw": "unit",
+			"tier": "mod",
+			"min": 4,
+			"no": true
 		},
 		{
 			"kw": "unwrap",
@@ -3170,7 +3281,7 @@
 		{
 			"kw": "kittycairo",
 			"tier": "name",
-			"min": -4
+			"min": 3
 		},
 		{
 			"kw": "kittygd",
@@ -3223,6 +3334,11 @@
 			"min": -1
 		},
 		{
+			"kw": "pstricks",
+			"tier": "name",
+			"min": 4
+		},
+		{
 			"kw": "qt",
 			"tier": "name",
 			"min": 1
@@ -3238,12 +3354,37 @@
 			"min": 2
 		},
 		{
+			"kw": "tek40xx",
+			"tier": "name",
+			"min": 5
+		},
+		{
+			"kw": "tek410x",
+			"tier": "name",
+			"min": 5
+		},
+		{
+			"kw": "texdraw",
+			"tier": "name",
+			"min": 3
+		},
+		{
 			"kw": "tikz",
 			"tier": "name",
 			"min": 2
 		},
 		{
+			"kw": "tkcanvas",
+			"tier": "name",
+			"min": 2
+		},
+		{
 			"kw": "unknown",
+			"tier": "name",
+			"min": 1
+		},
+		{
+			"kw": "vttek",
 			"tier": "name",
 			"min": 1
 		},
@@ -3261,6 +3402,11 @@
 			"kw": "x11",
 			"tier": "name",
 			"min": 1
+		},
+		{
+			"kw": "xterm",
+			"tier": "name",
+			"min": 2
 		},
 		{
 			"kw": "angles",
@@ -4739,6 +4885,19 @@
 			]
 		},
 		{
+			"kw": "errorbars",
+			"tier": "plt_st",
+			"min": 1,
+			"parents": [
+				"style"
+			]
+		},
+		{
+			"kw": "errorlines",
+			"tier": "plt_st",
+			"min": 6
+		},
+		{
 			"kw": "filledcurves",
 			"tier": "plt_st",
 			"min": 7,
@@ -4773,6 +4932,11 @@
 			"kw": "histograms",
 			"tier": "plt_st",
 			"min": 4
+		},
+		{
+			"kw": "hsteps",
+			"tier": "plt_st",
+			"min": 2
 		},
 		{
 			"kw": "image",

@@ -329,3 +329,194 @@ set style watchpoint labels offset .5,.5
     (style
       (number)
       (number))))
+
+================================================================================
+set style data - generic errorbars/errorlines names and abbreviations
+================================================================================
+set style data errorbars
+set style data e
+set style data errorlines
+set style data errorl
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (style))
+  (cmd_set
+    (style))
+  (cmd_set
+    (style))
+  (cmd_set
+    (style)))
+
+================================================================================
+set pm3d lighting - spec abbreviation of specular
+================================================================================
+set pm3d lighting spec 0.4
+set pm3d lighting specular 0.4 spec2 0.3
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (pm3d
+      (number)))
+  (cmd_set
+    (pm3d
+      (number)
+      (number))))
+
+================================================================================
+set view - empty positional slots and trailing commas
+================================================================================
+set view ,,0.5
+set view 60,,,1.5
+set view ,30
+set view 60,
+set view ,
+set view ,,,
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    arg_opts: (view
+      (number)))
+  (cmd_set
+    arg_opts: (view
+      (number)
+      (number)))
+  (cmd_set
+    arg_opts: (view
+      (number)))
+  (cmd_set
+    arg_opts: (view
+      (number)))
+  (cmd_set
+    arg_opts: (view))
+  (cmd_set
+    arg_opts: (view)))
+
+================================================================================
+set view - full slot list and map keyword unchanged
+================================================================================
+set view 60, 30, 1, 1.5
+set view map
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    arg_opts: (view
+      (number)
+      (number)
+      (number)
+      (number)))
+  (cmd_set
+    arg_opts: (view)))
+
+================================================================================
+set dummy - variable names with empty and trailing slots
+================================================================================
+set dummy u
+set dummy u,v
+set dummy ,v
+set dummy u,
+set dummy longname , v
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (dummy
+      (identifier)))
+  (cmd_set
+    (dummy
+      (identifier)
+      (identifier)))
+  (cmd_set
+    (dummy
+      (identifier)))
+  (cmd_set
+    (dummy
+      (identifier)))
+  (cmd_set
+    (dummy
+      (identifier)
+      (identifier))))
+
+================================================================================
+set xtics - time keyword before and after format, geographic abbreviation
+================================================================================
+set xtics format "%b %d" time
+set xtics time format "%b %d"
+set xtics time
+set xtics geographic
+set xtics geo
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (xtics
+      (tics_opts
+        (string_literal
+          (format_specifier)
+          (format_specifier)))))
+  (cmd_set
+    (xtics
+      (tics_opts
+        (string_literal
+          (format_specifier)
+          (format_specifier)))))
+  (cmd_set
+    (xtics
+      (tics_opts)))
+  (cmd_set
+    (xtics
+      (tics_opts)))
+  (cmd_set
+    (xtics
+      (tics_opts))))
+
+================================================================================
+set y2tics/cbtics - shared body takes time and geographic
+================================================================================
+set y2tics time
+set cbtics geo
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (xtics
+      (tics_opts)))
+  (cmd_set
+    (xtics
+      (tics_opts))))
+
+================================================================================
+set xtics - series with time units and quoted start/end
+================================================================================
+set xtics "01-Jan-2000", 1 month
+set xtics "01-Jan-2000", 1 month, "01-Jan-2010"
+set xtics 1 day
+set xtics 0, 5, 100
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (xtics
+      (tics_opts
+        (string_literal)
+        (number))))
+  (cmd_set
+    (xtics
+      (tics_opts
+        (string_literal)
+        (number)
+        (string_literal))))
+  (cmd_set
+    (xtics
+      (tics_opts
+        (number))))
+  (cmd_set
+    (xtics
+      (tics_opts
+        (number)
+        (number)
+        (number)))))

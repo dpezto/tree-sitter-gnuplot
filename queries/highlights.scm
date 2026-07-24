@@ -56,6 +56,7 @@
   "back"
   "depthorder"
   "clip"
+  "zclip"
   "font"
   "filled"
   "nofilled"
@@ -149,6 +150,7 @@
   "noautoscale"
   "zsort"
   "mask"
+  "sharpen"
   "transpose"
   ; endian options (binary)
   "endian"
@@ -217,6 +219,8 @@
   "datablocks"
   "commentschars"
   "functions"
+  ; save changes
+  "changes"
   ; misc
   ; coordinate planes / walls
   ; colorspec
