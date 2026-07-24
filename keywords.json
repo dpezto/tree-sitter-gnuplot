@@ -1110,6 +1110,11 @@
 			"min": 5
 		},
 		{
+			"kw": "if",
+			"tier": "attr",
+			"min": 2
+		},
+		{
 			"kw": "index",
 			"tier": "attr",
 			"min": 1,
@@ -2776,6 +2781,14 @@
 			"kw": "off",
 			"tier": "mod",
 			"min": 3
+		},
+		{
+			"kw": "offset",
+			"tier": "mod",
+			"min": 3,
+			"parents": [
+				"hidden3d"
+			]
 		},
 		{
 			"kw": "on",

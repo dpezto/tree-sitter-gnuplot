@@ -393,3 +393,93 @@ if (a=1, b>0) { c = 2 }
       (def_var
         (identifier)
         (number)))))
+===========================================================================
+  fit 4 - plural error keywords and errors variable list
+===========================================================================
+fit f(x) $d using 1:2:3 yerrors via a,b
+fit f(x) $d using 1:2:3:4 xyerrors via a,b
+fit f(x) $d using 1:2:3 zerrors via a,b
+fit g(x,y) $d using 1:2:3:4:5:6 errors x,y,z via a,b
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_fit
+    func: (function
+      name: (identifier)
+      parameters: (parameter_list
+        (identifier)))
+    data: (datablock)
+    (datafile_modifiers
+      (using
+        using: (number)
+        using: (number)
+        using: (number)))
+    var: (identifier)
+    var: (identifier))
+  (cmd_fit
+    func: (function
+      name: (identifier)
+      parameters: (parameter_list
+        (identifier)))
+    data: (datablock)
+    (datafile_modifiers
+      (using
+        using: (number)
+        using: (number)
+        using: (number)
+        using: (number)))
+    var: (identifier)
+    var: (identifier))
+  (cmd_fit
+    func: (function
+      name: (identifier)
+      parameters: (parameter_list
+        (identifier)))
+    data: (datablock)
+    (datafile_modifiers
+      (using
+        using: (number)
+        using: (number)
+        using: (number)))
+    var: (identifier)
+    var: (identifier))
+  (cmd_fit
+    func: (function
+      name: (identifier)
+      parameters: (parameter_list
+        (identifier)
+        (identifier)))
+    data: (datablock)
+    (datafile_modifiers
+      (using
+        using: (number)
+        using: (number)
+        using: (number)
+        using: (number)
+        using: (number)
+        using: (number)))
+    (identifier)
+    (identifier)
+    (identifier)
+    var: (identifier)
+    var: (identifier)))
+
+===========================================================================
+  if statement directly after a plot command stays cmd_if (brace form)
+===========================================================================
+plot sin(x)
+if (1) { print "a" }
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      function: (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))))
+  (cmd_if
+    conditions: (number)
+    (cmd_print
+      (string_literal))))
+

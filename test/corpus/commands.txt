@@ -1354,3 +1354,165 @@ plot $d matrix every 2 columnhead u 1:2
         (using
           (number)
           (number))))))
+===========================================================================
+  plot if filter - paren and bare expression, with/title interleave, splot
+===========================================================================
+plot $d using 1:2 if ($2<5)
+plot $d using 1:2 if $2<5 with lines
+plot $d using 1:2 title "t" if ($2<5)
+splot $d using 1:2:3 if ($3<9)
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (datablock)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      filter: (parenthesized_expression
+        (binary_expression
+          (unary_expression
+            (operator)
+            (number))
+          (operator)
+          (number)))))
+  (cmd_plot
+    (plot_element
+      data: (datablock)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      filter: (binary_expression
+        (unary_expression
+          (operator)
+          (number))
+        (operator)
+        (number))
+      with: (plot_style)))
+  (cmd_plot
+    (plot_element
+      data: (datablock)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      title: (string_literal)
+      filter: (parenthesized_expression
+        (binary_expression
+          (unary_expression
+            (operator)
+            (number))
+          (operator)
+          (number)))))
+  (cmd_splot
+    (plot_element
+      data: (datablock)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (number)))
+      filter: (parenthesized_expression
+        (binary_expression
+          (unary_expression
+            (operator)
+            (number))
+          (operator)
+          (number))))))
+
+===========================================================================
+  with hsteps offset - bare, between direction options, before style opts
+===========================================================================
+plot d using 1:2 with hsteps offset 1
+plot d using 1:2 with hsteps forward offset 1+2 lw 2
+plot d using 1:2 with hsteps offset 1 backward
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (identifier)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      with: (plot_style
+        offset: (number))))
+  (cmd_plot
+    (plot_element
+      data: (identifier)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      with: (plot_style)
+      (style_opts
+        (position
+          x: (binary_expression
+            (number)
+            (operator)
+            (number))))
+      (style_opts
+        (number))))
+  (cmd_plot
+    (plot_element
+      data: (identifier)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      with: (plot_style
+        offset: (number)))))
+
+===========================================================================
+  plot title columnheader - call form, bare, trailing at/enhanced
+===========================================================================
+plot $h using 1:2 title columnheader(2)
+plot $h using 1:2 title columnhead(2) at end
+plot $h using 1:2 title columnheader(1+1) enhanced
+plot $h using 2 title columnheader
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (datablock)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      title: (columnheader)
+      column: (number)))
+  (cmd_plot
+    (plot_element
+      data: (datablock)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      title: (columnheader)
+      column: (number)))
+  (cmd_plot
+    (plot_element
+      data: (datablock)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      title: (columnheader)
+      column: (binary_expression
+        (number)
+        (operator)
+        (number))
+      (style_opts)))
+  (cmd_plot
+    (plot_element
+      data: (datablock)
+      (datafile_modifiers
+        (using
+          using: (number)))
+      title: (columnheader))))
+
