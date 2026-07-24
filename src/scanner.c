@@ -514,6 +514,26 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"tex", 3, KW_G_MOD, 0},
     {"context", 7, KW_G_MOD, 0},
     {"dynamic", 7, KW_G_MOD, 0},
+    // tkcanvas (script-language alternatives + toggles). perltkx before perl
+    // (prefix rule). All full-word: short language names are plausible
+    // identifiers, so no abbreviation.
+    {"perltkx", 7, KW_G_MOD, 0},
+    {"perl", 4, KW_G_MOD, 0},
+    {"tcl", 3, KW_G_MOD, 0},
+    {"python", 6, KW_G_MOD, 0},
+    {"ruby", 4, KW_G_MOD, 0},
+    {"rexx", 4, KW_G_MOD, 0},
+    {"interactive", 11, KW_G_FLAG, 0},
+    {"rottext", 7, KW_G_FLAG, 1},
+    {"pixels", 6, KW_G_MOD, 0},
+    // pstricks (output flavor + arrows + unit sizing). `unit` must stay after
+    // the `units` row above (first match wins; units min 5 so bare `unit`
+    // falls through here). nopstricks/nopsarrows rejected live (6.0.4),
+    // nounit accepted — no_prefix set accordingly.
+    {"pstricks", 8, KW_G_MOD, 0},
+    {"pdftricks2", 10, KW_G_MOD, 0},
+    {"psarrows", 8, KW_G_FLAG, 0},
+    {"unit", 4, KW_G_MOD, 1},
     // tics (tics_opts generic conversion). rotate/enhanced/offset/justify
     // arrive via existing rows or the style_opts branch. NOT rows: in/out
     // (for-loop keyword / common variable — degrade to identifier items),

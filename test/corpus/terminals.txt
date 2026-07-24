@@ -163,3 +163,87 @@ set terminal webp size 800,600 font 'Arial,12' enhanced background '#fff' animat
         (number)
         (number)
         (number)))))
+
+===========================================================================
+  terminal tek40xx family names (no options)
+===========================================================================
+set terminal tek40xx
+set terminal tek410x
+set terminal vttek
+set terminal xterm
+set terminal kc-tek40xx
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (terminal))
+  (cmd_set
+    (terminal))
+  (cmd_set
+    (terminal))
+  (cmd_set
+    (terminal))
+  (cmd_set
+    (terminal)))
+
+===========================================================================
+  terminal tkcanvas language and toggle options
+===========================================================================
+set terminal tkcanvas tcl standalone interactive rottext pixels
+set terminal tkcanvas perltkx norottext externalimages size 800,600
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (terminal
+      (t_opts)))
+  (cmd_set
+    (terminal
+      (t_opts
+        (number)
+        (number)))))
+
+===========================================================================
+  terminal pstricks options
+===========================================================================
+set terminal pstricks unit psarrows pstricks
+set terminal pstricks pdftricks2 nounit gparrows size 6in,4in
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (terminal
+      (t_opts)))
+  (cmd_set
+    (terminal
+      (t_opts
+        (number)
+        (number)))))
+
+===========================================================================
+  terminal texdraw with psarrows
+===========================================================================
+set terminal texdraw texpoints psarrows blacktext
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (terminal
+      (t_opts))))
+
+===========================================================================
+  terminal kitty anchor and scroll
+===========================================================================
+set terminal kitty anchor
+set terminal kittygd scroll size 640,480
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (terminal
+      (t_opts)))
+  (cmd_set
+    (terminal
+      (t_opts
+        (number)
+        (number)))))

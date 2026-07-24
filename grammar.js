@@ -64,18 +64,28 @@ const offsetPos = ($) => seq(key("offset", 3), $.position); // `offset <pos>` (�
 // All terminal names collapsed into ONE token (was 32 separate `key()` tokens).
 // `token(choice(...))` forces a single terminal symbol; abbreviation min_chars
 // are the same reg() calls the old per-terminal `key(..., "name")` used.
+// NOTE: gen-keywords.mjs mines this block textually — no comments inside it.
+// kittycairo min "kit": gnuplot 6 resolves that shared prefix to kittycairo
+// (probed live on 6.0.4), not an ambiguity error. tek40xx/tek410x are the
+// literal names (trailing letter x's — the old \d\d digit-tail regex matched
+// neither); kc-tek40xx / km-tek40xx are build-conditional, docs-verified only,
+// full name required. Other min_chars (vttek 1, xterm 2, texdraw 3,
+// tkcanvas 2, pstricks 4) mirror gnuplot 6.0.4's accepted abbreviations.
 const TERM_NAME = token(
 	choice(
 		reg("cairolatex", 3), reg("canvas", 3), reg("cgm", 2), reg("context", 2),
 		reg("domterm", 2), reg("dumb", 2), reg("dxf", 2), reg("emf", 2),
 		reg("epscairo", 1), reg("epslatex", 4), reg("fig", 1), reg("gif", 1),
-		reg("hpgl", 1), reg("jpeg", 1), reg("kittycairo", -4), reg("kittygd", -1),
+		reg("hpgl", 1), reg("jpeg", 1),
+		reg("kittycairo", 3), reg("kittygd", -1),
 		reg("lua", 1), reg("pcl5", 2), reg("pdfcairo", 2), reg("pict2e", 2),
 		"png", reg("pngcairo", 4), reg("postscript", 2),
-		reg("pslatex", 3), reg("pstex", -1),
+		reg("pslatex", 3), reg("pstex", -1), reg("pstricks", 4),
 		reg("qt", 1), reg("sixelgd", 1), reg("svg", 2),
-		/tek4(0|1|2)\d\d/, reg("tikz", 2), reg("unknown", 1),
-		reg("webp", 1), reg("wxt", 2), reg("x11", 1),
+		/k[cm]-tek40xx/, reg("tek40xx", 5), reg("tek410x", 5),
+		reg("texdraw", 3), reg("tikz", 2), reg("tkcanvas", 2), reg("unknown", 1),
+		reg("vttek", 1), reg("webp", 1), reg("wxt", 2), reg("x11", 1),
+		reg("xterm", 2),
 	),
 );
 
