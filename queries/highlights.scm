@@ -217,6 +217,8 @@
   "datablocks"
   "commentschars"
   "functions"
+  ; save changes
+  "changes"
   ; misc
   ; coordinate planes / walls
   ; colorspec

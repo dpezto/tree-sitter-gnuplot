@@ -321,9 +321,12 @@ module.exports = grammar({
 			prec.right(
 				seq(
 					alias("bind", "cmd"),
+					// `allwindows` (min "all") applies the binding to every plot
+					// window; bare `bind allwindows` just lists bindings, so the
+					// key is independent of the modifier.
+					optional(key("allwindows", 3, "mod")),
 					optional(
 						seq(
-							optional(alias("all", "mod")),
 							field("key", $._expression),
 							optional(field("commands", $._expression)),
 						),
@@ -331,18 +334,30 @@ module.exports = grammar({
 				),
 			),
 
-		// break/clear/continue/pwd/replot/reread/refresh — one scanner token,
-		// identical (empty) continuation. See KW_CMD_BARE in scanner.c.
-		cmd_bare: ($) => alias($.kw_cmd_bare, "cmd"),
+		// break/clear/continue/pwd/replot/reread/refresh — one scanner token. See
+		// KW_CMD_BARE in scanner.c. `replot` takes a same-line plot-element tail
+		// (appended to the previous plot/splot command); the one-token collapse
+		// extends the tail permissively to the other bare commands. The _gval_sep
+		// gate keeps the tail same-line, so the next line always starts a fresh
+		// statement. (The runtime also accepts `replot [range] ...`; '[' does not
+		// open the gate, so that form stays unparsed.)
+		cmd_bare: ($) =>
+			seq(
+				alias($.kw_cmd_bare, "cmd"),
+				optional(seq($._gval_sep, sep(",", $.plot_element))),
+			),
 
 		// raise/lower/vclear/toggle — one scanner token + optional expression
 		// ("all" is only meaningful for toggle; accepted permissively for the rest).
+		// `warn` (message to stderr, one optional string) shares the shape; the
+		// runtime accepts no abbreviation, so it stays a grammar literal. The
+		// _gval_sep gate keeps the argument same-line: `vclear $grid` binds the
+		// datablock, `raise <winid>` binds the identifier, while a datablock
+		// definition or assignment on the next line starts a fresh statement.
 		cmd_opt_expr: ($) =>
-			prec.left(
-				seq(
-					alias($.kw_cmd_optexpr, "cmd"),
-					optional(choice($._expression, alias("all", "mod"))),
-				),
+			seq(
+				choice(alias($.kw_cmd_optexpr, "cmd"), alias("warn", "cmd")),
+				optional(seq($._gval_sep, choice($._expression, alias("all", "mod")))),
 			),
 
 		// cd/evaluate — one scanner token + required expression.
@@ -600,7 +615,14 @@ module.exports = grammar({
 				),
 			),
 
-		cmd_print: ($) => seq(alias($.cmd_print_kw, "cmd"), sep(",", $._expression)),
+		// `printerr` is print-to-stderr with the identical argument list; the
+		// runtime accepts no abbreviation, so it stays a grammar literal beside
+		// the scanner's pr/pri/prin/print token.
+		cmd_print: ($) =>
+			seq(
+				choice(alias($.cmd_print_kw, "cmd"), alias("printerr", "cmd")),
+				sep(",", $._expression),
+			),
 
 		cmd_reset: ($) =>
 			prec.right(seq(alias("reset", "cmd"), optional(choice(alias("bind", "mod"), alias("errors", "mod"), alias("session", "mod"))))),
@@ -612,6 +634,9 @@ module.exports = grammar({
 					choice(
 						key("functions", 3),
 						key("variables", 3),
+						// `save changes` (6.0) — only settings changed from defaults;
+						// the runtime accepts "change" but not "chang", hence min 6.
+						key("changes", 6),
 						key("terminal", 3, "mod"),
 						alias("set", "mod"),
 						alias("fit", "mod"),
@@ -1426,7 +1451,13 @@ module.exports = grammar({
 					key("colornames", 6, "opt"),
 					key("functions", 3, "opt"),
 					key("plot", 1, "opt"),
-					key("variables", 1, "opt"),
+					// `show variables` — bare, `all` (include GPVAL_*), or a name
+					// prefix. The _gval_sep gate keeps the operand same-line, so an
+					// identifier on the next line starts a fresh statement.
+					seq(
+						key("variables", 1, "opt"),
+						optional(seq($._gval_sep, choice(alias("all", "mod"), $.identifier))),
+					),
 					seq(key("version", 2, "opt"), optional(key("long", 1))),
 				),
 			),

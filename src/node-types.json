@@ -1033,7 +1033,17 @@
   {
     "type": "cmd_bare",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "plot_element",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "cmd_bind",
@@ -16124,6 +16134,10 @@
   },
   {
     "type": "center",
+    "named": false
+  },
+  {
+    "type": "changes",
     "named": false
   },
   {

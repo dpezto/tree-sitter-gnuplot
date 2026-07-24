@@ -818,3 +818,164 @@ plot FOO watch y=50 label "50" watch y=100 label "100"
       (identifier)
       (number)
       (string_literal))))
+
+===========================================================================
+  printerr - expression list to stderr
+===========================================================================
+printerr "to stderr", A, sin(1)
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_print
+    (string_literal)
+    (identifier)
+    (function
+      (identifier)
+      (parameter_list
+        (number)))))
+
+===========================================================================
+  warn - optional message string
+===========================================================================
+warn "watch out"
+warn
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_opt_expr
+    (string_literal))
+  (cmd_opt_expr))
+
+===========================================================================
+  vclear - bare and with grid datablock
+===========================================================================
+vclear
+vclear $grid
+$d << EOD
+1 2
+EOD
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_opt_expr)
+  (cmd_opt_expr
+    (datablock))
+  (assignment
+    (def_datablock
+      (datablock)
+      (datablock_start)
+      (number)
+      (number)
+      (datablock_end))))
+
+===========================================================================
+  show variables - all and name prefix
+===========================================================================
+show variables all
+show var GPVAL
+show variables
+plot sin(x)
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_show)
+  (cmd_show
+    (identifier))
+  (cmd_show)
+  (cmd_plot
+    (plot_element
+      (function
+        (identifier)
+        (parameter_list
+          (identifier))))))
+
+===========================================================================
+  save changes - changed settings only
+===========================================================================
+save changes "changed.gp"
+save change "changed.gp" append
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_save
+    (string_literal))
+  (cmd_save
+    (string_literal)))
+
+===========================================================================
+  replot - appended plot elements
+===========================================================================
+plot sin(x)
+replot x/2 with lines lw 2, cos(x) title "half"
+rep x/2
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (function
+        (identifier)
+        (parameter_list
+          (identifier)))))
+  (cmd_bare
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (number))
+      (plot_style)
+      (style_opts
+        (number)))
+    (plot_element
+      (function
+        (identifier)
+        (parameter_list
+          (identifier)))
+      (string_literal)))
+  (cmd_bare
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (number)))))
+
+===========================================================================
+  replot - bare keeps next statement separate
+===========================================================================
+replot
+foo = 1
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_bare)
+  (assignment
+    (def_var
+      (identifier)
+      (number))))
+
+===========================================================================
+  bind - allwindows modifier and abbreviations
+===========================================================================
+bind allwindows 'a' "replot"
+bind allw 'a' "replot"
+bind all 'a' "replot"
+bind allwindows
+bind 'a' ""
+bind
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_bind
+    (string_literal)
+    (string_literal))
+  (cmd_bind
+    (string_literal)
+    (string_literal))
+  (cmd_bind
+    (string_literal)
+    (string_literal))
+  (cmd_bind)
+  (cmd_bind
+    (string_literal)
+    (string_literal))
+  (cmd_bind))
