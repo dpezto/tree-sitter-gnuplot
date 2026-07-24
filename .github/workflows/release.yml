@@ -23,7 +23,7 @@ jobs:
       # release PR otherwise has no status checks and can't satisfy branch
       # protection (needed admin-merge). The App token makes the release PR
       # trigger CI and auto-merge normally.
-      - uses: actions/create-github-app-token@v2
+      - uses: actions/create-github-app-token@v3
         id: app-token
         # Tolerate missing App secrets: fall back to GITHUB_TOKEN below (release
         # still works, but the release PR won't get CI and needs an admin merge).
