@@ -8737,7 +8737,7 @@
                               },
                               {
                                 "type": "PATTERN",
-                                "value": "kittyc(a(i(r(o)?)?)?)?"
+                                "value": "kit(t(y(c(a(i(r(o)?)?)?)?)?)?)?"
                               },
                               {
                                 "type": "PATTERN",
@@ -8781,6 +8781,10 @@
                               },
                               {
                                 "type": "PATTERN",
+                                "value": "pstr(i(c(k(s)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
                                 "value": "q(t)?"
                               },
                               {
@@ -8793,7 +8797,19 @@
                               },
                               {
                                 "type": "PATTERN",
-                                "value": "tek4(0|1|2)\\d\\d"
+                                "value": "k[cm]-tek40xx"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "tek40(x(x)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "tek41(0(x)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "tex(d(r(a(w)?)?)?)?"
                               },
                               {
                                 "type": "PATTERN",
@@ -8801,7 +8817,15 @@
                               },
                               {
                                 "type": "PATTERN",
+                                "value": "tk(c(a(n(v(a(s)?)?)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
                                 "value": "u(n(k(n(o(w(n)?)?)?)?)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "v(t(t(e(k)?)?)?)?"
                               },
                               {
                                 "type": "PATTERN",
@@ -8814,6 +8838,10 @@
                               {
                                 "type": "PATTERN",
                                 "value": "x(1(1)?)?"
+                              },
+                              {
+                                "type": "PATTERN",
+                                "value": "xt(e(r(m)?)?)?"
                               }
                             ]
                           }
