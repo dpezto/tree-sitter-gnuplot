@@ -11441,8 +11441,8 @@
           }
         ]
       },
-      "data": {
-        "multiple": false,
+      "column": {
+        "multiple": true,
         "required": false,
         "types": [
           {
@@ -11470,8 +11470,116 @@
             "named": true
           },
           {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "subscript",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      },
+      "data": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "datablock",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
             "type": "keyentry",
             "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "subscript",
+            "named": true
+          },
+          {
+            "type": "sum_block",
+            "named": true
+          },
+          {
+            "type": "ternary_expression",
+            "named": true
+          }
+        ]
+      },
+      "filter": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "complex",
+            "named": true
+          },
+          {
+            "type": "datablock",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
           },
           {
             "type": "number",
@@ -12018,7 +12126,34 @@
   {
     "type": "plot_style",
     "named": true,
-    "fields": {},
+    "fields": {
+      "offset": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "operator",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
       "required": false,
