@@ -1275,6 +1275,11 @@
 			]
 		},
 		{
+			"kw": "printerr",
+			"tier": "cmd",
+			"min": 8
+		},
+		{
 			"kw": "pwd",
 			"tier": "cmd",
 			"min": 3
@@ -1386,6 +1391,11 @@
 			"kw": "vclear",
 			"tier": "cmd",
 			"min": 6
+		},
+		{
+			"kw": "warn",
+			"tier": "cmd",
+			"min": 4
 		},
 		{
 			"kw": "character",
@@ -2159,6 +2169,11 @@
 		},
 		{
 			"kw": "all",
+			"tier": "mod",
+			"min": 3
+		},
+		{
+			"kw": "allwindows",
 			"tier": "mod",
 			"min": 3
 		},
