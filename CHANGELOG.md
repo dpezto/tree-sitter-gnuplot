@@ -4,6 +4,13 @@ All notable changes are documented here. This file is maintained automatically b
 [release-please](https://github.com/googleapis/release-please) from Conventional-Commit
 history; do not edit it by hand.
 
+## [2.1.0](https://github.com/dpezto/tree-sitter-gnuplot/compare/v2.0.4...v2.1.0) (2026-07-24)
+
+
+### Features
+
+* add keyword dictionary codegen (keywords.json) ([#15](https://github.com/dpezto/tree-sitter-gnuplot/issues/15)) ([3602be3](https://github.com/dpezto/tree-sitter-gnuplot/commit/3602be3ab11f62bcaaf0115bcd3364453ecb9dd0))
+
 ## [2.0.4](https://github.com/dpezto/tree-sitter-gnuplot/compare/v2.0.3...v2.0.4) (2026-07-23)
 
 
