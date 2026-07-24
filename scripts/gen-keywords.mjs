@@ -87,7 +87,7 @@ for (const e of entries) if (!e.tier) throw new Error(`unmapped scanner symbol f
 
 // Tier aliases used by key() call sites. An aka outside this set is the
 // keyword's own (or bespoke) name — self-describing in the parse tables.
-const TIERS = new Set(["cmd", "arg", "flag", "mod", "coord", "attr", "plt_st", "st_opt"]);
+const TIERS = new Set(["cmd", "opt", "arg", "flag", "mod", "coord", "attr", "plt_st", "st_opt"]);
 
 for (const m of grammarJs.matchAll(
   /key\(\s*"([^"]+)"\s*(?:,\s*(-?\d+|undefined))?(?:,\s*(?:"([^"]+)"|(undefined)|\$\.(\w+)))?(?:,\s*([^()]*?))?\s*\)/g,
@@ -252,14 +252,19 @@ for (const [plural, singular] of [
 }
 
 for (const [w, min] of headWords) {
-  const existing = entries.find((e) => e.kw === w && e.tier === "arg");
+  // heads carry the "opt" tier (set/show statement, option-selector family)
+  const existing = entries.find((e) => e.kw === w && e.tier === "opt");
   if (existing) {
     existing.head = true;
     if (min < existing.min) existing.min = min;
   } else {
-    entries.push({ kw: w, tier: "arg", min, head: true });
+    entries.push({ kw: w, tier: "opt", min, head: true });
   }
 }
+
+// every opt-tier entry is an option head by definition (show-only heads live
+// outside _argument_set_show and miss the walk above)
+for (const e of entries) if (e.tier === 'opt') e.head = true;
 
 // ---------- parent map from the pre-redesign grammar ----------
 //

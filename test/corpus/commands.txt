@@ -772,3 +772,49 @@ set pixmap 1 "bg.png" at screen 0,0 width 1.0 front
       (number)
       (number)
       (number))))
+
+===========================================================================
+  set pm3d spotlight - color and rotation
+===========================================================================
+set pm3d spot rgb "blue"
+set pm3d spotlight rgb "blue" rot_x 45 rot_z 30 Phong 2 default
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (pm3d
+      (string_literal)))
+  (cmd_set
+    (pm3d
+      (string_literal)
+      (number)
+      (number)
+      (number))))
+
+===========================================================================
+  plot watchpoints - watch mouse
+===========================================================================
+plot FOO axes x1y2 watch mouse
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (identifier))))
+
+===========================================================================
+  plot watchpoints - repeated watch with labels
+===========================================================================
+plot FOO watch y=50 label "50" watch y=100 label "100"
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (identifier)
+      (number)
+      (string_literal)
+      (identifier)
+      (number)
+      (string_literal))))
