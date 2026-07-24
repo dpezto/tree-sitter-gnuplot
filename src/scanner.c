@@ -332,7 +332,7 @@ static const GoptKwEntry GOPT_KWS[] = {
     // format
     {"numeric", 7, KW_G_MOD, 0},
     {"timedate", 8, KW_G_MOD, 0},
-    {"geographic", 10, KW_G_MOD, 0},
+    {"geographic", 3, KW_G_MOD, 0},
     // linetype
     {"cycle", 5, KW_G_ARG, 0},
     // termoption
@@ -548,6 +548,11 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"format", 6, KW_G_ARG, 0},
     {"logscale", 4, KW_G_FLAG, 1},
     {"rangelimited", 5, KW_G_FLAG, 1},
+    // "time" full word only ("tim"/"t" are variables in 6.0.4); can't shadow
+    // the timedate/timestamp rows — a word longer than a row's keyword never
+    // matches it. Enables `set xtics format "%b %d" time` (as an identifier
+    // the body used to stop at the statement boundary after the bound value)
+    {"time", 4, KW_G_MOD, 0},
     // fit ("log"/"min"/"exp" stay identifiers — builtins; "error" hits the
     // errorbars row first: mislabeled tier, still parses)
     // explicit no-form: gnuplot accepts `nolog` (5 chars) while bare `log`
@@ -996,11 +1001,14 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
       }
       // Non-word ahead: emit the separator only for characters that can
       // start an expression ('[' starts a range_block item, not a value).
+      // ',' opens bodies whose first positional slot may be EMPTY
+      // (`set view ,,0.5`, `set dummy ,v`); in bodies without a comma item
+      // the parse fails on the ',' itself, exactly as it did at the gate.
       {
         int32_t c = lexer->lookahead;
         if ((c >= '0' && c <= '9') || c == '.' || c == '"' || c == '\'' ||
             c == '(' || c == '-' || c == '+' || c == '~' || c == '!' ||
-            c == '$' || c == '@') {
+            c == '$' || c == '@' || c == ',') {
           lexer->result_symbol = SEP;
           return true;
         }

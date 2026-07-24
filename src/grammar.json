@@ -201,13 +201,43 @@
           "value": "flag"
         },
         {
-          "type": "ALIAS",
+          "type": "PREC_RIGHT",
+          "value": 0,
           "content": {
-            "type": "SYMBOL",
-            "name": "kw_g_mod"
-          },
-          "named": false,
-          "value": "mod"
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "kw_g_mod"
+                },
+                "named": false,
+                "value": "mod"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": ","
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "_gexprs"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "type": "PREC_RIGHT",
@@ -5596,9 +5626,66 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "_gopts"
+                    "name": "_dummy_vars"
                   }
                 ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "_dummy_vars": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
+              },
+              {
+                "type": "REPEAT",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_dummy_slot"
+                }
+              }
+            ]
+          },
+          {
+            "type": "REPEAT1",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_dummy_slot"
+            }
+          }
+        ]
+      }
+    },
+    "_dummy_slot": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": ","
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "identifier"
               },
               {
                 "type": "BLANK"
@@ -9145,10 +9232,72 @@
           "name": "_gval_sep"
         },
         {
-          "type": "SYMBOL",
-          "name": "_gopts"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_view_angles"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_gopts"
+            }
+          ]
         }
       ]
+    },
+    "_view_angles": {
+      "type": "PREC_DYNAMIC",
+      "value": 1,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_expression"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "REPEAT1",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_view_slot"
+            }
+          }
+        ]
+      }
+    },
+    "_view_slot": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": ","
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_expression"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
     },
     "walls": {
       "type": "SEQ",
@@ -14709,6 +14858,10 @@
     ],
     [
       "using"
+    ],
+    [
+      "_gexprs",
+      "_view_slot"
     ]
   ],
   "precedences": [],

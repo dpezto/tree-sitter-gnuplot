@@ -2576,7 +2576,7 @@
 		{
 			"kw": "geographic",
 			"tier": "mod",
-			"min": 10
+			"min": 3
 		},
 		{
 			"kw": "giant",
@@ -3054,6 +3054,14 @@
 			"kw": "textspecial",
 			"tier": "mod",
 			"min": 11
+		},
+		{
+			"kw": "time",
+			"tier": "mod",
+			"min": 4,
+			"parents": [
+				"xdata"
+			]
 		},
 		{
 			"kw": "timedate",

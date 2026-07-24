@@ -144,6 +144,10 @@ module.exports = grammar({
 		// palette `file "f" using 1:2 "fmt"`: using's trailing scanf format
 		// string vs a following string item in the generic palette body
 		[$.using],
+		// `set view 60,30`: full-slot comma lists parse as a _gexprs chain OR
+		// as _view_angles slots; dynamic prec on _view_angles picks the slot
+		// form, keeping the empty-slot shapes (`,,0.5`, `60,`) in one rule
+		[$._gexprs, $._view_slot],
 	],
 
 	rules: {
@@ -201,7 +205,11 @@ module.exports = grammar({
 		_gopt_item: ($) =>
 			choice(
 				alias($.kw_g_flag, "flag"),
-				alias($.kw_g_mod, "mod"),
+				// Optional `, <exprs>` tail: tics time-series `"start", 1 month,
+				// "end"` — the unit word (mod row) sits mid-chain, so the chain
+				// resumes after it. Superset elsewhere (a mod directly followed
+				// by a comma was previously an ERROR in every body).
+				prec.right(seq(alias($.kw_g_mod, "mod"), optional(seq(",", $._gexprs)))),
 				// A value (identifier included) binds to the preceding arg/coord
 				// keyword only across the same-line _gval_sep, so
 				// `contourfill auto FOO` keeps FOO in the body while an
@@ -953,8 +961,27 @@ module.exports = grammar({
 		dgrid3d: ($) =>
 			prec.right(seq(key("dgrid3d", 2, "opt"), optional(seq($._gval_sep, $._gopts)))),
 
+		// Bespoke body: operands are variable NAMES, not option keywords — the
+		// generic body's rows shadow short names (`u`, `v`, `t`). Slots may be
+		// empty (`set dummy ,v` keeps x) and a trailing comma is accepted;
+		// gnuplot 6.0.4 takes any arity (probed up to 6).
 		dummy: ($) =>
-			prec.right(seq(key("dummy", 2, "opt"), optional(seq($._gval_sep, $._gopts)))),
+			prec.right(seq(key("dummy", 2, "opt"), optional(seq($._gval_sep, $._dummy_vars)))),
+
+		// The slot is a NAMED hidden rule so its prec.right reaches the
+		// productions: the empty-optional production must lose to shifting the
+		// identifier, or `set dummy foo, bar` stops after the comma (the
+		// statement-boundary reduce wins by default; inline annotations inside
+		// repeat() are dropped during flattening).
+		_dummy_vars: ($) =>
+			prec.right(
+				choice(
+					seq($.identifier, repeat($._dummy_slot)),
+					repeat1($._dummy_slot),
+				),
+			),
+
+		_dummy_slot: ($) => prec.right(seq(",", optional($.identifier))),
 
 		// Generic body: encoding names (iso_8859_*, koi8*, cp*, sjis, utf8)
 		// parse as identifier items; defaults/locale are existing rows
@@ -1126,8 +1153,9 @@ module.exports = grammar({
 		_unset_multiplot: ($) => seq(key("unset", 3, "cmd"), $.multiplot),
 
 		// Generic body (time-unit rows seconds/minutes min 4 — min() is a
-		// builtin — hours/days/weeks/months/years; `time` and freq exprs are
-		// plain items; sec–second abbreviations hit the coord row first)
+		// builtin — hours/days/weeks/months/years; `time` is a mod row (full
+		// word), freq exprs are plain items; sec–second abbreviations hit the
+		// coord row first)
 		mxtics: ($) =>
 			prec.right(
 				seq(
@@ -1447,7 +1475,24 @@ module.exports = grammar({
 
 		vgrid: ($) => seq($.datablock, optional(seq("size", $._expression))),
 
-		view: ($) => seq($._gval_sep, $._gopts),
+		// `set view` positional slots may be EMPTY (`,,0.5`, `60,,,1.5`, bare
+		// trailing commas) — gnuplot keeps the previous value for each skipped
+		// slot. Any comma-bearing form goes through _view_angles (dynamic prec
+		// wins the full-slot overlap with the _gopts expression chain); keyword
+		// forms (map/equal/azimuth/projection) and comma-less `set view 60`
+		// stay in the generic body. Angles and keywords do NOT mix (probed:
+		// `set view 60,30 equal xy` is rejected by 6.0.4).
+		view: ($) => seq($._gval_sep, choice($._view_angles, $._gopts)),
+
+		// Named slot rule for the same reason as _dummy_slot: the empty-slot
+		// production must lose to shifting an expression after a comma.
+		_view_angles: ($) =>
+			prec.dynamic(1, seq(optional($._expression), repeat1($._view_slot))),
+
+		// Trade-off: after a TRAILING comma an identifier on the next line is
+		// swallowed as a slot value (`set view 60,` + `w = 1`); the reverse
+		// choice would break same-line identifier angles (`set view rx, rz`).
+		_view_slot: ($) => prec.right(seq(",", optional($._expression))),
 
 		walls: ($) => seq($._gval_sep, $._gopts_style),
 
@@ -1846,7 +1891,9 @@ module.exports = grammar({
 		// rotate/enhanced/offset/justify/font/textcolor arrive via style_opts.
 		// `in`/`out` and bare l/r/c justify letters degrade to identifier items
 		// (no rows: common variable names / for-loop keyword). start,incr,end
-		// chains are _gexprs; `("label" pos level, ...)` lists are `tuple`.
+		// chains are _gexprs — a mid-chain time unit (`"start", 1 month, "end"`)
+		// resumes via the mod branch's comma tail; `("label" pos level, ...)`
+		// lists are `tuple`.
 		tics_opts: ($) => $._gopts_style,
 
 		line_style: ($) =>
