@@ -10409,6 +10409,24 @@
             }
           },
           {
+            "type": "ALIAS",
+            "content": {
+              "type": "PATTERN",
+              "value": "columnhead(e(r(s)?)?)?"
+            },
+            "named": false,
+            "value": "columnheaders"
+          },
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "PATTERN",
+              "value": "rowhead(e(r(s)?)?)?"
+            },
+            "named": false,
+            "value": "rowheaders"
+          },
+          {
             "type": "STRING",
             "value": "mask"
           },
@@ -10462,10 +10480,6 @@
                             {
                               "type": "STRING",
                               "value": "format"
-                            },
-                            {
-                              "type": "STRING",
-                              "value": "rotate"
                             }
                           ]
                         },
@@ -10480,6 +10494,112 @@
                             "type": "SYMBOL",
                             "name": "_expression"
                           }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "rotate"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "="
+                        },
+                        {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "PREC",
+                              "value": 1,
+                              "content": {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "FIELD",
+                                    "name": "opt",
+                                    "content": {
+                                      "type": "CHOICE",
+                                      "members": [
+                                        {
+                                          "type": "SYMBOL",
+                                          "name": "number"
+                                        },
+                                        {
+                                          "type": "SYMBOL",
+                                          "name": "parenthesized_expression"
+                                        },
+                                        {
+                                          "type": "ALIAS",
+                                          "content": {
+                                            "type": "SEQ",
+                                            "members": [
+                                              {
+                                                "type": "ALIAS",
+                                                "content": {
+                                                  "type": "PATTERN",
+                                                  "value": "[-+]"
+                                                },
+                                                "named": true,
+                                                "value": "operator"
+                                              },
+                                              {
+                                                "type": "CHOICE",
+                                                "members": [
+                                                  {
+                                                    "type": "SYMBOL",
+                                                    "name": "number"
+                                                  },
+                                                  {
+                                                    "type": "SYMBOL",
+                                                    "name": "parenthesized_expression"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          "named": true,
+                                          "value": "unary_expression"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "type": "FIELD",
+                                    "name": "unit",
+                                    "content": {
+                                      "type": "CHOICE",
+                                      "members": [
+                                        {
+                                          "type": "ALIAS",
+                                          "content": {
+                                            "type": "PATTERN",
+                                            "value": "d(e(g(r(e(e(s)?)?)?)?)?)?"
+                                          },
+                                          "named": false,
+                                          "value": "degrees"
+                                        },
+                                        {
+                                          "type": "STRING",
+                                          "value": "pi"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "type": "FIELD",
+                              "name": "opt",
+                              "content": {
+                                "type": "SYMBOL",
+                                "name": "_expression"
+                              }
+                            }
+                          ]
                         }
                       ]
                     },
@@ -10502,10 +10622,6 @@
                               {
                                 "type": "STRING",
                                 "value": "dz"
-                              },
-                              {
-                                "type": "STRING",
-                                "value": "perpendicular"
                               },
                               {
                                 "type": "STRING",
@@ -10555,12 +10671,118 @@
                       "type": "SEQ",
                       "members": [
                         {
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "STRING",
+                            "value": "perpendicular"
+                          },
+                          "named": false,
+                          "value": "attr"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "="
+                        },
+                        {
+                          "type": "FIELD",
+                          "name": "opt",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "parameter_list"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "array"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "="
+                        },
+                        {
+                          "type": "FIELD",
+                          "name": "opt",
+                          "content": {
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "CHOICE",
+                                "members": [
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "parameter_list"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "number"
+                                  },
+                                  {
+                                    "type": "ALIAS",
+                                    "content": {
+                                      "type": "TOKEN",
+                                      "content": {
+                                        "type": "PATTERN",
+                                        "value": "\\d+(x\\d+)+"
+                                      }
+                                    },
+                                    "named": true,
+                                    "value": "number"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "REPEAT",
+                                "content": {
+                                  "type": "SEQ",
+                                  "members": [
+                                    {
+                                      "type": "STRING",
+                                      "value": ":"
+                                    },
+                                    {
+                                      "type": "CHOICE",
+                                      "members": [
+                                        {
+                                          "type": "SYMBOL",
+                                          "name": "parameter_list"
+                                        },
+                                        {
+                                          "type": "SYMBOL",
+                                          "name": "number"
+                                        },
+                                        {
+                                          "type": "ALIAS",
+                                          "content": {
+                                            "type": "TOKEN",
+                                            "content": {
+                                              "type": "PATTERN",
+                                              "value": "\\d+(x\\d+)+"
+                                            }
+                                          },
+                                          "named": true,
+                                          "value": "number"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
                           "type": "CHOICE",
                           "members": [
-                            {
-                              "type": "STRING",
-                              "value": "array"
-                            },
                             {
                               "type": "STRING",
                               "value": "origin"
@@ -13760,6 +13982,10 @@
                   {
                     "type": "STRING",
                     "value": "cc"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "pi"
                   }
                 ]
               },

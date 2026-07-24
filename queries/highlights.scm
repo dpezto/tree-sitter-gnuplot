@@ -68,6 +68,12 @@
 ; enumerated VALUES / modes (alias "mod") — @constant
 ; TODO: decide, constant?
 "mod" @constant
+; binary rotate= angle-unit suffixes (rotate=90deg / rotate=0.5 pi);
+; the attached form 0.5pi folds into the number token instead
+[
+  "degrees"
+  "pi"
+] @constant
 ; plot/splot ELEMENT modifiers (alias "attr") — @property
 ; (title/notitle/with/using/index/every/axes/smooth in a plot command;
 ;  distinct from set-option names which are @variable.member)
@@ -144,6 +150,8 @@
   "dy"
   "level"
   "matrix"
+  "columnheaders"
+  "rowheaders"
   "nonuniform"
   "sparse"
   "volatile"

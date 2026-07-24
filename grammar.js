@@ -1678,6 +1678,13 @@ module.exports = grammar({
 					seq("expand", field("increment", $._expression)),
 					field("smooth_data", $.smooth_options),
 					field("bins", $._bins),
+					// text-matrix header labels (6.0): runtime requires `matrix` to
+					// appear first, but they are otherwise free datafile modifiers
+					// (probed: `matrix every 2 columnheaders` is legal, `columnheaders
+					// matrix` is not — order left to runtime). Minima: columnhead /
+					// rowhead; not valid with binary matrix (runtime conflict).
+					key("columnheaders", -3),
+					key("rowheaders", -3),
 					"mask",
 					// 6.0 filter, full-word only, no argument; plot-only at runtime
 					// (splot rejects it) and accepted on function plots too.
@@ -1696,9 +1703,44 @@ module.exports = grammar({
 						// binary general
 						repeat1(
 							choice(
-								seq(choice("record", "format", "rotate"), "=", field("opt", $._expression)),
-								seq(alias(choice("dx", "dy", "dz", "perpendicular", "skip"), "attr"), "=", field("opt", sep(":", $._expression))),
-								seq(choice("array", "origin", "center"), "=", field("opt", sep(":", $.parameter_list))),
+								seq(choice("record", "format"), "=", field("opt", $._expression)),
+								// rotate=<angle> takes an optional unit suffix (probed 6.0.4):
+								// any prefix of "degrees" down to bare "d" (90deg, 90d), or
+								// "pi" (0.5pi); unit may be detached (`45 deg`) or follow a
+								// parenthesized expr (`(45)deg`). Bare value = radians.
+								seq(
+									"rotate",
+									"=",
+									choice(
+										// unit binds only to a simple value (probed shapes:
+										// 90deg, 0.5pi, (45)deg, -45deg); a bare full
+										// expression stays radians. Restricting the pre-unit
+										// expression keeps the unit follow set off the shared
+										// expression machine (a full $._expression here clones
+										// the whole expression sub-automaton: +564 states).
+										prec(1, seq(
+											field("opt", choice(
+												$.number,
+												$.parenthesized_expression,
+												// non-recursive signed form; CST matches real
+												// unary_expression for these shapes
+												alias(seq(alias(/[-+]/, $.operator), choice($.number, $.parenthesized_expression)), $.unary_expression),
+											)),
+											field("unit", choice(key("degrees", 1), "pi")),
+										)),
+										field("opt", $._expression),
+									),
+								),
+								seq(alias(choice("dx", "dy", "dz", "skip"), "attr"), "=", field("opt", sep(":", $._expression))),
+								// perpendicular requires a 3-tuple at runtime (`perpendicular=1`
+								// → "Invalid numeric or tuple form"), so tuple-only here.
+								seq(alias("perpendicular", "attr"), "=", field("opt", $.parameter_list)),
+								// array RHS per record: tuple `(10,10)`, bare integer `10`, or
+								// NxM dims `10x20` / `10x2x3` (probed: identifiers/expressions
+								// are only legal inside parens — `array=Nx20` is rejected);
+								// multiple records separated by `:` in any mix.
+								seq("array", "=", field("opt", sep(":", choice($.parameter_list, $.number, alias(token(/\d+(x\d+)+/), $.number))))),
+								seq(choice("origin", "center"), "=", field("opt", sep(":", $.parameter_list))),
 								seq("filetype", "=", field("filetype", $.identifier)),
 								seq(alias("scan", "attr"), "=", field("scan", $.identifier)),
 								seq(key("endian", 3), "=", field("endian", choice("little", "big", "default", "swap", "swab", "middle", "pdp"))),
@@ -2172,7 +2214,12 @@ module.exports = grammar({
 			// standalone unit word or a value-level choice both measured badly
 			// (boundary misparse / state split). Permissive: a suffixed
 			// number lexes everywhere, not just in size values.
-			const unit = choice("cm", "in", "inch", "mm", "pt", "pc", "bp", "dd", "cc");
+			// "pi" joins the size units for `binary rotate=0.5pi` (attached
+			// multiplier form): at expression position the external style
+			// scanner's KW_SA "pi" (pointinterval) is not a valid symbol, so
+			// the folded token lexes cleanly; the detached form (`rotate=0.5
+			// pi`) stays scanner-blocked in plot contexts (KW_SA wins there).
+			const unit = choice("cm", "in", "inch", "mm", "pt", "pc", "bp", "dd", "cc", "pi");
 			return token(
 				seq(choice(decimal_literal, hex_literal, octal_literal), optional(unit)),
 			);
