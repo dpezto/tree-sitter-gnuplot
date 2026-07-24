@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths: &ci-paths
       - grammar.js
+      - queries/**
       - src/**
       - test/**
       - scripts/**
