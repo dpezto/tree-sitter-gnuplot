@@ -281,3 +281,13 @@ Gauss(x,mu,sigma) = 1./(sigma*sqrt(2*pi)) * exp( -(x-mu)**2 / (2*sigma**2) )
                     (identifier)
                     (operator)
                     (number)))))))))))
+
+================================================================================
+set fit - no-form abbreviations (nolog nocov noerr)
+================================================================================
+set fit nolog cov err maxiter default
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (fit)))

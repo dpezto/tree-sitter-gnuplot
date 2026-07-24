@@ -89,7 +89,9 @@
   "skip"
   "expand"
   "title"
-  ; set/show argument keywords (all key("...", n, "arg") aliases)
+  ; set/show/unset option heads (alias "opt") and option-body suboption
+  ; keywords (alias "arg") — distinct clause families, same visual group
+  "opt"
   "arg"
 ] @variable.member
 ; -----------------------------------------------------------------------
@@ -159,7 +161,9 @@
   ; fit modifiers
   "unitweights"
   "errors"
-  ; pause endconditions
+  ; command-argument keywords (pause endconditions, exit forms)
+  "message"
+  "status"
   "mouse"
   "keypress"
   "button1"
@@ -232,6 +236,9 @@
   "primary"
   "specular"
   "spec2"
+  "rot_x"
+  "rot_z"
+  "Phong"
   ; dgrid3d subtype (gauss/… value-modes → "mod")
   ; contour / cntrparam
   ; tics axes / modifiers
@@ -242,10 +249,6 @@
   "layout"
   "spacing"
   "frac"
-  ; color names in style contexts
-  "cb"
-  ; filledcurves axis coordinate (x1, x2, y1, y2 etc.)
-  "coordinate"
   ; watch-label / surface options
   "point"
   ; tics keyword (grid / paxis — covers xtics, ytics, ztics contexts)
@@ -262,8 +265,6 @@
   ; stats output prefix
   "prefix"
   ; palette formula option
-  ; pm3d z-clip
-  "z"
   ; grid mode
   ; datafile option
   ; textbox / multiplot margins (anonymous "margins" string)
@@ -351,7 +352,11 @@
   (identifier) @function)
 ; -----------------------------------------------------------------------
 ; Literals
+"NaN" @constant.builtin
 (number) @number
 (string_literal) @string
 (escape_sequence) @string.escape
 (format_specifier) @string.special
+
+; watchpoint target (`watch y=50`): the axis/expression name being watched
+(plot_element target: (identifier) @variable.member)

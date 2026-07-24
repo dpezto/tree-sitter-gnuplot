@@ -46,6 +46,11 @@ enum TokenType {
   // (spaces/tabs or a \-newline continuation ahead) — a raw newline or ';'
   // declines, so a next-line identifier is a new statement, never a value.
   GVAL_SEP,
+  // Value-binding variant of GVAL_SEP, used only between an arg/coord tier
+  // keyword and its value inside _gopts items. Split from GVAL_SEP so the
+  // scanner can refuse to bind grammar-literal keywords (`font`) as values
+  // while option-head body gates (which use GVAL_SEP) still open.
+  GVAL_BIND,
 };
 
 // Keyword table entry for prefix-abbreviation matching.
@@ -525,6 +530,9 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"rangelimited", 5, KW_G_FLAG, 1},
     // fit ("log"/"min"/"exp" stay identifiers — builtins; "error" hits the
     // errorbars row first: mislabeled tier, still parses)
+    // explicit no-form: gnuplot accepts `nolog` (5 chars) while bare `log`
+    // stays min 4 (builtin function) — the generic no-strip can't reach it
+    {"nologfile", 5, KW_G_FLAG, 0},
     {"logfile", 4, KW_G_ARG, 1},
     {"results", 7, KW_G_MOD, 0},
     {"brief", 5, KW_G_MOD, 0},
@@ -884,10 +892,12 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
 bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, const bool* valid_symbols) {
   Scanner* s = (Scanner*)payload;
 
-  // GVAL_SEP: zero-width, same-line only. Must run BEFORE skip_whitespaces
-  // (which also skips newlines and ';'). Skips spaces/tabs and \-newline
-  // continuations; succeeds iff the next content is on the same logical line.
-  if (valid_symbols[GVAL_SEP]) {
+  // GVAL_SEP/GVAL_BIND: zero-width, same-line only. Must run BEFORE
+  // skip_whitespaces (which also skips newlines and ';'). Skips spaces/tabs
+  // and \-newline continuations; succeeds iff the next content is on the
+  // same logical line. When both are valid, the body gate (GVAL_SEP) wins.
+  if (valid_symbols[GVAL_SEP] || valid_symbols[GVAL_BIND]) {
+    const int SEP = valid_symbols[GVAL_SEP] ? GVAL_SEP : GVAL_BIND;
     for (;;) {
       if (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\r') {
         skip(lexer);
@@ -920,18 +930,34 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
         // '-'/'+' are NOT in this set: a following sign is far more often a
         // signed value of the keyword (`levels incremental -20, 5, 20`) than
         // `kw - x` arithmetic on a variable shadowing a keyword name.
+        // '.' is NOT in this set either: after a keyword row it is far more
+        // often a leading-dot number (`at graph .5, .5`) than string concat
+        // on a variable shadowing a keyword name; non-row words still fall
+        // through to GVAL_SEP below.
         {
           int32_t c = lexer->lookahead;
           while (c == ' ' || c == '\t') { consume(lexer); c = lexer->lookahead; }
           if (c == ',' || c == '*' || c == '/' ||
-              c == '%' || c == '^' || c == '(' || c == '[' || c == '.' ||
+              c == '%' || c == '^' || c == '(' || c == '[' ||
               c == '=' || c == '<' || c == '>' || c == '&' || c == '|' ||
               c == '?' || c == ':') {
-            lexer->result_symbol = GVAL_SEP;
+            lexer->result_symbol = SEP;
             return true;
           }
         }
         if (word_ended) {
+          // "font" is a grammar-level literal (fontspec), not a scanner row:
+          // emitting GVAL_BIND here would bind it as the previous keyword's
+          // value (`set style watchpoint labels font "..."`); declining the
+          // scan lets the internal lexer produce the literal instead. Body
+          // gates (GVAL_SEP) still open — fontspec is a valid first item.
+          if (plen == 4 && memcmp(peek, "font", 4) == 0) {
+            if (valid_symbols[GVAL_SEP]) {
+              lexer->result_symbol = GVAL_SEP;
+              return true;
+            }
+            return false;
+          }
           int s = match_style_kw(peek, plen, valid_symbols);
           if (s < 0 && valid_symbols[KW_G_AXISRANGE] && match_axis_word(peek, plen, 1))
             s = KW_G_AXISRANGE;
@@ -945,7 +971,7 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
             return true;
           }
         }
-        lexer->result_symbol = GVAL_SEP;
+        lexer->result_symbol = SEP;
         return true;
       }
       // Non-word ahead: emit the separator only for characters that can
@@ -955,7 +981,7 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
         if ((c >= '0' && c <= '9') || c == '.' || c == '"' || c == '\'' ||
             c == '(' || c == '-' || c == '+' || c == '~' || c == '!' ||
             c == '$' || c == '@') {
-          lexer->result_symbol = GVAL_SEP;
+          lexer->result_symbol = SEP;
           return true;
         }
       }
