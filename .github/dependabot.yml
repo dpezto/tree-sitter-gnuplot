@@ -6,3 +6,37 @@ updates:
       interval: weekly
     cooldown:
       default-days: 5
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 5
+    commit-message:
+      prefix: build
+      include: scope
+    # tree-sitter-cli is a devDep that no CI job exercises (each workflow
+    # installs its own CLI), so a bad 0.x bump would auto-merge silently and
+    # only surface at the next local `tree-sitter generate`. Keep its bumps
+    # manual; bump the hardcoded CLI pin in ci.yml's coverage job in lockstep.
+    ignore:
+      - dependency-name: tree-sitter-cli
+        update-types: ["version-update:semver-minor"]
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 5
+    commit-message:
+      prefix: build
+      include: scope
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 5
+    commit-message:
+      prefix: build
+      include: scope
