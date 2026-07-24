@@ -7,6 +7,8 @@ on:
       - grammar.js
       - src/**
       - test/**
+      - scripts/**
+      - keywords.json
       - bindings/**
       - binding.gyp
       - Cargo.toml
@@ -32,6 +34,23 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: reviewdog/action-actionlint@50842263c20a7c46bd0065b9e624d3c569db061e # v1
+
+  keywords:
+    # keywords.json is generated from src/scanner.c + grammar.js by
+    # scripts/gen-keywords.mjs (consumed by downstream tooling, e.g. an LSP).
+    # Regex-mining C fails silently when a table is renamed/reshaped, so the
+    # committed file must always match a fresh run.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          # full history: the generator mines the pre-redesign grammar
+          # revision (git show <rev>:grammar.js) for the option-parent map
+          fetch-depth: 0
+      - name: Regenerate keyword dictionary
+        run: node scripts/gen-keywords.mjs
+      - name: Check keywords.json is current
+        run: git diff --exit-code keywords.json
 
   test:
     strategy:
