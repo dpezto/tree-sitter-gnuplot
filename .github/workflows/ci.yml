@@ -12,10 +12,10 @@ on:
       - bindings/**
       - binding.gyp
       - Cargo.toml
-      - Cargo.lock
       - go.mod
       - go.sum
       - package.json
+      - package-lock.json
       - pyproject.toml
       - .github/workflows/ci.yml
   pull_request:
@@ -106,7 +106,7 @@ jobs:
         # run from here. parser.c is generated, so only the scanner is reported.
         run: gcov ~/.cache/tree-sitter/lib/*-scanner.gcda
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./scanner.c.gcov
