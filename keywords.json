@@ -1136,6 +1136,11 @@
 			]
 		},
 		{
+			"kw": "perpendicular",
+			"tier": "attr",
+			"min": 13
+		},
+		{
 			"kw": "scan",
 			"tier": "attr",
 			"min": 4
