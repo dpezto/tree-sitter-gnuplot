@@ -84,6 +84,22 @@ jobs:
           test-node: false
           test-python: false
           test-swift: false
+      - name: Oracle parse (synthetic full-length script)
+        # test/oracle/synthetic.plt mirrors the statement mix of a real-world
+        # script and contains exactly one deliberately-invalid line (the
+        # contourfill doc-defect shape, marked "INTENTIONALLY INVALID:").
+        # Everything else must parse without ERROR/MISSING; this guards
+        # error-recovery behavior on whole-file input, which single-construct
+        # corpus cases do not exercise. The expected ERROR row is derived from
+        # the marker comment, so the file can grow without editing this step.
+        shell: bash
+        run: |
+          tree=$(tree-sitter parse test/oracle/synthetic.plt || true)
+          body=$(grep -v 'Parse:' <<<"$tree")
+          row=$(( $(grep -n 'INTENTIONALLY INVALID:' test/oracle/synthetic.plt | cut -d: -f1) - 1 ))
+          test "$(grep -c '(ERROR ' <<<"$body")" -eq 1
+          grep -q "(ERROR \[$row, " <<<"$body"
+          ! grep -q 'MISSING' <<<"$body"
 
   coverage:
     # Scanner line coverage → Codecov. Only src/scanner.c is reported; parser.c
