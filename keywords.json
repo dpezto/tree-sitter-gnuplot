@@ -2208,12 +2208,22 @@
 			"min": 4
 		},
 		{
+			"kw": "backward",
+			"tier": "mod",
+			"min": 2
+		},
+		{
 			"kw": "base",
 			"tier": "mod",
 			"min": 2,
 			"parents": [
 				"contour"
 			]
+		},
+		{
+			"kw": "baseline",
+			"tier": "mod",
+			"min": 4
 		},
 		{
 			"kw": "bdefault",
@@ -2520,6 +2530,11 @@
 			]
 		},
 		{
+			"kw": "forward",
+			"tier": "mod",
+			"min": 2
+		},
+		{
 			"kw": "frequency",
 			"tier": "mod",
 			"min": 9
@@ -2648,9 +2663,15 @@
 			]
 		},
 		{
+			"kw": "link",
+			"tier": "mod",
+			"min": 4,
+			"no": true
+		},
+		{
 			"kw": "mcsplines",
 			"tier": "mod",
-			"min": -1,
+			"min": 3,
 			"parents": [
 				"smooth_options"
 			]
@@ -4754,6 +4775,19 @@
 			]
 		},
 		{
+			"kw": "errorbars",
+			"tier": "plt_st",
+			"min": 1,
+			"parents": [
+				"style"
+			]
+		},
+		{
+			"kw": "errorlines",
+			"tier": "plt_st",
+			"min": 6
+		},
+		{
 			"kw": "filledcurves",
 			"tier": "plt_st",
 			"min": 7,
@@ -4788,6 +4822,11 @@
 			"kw": "histograms",
 			"tier": "plt_st",
 			"min": 4
+		},
+		{
+			"kw": "hsteps",
+			"tier": "plt_st",
+			"min": 2
 		},
 		{
 			"kw": "image",

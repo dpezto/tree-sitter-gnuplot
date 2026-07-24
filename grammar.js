@@ -559,6 +559,10 @@ module.exports = grammar({
 							),
 						),
 						alias("nogrid", "flag"), // NOTE: splot only option https://stackoverflow.com/questions/74586626/gnuplot-how-to-splot-surface-and-points-with-dgrid3d
+							// candlesticks/boxplot whisker clause — floats here because
+							// 6.0.4 accepts it on either side of style opts. Probed
+							// minimum: whisker (7); optional bar-width fraction.
+							seq(key("whiskerbars", 7), optional(field("fraction", $._expression))),
 							field("with", seq(key("with", 1, "attr"), $.plot_style)),
 							$.style_opts,
 						),
@@ -571,7 +575,14 @@ module.exports = grammar({
 				choice(
 					// Plain styles (no style-specific continuation) are matched by the
 					// external scanner as one token — see PLT_STYLE_KWS in scanner.c.
-					alias($.kw_plt_st, "plt_st"),
+					// `at base` trails contourfill (6.0.4 accepts base abbreviated to
+					// any prefix incl. `b`; `at surface`/`both` REJECTED). Attached to
+					// the whole kw_plt_st token — permissive for the other plain
+					// styles, like `nogrid` in plot_element.
+					seq(
+						alias($.kw_plt_st, "plt_st"),
+						optional(seq(alias("at", "kw_fn"), key("base", 1))),
+					),
 					// Styles with trailing options keep their own regex token:
 					seq(key("labels", 3, "plt_st"), optional($.label_opts)),
 					seq(key("vectors", 3, "plt_st"), optional($.arrow_opts)),
@@ -579,9 +590,24 @@ module.exports = grammar({
 						key("isosurface", 10, "plt_st"),
 						optional(seq("level", $._expression)),
 					),
+					// `whiskerbars {<fraction>}` floats in the plot_element repeat
+					// (6.0.4 accepts it before AND after style opts: `candlesticks
+					// lt 3 whiskerbars 0.5` and `whiskerbars 0.5 lt 3`).
+					key("candlesticks", 12, "plt_st"),
+					// hsteps (6.0): options repeat in any order, but only BEFORE
+					// style opts (`hsteps lw 2 baseline` is rejected by 6.0.4).
+					// Probed minima: base(line) 4, fo(rward) 2, ba(ckward) 2,
+					// link/nolink full-word only.
 					seq(
-						key("candlesticks", 12, "plt_st"),
-						optional(key("whiskerbars", -1)),
+						key("hsteps", 2, "plt_st"),
+						repeat(
+							choice(
+								key("baseline", 4, "mod"),
+								key("forward", 2, "mod"),
+								key("backward", 2, "mod"),
+								key("link", 4, "mod", 1),
+							),
+						),
 					),
 					seq(key("ellipses", 8, "plt_st"), optional($.ellipse)),
 					seq(
@@ -1215,6 +1241,12 @@ module.exports = grammar({
 					key("ftriangles", undefined, "flag", 1),
 					choice(seq("clip", optional(alias("z", "axis"))), "clip1in", "clip4in"),
 					key("clipcb", undefined, "flag", 1),
+					// splot `with pm3d zclip [min:max]` (6.0): range is MANDATORY
+					// ("expecting zclip [min:max]"), open/starred ends accepted;
+					// no abbreviation; runtime rejects it in `set pm3d` and demands
+					// it be the last with-pm3d option (grammar stays permissive on
+					// both, matching the shared-body convention).
+					seq("zclip", $.range_block),
 					seq(
 						"corners2color",
 						alias(/(geo|har)?mean|rms|m(edian|in|ax)|c(1|2|3|4)/, "c2c"),
@@ -1224,7 +1256,11 @@ module.exports = grammar({
 						repeat(
 							choice(
 								seq("primary", field("fraction", $._expression)),
-								seq("specular", field("fraction", $._expression)),
+								// probed 6.0.4 minima: spec(ular) 4; primary and spec2
+								// are full-word only (p/pr/pri/prim and sp2/spe2 all
+								// rejected). `spec2` outlasts the 4-char `spec` match
+								// by token length, so the two never collide.
+								seq(key("specular", 4), field("fraction", $._expression)),
 								seq("spec2", field("fraction", $._expression)),
 							),
 						),
@@ -1285,7 +1321,19 @@ module.exports = grammar({
 						choice(
 							seq(key("arrow", 3, "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
 							seq(alias("boxplot", "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
-							seq(key("data", 1, "st_opt"), $.plot_style),
+							// data also takes the generic errorbar/errorline names,
+							// which resolve to yerrorbars/yerrorlines at runtime and
+							// are rejected by `set style function` ("style not usable
+							// for function plots"). Probed minima: e(rrorbars) 1,
+							// errorl(ines) 6.
+							seq(
+								key("data", 1, "st_opt"),
+								choice(
+									$.plot_style,
+									key("errorbars", 1, "plt_st"),
+									key("errorlines", 6, "plt_st"),
+								),
+							),
 							seq(key("function", 1, "st_opt"), $.plot_style),
 							seq(key("histogram", 4, "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
 							seq(key("line", 1, "st_opt"), $.line_style),
@@ -1576,6 +1624,9 @@ module.exports = grammar({
 					field("smooth_data", $.smooth_options),
 					field("bins", $._bins),
 					"mask",
+					// 6.0 filter, full-word only, no argument; plot-only at runtime
+					// (splot rejects it) and accepted on function plots too.
+					"sharpen",
 					"volatile",
 					"zsort",
 					"noautoscale",
@@ -1648,7 +1699,8 @@ module.exports = grammar({
 						alias("cnormal", "mod"),
 						key("csplines", -1, "mod"),
 						key("acsplines", -1, "mod"),
-						key("mcsplines", -1, "mod"),
+						// probed 6.0.4 minimum: mcs (3); every longer prefix accepted.
+						key("mcsplines", 3, "mod"),
 						alias("path", "mod"),
 						alias("bezier", "mod"),
 						alias("sbezier", "mod"),

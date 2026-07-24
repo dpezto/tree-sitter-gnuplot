@@ -329,3 +329,38 @@ set style watchpoint labels offset .5,.5
     (style
       (number)
       (number))))
+
+================================================================================
+set style data - generic errorbars/errorlines names and abbreviations
+================================================================================
+set style data errorbars
+set style data e
+set style data errorlines
+set style data errorl
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (style))
+  (cmd_set
+    (style))
+  (cmd_set
+    (style))
+  (cmd_set
+    (style)))
+
+================================================================================
+set pm3d lighting - spec abbreviation of specular
+================================================================================
+set pm3d lighting spec 0.4
+set pm3d lighting specular 0.4 spec2 0.3
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (pm3d
+      (number)))
+  (cmd_set
+    (pm3d
+      (number)
+      (number))))
