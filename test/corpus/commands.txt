@@ -979,3 +979,239 @@ bind
     (string_literal)
     (string_literal))
   (cmd_bind))
+
+===========================================================================
+  with hsteps - direction/baseline/link options and abbreviations
+===========================================================================
+plot d using 1:2 with hsteps
+plot d using 1:2 with hsteps forward baseline nolink
+plot d using 1:2 with hsteps baseline link lw 2
+plot d using 1:2 with hs base ba fo link title "h"
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)))
+      (plot_style)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)))
+      (plot_style)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)))
+      (plot_style)
+      (style_opts
+        (number))))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)))
+      (plot_style)
+      (string_literal))))
+
+===========================================================================
+  sharpen filter - function and data plots
+===========================================================================
+plot sqrt(sin(x)) sharpen
+plot d using 1:2 sharpen
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (function
+        (identifier)
+        (parameter_list
+          (function
+            (identifier)
+            (parameter_list
+              (identifier)))))
+      (datafile_modifiers)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number))))))
+
+===========================================================================
+  with pm3d zclip - closed, open and starred range
+===========================================================================
+splot x*y with pm3d zclip [-1:1]
+splot x*y with pm3d zclip [:1]
+splot x*y with pm3d zclip [*:*]
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_splot
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))
+      (plot_style
+        (pm3d
+          (range_block
+            (unary_expression
+              (operator)
+              (number))
+            (number))))))
+  (cmd_splot
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))
+      (plot_style
+        (pm3d
+          (range_block
+            (number))))))
+  (cmd_splot
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))
+      (plot_style
+        (pm3d
+          (range_block))))))
+
+===========================================================================
+  with contourfill at base - full and abbreviated, before style opts
+===========================================================================
+splot x*y with contourfill at base
+splot x*y with contourfill at b fs solid 0.5
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_splot
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))
+      (plot_style)))
+  (cmd_splot
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier))
+      (plot_style)
+      (style_opts
+        (fill_style
+          (number))))))
+
+===========================================================================
+  smooth mcs - abbreviations of mcsplines
+===========================================================================
+plot d using 1:2 smooth mcs
+plot d using 1:2 smooth mcspl
+plot d using 1:2 smooth mcsplines
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number))
+        (smooth_options))))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number))
+        (smooth_options))))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number))
+        (smooth_options)))))
+
+===========================================================================
+  candlesticks whiskerbars - optional fraction on either side of style opts
+===========================================================================
+plot d using 1:2:3:4:5 with candlesticks whiskerbars
+plot d using 1:2:3:4:5 with candlesticks whiskerbars 0.5
+plot d using 1:2:3:4:5 with candlesticks lt 3 whiskerbars 0.5
+plot d using 1:2:3:4:5 with candlesticks whisker 0.5 lt 3
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)
+          (number)
+          (number)
+          (number)))
+      (plot_style)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)
+          (number)
+          (number)
+          (number)))
+      (plot_style)
+      (number)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)
+          (number)
+          (number)
+          (number)))
+      (plot_style)
+      (style_opts
+        (number))
+      (number)))
+  (cmd_plot
+    (plot_element
+      (identifier)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)
+          (number)
+          (number)
+          (number)))
+      (plot_style)
+      (number)
+      (style_opts
+        (number)))))

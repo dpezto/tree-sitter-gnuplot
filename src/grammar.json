@@ -2507,6 +2507,36 @@
                   "value": "flag"
                 },
                 {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "whisker(b(a(r(s)?)?)?)?"
+                      },
+                      "named": false,
+                      "value": "whiskerbars"
+                    },
+                    {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "FIELD",
+                          "name": "fraction",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_expression"
+                          }
+                        },
+                        {
+                          "type": "BLANK"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
                   "type": "FIELD",
                   "name": "with",
                   "content": {
@@ -2545,13 +2575,49 @@
         "type": "CHOICE",
         "members": [
           {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "kw_plt_st"
-            },
-            "named": false,
-            "value": "plt_st"
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "kw_plt_st"
+                },
+                "named": false,
+                "value": "plt_st"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "STRING",
+                          "value": "at"
+                        },
+                        "named": false,
+                        "value": "kw_fn"
+                      },
+                      {
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "PATTERN",
+                          "value": "b(a(s(e)?)?)?"
+                        },
+                        "named": false,
+                        "value": "base"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
           },
           {
             "type": "SEQ",
@@ -2641,33 +2707,69 @@
             ]
           },
           {
+            "type": "ALIAS",
+            "content": {
+              "type": "PATTERN",
+              "value": "candlesticks"
+            },
+            "named": false,
+            "value": "plt_st"
+          },
+          {
             "type": "SEQ",
             "members": [
               {
                 "type": "ALIAS",
                 "content": {
                   "type": "PATTERN",
-                  "value": "candlesticks"
+                  "value": "hs(t(e(p(s)?)?)?)?"
                 },
                 "named": false,
                 "value": "plt_st"
               },
               {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "PATTERN",
-                      "value": "whiskerbar(s)?"
+                "type": "REPEAT",
+                "content": {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "base(l(i(n(e)?)?)?)?"
+                      },
+                      "named": false,
+                      "value": "mod"
                     },
-                    "named": false,
-                    "value": "whiskerbars"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "fo(r(w(a(r(d)?)?)?)?)?"
+                      },
+                      "named": false,
+                      "value": "mod"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "ba(c(k(w(a(r(d)?)?)?)?)?)?"
+                      },
+                      "named": false,
+                      "value": "mod"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "(no)?link"
+                      },
+                      "named": false,
+                      "value": "mod"
+                    }
+                  ]
+                }
               }
             ]
           },
@@ -7432,6 +7534,19 @@
             "members": [
               {
                 "type": "STRING",
+                "value": "zclip"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "range_block"
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
                 "value": "corners2color"
               },
               {
@@ -7483,7 +7598,12 @@
                       "type": "SEQ",
                       "members": [
                         {
-                          "type": "STRING",
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "PATTERN",
+                            "value": "spec(u(l(a(r)?)?)?)?"
+                          },
+                          "named": false,
                           "value": "specular"
                         },
                         {
@@ -7971,8 +8091,31 @@
                         "value": "st_opt"
                       },
                       {
-                        "type": "SYMBOL",
-                        "name": "plot_style"
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "SYMBOL",
+                            "name": "plot_style"
+                          },
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "e(r(r(o(r(b(a(r(s)?)?)?)?)?)?)?)?"
+                            },
+                            "named": false,
+                            "value": "plt_st"
+                          },
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "errorl(i(n(e(s)?)?)?)?"
+                            },
+                            "named": false,
+                            "value": "plt_st"
+                          }
+                        ]
                       }
                     ]
                   },
@@ -10094,6 +10237,10 @@
           },
           {
             "type": "STRING",
+            "value": "sharpen"
+          },
+          {
+            "type": "STRING",
             "value": "volatile"
           },
           {
@@ -10676,7 +10823,7 @@
                 "type": "ALIAS",
                 "content": {
                   "type": "PATTERN",
-                  "value": "mcspline(s)?"
+                  "value": "mcs(p(l(i(n(e(s)?)?)?)?)?)?"
                 },
                 "named": false,
                 "value": "mod"
