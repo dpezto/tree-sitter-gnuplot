@@ -3,8 +3,9 @@ name: CI
 on:
   push:
     branches: [main]
-    paths: &ci-paths
+    paths:
       - grammar.js
+      - queries/**
       - src/**
       - test/**
       - scripts/**
@@ -18,8 +19,10 @@ on:
       - package-lock.json
       - pyproject.toml
       - .github/workflows/ci.yml
+  # No path filter: `test` and `coverage` are required checks, so every PR must
+  # be able to report them. A filtered pull_request trigger leaves PRs that
+  # touch only unlisted paths (workflows, queries, docs) permanently unmergeable.
   pull_request:
-    paths: *ci-paths
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

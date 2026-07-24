@@ -326,36 +326,62 @@
 ] @label
 ; -----------------------------------------------------------------------
 ; Functions
+;
+; ORDERING: this file assumes Neovim's "last match wins" resolution.
+; Under the tree-sitter CLI, Helix, and Zed the FIRST match wins, so these
+; blocks must be reordered there or @function.builtin never fires.
+;
+; Definition head vs call site: `def_func` wraps a definition, but its RHS
+; body call is also a direct `function` child, so the definition rule must
+; anchor to the first child.
 (function
-  name: (identifier) @function)
+  name: (identifier) @function.call)
+
+(def_func
+  .
+  (function
+    name: (identifier) @function))
+
 ((function
   name: (identifier) @function.builtin)
   (#any-of? @function.builtin
-    "abs" "acos" "acosh" "airy" "arg" "asin" "asinh" "atan" "atan2" "atanh" "besj0" "besj1" "besjn"
-    "besy0" "besy1" "besyn" "besi0" "besi1" "besin" "cbrt" "ceil" "conj" "cos" "cosh" "EllipticK"
-    "EllipticE" "EllipticPi" "erf" "erfc" "exp" "expint" "floor" "gamma" "ibeta" "inverf" "igamma"
-    "imag" "int" "invnorm" "invibeta" "invigamma" "LambertW" "lambertw" "lgamma" "lnGamma" "log"
-    "log10" "norm" "rand" "real" "round" "sgn" "sin" "sinh" "sqrt" "SynchrotronF" "tan" "tanh"
-    "uigamma" "voigt" "zeta" "cerf" "cdawson" "faddeva" "erfi" "FresnelC" "FresnelS" "VP" "VP_fwhm"
-    "Ai" "Bi" "BesselH1" "BesselH2" "BesselJ" "BesselY" "BesselI" "BesselK" "gprintf" "sprintf"
-    "strlen" "strstrt" "substr" "strptime" "srtftime" "system" "trim" "word" "words" "time"
-    "timecolumn" "tm_hour" "tm_mday" "tm_min" "tm_mon" "tm_sec" "tm_wday" "tm_week" "tm_yday"
-    "tm_year" "weekday_iso" "weekday_cdc" "column" "columnhead" "exists" "hsv2rgb" "index" "palette"
-    "rgbcolor" "stringcolumn" "valid" "value" "voxel"))
+    ; real / complex math
+    "abs" "acos" "acosh" "airy" "arg" "asin" "asinh" "atan" "atan2" "atanh"
+    "besj0" "besj1" "besjn" "besy0" "besy1" "besyn" "besi0" "besi1" "besin"
+    "cbrt" "ceil" "conj" "cos" "cosh" "exp" "floor" "imag" "int" "log" "log10"
+    "norm" "rand" "real" "round" "sgn" "sin" "sinh" "sqrt" "tan" "tanh"
+    ; special functions
+    "EllipticK" "EllipticE" "EllipticPi" "erf" "erfc" "expint" "gamma" "ibeta"
+    "igamma" "inverf" "invibeta" "invigamma" "invnorm" "LambertW" "lgamma"
+    "lnGamma" "SynchrotronF" "uigamma" "voigt" "zeta"
+    ; libcerf
+    "cerf" "cdawson" "faddeeva" "erfi" "FresnelC" "FresnelS" "VP" "VP_fwhm"
+    ; libamos — complex Airy / Bessel
+    "Ai" "Bi" "BesselH1" "BesselH2" "BesselJ" "BesselY" "BesselI" "BesselK"
+    ; strings
+    "gprintf" "sprintf" "strlen" "strstrt" "substr" "split" "join" "trim"
+    "word" "words" "system"
+    ; arrays
+    "index"
+    ; time
+    "time" "timecolumn" "strftime" "strptime"
+    "tm_hour" "tm_mday" "tm_min" "tm_mon" "tm_sec" "tm_wday" "tm_week"
+    "tm_yday" "tm_year" "weekdate_iso" "weekdate_cdc"
+    ; using-specifier / plotting
+    "column" "columnhead" "stringcolumn" "strcol" "exists" "valid" "value"
+    "hsv2rgb" "palette" "rgbcolor" "voxel"))
+
 ; -----------------------------------------------------------------------
-; Built-in variables (stats output, GPVAL_*, etc.)
+; Built-in constants
+((identifier) @constant.builtin
+  (#any-of? @constant.builtin "pi" "NaN" "Inf"))
+
+; -----------------------------------------------------------------------
+; Built-in variables (stats output, GPVAL_*, ARG*, vfill loop vars)
 ((identifier) @variable.builtin
   (#match? @variable.builtin
-    "^\\w+_(records|headers|outofrange|invalid|blank|blocks|columns|column_header|index_(min|max)(_x|_y)?|(min|max)(_x|_y)?|mean(_err)?(_x|_y)?|stddev(_err)?(_x|_y)?)$"))
-((identifier) @variable.builtin
-  (#match? @variable.builtin
-    "^\\w+_(sdd(_x|_y)?|(lo|up)_quartile(_x|_y)?|median(_x|_y)?|sum(sq)?(_x|_y)?|skewness(_err)?(_x|_y)?)$"))
-((identifier) @variable.builtin
-  (#match? @variable.builtin
-    "^\\w+_(kurtosis(_err)?(_x|_y)?|adev(_x|_y)?|correlation|slope(_err)?|intercept(_err)?|sumxy|pos_(min|max)_y|size(_x|_y))$"))
-((identifier) @variable.builtin
-  (#match? @variable.builtin
-    "^((GPVAL|MOUSE|FIT)_\\w+|GNUTERM|NaN|Inf|VoxelDistance|GridDistance|pi|ARG\\w+)$"))
+    "^(\\w+_((mean|stddev|skewness|kurtosis)(_err)?(_x|_y)?|(min|max|sdd|adev|median|sum(sq)?|(lo|up)_quartile)(_x|_y)?|(slope|intercept)(_err)?|size(_x|_y)|records|headers|outofrange|invalid|blank|blocks|column(s|_header)|correlation|sumxy)|(GPVAL|MOUSE|FIT)_\\w+|GNUTERM|VoxelDistance|GridDistance|ARG\\w+)$"))
+
 ; -----------------------------------------------------------------------
 ; Array definitions
 (def_array

@@ -138,6 +138,24 @@ module.exports = grammar({
 	conflicts: ($) => [
 		[$._paxis_label],
 		[$.plot_element, $.style_opts],
+		// `plot … if <expr>` datafile filter vs a following cmd_if statement:
+		// GLR fork; _plot_filter's prec.dynamic(1) prefers the filter when
+		// both parses survive (see _plot_filter).
+		[$.plot_element],
+		// Companion to _plot_data_expr (plot_element's data: branch): an atom
+		// after the plot keyword reduces to _plot_data_expr (data) or to
+		// _expression (feeding a larger expression / the function: branch);
+		// GLR forks and the wrong branch dies on the next token.
+		[$._plot_data_expr, $._expression],
+		// Same shape for the function: branch — a bare function/unary either
+		// completes plot_element or keeps growing as an expression (`-x + 1`);
+		// the wrong fork dies on the following token.
+		[$.plot_element, $._expression],
+		// `with hsteps … offset <expr>`: offset continues the hsteps option
+		// cluster (_hsteps_opts, dynamic 1) or closes plot_style and starts
+		// style_opts' generic offset-position; GLR fork, hsteps side preferred
+		// when both survive.
+		[$.plot_style],
 		[$.assignment, $._var_rhs],
 		[$._tag_atom, $._expression],
 		[$._command, $.multiplot_block],
@@ -409,7 +427,10 @@ module.exports = grammar({
 				repeat(
 					choice(
 						"unitweights",
-						alias(/(y|xy|z)err(o(r)?)?/, "errors"),
+						// yerr(o(r(s)?)?)? — plural forms (yerrors/xyerrors/zerrors) are
+						// the documented spellings; singular + prefix abbreviations down
+						// to yerr/xyerr/zerr probed on 6.0.4.
+						alias(/(y|xy|z)err(o(r(s)?)?)?/, "errors"),
 						seq("errors", sep(",", $._expression)),
 					),
 				),
@@ -500,38 +521,60 @@ module.exports = grammar({
 
 		plot_element: ($) =>
 			// p. 125
-			prec.left(
-				1,
-				seq(
-					optional($.for_block),
-					repeat(field("sample", $.range_block)),
-					choice(
+			// prec.left(1) spans only the element PREFIX (not the trailing
+			// options repeat): with the marker over the whole rule, the
+			// `if`-filter shift/reduce against a following cmd_if statement is
+			// statically resolved toward reduce inside plot_element itself
+			// (repeat extension = same-rule decision) and the filter can never
+			// fire. Narrowing the span leaves that decision unannotated so the
+			// declared [$.plot_element] GLR conflict handles it at runtime.
+			seq(
+					prec.left(
+						1,
 						seq(
-							sep(",", $.assignment),
-							optional(","),
-							$._expression, // $.function,
-							optional($.datafile_modifiers),
-						),
-						seq(
-							field("function", choice($.function, $.unary_expression)),
-						),
-						seq(
-							// p. 177 keyentry
-							field("data", choice($._expression, "keyentry")),
-							optional($.datafile_modifiers),
-						),
-						// p. 94
-						"newspiderplot",
-						seq(
-							"newhistogram",
-							repeat(
-								choice(
-									field("title", $.string_literal),
-									$.fontspec,
-									$._textcolor,
-									seq($._lt, field("lt", $._expression)),
-									fillStyleOpt($),
-									seq(alias("at", "kw_fn"), field("at", $._expression)),
+							optional($.for_block),
+							repeat(field("sample", $.range_block)),
+							choice(
+								seq(
+									sep(",", $.assignment),
+									optional(","),
+									$._expression, // $.function,
+									optional($.datafile_modifiers),
+								),
+								seq(
+									field("function", choice($.function, $.unary_expression)),
+									// function plots accept datafile-modifier filters too
+									// (`plot sqrt(sin(x)) sharpen`); before _plot_data_expr
+									// split off the data: branch these rode along there.
+									optional($.datafile_modifiers),
+								),
+								seq(
+									// p. 177 keyentry. Data takes _expression MINUS bare
+									// function/unary (see _plot_data_expr): those belong to
+									// the function: branch above. With the narrowed
+									// prec.left(1) span the old whole-rule marker no longer
+									// settles that overlap statically, and a GLR fork here
+									// merges mid-production (post-merge the reduce's
+									// production id is fixed, so prec.dynamic cannot pick
+									// the branch) — removing the overlap is the only stable
+									// encoding.
+									field("data", choice($._plot_data_expr, "keyentry")),
+									optional($.datafile_modifiers),
+								),
+								// p. 94
+								"newspiderplot",
+								seq(
+									"newhistogram",
+									repeat(
+										choice(
+											field("title", $.string_literal),
+											$.fontspec,
+											$._textcolor,
+											seq($._lt, field("lt", $._expression)),
+											fillStyleOpt($),
+											seq(alias("at", "kw_fn"), field("at", $._expression)),
+										),
+									),
 								),
 							),
 						),
@@ -547,11 +590,15 @@ module.exports = grammar({
 								prec.left(
 									seq(
 										key("title", 1, "attr"),
-										field(
-											"title",
-											choice(
-												$._expression,
-												key("columnheader", 3, $.columnheader),
+										choice(
+											field("title", $._expression),
+											// columnhead(er) keyword: bare, or call form
+											// `columnheader(<expr>)` (probed 6.0.4: both
+											// spellings take an argument; `at end`/`enhanced`
+											// still legal after the call).
+											seq(
+												field("title", key("columnheader", 3, $.columnheader)),
+												optional(surround("()", field("column", $._expression))),
 											),
 										),
 										repeat(
@@ -581,16 +628,118 @@ module.exports = grammar({
 							// 6.0.4 accepts it on either side of style opts. Probed
 							// minimum: whisker (7); optional bar-width fraction.
 							seq(key("whiskerbars", 7), optional(field("fraction", $._expression))),
+							// 6.0 datafile filter `if <expr>` (probed 6.0.4: parens are
+							// optional — `if $2<5` accepted; full-word only; terminates the
+							// i/e/u section (`if … every` rejected) but is legal before
+							// `with` and after `title`; runtime restricts it to datafile
+							// plots and rejects duplicates — grammar stays lenient).
+							$._plot_filter,
 							field("with", seq(key("with", 1, "attr"), $.plot_style)),
 							$.style_opts,
 						),
 					),
 				),
+
+		// hsteps option cluster. Probed minima: base(line) 4, fo(rward) 2,
+		// ba(ckward) 2, link/nolink full-word only. `offset <y-offset>` floats
+		// within the cluster (`offset 1 forward` accepted) but not outside it
+		// (`lw 2 offset 1` and pre-`with` both rejected; grammar leaves the
+		// post-style-opts form to style_opts' generic offset-position, and
+		// accepts abbreviated `off`/`offs` here because the token is shared
+		// with that rule — gnuplot itself wants the full word after hsteps).
+		// Own UNANNOTATED rule: inside plot_style's prec.left span the
+		// offset shift/reduce against style_opts' offset would statically
+		// resolve toward closing plot_style; here it goes through the
+		// declared [$.plot_style, $.style_opts]-shaped GLR conflict and
+		// prec.dynamic(1) keeps the offset in the hsteps cluster when both
+		// parses survive.
+		_hsteps_opts: ($) =>
+			repeat1(
+				choice(
+					key("baseline", 4, "mod"),
+					key("forward", 2, "mod"),
+					key("backward", 2, "mod"),
+					key("link", 4, "mod", 1),
+					// The offset value is atom-restricted (rotate=-style, see
+					// binary_options): a full $._expression here hands the shared
+					// expression machine a unique follow set (the hsteps mods) and
+					// clones it (+248 states measured). Compound values still parse
+					// via the GLR fallback into style_opts' offset-position
+					// (`offset 1+2 lw 2`); only `offset <compound> <mod>` — compound
+					// value AND a trailing hsteps mod — is lost (parenthesize).
+					prec.dynamic(
+						1,
+						seq(
+							key("offset", 3, "mod"),
+							field(
+								"offset",
+								choice(
+									$.number,
+									$.identifier,
+									$.parenthesized_expression,
+									// non-recursive signed form; CST matches real
+									// unary_expression for these shapes
+									alias(
+										seq(
+											alias(/[-+]/, $.operator),
+											choice($.number, $.identifier, $.parenthesized_expression),
+										),
+										$.unary_expression,
+									),
+								),
+							),
+						),
+					),
+				),
 			),
 
-		plot_style: ($) =>
+		// _expression minus bare function/unary_expression, for plot_element's
+		// data: field only — the two excluded members are the function: branch.
+		// Keep the member list in sync with _expression.
+		_plot_data_expr: ($) =>
 			prec.left(
 				choice(
+					$.identifier,
+					$.array,
+					$.subscript,
+					$.datablock,
+					$.number,
+					$.complex,
+					$.string_literal,
+					$.sum_block,
+					$.parenthesized_expression,
+					$.binary_expression,
+					$.ternary_expression,
+				),
+			),
+
+		// 6.0 datafile filter `if <expr>` (probed 6.0.4: parens optional —
+		// `if $2<5` accepted; full-word only; terminates the i/e/u section
+		// (`if … every` rejected) but legal before `with` and after `title`;
+		// runtime restricts it to datafile plots and rejects duplicates —
+		// grammar stays lenient). Own hidden rule; the `if` shift/reduce
+		// against a following cmd_if statement goes through the declared
+		// [$.plot_element] GLR conflict, and prec.dynamic(1) prefers the
+		// filter when both parses survive (brace-form cmd_if still wins
+		// because `{` kills the filter branch). Residual: old-style
+		// `if (c) <cmd>` on the line after a plot command mis-attaches as a
+		// filter (the grammar has no line boundaries).
+		_plot_filter: ($) =>
+			prec.dynamic(1, seq(alias("if", "attr"), field("filter", $._expression))),
+
+		plot_style: ($) =>
+			// The hsteps branch sits OUTSIDE the prec.left span: its option
+			// cluster (_hsteps_opts) shares the `offset` token with style_opts,
+			// and inside the marker the offset shift/reduce would statically
+			// resolve toward closing plot_style (a precedence-marked reduce
+			// silently beats an unmarked shift). Unannotated, the decision goes
+			// through a declared GLR conflict instead (see conflicts).
+			choice(
+				// hsteps (6.0): options repeat in any order, but only BEFORE
+				// style opts (`hsteps lw 2 baseline` is rejected by 6.0.4).
+				seq(key("hsteps", 2, "plt_st"), optional($._hsteps_opts)),
+				prec.left(
+					choice(
 					// Plain styles (no style-specific continuation) are matched by the
 					// external scanner as one token — see PLT_STYLE_KWS in scanner.c.
 					// `at base` trails contourfill (6.0.4 accepts base abbreviated to
@@ -612,21 +761,6 @@ module.exports = grammar({
 					// (6.0.4 accepts it before AND after style opts: `candlesticks
 					// lt 3 whiskerbars 0.5` and `whiskerbars 0.5 lt 3`).
 					key("candlesticks", 12, "plt_st"),
-					// hsteps (6.0): options repeat in any order, but only BEFORE
-					// style opts (`hsteps lw 2 baseline` is rejected by 6.0.4).
-					// Probed minima: base(line) 4, fo(rward) 2, ba(ckward) 2,
-					// link/nolink full-word only.
-					seq(
-						key("hsteps", 2, "plt_st"),
-						repeat(
-							choice(
-								key("baseline", 4, "mod"),
-								key("forward", 2, "mod"),
-								key("backward", 2, "mod"),
-								key("link", 4, "mod", 1),
-							),
-						),
-					),
 					seq(key("ellipses", 8, "plt_st"), optional($.ellipse)),
 					seq(
 						key("filledcurves", 7, "plt_st"),
@@ -656,6 +790,7 @@ module.exports = grammar({
 					),
 					seq(key("image", 3, "plt_st"), optional("pixels")),
 					seq(key("pm3d", 4, "plt_st"), optional(alias($._pm3d, $.pm3d))),
+					),
 				),
 			),
 
