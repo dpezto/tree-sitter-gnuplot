@@ -12,6 +12,10 @@
 local parser_path = _G.arg[1] or error("usage: highlight-check.lua <parser.so> [file]")
 local sample = _G.arg[2] or "test/oracle/synthetic.plt"
 
+-- uv_dlopen does not resolve relative paths against the cwd, so accept either
+-- form and hand it an absolute one.
+parser_path = vim.fn.fnamemodify(parser_path, ":p")
+
 vim.treesitter.language.add("gnuplot", { path = parser_path })
 
 local src = table.concat(vim.fn.readfile(sample), "\n")
