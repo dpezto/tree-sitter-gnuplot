@@ -104,6 +104,28 @@ jobs:
           grep -q "(ERROR \[$row, " <<<"$body"
           ! grep -q 'MISSING' <<<"$body"
 
+  queries:
+    # `tree-sitter query` only proves the query PARSES, and it evaluates
+    # `#match?` with Rust regex. Neovim evaluates those predicates through
+    # Vim's NFA engine instead: different syntax, and a hard cap of 9 capturing
+    # groups. A query that passes the CLI can still abort at runtime with
+    # `E872: (NFA regexp) Too many '('`, which silently leaves everything after
+    # the failing predicate unhighlighted. Only a real editor run catches that
+    # class, so highlights.scm is exercised under headless Neovim here.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install tree-sitter-cli
+        run: npm install -g tree-sitter-cli@0.26.11
+      - name: Build parser
+        run: tree-sitter build --output gnuplot.so .
+      - name: Install Neovim
+        uses: rhysd/action-setup-vim@febef33995d6649302e9d88dda81e071b68f16a7 # v1
+        with:
+          neovim: true
+      - name: Highlight the oracle script under Neovim
+        run: nvim --headless --clean -l test/highlight-check.lua gnuplot.so
+
   coverage:
     # Scanner line coverage → Codecov. Only src/scanner.c is reported; parser.c
     # is generated (ignored in codecov.yml). Kept as a dedicated job because it

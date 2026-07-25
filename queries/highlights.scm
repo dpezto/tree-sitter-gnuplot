@@ -378,9 +378,54 @@
 
 ; -----------------------------------------------------------------------
 ; Built-in variables (stats output, GPVAL_*, ARG*, vfill loop vars)
+;
+; REGEX DIALECT / GROUP BUDGET — read before editing any `#match?` here.
+;
+; Neovim evaluates `#match?` with `vim.regex()`, prepending `\v` (very magic)
+; whenever the pattern does not already start with `\v`/`\m`/`\M`/`\V`. Two
+; consequences, both of which have bitten this file:
+;
+;   1. Every bare `(` is a CAPTURING group, and Vim's NFA engine allows at
+;      most 9 of them. A tenth aborts the whole query with
+;      `E872: (NFA regexp) Too many '('` — highlighting then stops dead at
+;      that predicate and the rest of the buffer renders unhighlighted.
+;      A single combined alternation here once used 14 groups. It is now
+;      split into several patterns; the query engine ORs separate patterns,
+;      so the accepted set is unchanged. Keep each pattern well under 9.
+;
+;   2. Write `(`, `|`, `)`, `?` BARE. Do NOT write `\(` / `\|`: under the
+;      auto-prepended `\v` those are LITERAL characters, so the predicate
+;      would compile cleanly and then silently match nothing.
+;
+; This bare dialect is read identically by Vim's very-magic mode and by Rust
+; regex (tree-sitter CLI, Helix, Zed), so it stays portable across engines.
+;
+; The `\w+_` prefix is deliberate and must not be narrowed to `STATS_`: the
+; prefix is user-selectable (`stats … prefix "FOO"`, `set fit prefix`).
+
+; stats: moments — <prefix>_mean/_stddev/_skewness/_kurtosis (+_err) (+_x/_y)
 ((identifier) @variable.builtin
   (#match? @variable.builtin
-    "^(\\w+_((mean|stddev|skewness|kurtosis)(_err)?(_x|_y)?|(min|max|sdd|adev|median|sum(sq)?|(lo|up)_quartile)(_x|_y)?|(slope|intercept)(_err)?|size(_x|_y)|records|headers|outofrange|invalid|blank|blocks|column(s|_header)|correlation|sumxy)|(GPVAL|MOUSE|FIT)_\\w+|GNUTERM|VoxelDistance|GridDistance|ARG\\w+)$"))
+    "^\\w+_(mean|stddev|skewness|kurtosis)(_err)?(_x|_y)?$"))
+
+; stats: distribution summaries (+_x/_y)
+((identifier) @variable.builtin
+  (#match? @variable.builtin
+    "^\\w+_(min|max|sdd|adev|median|sum(sq)?|(lo|up)_quartile)(_x|_y)?$"))
+
+; stats: regression, extents, counts, column metadata
+((identifier) @variable.builtin
+  (#match? @variable.builtin
+    "^\\w+_((slope|intercept)(_err)?|size(_x|_y)|column(s|_header)|records|headers|outofrange|invalid|blank|blocks|correlation|sumxy)$"))
+
+; GPVAL_* / MOUSE_* / FIT_* / ARG*
+((identifier) @variable.builtin
+  (#match? @variable.builtin
+    "^((GPVAL|MOUSE|FIT)_|ARG)\\w+$"))
+
+; fixed-name built-ins — plain string comparison, never reaches a regex engine
+((identifier) @variable.builtin
+  (#any-of? @variable.builtin "GNUTERM" "VoxelDistance" "GridDistance"))
 
 ; -----------------------------------------------------------------------
 ; Array definitions
