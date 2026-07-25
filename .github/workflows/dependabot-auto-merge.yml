@@ -1,8 +1,9 @@
 name: dependabot auto-merge
 
-# Enable auto-merge on Dependabot PRs for patch/minor bumps. Auto-merge waits for
-# the required status checks (branch protection on main) before merging, so a bump
-# that breaks CI is never merged. Major bumps are left for manual review.
+# Enable auto-merge on Dependabot PRs for patch/minor bumps, except bumps to the
+# parser stack. Auto-merge waits for the required status checks (branch
+# protection on main) before merging, so a bump that breaks CI is never merged.
+# Major bumps are left for manual review.
 on: pull_request
 
 permissions:
@@ -19,8 +20,19 @@ jobs:
         uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      # tree-sitter* bumps are excluded by name, not by semver range. The CLI
+      # regenerates parser.c and the language shim is linked into every
+      # binding, so both change parse behavior, and no CI job here exercises
+      # the committed parser against a freshly generated one. dependabot.yml
+      # already holds tree-sitter-cli minors; this covers patches too, and
+      # covers the shim. A held bump is otherwise not held at all: a Dependabot
+      # PR blocked only by a conflict auto-merges the moment that conflict
+      # clears.
       - name: Enable auto-merge for patch/minor
-        if: steps.meta.outputs.update-type == 'version-update:semver-patch' || steps.meta.outputs.update-type == 'version-update:semver-minor'
+        if: >-
+          (steps.meta.outputs.update-type == 'version-update:semver-patch'
+          || steps.meta.outputs.update-type == 'version-update:semver-minor')
+          && !contains(steps.meta.outputs.dependency-names, 'tree-sitter')
         run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
