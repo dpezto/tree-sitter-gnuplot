@@ -1,20 +1,23 @@
-# Vendored from tree-sitter/workflows/.github/workflows/package-pypi.yml, with
-# OIDC trusted publishing enabled (upstream PR #54, unmerged): PYPI_API_TOKEN is
-# optional and the publish job carries `id-token: write`. `workflow_call` only,
-# so it never runs on its own. Re-sync from upstream if the build matrix drifts.
+# Vendored from tree-sitter/workflows/.github/workflows/package-pypi.yml, build
+# jobs only. Upstream's `package` job is deliberately ABSENT: PyPI matches a
+# trusted publisher against job_workflow_ref, so a publish running here would
+# present this file rather than release.yml, and PyPI does not accept a reusable
+# workflow as a publisher (warehouse#11096). The publish job lives in
+# release.yml as `pypi-publish` and downloads the `dist-*` artifacts these jobs
+# upload. Do NOT restore `package` when re-syncing from upstream — that
+# reintroduces the `invalid-publisher` failure seen on the 3.0.0 release.
+# `workflow_call` only, so it never runs on its own.
+#
+# The package-name and environment-name inputs are gone with the publish job:
+# an environment-name that no longer selects the deployment environment would
+# be a silent no-op on a security boundary. Both now live in release.yml.
+# PYPI_API_TOKEN is declared but inert here; the rollback to classic token auth
+# is the same secret consumed by release.yml's pypi-publish job.
 name: Publish package (pypi)
 
 on:
   workflow_call:
     inputs:
-      package-name:
-        description: The name of the package
-        default: ${{github.event.repository.name}}
-        type: string
-      environment-name:
-        description: The name of the environment
-        default: pypi
-        type: string
       python-version:
         description: The Python version
         default: ${{vars.PYTHON_VERSION || '3.11'}}
@@ -137,26 +140,3 @@ jobs:
           path: dist/*.whl
           name: dist-wheels-${{matrix.os}}
           retention-days: 2
-
-  package:
-    name: Publish Python package
-    needs: [build_sdist, build_wheels]
-    runs-on: ubuntu-latest
-    environment:
-      name: ${{inputs.environment-name}}
-      url: https://pypi.org/project/${{inputs.package-name}}/
-    permissions:
-      id-token: write
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v8
-        with:
-          path: dist
-          pattern: dist-*
-          merge-multiple: true
-      - name: Check build artifacts
-        run: ls -l dist
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{secrets.PYPI_API_TOKEN}}
