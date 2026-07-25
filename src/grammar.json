@@ -2843,30 +2843,26 @@
       }
     },
     "_plot_filter": {
-      "type": "PREC_DYNAMIC",
-      "value": 1,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "kw_filter_if"
-            },
-            "named": false,
-            "value": "attr"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "kw_filter_if"
           },
-          {
-            "type": "FIELD",
-            "name": "filter",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_expression"
-            }
+          "named": false,
+          "value": "attr"
+        },
+        {
+          "type": "FIELD",
+          "name": "filter",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expression"
           }
-        ]
-      }
+        }
+      ]
     },
     "plot_style": {
       "type": "CHOICE",
@@ -15329,9 +15325,6 @@
     [
       "plot_element",
       "style_opts"
-    ],
-    [
-      "plot_element"
     ],
     [
       "_plot_data_expr",

@@ -149,10 +149,6 @@ module.exports = grammar({
 	conflicts: ($) => [
 		[$._paxis_label],
 		[$.plot_element, $.style_opts],
-		// `plot … if <expr>` datafile filter vs a following cmd_if statement:
-		// GLR fork; _plot_filter's prec.dynamic(1) prefers the filter when
-		// both parses survive (see _plot_filter).
-		[$.plot_element],
 		// Companion to _plot_data_expr (plot_element's data: branch): an atom
 		// after the plot keyword reduces to _plot_data_expr (data) or to
 		// _expression (feeding a larger expression / the function: branch);
@@ -546,7 +542,7 @@ module.exports = grammar({
 			// statically resolved toward reduce inside plot_element itself
 			// (repeat extension = same-rule decision) and the filter can never
 			// fire. Narrowing the span leaves that decision unannotated so the
-			// declared [$.plot_element] GLR conflict handles it at runtime.
+			// scanner's same-line kw_filter_if token can resolve it lexically.
 			seq(
 					prec.left(
 						1,
@@ -740,10 +736,11 @@ module.exports = grammar({
 		// scanner's kw_filter_if, emitted only when the word is on the same
 		// logical line as the element, so an old-style `if (c) <cmd>` statement
 		// on the line after a plot command stays its own statement instead of
-		// mis-attaching as a filter. The declared [$.plot_element] GLR conflict
-		// and prec.dynamic(1) are retained here pending a separate cleanup.
+		// mis-attaching as a filter. That token decides the shift/reduce against
+		// a following cmd_if lexically, so no GLR fork arises here: neither a
+		// [$.plot_element] conflict nor a dynamic precedence is needed.
 		_plot_filter: ($) =>
-			prec.dynamic(1, seq(alias($.kw_filter_if, "attr"), field("filter", $._expression))),
+			seq(alias($.kw_filter_if, "attr"), field("filter", $._expression)),
 
 		plot_style: ($) =>
 			// The hsteps branch sits OUTSIDE the prec.left span: its option
