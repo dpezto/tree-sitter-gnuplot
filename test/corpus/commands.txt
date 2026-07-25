@@ -954,6 +954,50 @@ foo = 1
       (number))))
 
 ===========================================================================
+  replot - leading range blocks
+===========================================================================
+replot [0:1] x/2
+refresh [0:1] [-1:1] x, y
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_bare
+    (plot_element
+      (range_block
+        (number)
+        (number))
+      (binary_expression
+        (identifier)
+        (operator)
+        (number))))
+  (cmd_bare
+    (plot_element
+      (range_block
+        (number)
+        (number))
+      (range_block
+        (unary_expression
+          (operator)
+          (number))
+        (number))
+      (identifier))
+    (plot_element
+      (identifier))))
+
+===========================================================================
+  replot - range on the next line does not attach
+===========================================================================
+replot
+[0:1]
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_bare)
+  (ERROR
+    (number)
+    (number)))
+
+===========================================================================
   bind - allwindows modifier and abbreviations
 ===========================================================================
 bind allwindows 'a' "replot"
@@ -1322,6 +1366,40 @@ plot "f.bin" binary rotate=(45)degrees
             (number)))))))
 
 ===========================================================================
+  plot binary rotate= detached pi angle unit
+===========================================================================
+plot "f.bin" binary rotate=0.5 pi
+plot 'f' u 1:2 w lp pi 5 pt 7
+plot pi*x
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      (string_literal)
+      (datafile_modifiers
+        (binary_options
+          (number)))))
+  (cmd_plot
+    (plot_element
+      (string_literal)
+      (datafile_modifiers
+        (using
+          (number)
+          (number)))
+      (plot_style)
+      (style_opts
+        (number))
+      (style_opts
+        (number))))
+  (cmd_plot
+    (plot_element
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier)))))
+
+===========================================================================
   plot text matrix columnheaders / rowheaders
 ===========================================================================
 plot $d matrix columnheaders using 1:2
@@ -1422,6 +1500,59 @@ splot $d using 1:2:3 if ($3<9)
             (number))
           (operator)
           (number))))))
+
+===========================================================================
+  plot if filter - statement if past the line end stays a statement
+===========================================================================
+plot 'f' u 1:2
+if (a>0) print "x"
+plot 'f' u 1:2; if (a>0) print "y"
+plot 'f' u 1:2 if $2>0 with lines
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))))
+  (cmd_if
+    conditions: (binary_expression
+      (identifier)
+      (operator)
+      (number))
+    (cmd_print
+      (string_literal)))
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))))
+  (cmd_if
+    conditions: (binary_expression
+      (identifier)
+      (operator)
+      (number))
+    (cmd_print
+      (string_literal)))
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      filter: (binary_expression
+        (unary_expression
+          (operator)
+          (number))
+        (operator)
+        (number))
+      with: (plot_style))))
 
 ===========================================================================
   with hsteps offset - bare, between direction options, before style opts

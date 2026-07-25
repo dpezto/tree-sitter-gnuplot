@@ -106,6 +106,16 @@ for (const m of grammarJs.matchAll(/alias\(\s*"([a-z][a-z0-9_]*)"\s*,\s*"(\w+)"\
   if (TIERS.has(m[2])) add(m[1], m[2], m[1].length);
 }
 
+// External tokens aliased to a TIER are just as opaque as a bare literal, but
+// the scanner holds their text, so grammar.js has nothing to mine — the word
+// is mapped here. (An external aliased to a non-tier name, e.g.
+// alias($.unit_pi, "pi"), self-describes in the parse tables and needs no row.)
+const EXTERNAL_WORD = { kw_filter_if: "if" };
+for (const m of grammarJs.matchAll(/alias\(\s*\$\.(\w+)\s*,\s*"(\w+)"\s*\)/g)) {
+  const word = EXTERNAL_WORD[m[1]];
+  if (word && TIERS.has(m[2])) add(word, m[2], word.length);
+}
+
 skipped.key1 = [...grammarJs.matchAll(/key1\(/g)].length;
 
 // TERM_NAME block: terminal names collapsed into one token aliased "name".

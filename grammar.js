@@ -129,6 +129,17 @@ module.exports = grammar({
 		// _gval_bind before grammar-literal keywords like `font` so they start
 		// a new item instead of binding as the previous keyword's value.
 		$._gval_bind,
+		// detached `pi` angle unit after `binary rotate=<value>`; own token so
+		// the scanner can prefer it over kw_sa's `pi` (pointinterval) in the
+		// merged plot-element state
+		$.unit_pi,
+		// same-line gate for the cmd_bare plot-element tail; like _gval_sep but
+		// also opens on '[' so `replot [0:1] x/2` reaches the range prefix
+		$._gval_tail,
+		// plot-element filter `if`, matched only when it is on the same logical
+		// line as the element (a statement-level `if` on the next line must not
+		// attach as a filter)
+		$.kw_filter_if,
 	],
 
 	extras: ($) => [$.comment, /\s|\\|;/],
@@ -380,14 +391,15 @@ module.exports = grammar({
 		// break/clear/continue/pwd/replot/reread/refresh — one scanner token. See
 		// KW_CMD_BARE in scanner.c. `replot` takes a same-line plot-element tail
 		// (appended to the previous plot/splot command); the one-token collapse
-		// extends the tail permissively to the other bare commands. The _gval_sep
+		// extends the tail permissively to the other bare commands. The _gval_tail
 		// gate keeps the tail same-line, so the next line always starts a fresh
-		// statement. (The runtime also accepts `replot [range] ...`; '[' does not
-		// open the gate, so that form stays unparsed.)
+		// statement. _gval_tail is the '['-opening variant of _gval_sep, so the
+		// runtime's `replot [range] ...` form reaches plot_element's leading
+		// range_block while the ~70 set/show body gates keep declining '['.
 		cmd_bare: ($) =>
 			seq(
 				alias($.kw_cmd_bare, "cmd"),
-				optional(seq($._gval_sep, sep(",", $.plot_element))),
+				optional(seq($._gval_tail, sep(",", $.plot_element))),
 			),
 
 		// raise/lower/vclear/toggle — one scanner token + optional expression
@@ -724,15 +736,14 @@ module.exports = grammar({
 		// `if $2<5` accepted; full-word only; terminates the i/e/u section
 		// (`if … every` rejected) but legal before `with` and after `title`;
 		// runtime restricts it to datafile plots and rejects duplicates —
-		// grammar stays lenient). Own hidden rule; the `if` shift/reduce
-		// against a following cmd_if statement goes through the declared
-		// [$.plot_element] GLR conflict, and prec.dynamic(1) prefers the
-		// filter when both parses survive (brace-form cmd_if still wins
-		// because `{` kills the filter branch). Residual: old-style
-		// `if (c) <cmd>` on the line after a plot command mis-attaches as a
-		// filter (the grammar has no line boundaries).
+		// grammar stays lenient). Own hidden rule. The filter `if` is the
+		// scanner's kw_filter_if, emitted only when the word is on the same
+		// logical line as the element, so an old-style `if (c) <cmd>` statement
+		// on the line after a plot command stays its own statement instead of
+		// mis-attaching as a filter. The declared [$.plot_element] GLR conflict
+		// and prec.dynamic(1) are retained here pending a separate cleanup.
 		_plot_filter: ($) =>
-			prec.dynamic(1, seq(alias("if", "attr"), field("filter", $._expression))),
+			prec.dynamic(1, seq(alias($.kw_filter_if, "attr"), field("filter", $._expression))),
 
 		plot_style: ($) =>
 			// The hsteps branch sits OUTSIDE the prec.left span: its option
@@ -1872,7 +1883,7 @@ module.exports = grammar({
 												// unary_expression for these shapes
 												alias(seq(alias(/[-+]/, $.operator), choice($.number, $.parenthesized_expression)), $.unary_expression),
 											)),
-											field("unit", choice(key("degrees", 1), "pi")),
+											field("unit", choice(key("degrees", 1), alias($.unit_pi, "pi"))),
 										)),
 										field("opt", $._expression),
 									),
