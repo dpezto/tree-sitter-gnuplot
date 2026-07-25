@@ -50,7 +50,12 @@ const SYMBOL_TIER = {
   KW_CMD_EXIT: "cmd", KW_CMD_EXPR: "cmd",
   KW_SA: "sa", KW_LT: "lt", KW_LC: "lc", KW_DT: "dt", KW_PT: "pt",
   KW_PS: "ps", KW_FS: "fs", KW_FC: "fc", KW_TC: "tc",
-  KW_G_ARG: "arg", KW_G_FLAG: "flag", KW_G_MOD: "mod", KW_G_COORD: "coord",
+  // KW_G_ARGV is the value-required variant of KW_G_ARG (grammar.js aliases
+  // both to "arg"), so it mines to the same tier — the distinction is a parse
+  // constraint, not a dictionary one. Every KW_* symbol used in a scanner table
+  // must appear here or the run aborts at the unmapped-symbol assert below.
+  KW_G_ARG: "arg", KW_G_ARGV: "arg", KW_G_FLAG: "flag", KW_G_MOD: "mod",
+  KW_G_COORD: "coord",
 };
 
 // Extract the body of `static const <T> NAME[] = { ... };`
