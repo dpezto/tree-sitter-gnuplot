@@ -39,7 +39,11 @@ enum TokenType {
   // (GOPT_KWS) and tagged with their highlight tier. KW_G_AXISFLAG is the
   // (no)?m?<axis>tics family ((no)mxtics, x2tics, ...), only valid in
   // style-flavor bodies. Order MUST match the externals list in grammar.js.
-  KW_G_ARG, KW_G_FLAG, KW_G_MOD, KW_G_COORD, KW_G_AXISFLAG,
+  // KW_G_ARGV is the value-REQUIRED flavor of KW_G_ARG: its grammar branch has
+  // no `optional()` around the value, so the state right after the keyword
+  // admits only an expression and every keyword-table token drops out of
+  // valid_symbols there.
+  KW_G_ARG, KW_G_ARGV, KW_G_FLAG, KW_G_MOD, KW_G_COORD, KW_G_AXISFLAG,
   KW_G_AXISRANGE,  // autoscale-only: <axis>{min|max|fix|fixmin|fixmax}?
   // Zero-width separator between an arg/coord keyword and its value inside
   // generic bodies. Matches ONLY when the value is on the SAME logical line
@@ -157,6 +161,21 @@ static const StyleKwEntry STYLE_KWS[] = {
     {"textcolor", "tc", 5, KW_TC},
     {NULL, NULL, 0, 0},
 };
+
+// Words that are gnuplot built-in CONSTANTS, never option keywords.
+static bool is_expr_constant(const char* w, int len) {
+  return (len == 2 && memcmp(w, "pi", 2) == 0) ||
+         (len == 3 && memcmp(w, "NaN", 3) == 0) ||
+         (len == 3 && memcmp(w, "Inf", 3) == 0);
+}
+
+// True inside the generic _gopts/_gopts_style bodies, where a bare expression
+// item is always a valid alternative — so a keyword-table hit on a constant
+// word is never what the author meant.
+static bool in_generic_body(const bool* v) {
+  return v[KW_G_ARG] || v[KW_G_FLAG] || v[KW_G_MOD] || v[KW_G_COORD] ||
+         v[KW_G_AXISFLAG] || v[KW_G_AXISRANGE];
+}
 
 // Match word against STYLE_KWS, returning the token if a currently-valid one
 // matches, else -1.
@@ -559,7 +578,7 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"autofreq", 4, KW_G_ARG, 0},
     // effective from "autoj": shorter prefixes hit the autotitle row first
     {"autojustify", 2, KW_G_ARG, 0},
-    {"by", 2, KW_G_ARG, 0},
+    {"by", 2, KW_G_ARGV, 0},
     {"format", 6, KW_G_ARG, 0},
     {"logscale", 4, KW_G_FLAG, 1},
     {"rangelimited", 5, KW_G_FLAG, 1},
@@ -917,6 +936,14 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
     return true;
   }
 
+  // Constant words decline every keyword table inside generic option bodies:
+  // there a bare expression is always a legal item, so `rotate by pi` means the
+  // number, not the `pi`(=pointinterval) abbreviation. Style bodies (plot
+  // elements, `set style line ...`) are unaffected — no KW_G_* is valid there,
+  // so `pi 5` keeps parsing as pointinterval.
+  if (in_generic_body(valid_symbols) && is_expr_constant(word, word_len))
+    return false;
+
   // Plot style names take priority over style attrs (e.g. "lines" is the style,
   // not linestyle).
   if (valid_symbols[KW_PLT_ST] && match_kw_table(word, word_len, PLT_STYLE_KWS)) {
@@ -1020,6 +1047,13 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
             }
             return false;
           }
+          // Same constant denylist as scan_keywords: inside a generic body a
+          // constant word is a value, so bind it as one instead of letting a
+          // keyword table steal it.
+          if (in_generic_body(valid_symbols) && is_expr_constant(peek, plen)) {
+            lexer->result_symbol = SEP;
+            return true;
+          }
           int s = match_style_kw(peek, plen, valid_symbols);
           if (s < 0 && valid_symbols[KW_G_AXISRANGE] && match_axis_word(peek, plen, 1))
             s = KW_G_AXISRANGE;
@@ -1110,8 +1144,8 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
       valid_symbols[KW_TC];
 
   bool any_gopt_valid =
-      valid_symbols[KW_G_ARG] || valid_symbols[KW_G_FLAG] || valid_symbols[KW_G_MOD] ||
-      valid_symbols[KW_G_COORD] || valid_symbols[KW_G_AXISFLAG] ||
+      valid_symbols[KW_G_ARG] || valid_symbols[KW_G_ARGV] || valid_symbols[KW_G_FLAG] ||
+      valid_symbols[KW_G_MOD] || valid_symbols[KW_G_COORD] || valid_symbols[KW_G_AXISFLAG] ||
       valid_symbols[KW_G_AXISRANGE];
 
   if ((any_cmd_valid || any_style_valid || any_gopt_valid || valid_symbols[UNIT_PI] ||

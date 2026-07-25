@@ -117,7 +117,8 @@ module.exports = grammar({
 		// tagged with their highlight tier; the bodies themselves share the
 		// _gopts/_gopts_style rules. kw_g_axisflag is the (no)?m?<axis>tics
 		// family ((no)mxtics/x2tics/...), valid only in style-flavor bodies.
-		$.kw_g_arg, $.kw_g_flag, $.kw_g_mod, $.kw_g_coord, $.kw_g_axisflag,
+		// kw_g_argv is the value-REQUIRED flavor of kw_g_arg (see _gopt_item).
+		$.kw_g_arg, $.kw_g_argv, $.kw_g_flag, $.kw_g_mod, $.kw_g_coord, $.kw_g_axisflag,
 		// autoscale-only <axis>{min|max|fix|fixmin|fixmax}? words: private token
 		// so common variable names (rmax, xmin) stay identifiers elsewhere.
 		$.kw_g_axisrange,
@@ -240,6 +241,11 @@ module.exports = grammar({
 				// `contourfill auto FOO` keeps FOO in the body while an
 				// identifier on the NEXT line starts a fresh statement.
 				prec.right(seq(alias($.kw_g_arg, "arg"), optional(seq($._gval_bind, choice($._gexprs, $.tuple))))),
+				// Arg keywords whose value is REQUIRED — deliberately NOT wrapped in
+				// `optional`, so the state after the keyword admits only an
+				// expression and every keyword-table token drops out of
+				// valid_symbols at the value slot (e.g. `rotate by pi`).
+				seq(alias($.kw_g_argv, "arg"), $._gval_bind, choice($._gexprs, $.tuple)),
 				prec.right(seq(alias($.kw_g_coord, "coord"), optional(seq($._gval_bind, $._gexprs)))),
 				$._gexprs,
 				// bare label/position list: `set xtics ("NE" 72, "S" 42)`
