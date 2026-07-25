@@ -66,6 +66,78 @@ function tableBody(name) {
   return m[1].replace(/\/\/[^\n]*/g, "");
 }
 
+// ---------- 1b. SYMBOL_TIER registration check ----------
+//
+// Adding a scanner tier without updating SYMBOL_TIER has broken this generator
+// twice (KW_FILTER_IF, then KW_G_ARGV), both times on the very change that
+// introduced the tier. The unmapped-symbol assert above catches it, but only
+// after mining, and it names the affected keyword rather than the file to edit.
+// These checks fire on the symbol set itself and say exactly what to change.
+//
+// SYMBOL_TIER stays hand-written rather than derived: `alias($.kw_g_argv,
+// "arg")` shows the tier IS in grammar.js, but kw_dt and kw_lt each carry two
+// aliases, so deriving would have to guess — and guessing writes a plausible
+// dictionary with a wrong tier instead of failing.
+{
+  const HERE = "scripts/gen-keywords.mjs";
+  const tierLine =
+    readFileSync(join(root, HERE), "utf8").split("\n").findIndex((l) => l.includes("const SYMBOL_TIER")) + 1;
+
+  // Symbols actually referenced by the scanner's keyword tables.
+  const used = new Set();
+  for (const [table, re] of [
+    ["STYLE_KWS", /\{"[^"]+",\s*(?:"[^"]+"|NULL),\s*-?\d+,\s*(\w+)\}/g],
+    ["GOPT_KWS", /\{"[^"]+",\s*-?\d+,\s*(\w+),\s*[01]\}/g],
+    ["CMD_KWS", /\{"[^"]+",\s*-?\d+,\s*(\w+)\}/g],
+  ]) {
+    for (const m of tableBody(table).matchAll(re)) used.add(m[1]);
+  }
+
+  const missing = [...used].filter((s) => !(s in SYMBOL_TIER)).sort();
+  if (missing.length) {
+    throw new Error(
+      `${HERE}:${tierLine}: SYMBOL_TIER is missing ${missing.length} scanner ` +
+        `symbol(s): ${missing.join(", ")}\n` +
+        `Add to the SYMBOL_TIER map, e.g. ${missing[0]}: "<tier>", where <tier> ` +
+        `is the alias grammar.js gives the matching external token.`,
+    );
+  }
+
+  // grammar.js is the source of truth for what tier a token surfaces as, so a
+  // hand-written entry that contradicts it is a silent dictionary defect.
+  const aliases = new Map(); // rule name -> Set(alias)
+  for (const m of grammarJs.matchAll(/alias\(\s*\$\.(\w+)\s*,\s*"(\w+)"\s*\)/g)) {
+    if (!aliases.has(m[1])) aliases.set(m[1], new Set());
+    aliases.get(m[1]).add(m[2]);
+  }
+
+  // Tokens deliberately aliased to more than one tier: the same token surfaces
+  // as a style attribute in one position and an option head in another. Listed
+  // explicitly, NOT computed as "anything with >1 alias" — a computed rule would
+  // silently absorb the next such token and weaken the check without a decision.
+  const MULTI_ALIASED = new Set(["kw_dt", "kw_lt"]);
+
+  for (const [sym, tier] of Object.entries(SYMBOL_TIER)) {
+    const rule = sym.toLowerCase();
+    const declared = aliases.get(rule);
+    if (!declared || declared.size === 0) continue; // hidden/unaliased: nothing to check
+    if (declared.size > 1 && !MULTI_ALIASED.has(rule)) {
+      throw new Error(
+        `${HERE}:${tierLine}: ${rule} is now aliased to multiple tiers ` +
+          `(${[...declared].sort().join(", ")}). Decide which one the dictionary ` +
+          `should report, then add "${rule}" to MULTI_ALIASED in this block.`,
+      );
+    }
+    if (!declared.has(tier)) {
+      throw new Error(
+        `${HERE}:${tierLine}: SYMBOL_TIER.${sym} is "${tier}", but grammar.js ` +
+          `aliases $.${rule} to ${[...declared].sort().map((a) => `"${a}"`).join(" / ")}. ` +
+          `The alias is authoritative.`,
+      );
+    }
+  }
+}
+
 // Row regexes per table shape. NULL alt handled by the alternation.
 const str = '"([^"]+)"';
 const alt = '(?:"([^"]+)"|NULL)';
