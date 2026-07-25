@@ -76,11 +76,42 @@ jobs:
   pypi:
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'
-    # Passed to every job in the reusable workflow: build jobs checkout
-    # (contents), the publish job mints the OIDC token (id-token).
     permissions:
       contents: read
-      id-token: write
     uses: ./.github/workflows/package-pypi.yml
     with:
       generate: true
+
+  # The publish step lives here, not in package-pypi.yml, because PyPI matches a
+  # trusted publisher against the job_workflow_ref claim — the file holding the
+  # publishing job. Inside a reusable workflow that claim names package-pypi.yml,
+  # and PyPI does not accept a reusable workflow as a publisher (warehouse#11096),
+  # which is what produced `invalid-publisher` on the 3.0.0 release. Only this job
+  # moved up; sdist and wheel building stay in package-pypi.yml, whose artifacts
+  # are scoped to the run and so download here unchanged. The release_created
+  # gate is stated explicitly rather than left to skip-propagation from `pypi`,
+  # so the condition survives an edit to that job. Register the publisher as
+  # workflow `release.yml`, environment `pypi`, matching the declaration below.
+  pypi-publish:
+    name: Publish Python package
+    needs: [release-please, pypi]
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/tree-sitter-gnuplot/
+    permissions:
+      id-token: write
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: dist
+          pattern: dist-*
+          merge-multiple: true
+      - name: Check build artifacts
+        run: ls -l dist
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{secrets.PYPI_API_TOKEN}}
