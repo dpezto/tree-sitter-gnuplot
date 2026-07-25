@@ -1084,7 +1084,7 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "_gval_sep"
+                  "name": "_gval_tail"
                 },
                 {
                   "type": "SEQ",
@@ -2851,8 +2851,8 @@
           {
             "type": "ALIAS",
             "content": {
-              "type": "STRING",
-              "value": "if"
+              "type": "SYMBOL",
+              "name": "kw_filter_if"
             },
             "named": false,
             "value": "attr"
@@ -10837,7 +10837,12 @@
                                           "value": "degrees"
                                         },
                                         {
-                                          "type": "STRING",
+                                          "type": "ALIAS",
+                                          "content": {
+                                            "type": "SYMBOL",
+                                            "name": "unit_pi"
+                                          },
+                                          "named": false,
                                           "value": "pi"
                                         }
                                       ]
@@ -15484,6 +15489,18 @@
     {
       "type": "SYMBOL",
       "name": "_gval_bind"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "unit_pi"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_gval_tail"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_filter_if"
     }
   ],
   "inline": [],

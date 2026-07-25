@@ -51,6 +51,21 @@ enum TokenType {
   // scanner can refuse to bind grammar-literal keywords (`font`) as values
   // while option-head body gates (which use GVAL_SEP) still open.
   GVAL_BIND,
+  // Detached angle unit `pi` in `binary rotate=<val> pi`. Own external token so
+  // valid_symbols can disambiguate against KW_SA's `pi` (pointinterval alias),
+  // which is valid in the SAME merged plot-element state.
+  UNIT_PI,
+  // Same-line gate for the cmd_bare (replot/refresh/...) plot-element tail.
+  // Identical to GVAL_SEP except it ALSO opens on '[', so `replot [0:1] x/2`
+  // reaches plot_element's leading range_block repeat. Own token so the ~70
+  // set/show body gates keep declining '['.
+  GVAL_TAIL,
+  // The word `if` opening a plot-element datafile filter. Emitted ONLY when the
+  // word sits on the same logical line as the element it attaches to; the
+  // grammar has no line boundaries, so without this an old-style
+  // `if (cond) <command>` statement on the line AFTER a plot command silently
+  // becomes that element's filter.
+  KW_FILTER_IF,
 };
 
 // Keyword table entry for prefix-abbreviation matching.
@@ -859,13 +874,23 @@ static bool is_assignment_context(TSLexer* lexer) {
 // the plot-element tail, statement-start command tokens AND style attrs are both
 // valid), and tree-sitter resets the lexer between scanner invocations but NOT
 // between sub-scanners, so the word must be consumed exactly once.
-static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cmd_valid) {
+static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cmd_valid,
+                          bool same_line) {
   char word[24];
   int word_len = read_word(lexer, word, sizeof(word));
   if (word_len < 0)
     return false;
 
   lexer->mark_end(lexer);  // mark end of keyword token before lookahead
+
+  // Plot-element filter `if` — same-line only (see KW_FILTER_IF). On a new
+  // logical line the scan declines and the internal lexer produces the cmd_if
+  // literal instead, so the statement is not swallowed as a filter.
+  if (valid_symbols[KW_FILTER_IF] && same_line && word_len == 2 &&
+      word[0] == 'i' && word[1] == 'f') {
+    lexer->result_symbol = KW_FILTER_IF;
+    return true;
+  }
 
   // Command keywords (statement-start). The assignment-context guard keeps
   // `plot = 1` an assignment rather than the plot command.
@@ -880,6 +905,16 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
         return true;
       }
     }
+  }
+
+  // Detached angle unit `pi` (binary rotate=<val> pi). Checked BEFORE the
+  // style-attr table: in plot/splot elements KW_SA is valid in the same state
+  // (`pi` = pointinterval), and gnuplot resolves the word as the unit there.
+  // UNIT_PI is only valid right after a rotate= value, so pointinterval `pi`
+  // keeps working everywhere else.
+  if (valid_symbols[UNIT_PI] && word_len == 2 && memcmp(word, "pi", 2) == 0) {
+    lexer->result_symbol = UNIT_PI;
+    return true;
   }
 
   // Plot style names take priority over style attrs (e.g. "lines" is the style,
@@ -921,8 +956,10 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
   // skip_whitespaces (which also skips newlines and ';'). Skips spaces/tabs
   // and \-newline continuations; succeeds iff the next content is on the
   // same logical line. When both are valid, the body gate (GVAL_SEP) wins.
-  if (valid_symbols[GVAL_SEP] || valid_symbols[GVAL_BIND]) {
-    const int SEP = valid_symbols[GVAL_SEP] ? GVAL_SEP : GVAL_BIND;
+  // GVAL_TAIL is the cmd_bare variant: same semantics plus '[' opens it.
+  if (valid_symbols[GVAL_SEP] || valid_symbols[GVAL_BIND] || valid_symbols[GVAL_TAIL]) {
+    const int SEP = valid_symbols[GVAL_SEP] ? GVAL_SEP
+                  : (valid_symbols[GVAL_BIND] ? GVAL_BIND : GVAL_TAIL);
     for (;;) {
       if (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\r') {
         skip(lexer);
@@ -1008,7 +1045,9 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
         int32_t c = lexer->lookahead;
         if ((c >= '0' && c <= '9') || c == '.' || c == '"' || c == '\'' ||
             c == '(' || c == '-' || c == '+' || c == '~' || c == '!' ||
-            c == '$' || c == '@' || c == ',') {
+            c == '$' || c == '@' || c == ',' ||
+            // '[' opens plot_element's leading range_block — cmd_bare tail only
+            (c == '[' && SEP == GVAL_TAIL)) {
           lexer->result_symbol = SEP;
           return true;
         }
@@ -1016,6 +1055,29 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
     }
     // Declined: fall through — other externals (next statement's command
     // keyword, datablock end, ...) may still match from here.
+  }
+
+  // Same-line probe for the plot-element filter `if`. Must run BEFORE
+  // skip_whitespaces (which crosses newlines and ';'). Only skip() is used, so
+  // the position is left exactly where skip_whitespaces would take over and the
+  // sub-scanners below are unaffected. Falls through either way — never an
+  // early return, which would starve the other sub-scanners of this state.
+  bool same_line = true;
+  if (valid_symbols[KW_FILTER_IF]) {
+    for (;;) {
+      if (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\r') {
+        skip(lexer);
+      } else if (lexer->lookahead == '\\') {
+        skip(lexer);
+        if (lexer->lookahead == '\r') skip(lexer);
+        if (lexer->lookahead == '\n') skip(lexer);
+      } else {
+        break;
+      }
+    }
+    if (lexer->lookahead == '\n' || lexer->lookahead == ';' || lexer->lookahead == '#' ||
+        lexer->lookahead == 0)
+      same_line = false;
   }
 
   skip_whitespaces(lexer);
@@ -1052,8 +1114,9 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
       valid_symbols[KW_G_COORD] || valid_symbols[KW_G_AXISFLAG] ||
       valid_symbols[KW_G_AXISRANGE];
 
-  if ((any_cmd_valid || any_style_valid || any_gopt_valid) &&
-      scan_keywords(lexer, valid_symbols, any_cmd_valid)) {
+  if ((any_cmd_valid || any_style_valid || any_gopt_valid || valid_symbols[UNIT_PI] ||
+       valid_symbols[KW_FILTER_IF]) &&
+      scan_keywords(lexer, valid_symbols, any_cmd_valid, same_line)) {
     return true;
   }
 
