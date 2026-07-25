@@ -325,14 +325,21 @@ module.exports = grammar({
 				// Element assignment: A[i] = expr
 				seq($.array, "=", $._expression),
 				// Declaration with size: array A[6]  /  array A[6] = [e1, e2, ...]
-				seq(
-					"array",
-					$.array,
-					optional(seq("=", surround("[]", sep(",", optional($._expression))))),
-				),
-				// Declaration from expr (no size brackets): array C = split(...)
-				seq("array", $.identifier, "=", $._expression),
+				// The sized form takes ONLY a bracketed literal — `array A[3] =
+				// split("a b c")` is rejected by the runtime.
+				seq("array", $.array, optional(seq("=", $._array_literal))),
+				// Declaration without size brackets, from an expression or from a
+				// literal: `array C = split(...)` / `array A = [1, 2, 3]`.
+				seq("array", $.identifier, "=", choice($._array_literal, $._expression)),
 			),
+
+		// `[e1, e2, ...]` element list. Slots may be empty (`array A = [1, , 3]`
+		// leaves element 2 undefined) and the whole list may be empty (`array A =
+		// []` builds a zero-length array). Elements are plain expressions —
+		// nesting (`[[1,2],[3,4]]`) is not valid gnuplot, and a bare `[1,2,3]` is
+		// not an expression, so the literal only appears after `array … =`.
+		// Hidden: the brackets stay inlined in def_array, as before.
+		_array_literal: ($) => surround("[]", sep(",", optional($._expression))),
 
 		def_func: ($) => seq($.function, "=", $._expression),
 
@@ -800,6 +807,10 @@ module.exports = grammar({
 		cmd_print: ($) =>
 			seq(
 				choice(alias($.cmd_print_kw, "cmd"), alias("printerr", "cmd")),
+				// `print for [i=1:|A|] A[i]`. The runtime iterates the FIRST item
+				// only; any further comma-separated items are evaluated once after
+				// the loop ends (so `print for [i=1:2] i, "-"` prints `1 2 -`).
+				optional($.for_block),
 				sep(",", $._expression),
 			),
 
@@ -2445,6 +2456,9 @@ module.exports = grammar({
 					PREC.UNARY,
 					seq(alias("$", $.operator), choice($.number, token.immediate("#"))),
 				),
+				// `|A|` is cardinality (array/datablock element count), NOT absolute
+				// value: gnuplot 6 rejects `|-5|` as an invalid expression and
+				// `|x|` on a scalar as "cardinality of a scalar variable".
 				prec.left(PREC.UNARY, surround(alias("|", $.operator), $._expression)),
 			),
 
@@ -2456,7 +2470,7 @@ module.exports = grammar({
 					// token appears in ~4-5k expression-tail states). Longer
 					// alternatives first (maximal munch). NOT merged: `*`
 					// (ranges/array decl), `<<`/`>>` (`<<` shared with
-					// def_datablock), `^`/`|` (`|` doubles as unary abs),
+					// def_datablock), `^`/`|` (`|` doubles as unary cardinality),
 					// `&&`/`||` (different precedence — merge changes parses).
 					["**", PREC.POWER],
 					["*", PREC.TIMES],
