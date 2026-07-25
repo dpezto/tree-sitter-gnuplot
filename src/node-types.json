@@ -2426,6 +2426,10 @@
           "named": true
         },
         {
+          "type": "for_block",
+          "named": true
+        },
+        {
           "type": "function",
           "named": true
         },

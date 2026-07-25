@@ -1516,3 +1516,65 @@ plot $h using 2 title columnheader
           using: (number)))
       title: (columnheader))))
 
+
+===========================================================================
+  Print with iteration
+===========================================================================
+print for [i=1:3] i
+print for [i=1:|A|] A[i]
+print for [s in "a b"] s
+printerr for [i=1:2] for [j=1:2] i*j
+print for [i=1:2] i, "-"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (for_block
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (number))
+    (identifier))
+  (cmd_print
+    (for_block
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (unary_expression
+        (operator)
+        (identifier)
+        (operator)))
+    (array
+      name: (identifier)
+      (identifier)))
+  (cmd_print
+    (for_block
+      start: (identifier)
+      (string_literal))
+    (identifier))
+  (cmd_print
+    (for_block
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (number)
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (number))
+    (binary_expression
+      (identifier)
+      (operator)
+      (identifier)))
+  (cmd_print
+    (for_block
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (number))
+    (identifier)
+    (string_literal)))

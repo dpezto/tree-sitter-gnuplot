@@ -252,3 +252,45 @@ s = file[1:*]
         (identifier)
         (number)))))
 
+
+===========================================================================
+  Arrays 4 - literal initializer without size brackets
+===========================================================================
+array A = [1,2,3]
+array S = ["a", "b"]
+array E = []
+array G = [1, , 3]
+array X = [x, x*2, sin(0)]
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_array
+      (identifier)
+      (number)
+      (number)
+      (number)))
+  (assignment
+    (def_array
+      (identifier)
+      (string_literal)
+      (string_literal)))
+  (assignment
+    (def_array
+      (identifier)))
+  (assignment
+    (def_array
+      (identifier)
+      (number)
+      (number)))
+  (assignment
+    (def_array
+      (identifier)
+      (identifier)
+      (binary_expression
+        (identifier)
+        (operator)
+        (number))
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (number))))))
