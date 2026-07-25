@@ -520,3 +520,43 @@ set xtics 0, 5, 100
         (number)
         (number)
         (number)))))
+
+================================================================================
+set xlabel - `rotate by pi` binds the constant, not the pointinterval keyword
+================================================================================
+set xlabel "x" rotate by pi enhanced
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (xlabel
+      (string_literal)
+      (identifier))))
+
+================================================================================
+set style line - `pi` stays the pointinterval abbreviation in style bodies
+================================================================================
+set style line 1 lt 1 lw 2 pt 7 pi 5
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (style
+      (line_style
+        tag: (number)
+        (number)
+        (number)
+        (number)
+        (number)))))
+
+================================================================================
+set xtics - `rotate by <expr>` still takes ordinary values and a trailing flag
+================================================================================
+set xtics rotate by 45 nomirror
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (xtics
+      (tics_opts
+        (number)))))

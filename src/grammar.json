@@ -288,6 +288,37 @@
           }
         },
         {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "kw_g_argv"
+              },
+              "named": false,
+              "value": "arg"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_gval_bind"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_gexprs"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "tuple"
+                }
+              ]
+            }
+          ]
+        },
+        {
           "type": "PREC_RIGHT",
           "value": 0,
           "content": {
@@ -15454,6 +15485,10 @@
     {
       "type": "SYMBOL",
       "name": "kw_g_arg"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "kw_g_argv"
     },
     {
       "type": "SYMBOL",
