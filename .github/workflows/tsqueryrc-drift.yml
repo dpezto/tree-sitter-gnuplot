@@ -1,0 +1,79 @@
+name: tsqueryrc drift
+
+# .tsqueryrc.json is a vendored copy of nvim-treesitter's, which defines the
+# capture, predicate and directive vocabulary that ts_query_ls validates
+# queries/*.scm against. A vendored copy of another project's file drifts, and
+# the failure mode is silent: upstream adds a capture, our copy does not have
+# it, and our queries lint clean against a stale vocabulary.
+#
+# Weekly rather than per-PR. Only an upstream change can cause drift, so
+# checking on every pull request would burn runner time to re-answer a question
+# whose inputs did not move.
+
+on:
+  schedule:
+    # Mondays, 06:00 UTC.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    env:
+      # The vendored revision, encoded here rather than in a comment beside the
+      # file, since JSON cannot carry one. Bump this together with the file.
+      VENDORED_FROM: 2c30e515ebe79037ab8d15f7e59c0e2690f50626
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Fetch the pinned revision and upstream HEAD
+        run: |
+          base=https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter
+          curl -fsSL --proto '=https' --tlsv1.2 "$base/${VENDORED_FROM}/.tsqueryrc.json" -o /tmp/pinned.json
+          curl -fsSL --proto '=https' --tlsv1.2 "$base/main/.tsqueryrc.json" -o /tmp/upstream.json
+
+      - name: Compare, ignoring the one field we deliberately override
+        run: |
+          node - <<'EOF'
+          const fs = require("node:fs");
+          const load = (p) => JSON.parse(fs.readFileSync(p, "utf8"));
+
+          // parser_install_directories is the single deliberate divergence:
+          // upstream points at Neovim's parser directory, we build into the
+          // repo root. Comparing it would report a permanent false difference,
+          // and a check that is always red gets ignored and then switched off.
+          const OVERRIDDEN = ["parser_install_directories"];
+          const strip = (o) => {
+            const c = { ...o };
+            for (const k of OVERRIDDEN) delete c[k];
+            return JSON.stringify(c, Object.keys(c).sort(), 2);
+          };
+
+          const ours = load(".tsqueryrc.json");
+          const pinned = load("/tmp/pinned.json");
+          const upstream = load("/tmp/upstream.json");
+
+          // Guard the override itself, so it cannot be silently lost.
+          const dirs = JSON.stringify(ours.parser_install_directories);
+          if (dirs !== '["."]') {
+            console.error(`::error::.tsqueryrc.json parser_install_directories is ${dirs}, expected ["."] — ts_query_ls will not find the parser built into the repo root`);
+            process.exit(1);
+          }
+
+          // Our copy must differ from its stated origin only by the override.
+          if (strip(ours) !== strip(pinned)) {
+            console.error(`::error::.tsqueryrc.json has been edited beyond the parser_install_directories override; it no longer matches ${process.env.VENDORED_FROM}`);
+            process.exit(1);
+          }
+
+          if (strip(pinned) !== strip(upstream)) {
+            console.error("::error::nvim-treesitter's .tsqueryrc.json has changed upstream. Re-vendor it and bump VENDORED_FROM in this workflow.");
+            console.error("  diff: https://github.com/nvim-treesitter/nvim-treesitter/commits/main/.tsqueryrc.json");
+            process.exit(1);
+          }
+
+          console.log(`.tsqueryrc.json matches upstream at ${process.env.VENDORED_FROM} (ignoring parser_install_directories)`);
+          EOF
