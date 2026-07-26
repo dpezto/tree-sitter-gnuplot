@@ -2707,17 +2707,17 @@
 		{
 			"kw": "iso_8859_15",
 			"tier": "mod",
-			"min": 3
+			"min": 11
 		},
 		{
 			"kw": "iso_8859_2",
 			"tier": "mod",
-			"min": 3
+			"min": 10
 		},
 		{
 			"kw": "iso_8859_9",
 			"tier": "mod",
-			"min": 3
+			"min": 10
 		},
 		{
 			"kw": "kdensity",
@@ -2742,7 +2742,7 @@
 		{
 			"kw": "koi8u",
 			"tier": "mod",
-			"min": 4
+			"min": 5
 		},
 		{
 			"kw": "landscape",

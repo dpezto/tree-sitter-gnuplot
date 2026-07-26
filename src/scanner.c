@@ -230,15 +230,17 @@ static const GoptKwEntry GOPT_KWS[] = {
     // watch/textbox labels boxed toggle
     {"boxed", 5, KW_G_FLAG, 1},
     // `set encoding` values. Enumerated names, so KW_G_MOD. min_chars probed
-    // against gnuplot 6.0.4 one prefix at a time; the cp* families need more
-    // characters because they only diverge late (cp850/cp852 at 5,
-    // cp1250..cp1254 at 6). `default` is covered by the shared row below.
+    // against gnuplot 6.0.4 by RESOLUTION, not acceptance: each prefix is fed
+    // to `set encoding <p>; show encoding` and kept only when gnuplot reports
+    // back this same keyword. gnuplot resolves an ambiguous prefix to the
+    // first entry of its own table, so `iso` is iso_8859_1 and `koi8` is
+    // koi8r; the losing members of each family need their full name.
     {"iso_8859_1", 3, KW_G_MOD, 0},
-    {"iso_8859_15", 3, KW_G_MOD, 0},
-    {"iso_8859_2", 3, KW_G_MOD, 0},
-    {"iso_8859_9", 3, KW_G_MOD, 0},
+    {"iso_8859_15", 11, KW_G_MOD, 0},
+    {"iso_8859_2", 10, KW_G_MOD, 0},
+    {"iso_8859_9", 10, KW_G_MOD, 0},
     {"koi8r", 4, KW_G_MOD, 0},
-    {"koi8u", 4, KW_G_MOD, 0},
+    {"koi8u", 5, KW_G_MOD, 0},
     {"cp437", 3, KW_G_MOD, 0},
     {"cp850", 5, KW_G_MOD, 0},
     {"cp852", 5, KW_G_MOD, 0},
