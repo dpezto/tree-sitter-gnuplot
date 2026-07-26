@@ -55,9 +55,9 @@ const dataSeparator = ($) =>
 // src/grammar.json). Pure refactor — each expands to the exact inline form it
 // replaces, so the generated parser is byte-identical. Centralizes the spelling
 // (e.g. change `offset`'s min_chars in one place).
-const fillStyleOpt = ($) => seq($._fs, $.fill_style); // `fs <fillstyle>` (×6)
-const atPos = ($) => seq(alias("at", "kw_fn"), $.position); //          `at <position>` (×6)
-const offsetPos = ($) => seq(key("offset", 3), $.position); // `offset <pos>` (×9)
+const fillStyleOpt = ($) => seq($._fs, $.fill_style); // `fs <fillstyle>`
+const atPos = ($) => seq(alias("at", "kw_fn"), $.position); //          `at <position>`
+const offsetPos = ($) => seq(key("offset", 3), $.position); // `offset <pos>`
 
 // All terminal names collapsed into ONE token (was 32 separate `key()` tokens).
 // `token(choice(...))` forces a single terminal symbol; abbreviation min_chars
