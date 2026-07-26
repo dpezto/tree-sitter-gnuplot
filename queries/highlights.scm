@@ -24,7 +24,12 @@
   "="
   ","
   ":"
+  ; datablock heredoc (`$data << EOD`) and the left-shift operator share one
+  ; token, so this capture covers both roles
+  "<<"
 ] @operator
+; open range end — `set xrange [*:*]`, `array A[*]`: a wildcard, not a product
+"*" @character.special
 (keyword_op) @keyword.operator
 (ternary_op) @keyword.conditional.ternary
 ; TODO: collapse
@@ -370,6 +375,10 @@
     ; using-specifier / plotting
     "column" "columnhead" "stringcolumn" "strcol" "exists" "valid" "value"
     "hsv2rgb" "palette" "rgbcolor" "voxel"))
+
+; bare `title columnheader` (the called form `columnheader(N)` is a (function)
+; and matches the builtin list above)
+(columnheader) @function.builtin
 
 ; -----------------------------------------------------------------------
 ; Built-in constants
