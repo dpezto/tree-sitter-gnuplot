@@ -146,7 +146,6 @@ module.exports = grammar({
 	word: ($) => $.identifier,
 
 	conflicts: ($) => [
-		[$._paxis_label],
 		[$.plot_element, $.style_opts],
 		// Companion to _plot_data_expr (plot_element's data: branch): an atom
 		// after the plot keyword reduces to _plot_data_expr (data) or to
@@ -167,7 +166,6 @@ module.exports = grammar({
 		[$._command, $.multiplot_block],
 		// palette `file "f" using 1:2 "fmt"`: using's trailing scanf format
 		// string vs a following string item in the generic palette body
-		[$.using],
 		// `set view 60,30`: full-slot comma lists parse as a _gexprs chain OR
 		// as _view_angles slots; dynamic prec on _view_angles picks the slot
 		// form, keeping the empty-slot shapes (`,,0.5`, `60,`) in one rule
@@ -679,7 +677,7 @@ module.exports = grammar({
 		// Own UNANNOTATED rule: inside plot_style's prec.left span the
 		// offset shift/reduce against style_opts' offset would statically
 		// resolve toward closing plot_style; here it goes through the
-		// declared [$.plot_style, $.style_opts]-shaped GLR conflict and
+		// declared single-symbol [$.plot_style] GLR conflict and
 		// prec.dynamic(1) keeps the offset in the hsteps cluster when both
 		// parses survive.
 		_hsteps_opts: ($) =>
@@ -1169,7 +1167,7 @@ module.exports = grammar({
 		// Generic body (GOPT_KWS rows: polar/layerdefault/front/back/vertical/
 		// spiderplot; the (no)?m?<axis>tics family is kw_g_axisflag).
 		grid: ($) =>
-			prec.right(seq(key("grid", 2, "opt"), optional(seq($._gval_sep, $._gopts_style)))),
+			prec.right(seq(key("grid", 1, "opt"), optional(seq($._gval_sep, $._gopts_style)))),
 
 
 
@@ -1379,8 +1377,12 @@ module.exports = grammar({
 			),
 		),
 
+		// prec.right settles the dangling label_opts tail. It was a declared
+		// conflict, which licensed GLR forking across the whole rule for a
+		// single shift/reduce tie; associativity is the narrower tool and is
+		// byte-identical on the corpus, the oracle and 16 targeted probes.
 		_paxis_label: ($) =>
-			seq(key("label", 3), optional($.label_opts)),
+			prec.right(seq(key("label", 3), optional($.label_opts))),
 
 		paxis: ($) =>
 			prec.left(
@@ -1685,7 +1687,9 @@ module.exports = grammar({
 			// keep the kw_g_axisflag "flag" tier)
 			prec.left(
 				seq(
-					key1("opt", K.axes, reg("tics", -1)),
+					// probed 6.0.4: `set xti 5` is accepted, `set xt 5` is rejected.
+					// The m/d/xm variants have their own minima and are left alone.
+					key1("opt", K.axes, reg("tics", 2)),
 					optional(seq($._gval_sep, $.tics_opts)),
 				),
 			),
@@ -1948,8 +1952,10 @@ module.exports = grammar({
 						alias("fnormal", "mod"),
 						alias("cumulative", "mod"),
 						alias("cnormal", "mod"),
-						key("csplines", -1, "mod"),
-						key("acsplines", -1, "mod"),
+						// probed 6.0.4 minima by resolution: `smooth cs` and `smooth acs` produce
+						// output byte-identical to the full words and distinct from bezier.
+						key("csplines", 2, "mod"),
+						key("acsplines", 3, "mod"),
 						// probed 6.0.4 minimum: mcs (3); every longer prefix accepted.
 						key("mcsplines", 3, "mod"),
 						alias("path", "mod"),
@@ -2267,7 +2273,14 @@ module.exports = grammar({
 		using: ($) =>
 			field(
 				"using",
-				seq(
+				// prec.right binds the trailing scanf string into `using` as
+				// `format:`. Previously a declared conflict, which resolved the
+				// other way inside `set palette file` and left the string as a
+				// palette body item — gnuplot treats it as the using format, so
+				// that tree was wrong. Every non-palette `using` form is
+				// unchanged; the four affected inputs are pinned in
+				// test/corpus/datafile_using.txt.
+				prec.right(seq(
 					key("using", 1, "attr"),
 					sep(":", choice(
 						surround("()", sep(",", choice($.assignment, $._expression))),
@@ -2277,7 +2290,7 @@ module.exports = grammar({
 					// (gnuplot 6 docs p.138-139). The format-only form `using "%lf"`
 					// is already covered by the string as the sole entry above.
 					optional(field("format", $.string_literal)),
-				),
+				)),
 			),
 
 		position: ($) =>
