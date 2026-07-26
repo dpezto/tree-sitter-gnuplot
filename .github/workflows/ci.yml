@@ -104,6 +104,18 @@ jobs:
           grep -q "(ERROR \[$row, " <<<"$body"
           ! grep -q 'MISSING' <<<"$body"
 
+  metadata:
+    # package.json had no `repository` field, so npm refused the 4.0.0 upload
+    # with E422 after the provenance statement had already been logged; and
+    # tree-sitter.json's metadata.version sat at 2.0.1 for three releases
+    # because it was not in release-please's extra-files. Both were invisible
+    # until a release exercised them. This asserts them on every push.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Check project metadata
+        run: node scripts/check-metadata.mjs
+
   queries:
     # `tree-sitter query` only proves the query PARSES, and it evaluates
     # `#match?` with Rust regex. Neovim evaluates those predicates through
