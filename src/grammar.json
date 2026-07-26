@@ -6145,7 +6145,7 @@
             "type": "ALIAS",
             "content": {
               "type": "PATTERN",
-              "value": "gr(i(d)?)?"
+              "value": "g(r(i(d)?)?)?"
             },
             "named": false,
             "value": "opt"
@@ -7397,30 +7397,34 @@
       }
     },
     "_paxis_label": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "lab(e(l)?)?"
-          },
-          "named": false,
-          "value": "label"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "label_opts"
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "PATTERN",
+              "value": "lab(e(l)?)?"
             },
-            {
-              "type": "BLANK"
-            }
-          ]
-        }
-      ]
+            "named": false,
+            "value": "label"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "label_opts"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
     },
     "paxis": {
       "type": "PREC_LEFT",
@@ -9574,7 +9578,7 @@
             "type": "ALIAS",
             "content": {
               "type": "PATTERN",
-              "value": "(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)tic(s)?"
+              "value": "(x|y|z|x2|y2|cb|r|t|u|v|xy|vx|vy|vz)ti(c(s)?)?"
             },
             "named": false,
             "value": "opt"
@@ -11277,7 +11281,7 @@
                 "type": "ALIAS",
                 "content": {
                   "type": "PATTERN",
-                  "value": "cspline(s)?"
+                  "value": "cs(p(l(i(n(e(s)?)?)?)?)?)?"
                 },
                 "named": false,
                 "value": "mod"
@@ -11286,7 +11290,7 @@
                 "type": "ALIAS",
                 "content": {
                   "type": "PATTERN",
-                  "value": "acspline(s)?"
+                  "value": "acs(p(l(i(n(e(s)?)?)?)?)?)?"
                 },
                 "named": false,
                 "value": "mod"
@@ -13222,181 +13226,185 @@
       "type": "FIELD",
       "name": "using",
       "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "u(s(i(n(g)?)?)?)?"
-            },
-            "named": false,
-            "value": "attr"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "("
-                      },
-                      {
-                        "type": "SEQ",
-                        "members": [
-                          {
-                            "type": "CHOICE",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "assignment"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_expression"
-                              }
-                            ]
-                          },
-                          {
-                            "type": "REPEAT",
-                            "content": {
-                              "type": "SEQ",
-                              "members": [
-                                {
-                                  "type": "STRING",
-                                  "value": ","
-                                },
-                                {
-                                  "type": "CHOICE",
-                                  "members": [
-                                    {
-                                      "type": "SYMBOL",
-                                      "name": "assignment"
-                                    },
-                                    {
-                                      "type": "SYMBOL",
-                                      "name": "_expression"
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "type": "STRING",
-                        "value": ")"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_expression"
-                  }
-                ]
+        "type": "PREC_RIGHT",
+        "value": 0,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "u(s(i(n(g)?)?)?)?"
               },
-              {
-                "type": "REPEAT",
-                "content": {
-                  "type": "SEQ",
+              "named": false,
+              "value": "attr"
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
                   "members": [
                     {
-                      "type": "STRING",
-                      "value": ":"
-                    },
-                    {
-                      "type": "CHOICE",
+                      "type": "SEQ",
                       "members": [
+                        {
+                          "type": "STRING",
+                          "value": "("
+                        },
                         {
                           "type": "SEQ",
                           "members": [
                             {
-                              "type": "STRING",
-                              "value": "("
-                            },
-                            {
-                              "type": "SEQ",
+                              "type": "CHOICE",
                               "members": [
                                 {
-                                  "type": "CHOICE",
-                                  "members": [
-                                    {
-                                      "type": "SYMBOL",
-                                      "name": "assignment"
-                                    },
-                                    {
-                                      "type": "SYMBOL",
-                                      "name": "_expression"
-                                    }
-                                  ]
+                                  "type": "SYMBOL",
+                                  "name": "assignment"
                                 },
                                 {
-                                  "type": "REPEAT",
-                                  "content": {
-                                    "type": "SEQ",
-                                    "members": [
-                                      {
-                                        "type": "STRING",
-                                        "value": ","
-                                      },
-                                      {
-                                        "type": "CHOICE",
-                                        "members": [
-                                          {
-                                            "type": "SYMBOL",
-                                            "name": "assignment"
-                                          },
-                                          {
-                                            "type": "SYMBOL",
-                                            "name": "_expression"
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
+                                  "type": "SYMBOL",
+                                  "name": "_expression"
                                 }
                               ]
                             },
                             {
-                              "type": "STRING",
-                              "value": ")"
+                              "type": "REPEAT",
+                              "content": {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "STRING",
+                                    "value": ","
+                                  },
+                                  {
+                                    "type": "CHOICE",
+                                    "members": [
+                                      {
+                                        "type": "SYMBOL",
+                                        "name": "assignment"
+                                      },
+                                      {
+                                        "type": "SYMBOL",
+                                        "name": "_expression"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
                             }
                           ]
                         },
                         {
-                          "type": "SYMBOL",
-                          "name": "_expression"
+                          "type": "STRING",
+                          "value": ")"
                         }
                       ]
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
                     }
                   ]
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": ":"
+                      },
+                      {
+                        "type": "CHOICE",
+                        "members": [
+                          {
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "STRING",
+                                "value": "("
+                              },
+                              {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "CHOICE",
+                                    "members": [
+                                      {
+                                        "type": "SYMBOL",
+                                        "name": "assignment"
+                                      },
+                                      {
+                                        "type": "SYMBOL",
+                                        "name": "_expression"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "REPEAT",
+                                    "content": {
+                                      "type": "SEQ",
+                                      "members": [
+                                        {
+                                          "type": "STRING",
+                                          "value": ","
+                                        },
+                                        {
+                                          "type": "CHOICE",
+                                          "members": [
+                                            {
+                                              "type": "SYMBOL",
+                                              "name": "assignment"
+                                            },
+                                            {
+                                              "type": "SYMBOL",
+                                              "name": "_expression"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "STRING",
+                                "value": ")"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "SYMBOL",
+                            "name": "_expression"
+                          }
+                        ]
+                      }
+                    ]
+                  }
                 }
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "FIELD",
-                "name": "format",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "string_literal"
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "format",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "string_literal"
+                  }
+                },
+                {
+                  "type": "BLANK"
                 }
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          }
-        ]
+              ]
+            }
+          ]
+        }
       }
     },
     "position": {
@@ -15142,9 +15150,6 @@
   ],
   "conflicts": [
     [
-      "_paxis_label"
-    ],
-    [
       "plot_element",
       "style_opts"
     ],
@@ -15170,9 +15175,6 @@
     [
       "_command",
       "multiplot_block"
-    ],
-    [
-      "using"
     ],
     [
       "_gexprs",

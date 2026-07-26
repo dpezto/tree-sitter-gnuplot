@@ -11,9 +11,9 @@ set palette file "c.pal" using 1:2 "%lf"
       (datafile_modifiers
         (using
           using: (number)
-          using: (number)))
-      (string_literal
-        (format_specifier)))))
+          using: (number)
+          format: (string_literal
+            (format_specifier)))))))
 
 ================================================================================
 set palette file - using without format
@@ -197,9 +197,9 @@ set palette file "c.pal" using 1:2 "%lf" gamma 2
       (datafile_modifiers
         (using
           using: (number)
-          using: (number)))
-      (string_literal
-        (format_specifier))
+          using: (number)
+          format: (string_literal
+            (format_specifier))))
       (number))))
 
 ================================================================================
@@ -270,9 +270,9 @@ set palette file "c.pal" using 1 "%lf"
       filename: (string_literal)
       (datafile_modifiers
         (using
-          using: (number)))
-      (string_literal
-        (format_specifier)))))
+          using: (number)
+          format: (string_literal
+            (format_specifier)))))))
 
 ================================================================================
 set palette file - format string with no using
