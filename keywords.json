@@ -297,6 +297,11 @@
 			"min": 5
 		},
 		{
+			"kw": "font",
+			"tier": "arg",
+			"min": 4
+		},
+		{
 			"kw": "fontscale",
 			"tier": "arg",
 			"min": 9
@@ -2224,6 +2229,11 @@
 			"min": 7
 		},
 		{
+			"kw": "any",
+			"tier": "mod",
+			"min": 3
+		},
+		{
 			"kw": "avg",
 			"tier": "mod",
 			"min": 3
@@ -2304,6 +2314,21 @@
 			"kw": "butt",
 			"tier": "mod",
 			"min": 4
+		},
+		{
+			"kw": "button1",
+			"tier": "mod",
+			"min": 7
+		},
+		{
+			"kw": "button2",
+			"tier": "mod",
+			"min": 7
+		},
+		{
+			"kw": "button3",
+			"tier": "mod",
+			"min": 7
 		},
 		{
 			"kw": "candlesticks",
@@ -2643,6 +2668,11 @@
 			"kw": "keepfix",
 			"tier": "mod",
 			"min": 4
+		},
+		{
+			"kw": "keypress",
+			"tier": "mod",
+			"min": 8
 		},
 		{
 			"kw": "landscape",

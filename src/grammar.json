@@ -2019,28 +2019,58 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "STRING",
-          "value": "keypress"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "keypress"
+          },
+          "named": false,
+          "value": "mod"
         },
         {
-          "type": "STRING",
-          "value": "button1"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "button1"
+          },
+          "named": false,
+          "value": "mod"
         },
         {
-          "type": "STRING",
-          "value": "button2"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "button2"
+          },
+          "named": false,
+          "value": "mod"
         },
         {
-          "type": "STRING",
-          "value": "button3"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "button3"
+          },
+          "named": false,
+          "value": "mod"
         },
         {
-          "type": "STRING",
-          "value": "close"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "close"
+          },
+          "named": false,
+          "value": "mod"
         },
         {
-          "type": "STRING",
-          "value": "any"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "any"
+          },
+          "named": false,
+          "value": "mod"
         }
       ]
     },
@@ -12623,8 +12653,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "font"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "font"
+          },
+          "named": false,
+          "value": "arg"
         },
         {
           "type": "FIELD",

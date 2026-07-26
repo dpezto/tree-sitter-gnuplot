@@ -62,7 +62,6 @@
   "depthorder"
   "clip"
   "zclip"
-  "font"
   "filled"
   "nofilled"
   ; coordinate systems (first/second/graph/screen/character/polar) — alias "coord"
@@ -176,16 +175,11 @@
   ; fit modifiers
   "unitweights"
   "errors"
-  ; command-argument keywords (pause endconditions, exit forms)
+  ; command-argument keywords (exit forms, pause mouse)
+  ; the `pause` end conditions themselves are `mod` tier
   "message"
   "status"
   "mouse"
-  "keypress"
-  "button1"
-  "button2"
-  "button3"
-  "close"
-  "any"
   ; history command options
   "append"
   "quiet"

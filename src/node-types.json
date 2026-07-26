@@ -16138,10 +16138,6 @@
     "named": false
   },
   {
-    "type": "any",
-    "named": false
-  },
-  {
     "type": "append",
     "named": false
   },
@@ -16210,18 +16206,6 @@
     "named": false
   },
   {
-    "type": "button1",
-    "named": false
-  },
-  {
-    "type": "button2",
-    "named": false
-  },
-  {
-    "type": "button3",
-    "named": false
-  },
-  {
     "type": "c2c",
     "named": false
   },
@@ -16247,10 +16231,6 @@
   },
   {
     "type": "clip4in",
-    "named": false
-  },
-  {
-    "type": "close",
     "named": false
   },
   {
@@ -16390,10 +16370,6 @@
     "named": false
   },
   {
-    "type": "font",
-    "named": false
-  },
-  {
     "type": "for",
     "named": false
   },
@@ -16455,10 +16431,6 @@
   },
   {
     "type": "keyentry",
-    "named": false
-  },
-  {
-    "type": "keypress",
     "named": false
   },
   {

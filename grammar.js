@@ -533,7 +533,17 @@ module.exports = grammar({
 			),
 
 		endcondition: ($) =>
-			choice("keypress", "button1", "button2", "button3", "close", "any"),
+			// Enumerated values of `pause mouse` (gnuplot: "the possible end
+			// conditions are keypress, button1, button2, button3, close, any"),
+			// so they carry the `mod` tier rather than the option-name tier.
+			choice(
+				alias("keypress", "mod"),
+				alias("button1", "mod"),
+				alias("button2", "mod"),
+				alias("button3", "mod"),
+				alias("close", "mod"),
+				alias("any", "mod"),
+			),
 
 		cmd_plot: ($) =>
 			seq(alias($.cmd_plot_kw, "cmd"), optional("sample"), sep(",", $.plot_element)),
@@ -2123,7 +2133,10 @@ module.exports = grammar({
 				),
 			),
 
-		fontspec: ($) => seq("font", field("font", $._expression)),
+		// `font` takes a value, so it is an option-body suboption name (`arg`),
+		// not a toggle. The scanner matches the literal text, not the alias, so
+		// the _gval_bind refusal for `font` is unaffected.
+		fontspec: ($) => seq(alias("font", "arg"), field("font", $._expression)),
 
 		_linecolor: ($) =>
 			seq($._lc, field("lc", choice($._expression, $.colorspec))),
