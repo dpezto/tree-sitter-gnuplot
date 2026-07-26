@@ -4,6 +4,13 @@ All notable changes are documented here. This file is maintained automatically b
 [release-please](https://github.com/googleapis/release-please) from Conventional-Commit
 history; do not edit it by hand.
 
+## [4.0.1](https://github.com/dpezto/tree-sitter-gnuplot/compare/v4.0.0...v4.0.1) (2026-07-26)
+
+
+### Bug Fixes
+
+* **metadata:** add the npm repository fields, unstick tree-sitter.json's version ([#50](https://github.com/dpezto/tree-sitter-gnuplot/issues/50)) ([65af00e](https://github.com/dpezto/tree-sitter-gnuplot/commit/65af00e78831c63623cfd4d5e3330f6dfa0e8ab3))
+
 ## [4.0.0](https://github.com/dpezto/tree-sitter-gnuplot/compare/v3.0.0...v4.0.0) (2026-07-26)
 
 
