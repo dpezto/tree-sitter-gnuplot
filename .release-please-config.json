@@ -10,8 +10,7 @@
         { "type": "generic", "path": "pyproject.toml" },
         { "type": "generic", "path": "Makefile" },
         { "type": "generic", "path": "CMakeLists.txt" },
-        { "type": "generic", "path": "CITATION.cff" },
-        { "type": "json", "path": "tree-sitter.json", "jsonpath": "$.metadata.version" }
+        { "type": "generic", "path": "CITATION.cff" }
       ]
     }
   }

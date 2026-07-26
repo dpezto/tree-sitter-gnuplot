@@ -1,20 +1,17 @@
 // Project-metadata consistency check.
 //
-// Two defects motivated this, both latent across multiple releases because
-// nothing asserted them:
+// One defect motivated this, latent across several releases because nothing
+// asserted it: package.json carried no `repository` field at all. npm builds
+// its provenance statement from the Actions context and then refuses the
+// upload when package.json disagrees, so the 4.0.0 publish failed with
+// `E422 ... "repository.url" is "", expected to match ...`. The provenance had
+// already been accepted by the transparency log by that point, so the failure
+// surfaced at the very last step of a release and nowhere earlier.
 //
-//   - package.json carried no `repository` field at all. npm builds its
-//     provenance statement from the Actions context and then refuses the
-//     upload when package.json disagrees, so 4.0.0 failed with
-//     `E422 ... "repository.url" is "", expected to match ...`. The publish
-//     had already succeeded at the transparency log by that point, so the
-//     failure surfaced only at the very last step of a release.
-//   - tree-sitter.json's metadata.version sat at 2.0.1 for three releases,
-//     because it was not listed in .release-please-config.json's extra-files
-//     and nothing compared it to anything.
-//
-// Both are the same class: metadata that drifts silently because only a
-// release exercises it. This runs on every push instead.
+// tree-sitter.json's metadata.version was corrected at the same time but is
+// deliberately NOT asserted. It had sat at 2.0.1 for three releases, and that
+// is staleness rather than a defect: nothing consumed it and nothing broke.
+// The extra-files guard at the bottom explains why it is left alone.
 //
 // Deliberately NOT checked: whether the versions match the newest git tag.
 // release-please bumps these files in the release PR, so between that merge
@@ -70,11 +67,11 @@ if (normalise(ts.metadata?.links?.repository) !== expected) {
 // ---------- every version-bearing file agrees ----------
 //
 // release-please keeps these in step only for the files listed in its
-// extra-files. A file dropped from that list goes stale silently, which is
-// exactly what happened to tree-sitter.json.
+// extra-files, so a file dropped from that list goes stale silently. Every
+// file below IS listed there; tree-sitter.json is deliberately not, and is
+// therefore deliberately absent from this list.
 const version = pkg.version;
 const versions = [
-  ["tree-sitter.json", ts.metadata?.version],
   ["Cargo.toml", read("Cargo.toml").match(/^version\s*=\s*"([^"]+)"/m)?.[1]],
   ["pyproject.toml", read("pyproject.toml").match(/^version\s*=\s*"([^"]+)"/m)?.[1]],
   ["CITATION.cff", read("CITATION.cff").match(/^version:\s*(\S+)/m)?.[1]],
@@ -84,6 +81,35 @@ const versions = [
 for (const [file, found] of versions) {
   if (!found) fail(file, "no version found — the pattern in this check may need updating");
   else if (found !== version) fail(file, `version is ${found}, package.json says ${version}`);
+}
+
+// ---------- tree-sitter.json must stay OUT of release-please's extra-files ----------
+//
+// This looks like an omission and is not. tree-sitter.json's metadata.version
+// is compiled into src/parser.c as the language's metadata struct, and
+// release-please cannot regenerate parser.c. Adding it to extra-files makes
+// every release PR bump the JSON, leave parser.c behind, and fail the
+// generate-diff check in tree-sitter/parser-test-action on all three runners —
+// which is unmergeable under branch protection.
+//
+// A stale metadata.version breaks nothing: no consumer reads it. The npm
+// repository.url above is the opposite case, and is asserted. Do not treat the
+// two as the same class.
+//
+// If the version genuinely needs to move, bump tree-sitter.json and commit a
+// regenerated parser.c together, by hand, outside a release PR.
+{
+  const rp = json(".release-please-config.json");
+  const extra = rp.packages?.["."]?.["extra-files"] ?? [];
+  const listed = extra.some((e) => (typeof e === "string" ? e : e.path) === "tree-sitter.json");
+  if (listed) {
+    fail(
+      ".release-please-config.json",
+      "tree-sitter.json is in extra-files. Its metadata.version is compiled into " +
+        "src/parser.c, which release-please cannot regenerate, so every release PR " +
+        "would fail the generate-diff check. Remove it; see the note in this script.",
+    );
+  }
 }
 
 // ---------- report ----------
