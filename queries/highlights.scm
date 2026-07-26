@@ -24,7 +24,12 @@
   "="
   ","
   ":"
+  ; datablock heredoc (`$data << EOD`) and the left-shift operator share one
+  ; token, so this capture covers both roles
+  "<<"
 ] @operator
+; open range end — `set xrange [*:*]`, `array A[*]`: a wildcard, not a product
+"*" @character.special
 (keyword_op) @keyword.operator
 (ternary_op) @keyword.conditional.ternary
 ; TODO: collapse
@@ -57,7 +62,6 @@
   "depthorder"
   "clip"
   "zclip"
-  "font"
   "filled"
   "nofilled"
   ; coordinate systems (first/second/graph/screen/character/polar) — alias "coord"
@@ -171,16 +175,11 @@
   ; fit modifiers
   "unitweights"
   "errors"
-  ; command-argument keywords (pause endconditions, exit forms)
+  ; command-argument keywords (exit forms, pause mouse)
+  ; the `pause` end conditions themselves are `mod` tier
   "message"
   "status"
   "mouse"
-  "keypress"
-  "button1"
-  "button2"
-  "button3"
-  "close"
-  "any"
   ; history command options
   "append"
   "quiet"
@@ -220,8 +219,6 @@
   ; key/label placement
   ; fill pattern
   "pattern"
-  ; 3d / surface
-  "s"
   ; data / fit extras
   "variables"
   "datablocks"
@@ -370,6 +367,10 @@
     ; using-specifier / plotting
     "column" "columnhead" "stringcolumn" "strcol" "exists" "valid" "value"
     "hsv2rgb" "palette" "rgbcolor" "voxel"))
+
+; bare `title columnheader` (the called form `columnheader(N)` is a (function)
+; and matches the builtin list above)
+(columnheader) @function.builtin
 
 ; -----------------------------------------------------------------------
 ; Built-in constants

@@ -1155,27 +1155,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "kw_cmd_optexpr"
-              },
-              "named": false,
-              "value": "cmd"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "STRING",
-                "value": "warn"
-              },
-              "named": false,
-              "value": "cmd"
-            }
-          ]
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "kw_cmd_optexpr"
+          },
+          "named": false,
+          "value": "cmd"
         },
         {
           "type": "CHOICE",
@@ -2019,28 +2005,58 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "STRING",
-          "value": "keypress"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "keypress"
+          },
+          "named": false,
+          "value": "mod"
         },
         {
-          "type": "STRING",
-          "value": "button1"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "button1"
+          },
+          "named": false,
+          "value": "mod"
         },
         {
-          "type": "STRING",
-          "value": "button2"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "button2"
+          },
+          "named": false,
+          "value": "mod"
         },
         {
-          "type": "STRING",
-          "value": "button3"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "button3"
+          },
+          "named": false,
+          "value": "mod"
         },
         {
-          "type": "STRING",
-          "value": "close"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "close"
+          },
+          "named": false,
+          "value": "mod"
         },
         {
-          "type": "STRING",
-          "value": "any"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "any"
+          },
+          "named": false,
+          "value": "mod"
         }
       ]
     },
@@ -3357,27 +3373,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "cmd_print_kw"
-              },
-              "named": false,
-              "value": "cmd"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "STRING",
-                "value": "printerr"
-              },
-              "named": false,
-              "value": "cmd"
-            }
-          ]
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "cmd_print_kw"
+          },
+          "named": false,
+          "value": "cmd"
         },
         {
           "type": "CHOICE",
@@ -3621,6 +3623,32 @@
         }
       ]
     },
+    "_gopt_body": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts"
+        }
+      ]
+    },
+    "_gopt_body_style": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_gval_sep"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_gopts_style"
+        }
+      ]
+    },
     "_argument_set_show": {
       "type": "PREC_RIGHT",
       "value": 0,
@@ -3730,8 +3758,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "encoding"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "encoding"
                     },
                     {
                       "type": "BLANK"
@@ -3760,8 +3793,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "errorbars"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body_style"
+                      },
+                      "named": true,
+                      "value": "errorbars"
                     },
                     {
                       "type": "BLANK"
@@ -3790,8 +3828,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "fit"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "fit"
                     },
                     {
                       "type": "BLANK"
@@ -3820,8 +3863,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "format"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body_style"
+                      },
+                      "named": true,
+                      "value": "format"
                     },
                     {
                       "type": "BLANK"
@@ -3854,8 +3902,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "hidden3d"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "hidden3d"
                     },
                     {
                       "type": "BLANK"
@@ -3884,8 +3937,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "history"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "history"
                     },
                     {
                       "type": "BLANK"
@@ -3914,8 +3972,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "isosamples"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "isosamples"
                     },
                     {
                       "type": "BLANK"
@@ -3944,8 +4007,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "isosurface"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "isosurface"
                     },
                     {
                       "type": "BLANK"
@@ -3983,8 +4051,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "jitter"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "jitter"
                     },
                     {
                       "type": "BLANK"
@@ -4059,8 +4132,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "locale"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "locale"
                     },
                     {
                       "type": "BLANK"
@@ -4144,8 +4222,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "mouse"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "mouse"
                     },
                     {
                       "type": "BLANK"
@@ -4186,8 +4269,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "offsets"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "offsets"
                     },
                     {
                       "type": "BLANK"
@@ -4216,8 +4304,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "origin"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "origin"
                     },
                     {
                       "type": "BLANK"
@@ -4246,8 +4339,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "output"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "output"
                     },
                     {
                       "type": "BLANK"
@@ -4369,8 +4467,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "print"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "print"
                     },
                     {
                       "type": "BLANK"
@@ -4399,8 +4502,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "psdir"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "psdir"
                     },
                     {
                       "type": "BLANK"
@@ -4438,8 +4546,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "rgbmax"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "rgbmax"
                     },
                     {
                       "type": "BLANK"
@@ -4468,8 +4581,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "samples"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "samples"
                     },
                     {
                       "type": "BLANK"
@@ -4498,8 +4616,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "size"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "size"
                     },
                     {
                       "type": "BLANK"
@@ -4541,8 +4664,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "surface"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "surface"
                     },
                     {
                       "type": "BLANK"
@@ -4579,8 +4707,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "termoption"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body_style"
+                      },
+                      "named": true,
+                      "value": "termoption"
                     },
                     {
                       "type": "BLANK"
@@ -4609,8 +4742,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "theta"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "theta"
                     },
                     {
                       "type": "BLANK"
@@ -4669,8 +4807,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "timestamp"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body_style"
+                      },
+                      "named": true,
+                      "value": "timestamp"
                     },
                     {
                       "type": "BLANK"
@@ -4699,8 +4842,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "timefmt"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "timefmt"
                     },
                     {
                       "type": "BLANK"
@@ -4793,8 +4941,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "walls"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body_style"
+                      },
+                      "named": true,
+                      "value": "walls"
                     },
                     {
                       "type": "BLANK"
@@ -4851,8 +5004,13 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "zero"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_gopt_body"
+                      },
+                      "named": true,
+                      "value": "zero"
                     },
                     {
                       "type": "BLANK"
@@ -5977,58 +6135,6 @@
         ]
       }
     },
-    "encoding": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "errorbars": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts_style"
-        }
-      ]
-    },
-    "fit": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "format": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts_style"
-        }
-      ]
-    },
     "grid": {
       "type": "PREC_RIGHT",
       "value": 0,
@@ -6067,71 +6173,6 @@
           }
         ]
       }
-    },
-    "hidden3d": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "history": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "isosamples": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "isosurface": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "jitter": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
     },
     "key": {
       "type": "PREC_RIGHT",
@@ -6351,19 +6392,6 @@
           }
         ]
       }
-    },
-    "locale": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
     },
     "logscale": {
       "type": "SEQ",
@@ -6708,19 +6736,6 @@
           }
         ]
       }
-    },
-    "mouse": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
     },
     "multiplot": {
       "type": "SEQ",
@@ -7230,45 +7245,6 @@
         ]
       }
     },
-    "offsets": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "origin": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "output": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
     "overflow": {
       "type": "CHOICE",
       "members": [
@@ -7703,27 +7679,14 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "REPEAT1",
+                  "type": "TOKEN",
                   "content": {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "b"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "s"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "t"
-                      }
-                    ]
+                    "type": "PATTERN",
+                    "value": "[bst]{1,6}"
                   }
                 },
                 "named": false,
-                "value": "position"
+                "value": "mod"
               }
             ]
           },
@@ -8291,71 +8254,6 @@
         ]
       }
     },
-    "print": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "psdir": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "rgbmax": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "samples": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
-    "size": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
     "style": {
       "type": "PREC_LEFT",
       "value": 1,
@@ -8917,19 +8815,6 @@
         ]
       }
     },
-    "surface": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
     "table": {
       "type": "PREC_RIGHT",
       "value": 0,
@@ -9346,8 +9231,17 @@
               "type": "FIELD",
               "name": "color",
               "content": {
-                "type": "SYMBOL",
-                "name": "_expression"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "colorspec"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_expression"
+                  }
+                ]
               }
             }
           ]
@@ -9372,32 +9266,6 @@
         }
       ]
     },
-    "termoption": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts_style"
-        }
-      ]
-    },
-    "theta": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
-    },
     "tics": {
       "type": "SEQ",
       "members": [
@@ -9408,32 +9276,6 @@
         {
           "type": "SYMBOL",
           "name": "tics_opts"
-        }
-      ]
-    },
-    "timestamp": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts_style"
-        }
-      ]
-    },
-    "timefmt": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
         }
       ]
     },
@@ -9580,19 +9422,6 @@
           }
         ]
       }
-    },
-    "walls": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts_style"
-        }
-      ]
     },
     "xdata": {
       "type": "SEQ",
@@ -9812,19 +9641,6 @@
           }
         ]
       }
-    },
-    "zero": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_gval_sep"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_gopts"
-        }
-      ]
     },
     "zeroaxis": {
       "type": "SEQ",
@@ -10115,40 +9931,6 @@
                 },
                 "named": false,
                 "value": "flag"
-              },
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "$vgridname"
-                  },
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SEQ",
-                        "members": [
-                          {
-                            "type": "STRING",
-                            "value": "name"
-                          },
-                          {
-                            "type": "FIELD",
-                            "name": "name",
-                            "content": {
-                              "type": "SYMBOL",
-                              "name": "_expression"
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  }
-                ]
               }
             ]
           }
@@ -12852,8 +12634,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "font"
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "font"
+          },
+          "named": false,
+          "value": "arg"
         },
         {
           "type": "FIELD",

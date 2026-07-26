@@ -297,6 +297,11 @@
 			"min": 5
 		},
 		{
+			"kw": "font",
+			"tier": "arg",
+			"min": 4
+		},
+		{
 			"kw": "fontscale",
 			"tier": "arg",
 			"min": 9
@@ -385,7 +390,7 @@
 		{
 			"kw": "horizontal",
 			"tier": "arg",
-			"min": 1,
+			"min": 3,
 			"parents": [
 				"colorbox",
 				"key"
@@ -908,7 +913,7 @@
 		{
 			"kw": "spacing",
 			"tier": "arg",
-			"min": 7
+			"min": 2
 		},
 		{
 			"kw": "spiderplot",
@@ -1029,7 +1034,7 @@
 		{
 			"kw": "width",
 			"tier": "arg",
-			"min": 5,
+			"min": 3,
 			"parents": [
 				"key",
 				"t_opts"
@@ -1285,7 +1290,7 @@
 			]
 		},
 		{
-			"kw": "printerr",
+			"kw": "printerror",
 			"tier": "cmd",
 			"min": 8
 		},
@@ -1840,7 +1845,7 @@
 		{
 			"kw": "mirror",
 			"tier": "flag",
-			"min": 6,
+			"min": 2,
 			"no": true,
 			"parents": [
 				"tics_opts"
@@ -2138,7 +2143,7 @@
 		{
 			"kw": "vertical",
 			"tier": "flag",
-			"min": 1,
+			"min": 3,
 			"no": true,
 			"parents": [
 				"colorbox",
@@ -2224,6 +2229,11 @@
 			"min": 7
 		},
 		{
+			"kw": "any",
+			"tier": "mod",
+			"min": 3
+		},
+		{
 			"kw": "avg",
 			"tier": "mod",
 			"min": 3
@@ -2304,6 +2314,21 @@
 			"kw": "butt",
 			"tier": "mod",
 			"min": 4
+		},
+		{
+			"kw": "button1",
+			"tier": "mod",
+			"min": 7
+		},
+		{
+			"kw": "button2",
+			"tier": "mod",
+			"min": 7
+		},
+		{
+			"kw": "button3",
+			"tier": "mod",
+			"min": 7
 		},
 		{
 			"kw": "candlesticks",
@@ -2401,6 +2426,46 @@
 			"kw": "counterclockwise",
 			"tier": "mod",
 			"min": 16
+		},
+		{
+			"kw": "cp1250",
+			"tier": "mod",
+			"min": 6
+		},
+		{
+			"kw": "cp1251",
+			"tier": "mod",
+			"min": 6
+		},
+		{
+			"kw": "cp1252",
+			"tier": "mod",
+			"min": 6
+		},
+		{
+			"kw": "cp1254",
+			"tier": "mod",
+			"min": 6
+		},
+		{
+			"kw": "cp437",
+			"tier": "mod",
+			"min": 3
+		},
+		{
+			"kw": "cp850",
+			"tier": "mod",
+			"min": 5
+		},
+		{
+			"kw": "cp852",
+			"tier": "mod",
+			"min": 5
+		},
+		{
+			"kw": "cp950",
+			"tier": "mod",
+			"min": 5
 		},
 		{
 			"kw": "csplines",
@@ -2635,6 +2700,26 @@
 			"min": 3
 		},
 		{
+			"kw": "iso_8859_1",
+			"tier": "mod",
+			"min": 3
+		},
+		{
+			"kw": "iso_8859_15",
+			"tier": "mod",
+			"min": 11
+		},
+		{
+			"kw": "iso_8859_2",
+			"tier": "mod",
+			"min": 10
+		},
+		{
+			"kw": "iso_8859_9",
+			"tier": "mod",
+			"min": 10
+		},
+		{
 			"kw": "kdensity",
 			"tier": "mod",
 			"min": 8
@@ -2643,6 +2728,21 @@
 			"kw": "keepfix",
 			"tier": "mod",
 			"min": 4
+		},
+		{
+			"kw": "keypress",
+			"tier": "mod",
+			"min": 8
+		},
+		{
+			"kw": "koi8r",
+			"tier": "mod",
+			"min": 4
+		},
+		{
+			"kw": "koi8u",
+			"tier": "mod",
+			"min": 5
 		},
 		{
 			"kw": "landscape",
@@ -2957,6 +3057,11 @@
 			]
 		},
 		{
+			"kw": "sjis",
+			"tier": "mod",
+			"min": 2
+		},
+		{
 			"kw": "small",
 			"tier": "mod",
 			"min": 5
@@ -3141,6 +3246,11 @@
 			"kw": "upwards",
 			"tier": "mod",
 			"min": 7
+		},
+		{
+			"kw": "utf8",
+			"tier": "mod",
+			"min": 3
 		},
 		{
 			"kw": "v4",

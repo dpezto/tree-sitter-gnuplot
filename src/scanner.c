@@ -229,9 +229,31 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"errorbars", 5, KW_G_ARG, 0},
     // watch/textbox labels boxed toggle
     {"boxed", 5, KW_G_FLAG, 1},
+    // `set encoding` values. Enumerated names, so KW_G_MOD. min_chars probed
+    // against gnuplot 6.0.4 by RESOLUTION, not acceptance: each prefix is fed
+    // to `set encoding <p>; show encoding` and kept only when gnuplot reports
+    // back this same keyword. gnuplot resolves an ambiguous prefix to the
+    // first entry of its own table, so `iso` is iso_8859_1 and `koi8` is
+    // koi8r; the losing members of each family need their full name.
+    {"iso_8859_1", 3, KW_G_MOD, 0},
+    {"iso_8859_15", 11, KW_G_MOD, 0},
+    {"iso_8859_2", 10, KW_G_MOD, 0},
+    {"iso_8859_9", 10, KW_G_MOD, 0},
+    {"koi8r", 4, KW_G_MOD, 0},
+    {"koi8u", 5, KW_G_MOD, 0},
+    {"cp437", 3, KW_G_MOD, 0},
+    {"cp850", 5, KW_G_MOD, 0},
+    {"cp852", 5, KW_G_MOD, 0},
+    {"cp950", 5, KW_G_MOD, 0},
+    {"cp1250", 6, KW_G_MOD, 0},
+    {"cp1251", 6, KW_G_MOD, 0},
+    {"cp1252", 6, KW_G_MOD, 0},
+    {"cp1254", 6, KW_G_MOD, 0},
+    {"sjis", 2, KW_G_MOD, 0},
+    {"utf8", 3, KW_G_MOD, 0},
     // colorbox
-    {"vertical", 1, KW_G_FLAG, 1},
-    {"horizontal", 1, KW_G_ARG, 0},
+    {"vertical", 3, KW_G_FLAG, 1},  // `ve` is not accepted by gnuplot; `ver` is
+    {"horizontal", 3, KW_G_ARG, 0},  // NOT 1: gnuplot resolves `h` to `height`
     {"invert", 3, KW_G_FLAG, 1},
     {"user", 1, KW_G_ARG, 0},
     {"default", 3, KW_G_ARG, 0},
@@ -349,7 +371,7 @@ static const GoptKwEntry GOPT_KWS[] = {
     // size
     {"ratio", 2, KW_G_ARG, 1},
     // pixmap
-    {"width", 5, KW_G_ARG, 0},
+    {"width", 3, KW_G_ARG, 0},  // gnuplot accepts `w`; kept at 3 so a bare `w` stays a variable
     {"height", 6, KW_G_ARG, 0},
     {"center", 6, KW_G_ARG, 0},
     {"behind", 6, KW_G_FLAG, 0},
@@ -440,7 +462,7 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"opaque", 6, KW_G_FLAG, 1},
     {"reverse", 3, KW_G_FLAG, 1},
     {"samplen", 7, KW_G_ARG, 0},
-    {"spacing", 7, KW_G_ARG, 0},
+    {"spacing", 2, KW_G_ARG, 0},  // `set key sp 2` resolves to spacing
     {"keywidth", 4, KW_G_ARG, 0},
     {"columns", 7, KW_G_ARG, 0},
     {"maxcols", 6, KW_G_ARG, 0},
@@ -573,7 +595,7 @@ static const GoptKwEntry GOPT_KWS[] = {
     // (for-loop keyword / common variable — degrade to identifier items),
     // "log" alone (log() is a builtin: logscale min 4, like the no-int rule)
     {"axis", 4, KW_G_MOD, 0},
-    {"mirror", 6, KW_G_FLAG, 1},
+    {"mirror", 2, KW_G_FLAG, 1},  // `set xtics nomi` is valid; `min` stays builtin
     {"add", 3, KW_G_ARG, 0},
     {"autofreq", 4, KW_G_ARG, 0},
     // effective from "autoj": shorter prefixes hit the autotitle row first
@@ -717,6 +739,8 @@ static const CmdKwEntry CMD_KWS[] = {
     {"splot", 2, CMD_SPLOT_KW},
     {"pause", 2, CMD_PAUSE_KW},
     {"print", 2, CMD_PRINT_KW},
+    // Longer than "print", so the row above can never shadow it.
+    {"printerror", 8, CMD_PRINT_KW},
     {"help", 2, CMD_HELP_KW},
     {"load", 1, CMD_LOAD_KW},
     // Argument-less commands collapsed into one token:
@@ -733,6 +757,7 @@ static const CmdKwEntry CMD_KWS[] = {
     {"lower", 3, KW_CMD_OPTEXPR},
     {"vclear", 6, KW_CMD_OPTEXPR},
     {"toggle", 6, KW_CMD_OPTEXPR},
+    {"warn", 4, KW_CMD_OPTEXPR},
     {"exit", 2, KW_CMD_EXIT},
     {"quit", 1, KW_CMD_EXIT},
     // Commands followed by one required expression:

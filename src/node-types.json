@@ -472,6 +472,10 @@
             "named": true
           },
           {
+            "type": "colorspec",
+            "named": true
+          },
+          {
             "type": "complex",
             "named": true
           },
@@ -3419,64 +3423,6 @@
       "filename": {
         "multiple": false,
         "required": true,
-        "types": [
-          {
-            "type": "array",
-            "named": true
-          },
-          {
-            "type": "binary_expression",
-            "named": true
-          },
-          {
-            "type": "complex",
-            "named": true
-          },
-          {
-            "type": "datablock",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "parenthesized_expression",
-            "named": true
-          },
-          {
-            "type": "string_literal",
-            "named": true
-          },
-          {
-            "type": "subscript",
-            "named": true
-          },
-          {
-            "type": "sum_block",
-            "named": true
-          },
-          {
-            "type": "ternary_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": true,
-        "required": false,
         "types": [
           {
             "type": "array",
@@ -12820,7 +12766,7 @@
     "fields": {
       "x": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "array",
@@ -16124,10 +16070,6 @@
     "named": false
   },
   {
-    "type": "$vgridname",
-    "named": false
-  },
-  {
     "type": "'",
     "named": false
   },
@@ -16200,10 +16142,6 @@
     "named": false
   },
   {
-    "type": "any",
-    "named": false
-  },
-  {
     "type": "append",
     "named": false
   },
@@ -16225,10 +16163,6 @@
   },
   {
     "type": "axis",
-    "named": false
-  },
-  {
-    "type": "b",
     "named": false
   },
   {
@@ -16276,18 +16210,6 @@
     "named": false
   },
   {
-    "type": "button1",
-    "named": false
-  },
-  {
-    "type": "button2",
-    "named": false
-  },
-  {
-    "type": "button3",
-    "named": false
-  },
-  {
     "type": "c2c",
     "named": false
   },
@@ -16313,10 +16235,6 @@
   },
   {
     "type": "clip4in",
-    "named": false
-  },
-  {
-    "type": "close",
     "named": false
   },
   {
@@ -16456,10 +16374,6 @@
     "named": false
   },
   {
-    "type": "font",
-    "named": false
-  },
-  {
     "type": "for",
     "named": false
   },
@@ -16521,10 +16435,6 @@
   },
   {
     "type": "keyentry",
-    "named": false
-  },
-  {
-    "type": "keypress",
     "named": false
   },
   {
@@ -16776,10 +16686,6 @@
     "named": false
   },
   {
-    "type": "s",
-    "named": false
-  },
-  {
     "type": "sa",
     "named": false
   },
@@ -16845,10 +16751,6 @@
   },
   {
     "type": "swap",
-    "named": false
-  },
-  {
-    "type": "t",
     "named": false
   },
   {
