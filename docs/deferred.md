@@ -35,9 +35,4 @@ expression lexing, so the expression can never swallow an attribute keyword,
 and the `function:` field can then take full `_expression` without conflict.
 Medium effort; touches the scanner enum, `externals`, and `plot_element`.
 
-## Closed
-
-- **B15** (`set term pict2e size a4`): fixed by the t_opts generic conversion —
-  paper names parse via the identifier fallback.
-- **B6** (scanner `ending_char` serialization): stale — the Scanner struct is
-  `{ char word[] }` only and serialize/deserialize round-trips it fully.
+Closed items are not listed here; git log records them.

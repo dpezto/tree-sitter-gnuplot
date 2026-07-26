@@ -1,9 +1,20 @@
 ; highlights.scm
 (comment) @comment @spell
 "variable" @variable.parameter
-; built-in named values (palette presets, special color names)
-; TODO: decide and collapse (bgnd & background same)
-; black/viridis constant?
+;
+; UNTIERED LITERALS — why the bracketed lists below exist
+;
+; Each bracketed list names grammar literals one by one because they carry no
+; tier alias. That is a grammar shortcoming, not a query one: the fix for any
+; entry is an alias in grammar.js — see `font` -> arg and the `pause` end
+; conditions -> mod — after which the literal disappears from node-types.json
+; and its line here is deleted. A bare literal also never reaches
+; keywords.json, so downstream tooling cannot see it at all. Prefer aliasing
+; over adding to these lists.
+;
+; built-in named values (palette presets, special colour names).
+; `bgnd` and `background` are gnuplot synonyms for the same colour; both are
+; separate literals in the grammar, so both need naming here.
 [
   "viridis"
   "black"
@@ -32,7 +43,6 @@
 "*" @character.special
 (keyword_op) @keyword.operator
 (ternary_op) @keyword.conditional.ternary
-; TODO: collapse
 [
   "for"
   "in"
@@ -42,20 +52,20 @@
 ; -----------------------------------------------------------------------
 ; Commands
 "cmd" @keyword
-; TODO: decide and collapse
+; pseudo plot-elements: they fill an element slot but name no data source
 [
   "newhistogram"
   "newspiderplot"
   "keyentry"
 ] @keyword
-; TODO: decide inverse, sample
+; connector words. `kw_fn` is the alias tier (at/via/from/to/by); `inverse`
+; (set link) and `sample` (plot sample) read the same way in their clause.
 [
   "inverse"
   "sample"
   "kw_fn"
 ] @keyword.function
 "kw_cond" @keyword.conditional
-; TODO: decide and collapse
 [
   "front"
   "back"
@@ -67,10 +77,9 @@
   ; coordinate systems (first/second/graph/screen/character/polar) — alias "coord"
   "coord"
 ] @keyword.directive
-; on/off toggle flags ({no}X) — alias "flag" (@keyword.modifier)
+; on/off toggle flags ({no}X) — alias "flag"
 "flag" @keyword.directive
-; enumerated VALUES / modes (alias "mod") — @constant
-; TODO: decide, constant?
+; enumerated VALUES / modes (alias "mod")
 "mod" @constant
 ; binary rotate= angle-unit suffixes (rotate=90deg / rotate=0.5 pi);
 ; the attached form 0.5pi folds into the number token instead
@@ -83,7 +92,6 @@
 ;  distinct from set-option names which are @variable.member)
 "attr" @property
 ; -----------------------------------------------------------------------
-; TODO: decide and collapse
 [
   ; Terminal output path
   "name"
@@ -107,7 +115,6 @@
 ] @variable.member
 ; -----------------------------------------------------------------------
 ; Option keywords
-; TODO: decide and collapse
 [
   ; coordinate systems / axes
   "axes_opts"
@@ -284,7 +291,6 @@
 ] @variable.member
 ; -----------------------------------------------------------------------
 ; Presentation / style attributes
-; TODO: decide and collapse
 [
   "size"
   "monochrome"
