@@ -225,8 +225,6 @@
   ; key/label placement
   ; fill pattern
   "pattern"
-  ; 3d / surface
-  "s"
   ; data / fit extras
   "variables"
   "datablocks"

@@ -7677,27 +7677,14 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "REPEAT1",
+                  "type": "TOKEN",
                   "content": {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "b"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "s"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "t"
-                      }
-                    ]
+                    "type": "PATTERN",
+                    "value": "[bst]{1,6}"
                   }
                 },
                 "named": false,
-                "value": "position"
+                "value": "mod"
               }
             ]
           },

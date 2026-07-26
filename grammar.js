@@ -1408,7 +1408,10 @@ module.exports = grammar({
 			// recycle code for pm3d plot_style
 			repeat1(
 				choice(
-					seq(alias("at", "kw_fn"), alias(repeat1(choice("b", "s", "t")), "position")),
+					// `at bst` — the layer letters are CONCATENATED into one word
+					// (bottom/surface/top, up to 6). gnuplot rejects the
+					// space-separated `at b t`, so this must not be a repeat.
+					seq(alias("at", "kw_fn"), alias(token(/[bst]{1,6}/), "mod")),
 					seq(
 						key("interpolate", 6),
 						field("steps", $._expression),
