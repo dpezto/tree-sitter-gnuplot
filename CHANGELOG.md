@@ -4,6 +4,26 @@ All notable changes are documented here. This file is maintained automatically b
 [release-please](https://github.com/googleapis/release-please) from Conventional-Commit
 history; do not edit it by hand.
 
+## [4.0.0](https://github.com/dpezto/tree-sitter-gnuplot/compare/v3.0.0...v4.0.0) (2026-07-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* eleven anonymous node types were removed and one tree shape changed, across two commits that were each described as non-breaking.
+
+### Bug Fixes
+
+* **citation:** let release-please maintain CITATION.cff ([#45](https://github.com/dpezto/tree-sitter-gnuplot/issues/45)) ([d9e43ea](https://github.com/dpezto/tree-sitter-gnuplot/commit/d9e43ea43b1e245c59588b53441506a28ec218bd))
+* **grammar:** bind the stats name/prefix value to the name field ([#44](https://github.com/dpezto/tree-sitter-gnuplot/issues/44)) ([acaeeed](https://github.com/dpezto/tree-sitter-gnuplot/commit/acaeeeddc8329b04b2fd1c240f0a7f5b025894f5))
+* **grammar:** correct four abbreviation minima, retire two declared conflicts ([#47](https://github.com/dpezto/tree-sitter-gnuplot/issues/47)) ([42db88d](https://github.com/dpezto/tree-sitter-gnuplot/commit/42db88d1533e07c6e4d1d310e966c5993de6dfc7))
+* **keywords:** fail loudly when a scanner tier is unregistered or contradicts grammar.js ([#38](https://github.com/dpezto/tree-sitter-gnuplot/issues/38)) ([37de22d](https://github.com/dpezto/tree-sitter-gnuplot/commit/37de22d314ddca38c56535ea6df5cdfb9c472dc3))
+* parse and highlight corrections from the 2026-07-25 audit ([#42](https://github.com/dpezto/tree-sitter-gnuplot/issues/42)) ([65ee6f8](https://github.com/dpezto/tree-sitter-gnuplot/commit/65ee6f8e8b3a0ae7e31ed8fdec6d90df59105013))
+
+
+### Miscellaneous Chores
+
+* record the breaking changes accumulated since 3.0.0 ([#48](https://github.com/dpezto/tree-sitter-gnuplot/issues/48)) ([ba563e5](https://github.com/dpezto/tree-sitter-gnuplot/commit/ba563e589459145b757c85f4918cd57367f593e7))
+
 ## [3.0.0](https://github.com/dpezto/tree-sitter-gnuplot/compare/v2.0.4...v3.0.0) (2026-07-25)
 
 
