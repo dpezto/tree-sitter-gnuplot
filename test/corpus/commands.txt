@@ -774,6 +774,31 @@ set pixmap 1 "bg.png" at screen 0,0 width 1.0 front
       (number))))
 
 ===========================================================================
+  keyword abbreviations - shortest forms gnuplot resolves
+===========================================================================
+set xtics nomir
+set key wid 3
+set key sp 2
+set key hor
+set key ver
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (xtics
+      (tics_opts)))
+  (cmd_set
+    (key
+      (number)))
+  (cmd_set
+    (key
+      (number)))
+  (cmd_set
+    (key))
+  (cmd_set
+    (key)))
+
+===========================================================================
   set encoding - enumerated encoding names
 ===========================================================================
 set encoding utf8

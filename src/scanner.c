@@ -252,8 +252,8 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"sjis", 2, KW_G_MOD, 0},
     {"utf8", 3, KW_G_MOD, 0},
     // colorbox
-    {"vertical", 1, KW_G_FLAG, 1},
-    {"horizontal", 1, KW_G_ARG, 0},
+    {"vertical", 3, KW_G_FLAG, 1},  // `ve` is not accepted by gnuplot; `ver` is
+    {"horizontal", 3, KW_G_ARG, 0},  // NOT 1: gnuplot resolves `h` to `height`
     {"invert", 3, KW_G_FLAG, 1},
     {"user", 1, KW_G_ARG, 0},
     {"default", 3, KW_G_ARG, 0},
@@ -371,7 +371,7 @@ static const GoptKwEntry GOPT_KWS[] = {
     // size
     {"ratio", 2, KW_G_ARG, 1},
     // pixmap
-    {"width", 5, KW_G_ARG, 0},
+    {"width", 3, KW_G_ARG, 0},  // gnuplot accepts `w`; kept at 3 so a bare `w` stays a variable
     {"height", 6, KW_G_ARG, 0},
     {"center", 6, KW_G_ARG, 0},
     {"behind", 6, KW_G_FLAG, 0},
@@ -462,7 +462,7 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"opaque", 6, KW_G_FLAG, 1},
     {"reverse", 3, KW_G_FLAG, 1},
     {"samplen", 7, KW_G_ARG, 0},
-    {"spacing", 7, KW_G_ARG, 0},
+    {"spacing", 2, KW_G_ARG, 0},  // `set key sp 2` resolves to spacing
     {"keywidth", 4, KW_G_ARG, 0},
     {"columns", 7, KW_G_ARG, 0},
     {"maxcols", 6, KW_G_ARG, 0},
@@ -595,7 +595,7 @@ static const GoptKwEntry GOPT_KWS[] = {
     // (for-loop keyword / common variable — degrade to identifier items),
     // "log" alone (log() is a builtin: logscale min 4, like the no-int rule)
     {"axis", 4, KW_G_MOD, 0},
-    {"mirror", 6, KW_G_FLAG, 1},
+    {"mirror", 2, KW_G_FLAG, 1},  // `set xtics nomi` is valid; `min` stays builtin
     {"add", 3, KW_G_ARG, 0},
     {"autofreq", 4, KW_G_ARG, 0},
     // effective from "autoj": shorter prefixes hit the autotitle row first
