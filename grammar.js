@@ -1728,7 +1728,13 @@ module.exports = grammar({
 				optional($.datafile_modifiers),
 				repeat(
 					choice(
-						seq(choice("name", "prefix"), $._expression),
+						// `name` and `prefix` are synonyms in gnuplot 6.0, valid on both
+						// stats forms. The field was previously declared only on a
+						// `"$vgridname"` branch — a doc placeholder no real input can
+						// reach, since a voxel grid name lexes as `datablock` — so
+						// node-types.json advertised a cmd_stats.name that no parse
+						// ever produced. Declaring it here matches the reachable shape.
+						seq(choice("name", "prefix"), field("name", $._expression)),
 						key("output", 3, "flag", 1),
 					),
 				),

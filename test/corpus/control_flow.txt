@@ -256,7 +256,36 @@ stats "data.dat" using 1:2 name "S"
       (using
         using: (number)
         using: (number)))
-    (string_literal)))
+    name: (string_literal)))
+
+===========================================================================
+  stats - name and prefix are synonyms, both bind the name field
+===========================================================================
+stats 'f.dat' name 'A'
+stats 'f.dat' prefix 'A'
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_stats
+    filename: (string_literal)
+    name: (string_literal))
+  (cmd_stats
+    filename: (string_literal)
+    name: (string_literal)))
+
+===========================================================================
+  stats - datablock form takes name, and stands alone
+===========================================================================
+stats $mydatablock name 'A'
+stats $mydatablock
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_stats
+    filename: (datablock)
+    name: (string_literal))
+  (cmd_stats
+    filename: (datablock)))
 
 ===========================================================================
   stats 2 - range and nooutput
