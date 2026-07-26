@@ -45,6 +45,9 @@ jobs:
           // upstream points at Neovim's parser directory, we build into the
           // repo root. Comparing it would report a permanent false difference,
           // and a check that is always red gets ignored and then switched off.
+          // The override is not strictly required — ts_query_ls resolves the
+          // parser without it — but it states the real location rather than
+          // depending on a fallback.
           const OVERRIDDEN = ["parser_install_directories"];
           const strip = (o) => {
             const c = { ...o };

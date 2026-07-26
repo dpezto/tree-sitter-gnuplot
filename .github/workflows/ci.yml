@@ -138,8 +138,9 @@ jobs:
       - name: Install tree-sitter-cli
         run: npm install -g tree-sitter-cli@0.26.11
       - name: Build parser
-        # .tsqueryrc.json sets parser_install_directories to ".", so the
-        # library has to land in the repo root for ts_query_ls to find it.
+        # .tsqueryrc.json sets parser_install_directories to ".", matching where
+        # this lands. ts_query_ls also resolves the parser without that override
+        # (verified), but stating the real location beats relying on a fallback.
         run: tree-sitter build --output gnuplot.so .
       - name: Set up ts_query_ls
         run: |
