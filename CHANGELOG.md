@@ -11,6 +11,36 @@ history; do not edit it by hand.
 
 * eleven anonymous node types were removed and one tree shape changed, across two commits that were each described as non-breaking.
 
+Two failure modes, with opposite symptoms.
+
+**Removed anonymous node types.** A query naming one of these **fails to
+compile** — `Invalid node type "close"` — and in Neovim a single invalid node
+type takes down the whole query file, so the symptom is total loss of
+highlighting rather than one capture quietly not matching. Ten of the eleven
+match real gnuplot input and were retired into tier aliases; the eleventh never
+could:
+
+| node type | reachable | example |
+|---|---|---|
+| `keypress` | yes | `pause mouse keypress` |
+| `button1`, `button2`, `button3` | yes | `pause mouse button1` |
+| `close` | yes | `pause mouse close` |
+| `any` | yes | `pause mouse any` |
+| `font` | yes | `set label 1 "x" font "Arial,10"` |
+| `b`, `s`, `t` | yes | `set pm3d at b` |
+| `$vgridname` | no | documentation placeholder; a real voxel grid name lexes as `datablock` |
+
+Every named tree is byte-identical, so nothing stops parsing.
+
+**Changed tree shape.** `set palette file "c.pal" using 1:2 "%lf"` now binds the
+trailing scanf string inside `using` as `format:`, where it was previously a
+palette body item. gnuplot treats it as the using format, so the new tree is
+correct — but a palette query keyed on the old shape still **compiles and
+silently stops matching**.
+
+Full per-literal detail and the reasoning are in ba563e5.
+
+
 ### Bug Fixes
 
 * **citation:** let release-please maintain CITATION.cff ([#45](https://github.com/dpezto/tree-sitter-gnuplot/issues/45)) ([d9e43ea](https://github.com/dpezto/tree-sitter-gnuplot/commit/d9e43ea43b1e245c59588b53441506a28ec218bd))
