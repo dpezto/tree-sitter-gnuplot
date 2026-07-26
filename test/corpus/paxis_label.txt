@@ -1,0 +1,210 @@
+================================================================================
+set paxis - label
+================================================================================
+set paxis 1 label "foo"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (label_opts
+        label: (string_literal)))))
+
+================================================================================
+set paxis - label then offset
+================================================================================
+set paxis 1 label "foo" offset 1,1
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (label_opts
+        label: (string_literal))
+      (position
+        x: (number)
+        y: (number)))))
+
+================================================================================
+set paxis - label with font
+================================================================================
+set paxis 1 label "foo" font "Arial,12"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (label_opts
+        label: (string_literal)
+        (fontspec
+          font: (string_literal))))))
+
+================================================================================
+set paxis - label with textcolor
+================================================================================
+set paxis 1 label "foo" tc rgb "blue"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (label_opts
+        label: (string_literal)
+        tc: (colorspec
+          (string_literal))))))
+
+================================================================================
+set paxis - label with rotate by
+================================================================================
+set paxis 1 label "foo" rotate by 90
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (label_opts
+        label: (string_literal)
+        angle: (number)))))
+
+================================================================================
+set paxis - bare label keyword
+================================================================================
+set paxis 1 label
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number))))
+
+================================================================================
+set paxis - range then label
+================================================================================
+set paxis 2 range [0:1] label "y"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (range_block
+        (number)
+        (number))
+      (label_opts
+        label: (string_literal)))))
+
+================================================================================
+set paxis - tics then label
+================================================================================
+set paxis 1 tics label "x"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (tics_opts
+        (string_literal)))))
+
+================================================================================
+set paxis - label with font then offset
+================================================================================
+set paxis 1 label "foo" font "Arial,12" offset 1,1
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (label_opts
+        label: (string_literal)
+        (fontspec
+          font: (string_literal)))
+      (position
+        x: (number)
+        y: (number)))))
+
+================================================================================
+set paxis - offset without label
+================================================================================
+set paxis 1 offset 1,1
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (position
+        x: (number)
+        y: (number)))))
+
+================================================================================
+set paxis - range, reverse, tics, label, rotate, offset
+================================================================================
+set paxis 3 range [0:10] reverse tics label "z" rotate by 45 offset 0,1
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (range_block
+        (number)
+        (number))
+      (tics_opts
+        (string_literal)
+        (number)
+        (number)
+        (number)))))
+
+================================================================================
+set paxis - bare label with offset
+================================================================================
+set paxis 1 label offset 1,1
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (label_opts
+        offset: (position
+          x: (number)
+          y: (number))))))
+
+================================================================================
+set paxis - label with left justification then offset
+================================================================================
+set paxis 1 label "a" left offset 2,2
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (label_opts
+        label: (string_literal))
+      (position
+        x: (number)
+        y: (number)))))
+
+================================================================================
+set paxis - label boxed then offset
+================================================================================
+set paxis 1 label "a" boxed offset 1,1
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (paxis
+      axisno: (number)
+      (label_opts
+        label: (string_literal))
+      (position
+        x: (number)
+        y: (number)))))

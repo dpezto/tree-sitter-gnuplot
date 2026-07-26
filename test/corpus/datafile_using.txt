@@ -1,0 +1,288 @@
+================================================================================
+set palette file - using with trailing scanf format
+================================================================================
+set palette file "c.pal" using 1:2 "%lf"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (palette
+      filename: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      (string_literal
+        (format_specifier)))))
+
+================================================================================
+set palette file - using without format
+================================================================================
+set palette file "c.pal" using 1:2
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (palette
+      filename: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number))))))
+
+================================================================================
+set palette file - using with three columns
+================================================================================
+set palette file "c.pal" using 1:2:3
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (palette
+      filename: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (number))))))
+
+================================================================================
+plot using - two columns
+================================================================================
+plot 'd.dat' using 1:2
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number))))))
+
+================================================================================
+plot using - two columns with scanf format
+================================================================================
+plot 'd.dat' using 1:2 "%lf %lf"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          format: (string_literal
+            (format_specifier)
+            (format_specifier)))))))
+
+================================================================================
+plot using - parenthesized expression column with scanf format
+================================================================================
+plot 'd.dat' using 1:($2+$3) '%lf,%lf,%lf'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (parenthesized_expression
+            (binary_expression
+              (unary_expression
+                (operator)
+                (number))
+              (operator)
+              (unary_expression
+                (operator)
+                (number))))
+          format: (string_literal
+            (format_specifier)
+            (format_specifier)
+            (format_specifier)))))))
+
+================================================================================
+plot using - all parenthesized expression columns
+================================================================================
+plot 'd.dat' using ($1):($2)
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (parenthesized_expression
+            (unary_expression
+              (operator)
+              (number)))
+          using: (parenthesized_expression
+            (unary_expression
+              (operator)
+              (number))))))))
+
+================================================================================
+plot using - format string as sole entry
+================================================================================
+plot 'd.dat' using "%lf"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (string_literal
+            (format_specifier)))))))
+
+================================================================================
+plot using - two columns followed by with clause
+================================================================================
+plot 'd.dat' using 1:2 with lines
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      with: (plot_style))))
+
+================================================================================
+plot using - assignment inside parenthesized column, with format
+================================================================================
+plot 'd.dat' using (a=$1,a*2):2 "%lf"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (assignment
+            (def_var
+              (identifier)
+              (unary_expression
+                (operator)
+                (number))))
+          using: (binary_expression
+            (identifier)
+            (operator)
+            (number))
+          using: (number)
+          format: (string_literal
+            (format_specifier)))))))
+
+================================================================================
+set palette file - using with format followed by another palette option
+================================================================================
+set palette file "c.pal" using 1:2 "%lf" gamma 2
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (palette
+      filename: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      (string_literal
+        (format_specifier))
+      (number))))
+
+================================================================================
+plot using - abbreviated, followed by title
+================================================================================
+plot 'd.dat' u 1:2 t "x"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      title: (string_literal))))
+
+================================================================================
+splot using - three columns with format and with clause
+================================================================================
+splot 'd.dat' using 1:2:3 '%lf %lf %lf' with pm3d
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_splot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (number)
+          format: (string_literal
+            (format_specifier)
+            (format_specifier)
+            (format_specifier))))
+      with: (plot_style))))
+
+================================================================================
+plot using - format followed by every
+================================================================================
+plot 'd.dat' using 1:2 '%lf' every 2
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          format: (string_literal
+            (format_specifier)))
+        (every
+          point_incr: (number))))))
+
+================================================================================
+set palette file - using single column with format
+================================================================================
+set palette file "c.pal" using 1 "%lf"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (palette
+      filename: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)))
+      (string_literal
+        (format_specifier)))))
+
+================================================================================
+set palette file - format string with no using
+================================================================================
+set palette file "c.pal" "%lf"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (palette
+      filename: (string_literal)
+      (string_literal
+        (format_specifier)))))
