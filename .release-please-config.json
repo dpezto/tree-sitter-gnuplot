@@ -9,7 +9,8 @@
         { "type": "generic", "path": "Cargo.toml" },
         { "type": "generic", "path": "pyproject.toml" },
         { "type": "generic", "path": "Makefile" },
-        { "type": "generic", "path": "CMakeLists.txt" }
+        { "type": "generic", "path": "CMakeLists.txt" },
+        { "type": "generic", "path": "CITATION.cff" }
       ]
     }
   }

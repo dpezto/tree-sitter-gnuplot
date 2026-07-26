@@ -1,13 +1,24 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: tree-sitter-gnuplot
-abstract: A tree-sitter grammar for gnuplot.
+abstract: >-
+  A tree-sitter grammar for gnuplot 6, covering the command set, the shared
+  set/show option bodies and gnuplot's keyword abbreviation rules through an
+  external scanner. Ships highlight, fold and injection queries, and a keyword
+  dictionary consumed by downstream tooling.
 type: software
 authors:
   - given-names: Dai
     family-names: López Jacinto
+    alias: dpezto
 repository-code: "https://github.com/dpezto/tree-sitter-gnuplot"
-url: "https://github.com/dpezto/tree-sitter-gnuplot"
+repository-artifact: "https://www.npmjs.com/package/tree-sitter-gnuplot"
 license: MIT
-version: 2.0.4
-date-released: "2026-07-23"
+keywords:
+  - gnuplot
+  - tree-sitter
+  - parser
+  - grammar
+  - syntax-highlighting
+version: 3.0.0 # x-release-please-version
+date-released: "2026-07-25" # x-release-please-date
