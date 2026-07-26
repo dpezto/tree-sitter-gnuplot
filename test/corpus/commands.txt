@@ -774,6 +774,45 @@ set pixmap 1 "bg.png" at screen 0,0 width 1.0 front
       (number))))
 
 ===========================================================================
+  set encoding - enumerated encoding names
+===========================================================================
+set encoding utf8
+set encoding iso_8859_1
+set encoding sjis
+set encoding cp1252
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    arg_opts: (encoding))
+  (cmd_set
+    arg_opts: (encoding))
+  (cmd_set
+    arg_opts: (encoding))
+  (cmd_set
+    arg_opts: (encoding)))
+
+===========================================================================
+  set terminal background - colorspec and bare color string
+===========================================================================
+set term wxt background rgb "gray75"
+set term pngcairo background "#ffffff"
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (terminal
+      (t_opts
+        (background
+          color: (colorspec
+            (string_literal))))))
+  (cmd_set
+    (terminal
+      (t_opts
+        (background
+          color: (string_literal))))))
+
+===========================================================================
   warn and printerror - scanner-matched command keywords
 ===========================================================================
 warn "boom"

@@ -2428,6 +2428,46 @@
 			"min": 16
 		},
 		{
+			"kw": "cp1250",
+			"tier": "mod",
+			"min": 6
+		},
+		{
+			"kw": "cp1251",
+			"tier": "mod",
+			"min": 6
+		},
+		{
+			"kw": "cp1252",
+			"tier": "mod",
+			"min": 6
+		},
+		{
+			"kw": "cp1254",
+			"tier": "mod",
+			"min": 6
+		},
+		{
+			"kw": "cp437",
+			"tier": "mod",
+			"min": 3
+		},
+		{
+			"kw": "cp850",
+			"tier": "mod",
+			"min": 5
+		},
+		{
+			"kw": "cp852",
+			"tier": "mod",
+			"min": 5
+		},
+		{
+			"kw": "cp950",
+			"tier": "mod",
+			"min": 5
+		},
+		{
 			"kw": "csplines",
 			"tier": "mod",
 			"min": -1,
@@ -2660,6 +2700,26 @@
 			"min": 3
 		},
 		{
+			"kw": "iso_8859_1",
+			"tier": "mod",
+			"min": 3
+		},
+		{
+			"kw": "iso_8859_15",
+			"tier": "mod",
+			"min": 3
+		},
+		{
+			"kw": "iso_8859_2",
+			"tier": "mod",
+			"min": 3
+		},
+		{
+			"kw": "iso_8859_9",
+			"tier": "mod",
+			"min": 3
+		},
+		{
 			"kw": "kdensity",
 			"tier": "mod",
 			"min": 8
@@ -2673,6 +2733,16 @@
 			"kw": "keypress",
 			"tier": "mod",
 			"min": 8
+		},
+		{
+			"kw": "koi8r",
+			"tier": "mod",
+			"min": 4
+		},
+		{
+			"kw": "koi8u",
+			"tier": "mod",
+			"min": 4
 		},
 		{
 			"kw": "landscape",
@@ -2987,6 +3057,11 @@
 			]
 		},
 		{
+			"kw": "sjis",
+			"tier": "mod",
+			"min": 2
+		},
+		{
 			"kw": "small",
 			"tier": "mod",
 			"min": 5
@@ -3171,6 +3246,11 @@
 			"kw": "upwards",
 			"tier": "mod",
 			"min": 7
+		},
+		{
+			"kw": "utf8",
+			"tier": "mod",
+			"min": 3
 		},
 		{
 			"kw": "v4",

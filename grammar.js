@@ -1610,7 +1610,10 @@ module.exports = grammar({
 		line_drawing_method: ($) => choice(key("rounded", -2, "mod"), alias("butt", "mod"), alias("square", "mod")),
 		background: ($) =>
 			choice(
-				seq(key("background", 5), field("color", $._expression)),
+				// Both `background rgb "gray75"` and the bare `background
+				// "#ffffff"` are accepted, so the value is a colorspec OR a
+				// plain expression.
+				seq(key("background", 5), field("color", choice($.colorspec, $._expression))),
 				key("nobackground", 7),
 				key("transparent", 5, "flag", 1), // NOTE: some need 6 instead of 5
 			),

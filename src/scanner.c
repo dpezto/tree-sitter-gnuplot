@@ -229,6 +229,26 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"errorbars", 5, KW_G_ARG, 0},
     // watch/textbox labels boxed toggle
     {"boxed", 5, KW_G_FLAG, 1},
+    // `set encoding` values. Enumerated names, so KW_G_MOD. min_chars probed
+    // against gnuplot 6.0.4 one prefix at a time; the cp* families need more
+    // characters because they only diverge late (cp850/cp852 at 5,
+    // cp1250..cp1254 at 6). `default` is covered by the shared row below.
+    {"iso_8859_1", 3, KW_G_MOD, 0},
+    {"iso_8859_15", 3, KW_G_MOD, 0},
+    {"iso_8859_2", 3, KW_G_MOD, 0},
+    {"iso_8859_9", 3, KW_G_MOD, 0},
+    {"koi8r", 4, KW_G_MOD, 0},
+    {"koi8u", 4, KW_G_MOD, 0},
+    {"cp437", 3, KW_G_MOD, 0},
+    {"cp850", 5, KW_G_MOD, 0},
+    {"cp852", 5, KW_G_MOD, 0},
+    {"cp950", 5, KW_G_MOD, 0},
+    {"cp1250", 6, KW_G_MOD, 0},
+    {"cp1251", 6, KW_G_MOD, 0},
+    {"cp1252", 6, KW_G_MOD, 0},
+    {"cp1254", 6, KW_G_MOD, 0},
+    {"sjis", 2, KW_G_MOD, 0},
+    {"utf8", 3, KW_G_MOD, 0},
     // colorbox
     {"vertical", 1, KW_G_FLAG, 1},
     {"horizontal", 1, KW_G_ARG, 0},
