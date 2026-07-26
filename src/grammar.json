@@ -1155,27 +1155,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "kw_cmd_optexpr"
-              },
-              "named": false,
-              "value": "cmd"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "STRING",
-                "value": "warn"
-              },
-              "named": false,
-              "value": "cmd"
-            }
-          ]
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "kw_cmd_optexpr"
+          },
+          "named": false,
+          "value": "cmd"
         },
         {
           "type": "CHOICE",
@@ -3387,27 +3373,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "cmd_print_kw"
-              },
-              "named": false,
-              "value": "cmd"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "STRING",
-                "value": "printerr"
-              },
-              "named": false,
-              "value": "cmd"
-            }
-          ]
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "cmd_print_kw"
+          },
+          "named": false,
+          "value": "cmd"
         },
         {
           "type": "CHOICE",

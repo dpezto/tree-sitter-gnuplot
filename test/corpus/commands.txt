@@ -774,6 +774,24 @@ set pixmap 1 "bg.png" at screen 0,0 width 1.0 front
       (number))))
 
 ===========================================================================
+  warn and printerror - scanner-matched command keywords
+===========================================================================
+warn "boom"
+warn
+printerr "e"
+printerror "e"
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_opt_expr
+    (string_literal))
+  (cmd_opt_expr)
+  (cmd_print
+    (string_literal))
+  (cmd_print
+    (string_literal)))
+
+===========================================================================
   pause mouse - end conditions
 ===========================================================================
 pause mouse keypress, close "click"

@@ -717,6 +717,8 @@ static const CmdKwEntry CMD_KWS[] = {
     {"splot", 2, CMD_SPLOT_KW},
     {"pause", 2, CMD_PAUSE_KW},
     {"print", 2, CMD_PRINT_KW},
+    // Longer than "print", so the row above can never shadow it.
+    {"printerror", 8, CMD_PRINT_KW},
     {"help", 2, CMD_HELP_KW},
     {"load", 1, CMD_LOAD_KW},
     // Argument-less commands collapsed into one token:
@@ -733,6 +735,7 @@ static const CmdKwEntry CMD_KWS[] = {
     {"lower", 3, KW_CMD_OPTEXPR},
     {"vclear", 6, KW_CMD_OPTEXPR},
     {"toggle", 6, KW_CMD_OPTEXPR},
+    {"warn", 4, KW_CMD_OPTEXPR},
     {"exit", 2, KW_CMD_EXIT},
     {"quit", 1, KW_CMD_EXIT},
     // Commands followed by one required expression:

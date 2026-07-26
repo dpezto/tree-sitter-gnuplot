@@ -411,7 +411,7 @@ module.exports = grammar({
 		// definition or assignment on the next line starts a fresh statement.
 		cmd_opt_expr: ($) =>
 			seq(
-				choice(alias($.kw_cmd_optexpr, "cmd"), alias("warn", "cmd")),
+				alias($.kw_cmd_optexpr, "cmd"),
 				optional(seq($._gval_sep, choice($._expression, alias("all", "mod")))),
 			),
 
@@ -828,7 +828,7 @@ module.exports = grammar({
 		// the scanner's pr/pri/prin/print token.
 		cmd_print: ($) =>
 			seq(
-				choice(alias($.cmd_print_kw, "cmd"), alias("printerr", "cmd")),
+				alias($.cmd_print_kw, "cmd"),
 				// `print for [i=1:|A|] A[i]`. The runtime iterates the FIRST item
 				// only; any further comma-separated items are evaluated once after
 				// the loop ends (so `print for [i=1:2] i, "-"` prints `1 2 -`).
