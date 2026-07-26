@@ -1,0 +1,482 @@
+================================================================================
+newhistogram - title only
+================================================================================
+plot newhistogram "A"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal))))
+
+================================================================================
+newhistogram - title, trailing comma to next element
+================================================================================
+plot newhistogram "A", 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - font
+================================================================================
+plot newhistogram "A" font "Arial,12"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fontspec
+        font: (string_literal)))))
+
+================================================================================
+newhistogram - font, trailing comma to next element
+================================================================================
+plot newhistogram "A" font "Arial,12", 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fontspec
+        font: (string_literal)))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - textcolor
+================================================================================
+plot newhistogram "A" tc rgb "red"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      tc: (colorspec
+        (string_literal)))))
+
+================================================================================
+newhistogram - textcolor, trailing comma to next element
+================================================================================
+plot newhistogram "A" tc rgb "red", 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      tc: (colorspec
+        (string_literal)))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - linetype
+================================================================================
+plot newhistogram "A" lt 3
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      lt: (number))))
+
+================================================================================
+newhistogram - linetype, trailing comma to next element
+================================================================================
+plot newhistogram "A" lt 3, 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      lt: (number))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - fillstyle
+================================================================================
+plot newhistogram "A" fs solid
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fill_style))))
+
+================================================================================
+newhistogram - fillstyle, trailing comma to next element
+================================================================================
+plot newhistogram "A" fs solid, 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fill_style))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - font and textcolor
+================================================================================
+plot newhistogram "A" font "Arial,12" tc rgb "red"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fontspec
+        font: (string_literal))
+      tc: (colorspec
+        (string_literal)))))
+
+================================================================================
+newhistogram - font and textcolor, trailing comma
+================================================================================
+plot newhistogram "A" font "Arial,12" tc rgb "red", 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fontspec
+        font: (string_literal))
+      tc: (colorspec
+        (string_literal)))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - font and linetype
+================================================================================
+plot newhistogram "A" font "Arial,12" lt 3
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fontspec
+        font: (string_literal))
+      lt: (number))))
+
+================================================================================
+newhistogram - font and linetype, trailing comma
+================================================================================
+plot newhistogram "A" font "Arial,12" lt 3, 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fontspec
+        font: (string_literal))
+      lt: (number))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - textcolor, linetype, fillstyle
+================================================================================
+plot newhistogram "A" tc rgb "red" lt 3 fs solid
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      tc: (colorspec
+        (string_literal))
+      lt: (number)
+      (fill_style))))
+
+================================================================================
+newhistogram - textcolor, linetype, fillstyle, trailing comma
+================================================================================
+plot newhistogram "A" tc rgb "red" lt 3 fs solid, 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      tc: (colorspec
+        (string_literal))
+      lt: (number)
+      (fill_style))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - font, textcolor, linetype, fillstyle
+================================================================================
+plot newhistogram "A" font "Arial,12" tc rgb "red" lt 3 fs solid
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fontspec
+        font: (string_literal))
+      tc: (colorspec
+        (string_literal))
+      lt: (number)
+      (fill_style))))
+
+================================================================================
+newhistogram - font, textcolor, linetype, fillstyle, trailing comma
+================================================================================
+plot newhistogram "A" font "Arial,12" tc rgb "red" lt 3 fs solid, 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fontspec
+        font: (string_literal))
+      tc: (colorspec
+        (string_literal))
+      lt: (number)
+      (fill_style))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - at coordinate
+================================================================================
+plot newhistogram "A" at 5
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      at: (number))))
+
+================================================================================
+newhistogram - at coordinate, trailing comma
+================================================================================
+plot newhistogram "A" at 5, 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      at: (number))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - font then at then linetype
+================================================================================
+plot newhistogram "A" font "Arial,12" at 5 lt 3
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fontspec
+        font: (string_literal))
+      at: (number)
+      lt: (number))))
+
+================================================================================
+newhistogram - font then at then linetype, trailing comma
+================================================================================
+plot newhistogram "A" font "Arial,12" at 5 lt 3, 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fontspec
+        font: (string_literal))
+      at: (number)
+      lt: (number))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - bare keyword
+================================================================================
+plot newhistogram
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element)))
+
+================================================================================
+newhistogram - bare keyword, trailing comma
+================================================================================
+plot newhistogram, 'd.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element)
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - linetype before with clause
+================================================================================
+plot newhistogram "A" lt 3 with boxes
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (style_opts
+        lt: (number))
+      with: (plot_style))))
+
+================================================================================
+newhistogram - font before with clause
+================================================================================
+plot newhistogram "A" font "Arial,12" with boxes
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (style_opts
+        (fontspec
+          font: (string_literal)))
+      with: (plot_style))))
+
+================================================================================
+newhistogram - fillstyle with density and border, linetype
+================================================================================
+plot newhistogram "A" fs solid 0.5 border lt 3
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fill_style
+        density: (number))
+      lt: (number))))
+
+================================================================================
+newhistogram - fillstyle with density and border, linetype, trailing comma
+================================================================================
+plot newhistogram "A" fs solid 0.5 border lt 3, 'd.dat' u 1:2
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fill_style
+        density: (number))
+      lt: (number))
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number))))))
+
+================================================================================
+plot element - font, linetype, fillstyle on a data plot (newhistogram control)
+================================================================================
+plot 'd.dat' font "Arial,12" lt 3 fs solid
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (style_opts
+        (fontspec
+          font: (string_literal)))
+      (style_opts
+        lt: (number))
+      (style_opts
+        fs: (fill_style)))))
+
+================================================================================
+plot element - font, linetype, fillstyle on a data plot, trailing comma
+================================================================================
+plot 'd.dat' font "Arial,12" lt 3 fs solid, 'e.dat'
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (style_opts
+        (fontspec
+          font: (string_literal)))
+      (style_opts
+        lt: (number))
+      (style_opts
+        fs: (fill_style)))
+    (plot_element
+      data: (string_literal))))
+
+================================================================================
+newhistogram - at before font
+================================================================================
+plot newhistogram "A" at 5 font "Arial,12"
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      at: (number)
+      (fontspec
+        font: (string_literal)))))
+
+================================================================================
+newhistogram - at before linetype
+================================================================================
+plot newhistogram "A" at 5 lt 3
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      at: (number)
+      lt: (number))))
+
+================================================================================
+newhistogram - fillstyle then at
+================================================================================
+plot newhistogram "A" fs solid at 5
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      title: (string_literal)
+      (fill_style)
+      at: (number))))
