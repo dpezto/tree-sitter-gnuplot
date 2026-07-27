@@ -148,12 +148,9 @@ jobs:
             "https://github.com/ribru17/ts_query_ls/releases/download/${TS_QUERY_LS_VERSION}/ts_query_ls-x86_64-unknown-linux-gnu.tar.gz" \
             | tar -xz
       - name: Check queries
-        # No -f. That flag adds a FORMATTING check on top of validation, and
-        # these query files are hand-laid-out — `check -f` reformats all three,
-        # exit 1. Validation is what is wanted here; reformatting the queries is
-        # a separate decision, and would disturb comment placement that carries
-        # reasoning (see the NFA note in highlights.scm).
-        run: ./ts_query_ls check queries/
+        # -f also enforces `ts_query_ls format` style, so downstream imports
+        # (nvim-treesitter) need no manual reformatting.
+        run: ./ts_query_ls check -f queries/
 
   queries:
     # `tree-sitter query` only proves the query PARSES, and it evaluates

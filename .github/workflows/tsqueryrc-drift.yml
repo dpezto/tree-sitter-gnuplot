@@ -6,9 +6,9 @@ name: tsqueryrc drift
 # the failure mode is silent: upstream adds a capture, our copy does not have
 # it, and our queries lint clean against a stale vocabulary.
 #
-# Weekly rather than per-PR. Only an upstream change can cause drift, so
-# checking on every pull request would burn runner time to re-answer a question
-# whose inputs did not move.
+# Weekly rather than per-PR. Upstream drift needs no PR to happen, and local
+# edits to the vendored file are rare enough that a weekly sweep catches both
+# without spending a runner on every pull request.
 
 on:
   schedule:
