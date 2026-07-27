@@ -116,6 +116,42 @@ jobs:
       - name: Check project metadata
         run: node scripts/check-metadata.mjs
 
+  query-lint:
+    # Static validation of queries/*.scm with ts_query_ls: invalid node types,
+    # unknown captures, predicate and directive arity. This complements the
+    # `queries` job below and does not replace it — a static checker cannot see
+    # Vim's NFA group cap (E872), which only a real editor run catches.
+    #
+    # ts_query_ls is pinned to a release tag rather than `latest/download`:
+    # every other tool here is pinned, and an unpinned binary fetched from a URL
+    # that silently changes content breaks the build one morning with nothing in
+    # the diff to explain it. Bumping the tag is a deliberate edit.
+    #
+    # The ABI ceiling is enforced from .tsqueryrc.json's supported_abi_versions
+    # (13-15), which matches this parser's LANGUAGE_VERSION 15 and the runtime's
+    # accepted range, so no separate assertion is needed here.
+    runs-on: ubuntu-latest
+    env:
+      TS_QUERY_LS_VERSION: v3.16.0
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install tree-sitter-cli
+        run: npm install -g tree-sitter-cli@0.26.11
+      - name: Build parser
+        # .tsqueryrc.json sets parser_install_directories to ".", matching where
+        # this lands. ts_query_ls also resolves the parser without that override
+        # (verified), but stating the real location beats relying on a fallback.
+        run: tree-sitter build --output gnuplot.so .
+      - name: Set up ts_query_ls
+        run: |
+          curl -fL --proto '=https' --tlsv1.2 \
+            "https://github.com/ribru17/ts_query_ls/releases/download/${TS_QUERY_LS_VERSION}/ts_query_ls-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar -xz
+      - name: Check queries
+        # -f also enforces `ts_query_ls format` style, so downstream imports
+        # (nvim-treesitter) need no manual reformatting.
+        run: ./ts_query_ls check -f queries/
+
   queries:
     # `tree-sitter query` only proves the query PARSES, and it evaluates
     # `#match?` with Rust regex. Neovim evaluates those predicates through

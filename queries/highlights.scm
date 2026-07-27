@@ -1,6 +1,8 @@
 ; highlights.scm
 (comment) @comment @spell
+
 "variable" @variable.parameter
+
 ;
 ; UNTIERED LITERALS — why the bracketed lists below exist
 ;
@@ -21,7 +23,9 @@
   "bgnd"
   "background"
 ] @variable.parameter.builtin
+
 (identifier) @variable
+
 [
   "["
   "]"
@@ -30,7 +34,9 @@
   "{"
   "}"
 ] @punctuation.bracket
+
 (operator) @operator
+
 [
   "="
   ","
@@ -39,25 +45,32 @@
   ; token, so this capture covers both roles
   "<<"
 ] @operator
+
 ; open range end — `set xrange [*:*]`, `array A[*]`: a wildcard, not a product
 "*" @character.special
+
 (keyword_op) @keyword.operator
+
 (ternary_op) @keyword.conditional.ternary
+
 [
   "for"
   "in"
   "do"
   "while"
 ] @keyword.repeat
+
 ; -----------------------------------------------------------------------
 ; Commands
 "cmd" @keyword
+
 ; pseudo plot-elements: they fill an element slot but name no data source
 [
   "newhistogram"
   "newspiderplot"
   "keyentry"
 ] @keyword
+
 ; connector words. `kw_fn` is the alias tier (at/via/from/to/by); `inverse`
 ; (set link) and `sample` (plot sample) read the same way in their clause.
 [
@@ -65,7 +78,9 @@
   "sample"
   "kw_fn"
 ] @keyword.function
+
 "kw_cond" @keyword.conditional
+
 [
   "front"
   "back"
@@ -77,20 +92,25 @@
   ; coordinate systems (first/second/graph/screen/character/polar) — alias "coord"
   "coord"
 ] @keyword.directive
+
 ; on/off toggle flags ({no}X) — alias "flag"
 "flag" @keyword.directive
+
 ; enumerated VALUES / modes (alias "mod")
 "mod" @constant
+
 ; binary rotate= angle-unit suffixes (rotate=90deg / rotate=0.5 pi);
 ; the attached form 0.5pi folds into the number token instead
 [
   "degrees"
   "pi"
 ] @constant
+
 ; plot/splot ELEMENT modifiers (alias "attr") — @property
 ; (title/notitle/with/using/index/every/axes/smooth in a plot command;
 ;  distinct from set-option names which are @variable.member)
 "attr" @property
+
 ; -----------------------------------------------------------------------
 [
   ; Terminal output path
@@ -113,6 +133,7 @@
   "opt"
   "arg"
 ] @variable.member
+
 ; -----------------------------------------------------------------------
 ; Option keywords
 [
@@ -289,6 +310,7 @@
   "palette"
   ; set fit quiet / results / verbose / brief
 ] @variable.member
+
 ; -----------------------------------------------------------------------
 ; Presentation / style attributes
 [
@@ -316,17 +338,22 @@
   "st_opt"
   "plt_st"
 ] @attribute
+
 ; binary filetype= value (png/jpg/gif/bin parsed as identifier in field)
 (binary_options
   filetype: (identifier) @attribute)
+
 ; -----------------------------------------------------------------------
 ; Macro / datablock identifiers
 (macro) @function.macro
+
 (datablock) @module
+
 [
   (datablock_start)
   (datablock_end)
 ] @label
+
 ; -----------------------------------------------------------------------
 ; Functions
 ;
@@ -349,30 +376,27 @@
   name: (identifier) @function.builtin)
   (#any-of? @function.builtin
     ; real / complex math
-    "abs" "acos" "acosh" "airy" "arg" "asin" "asinh" "atan" "atan2" "atanh"
-    "besj0" "besj1" "besjn" "besy0" "besy1" "besyn" "besi0" "besi1" "besin"
-    "cbrt" "ceil" "conj" "cos" "cosh" "exp" "floor" "imag" "int" "log" "log10"
-    "norm" "rand" "real" "round" "sgn" "sin" "sinh" "sqrt" "tan" "tanh"
+    "abs" "acos" "acosh" "airy" "arg" "asin" "asinh" "atan" "atan2" "atanh" "besj0" "besj1" "besjn"
+    "besy0" "besy1" "besyn" "besi0" "besi1" "besin" "cbrt" "ceil" "conj" "cos" "cosh" "exp" "floor"
+    "imag" "int" "log" "log10" "norm" "rand" "real" "round" "sgn" "sin" "sinh" "sqrt" "tan" "tanh"
     ; special functions
-    "EllipticK" "EllipticE" "EllipticPi" "erf" "erfc" "expint" "gamma" "ibeta"
-    "igamma" "inverf" "invibeta" "invigamma" "invnorm" "LambertW" "lgamma"
-    "lnGamma" "SynchrotronF" "uigamma" "voigt" "zeta"
+    "EllipticK" "EllipticE" "EllipticPi" "erf" "erfc" "expint" "gamma" "ibeta" "igamma" "inverf"
+    "invibeta" "invigamma" "invnorm" "LambertW" "lgamma" "lnGamma" "SynchrotronF" "uigamma" "voigt"
+    "zeta"
     ; libcerf
     "cerf" "cdawson" "faddeeva" "erfi" "FresnelC" "FresnelS" "VP" "VP_fwhm"
     ; libamos — complex Airy / Bessel
     "Ai" "Bi" "BesselH1" "BesselH2" "BesselJ" "BesselY" "BesselI" "BesselK"
     ; strings
-    "gprintf" "sprintf" "strlen" "strstrt" "substr" "split" "join" "trim"
-    "word" "words" "system"
+    "gprintf" "sprintf" "strlen" "strstrt" "substr" "split" "join" "trim" "word" "words" "system"
     ; arrays
     "index"
     ; time
-    "time" "timecolumn" "strftime" "strptime"
-    "tm_hour" "tm_mday" "tm_min" "tm_mon" "tm_sec" "tm_wday" "tm_week"
-    "tm_yday" "tm_year" "weekdate_iso" "weekdate_cdc"
+    "time" "timecolumn" "strftime" "strptime" "tm_hour" "tm_mday" "tm_min" "tm_mon" "tm_sec"
+    "tm_wday" "tm_week" "tm_yday" "tm_year" "weekdate_iso" "weekdate_cdc"
     ; using-specifier / plotting
-    "column" "columnhead" "stringcolumn" "strcol" "exists" "valid" "value"
-    "hsv2rgb" "palette" "rgbcolor" "voxel"))
+    "column" "columnhead" "stringcolumn" "strcol" "exists" "valid" "value" "hsv2rgb" "palette"
+    "rgbcolor" "voxel"))
 
 ; bare `title columnheader` (the called form `columnheader(N)` is a (function)
 ; and matches the builtin list above)
@@ -409,16 +433,13 @@
 ;
 ; The `\w+_` prefix is deliberate and must not be narrowed to `STATS_`: the
 ; prefix is user-selectable (`stats … prefix "FOO"`, `set fit prefix`).
-
 ; stats: moments — <prefix>_mean/_stddev/_skewness/_kurtosis (+_err) (+_x/_y)
 ((identifier) @variable.builtin
-  (#match? @variable.builtin
-    "^\\w+_(mean|stddev|skewness|kurtosis)(_err)?(_x|_y)?$"))
+  (#match? @variable.builtin "^\\w+_(mean|stddev|skewness|kurtosis)(_err)?(_x|_y)?$"))
 
 ; stats: distribution summaries (+_x/_y)
 ((identifier) @variable.builtin
-  (#match? @variable.builtin
-    "^\\w+_(min|max|sdd|adev|median|sum(sq)?|(lo|up)_quartile)(_x|_y)?$"))
+  (#match? @variable.builtin "^\\w+_(min|max|sdd|adev|median|sum(sq)?|(lo|up)_quartile)(_x|_y)?$"))
 
 ; stats: regression, extents, counts, column metadata
 ((identifier) @variable.builtin
@@ -427,8 +448,7 @@
 
 ; GPVAL_* / MOUSE_* / FIT_* / ARG*
 ((identifier) @variable.builtin
-  (#match? @variable.builtin
-    "^((GPVAL|MOUSE|FIT)_|ARG)\\w+$"))
+  (#match? @variable.builtin "^((GPVAL|MOUSE|FIT)_|ARG)\\w+$"))
 
 ; fixed-name built-ins — plain string comparison, never reaches a regex engine
 ((identifier) @variable.builtin
@@ -438,15 +458,22 @@
 ; Array definitions
 (def_array
   "array" @keyword.function)
+
 (array
   (identifier) @function)
+
 ; -----------------------------------------------------------------------
 ; Literals
 "NaN" @constant.builtin
+
 (number) @number
+
 (string_literal) @string
+
 (escape_sequence) @string.escape
+
 (format_specifier) @string.special
 
 ; watchpoint target (`watch y=50`): the axis/expression name being watched
-(plot_element target: (identifier) @variable.member)
+(plot_element
+  target: (identifier) @variable.member)

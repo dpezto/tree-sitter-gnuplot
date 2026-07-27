@@ -2,16 +2,19 @@
   (#set! injection.language "comment"))
 
 ; system "command" / ! "command" → bash
-(cmd_system (string_literal) @injection.content
+(cmd_system
+  (string_literal) @injection.content
   (#set! injection.language "bash"))
 
 ; ! ls / system ls → bash (single identifier)
-(cmd_system (identifier) @injection.content
+(cmd_system
+  (identifier) @injection.content
   (#set! injection.language "bash"))
 
 ; system("command") → bash
 ((function
-    name: (identifier) @_name
-    parameters: (parameter_list (string_literal) @injection.content))
+  name: (identifier) @_name
+  parameters: (parameter_list
+    (string_literal) @injection.content))
   (#eq? @_name "system")
   (#set! injection.language "bash"))
