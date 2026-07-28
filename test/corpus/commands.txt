@@ -1228,6 +1228,20 @@ print {1,2}
       Im: (number))))
 
 ===========================================================================
+  set print - concat filename keeps the variable as a value
+===========================================================================
+set print pal.'.gp' append
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    arg_opts: (print
+      (binary_expression
+        (identifier)
+        (operator)
+        (string_literal)))))
+
+===========================================================================
   bind - allwindows modifier and abbreviations
 ===========================================================================
 bind allwindows 'a' "replot"

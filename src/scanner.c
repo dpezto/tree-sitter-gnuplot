@@ -969,6 +969,14 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
   if (in_generic_body(valid_symbols) && is_expr_constant(word, word_len))
     return false;
 
+  // A word immediately followed by '.' inside a generic body is string concat
+  // on a variable (`set print pal.'.gp'`): decline every keyword table so the
+  // internal lexer produces the identifier and the item parses as an
+  // expression. Spaced leading-dot numbers (`at graph .5`) are unaffected —
+  // their '.' is not adjacent to the word.
+  if (in_generic_body(valid_symbols) && lexer->lookahead == '.')
+    return false;
+
   // Plot style names take priority over style attrs (e.g. "lines" is the style,
   // not linestyle).
   if (valid_symbols[KW_PLT_ST] && match_kw_table(word, word_len, PLT_STYLE_KWS)) {
@@ -1044,10 +1052,17 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
         // '-'/'+' are NOT in this set: a following sign is far more often a
         // signed value of the keyword (`levels incremental -20, 5, 20`) than
         // `kw - x` arithmetic on a variable shadowing a keyword name.
-        // '.' is NOT in this set either: after a keyword row it is far more
-        // often a leading-dot number (`at graph .5, .5`) than string concat
-        // on a variable shadowing a keyword name; non-row words still fall
-        // through to GVAL_SEP below.
+        // '.' splits on spacing. IMMEDIATELY after the word it is string
+        // concat on a variable (`set print pal.'.gp'`) — the word is a value;
+        // the eccentric `set size.5` (gnuplot tokenizes it as `size .5`)
+        // degrades to a value expression, still a valid tree. With space
+        // before it, a leading-dot number follows a keyword (`at graph .5`)
+        // and the keyword must win; mark_end cannot rewind, so the spaced
+        // form cannot be probed past the dot.
+        if (lexer->lookahead == '.') {
+          lexer->result_symbol = SEP;
+          return true;
+        }
         {
           int32_t c = lexer->lookahead;
           while (c == ' ' || c == '\t') { consume(lexer); c = lexer->lookahead; }
