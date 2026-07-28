@@ -1100,11 +1100,13 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
       // ',' opens bodies whose first positional slot may be EMPTY
       // (`set view ,,0.5`, `set dummy ,v`); in bodies without a comma item
       // the parse fails on the ',' itself, exactly as it did at the gate.
+      // '{' starts a complex literal (`print {1,2}`); no option head takes a
+      // brace, so there the parse fails on the '{' itself, same as at the gate.
       {
         int32_t c = lexer->lookahead;
         if ((c >= '0' && c <= '9') || c == '.' || c == '"' || c == '\'' ||
             c == '(' || c == '-' || c == '+' || c == '~' || c == '!' ||
-            c == '$' || c == '@' || c == ',' ||
+            c == '$' || c == '@' || c == ',' || c == '{' ||
             // '[' opens plot_element's leading range_block — cmd_bare tail only
             (c == '[' && SEP == GVAL_TAIL)) {
           lexer->result_symbol = SEP;
