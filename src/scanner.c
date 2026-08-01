@@ -212,8 +212,8 @@ static const GoptKwEntry GOPT_KWS[] = {
     // cntrparam
     {"linear", 2, KW_G_MOD, 0},
     {"levels", 2, KW_G_ARG, 0},
-    {"cubicspline", 1, KW_G_ARG, 0},
-    {"bspline", 1, KW_G_ARG, 0},
+    {"cubicspline", 2, KW_G_ARG, 0},
+    {"bspline", 2, KW_G_ARG, 0},
     {"points", 1, KW_G_ARG, 0},
     {"order", 1, KW_G_ARG, 0},
     {"origin", 1, KW_G_ARG, 0},
@@ -270,15 +270,15 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"spiderplot", 6, KW_G_ARG, 0},
     // angles
     {"degrees", 1, KW_G_ARG, 0},
-    {"radians", 1, KW_G_ARG, 0},
+    {"radians", 2, KW_G_ARG, 0},
     // boxwidth / boxdepth
     {"absolute", 1, KW_G_ARG, 0},
     {"relative", 1, KW_G_ARG, 0},
     {"square", 6, KW_G_FLAG, 1},
     // clip
     {"one", 1, KW_G_ARG, 0},
-    {"two", 1, KW_G_ARG, 0},
-    {"radial", 1, KW_G_ARG, 0},
+    {"two", 2, KW_G_ARG, 0},
+    {"radial", 2, KW_G_ARG, 0},
     // colorsequence
     {"classic", 7, KW_G_MOD, 0},
     {"podo", 4, KW_G_MOD, 0},
@@ -349,15 +349,21 @@ static const GoptKwEntry GOPT_KWS[] = {
     {"y0", 2, KW_G_MOD, 0},
     {"y1", 2, KW_G_MOD, 0},
     {"z0", 2, KW_G_MOD, 0},
-    // theta direction words (bare l/r/t/b resolve via other arg rows)
+    // theta direction words. The position rows below own the bare letters:
+    // gnuplot reads `set k t l` as `top left`, so l/r/t/b/c carry min 1 and
+    // their one-letter rivals (two, radians, radial, bspline, cubicspline)
+    // sit at gnuplot's own 2-char minimums (tw/ra/ra/bs/cu, probed on 6.0.4).
+    // Cost, accepted: `set clip t`, `set angles r`, `set cntrparam b` now
+    // read the position word — same arg tier, one mislabelled leaf, no
+    // structural damage. An option-blind table cannot have both.
     {"counterclockwise", 16, KW_G_MOD, 0},
     {"clockwise", 9, KW_G_MOD, 0},
     {"ccw", 3, KW_G_MOD, 0},
     {"cw", 2, KW_G_MOD, 0},
-    {"left", 3, KW_G_ARG, 0},
-    {"right", 3, KW_G_ARG, 0},
-    {"top", 2, KW_G_ARG, 0},
-    {"bottom", 3, KW_G_ARG, 0},
+    {"left", 1, KW_G_ARG, 0},
+    {"right", 1, KW_G_ARG, 0},
+    {"top", 1, KW_G_ARG, 0},
+    {"bottom", 1, KW_G_ARG, 0},
     // view
     {"map", 3, KW_G_ARG, 0},
     {"scale", 5, KW_G_ARG, 0},
@@ -373,7 +379,7 @@ static const GoptKwEntry GOPT_KWS[] = {
     // pixmap
     {"width", 3, KW_G_ARG, 0},  // gnuplot accepts `w`; kept at 3 so a bare `w` stays a variable
     {"height", 6, KW_G_ARG, 0},
-    {"center", 6, KW_G_ARG, 0},
+    {"center", 1, KW_G_ARG, 0},
     {"behind", 6, KW_G_FLAG, 0},
     {"at", 2, KW_G_ARG, 0},
     {"colormap", 8, KW_G_ARG, 0},

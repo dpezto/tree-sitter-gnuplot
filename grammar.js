@@ -255,36 +255,15 @@ module.exports = grammar({
 		// degrades to an identifier and ends the body early.
 		_gopts: ($) => prec.left(repeat1($._gopt_item)),
 		_gopts_style: ($) =>
-			prec.left(
-				repeat1(
-					choice(
-						$._gopt_item,
-						alias($.kw_g_axisflag, "flag"),
-						prec.right(seq($.style_opts, optional(seq(",", $.style_opts)))),
-						// terminal-flavored keepers (t_opts = this rule): words
-						// deliberately without GOPT_KWS rows — structured values,
-						// command collisions (reset/raise), common variable names
-						$.background,
-						$.mono_color,
-						$.line_drawing_method,
-						seq("position", $.position),
-						seq("name", $._expression),
-						key("eps", undefined, "mod"),
-						key("reset", undefined, "mod"),
-						key("raise", undefined, "flag", 1),
-						key("input", undefined),
-						seq(
-							key("animate", undefined),
-							repeat(choice(
-								seq(alias("delay", "arg"), $._expression),
-								seq(alias("loop", "arg"), $._expression),
-								seq(alias("quality", "arg"), $._expression),
-							)),
-						),
-						key("noanimate", undefined, "flag"),
-					),
-				),
-			),
+			prec.left(repeat1(choice($._gopt_item, alias($.kw_g_axisflag, "flag"), ...gopts_style_extras($)))),
+
+		// The style body minus the per-axis tics family. `set key` needs it:
+		// the axisflag matcher accepts a bare axis letter (`set grid x` is
+		// valid gnuplot), so inside the generic body it claimed the `t` of
+		// `set k t l` before the keyword table could read it as `top` — and
+		// gnuplot's key has no per-axis words at all.
+		_gopts_key: ($) =>
+			prec.left(repeat1(choice($._gopt_item, ...gopts_style_extras($)))),
 
 		_statement: ($) => choice($._command, $.assignment, $.macro),
 
@@ -1260,7 +1239,7 @@ module.exports = grammar({
 
 
 		key: ($) =>
-			prec.right(seq(key("key", 1, "opt"), optional(seq($._gval_sep, $._gopts_style)))),
+			prec.right(seq(key("key", 1, "opt"), optional(seq($._gval_sep, $._gopts_key)))),
 
 
 
@@ -2730,6 +2709,35 @@ function surround(bracket, ...rules) {
 	return seq(open, ...rules, close);
 }
 // keyword
+// Choice items shared by _gopts_style and _gopts_key: everything the generic
+// style body accepts beyond _gopt_item and the per-axis tics family.
+// Terminal-flavored keepers (t_opts = these rules): words deliberately
+// without GOPT_KWS rows — structured values, command collisions
+// (reset/raise), common variable names.
+function gopts_style_extras($) {
+	return [
+		prec.right(seq($.style_opts, optional(seq(",", $.style_opts)))),
+		$.background,
+		$.mono_color,
+		$.line_drawing_method,
+		seq("position", $.position),
+		seq("name", $._expression),
+		key("eps", undefined, "mod"),
+		key("reset", undefined, "mod"),
+		key("raise", undefined, "flag", 1),
+		key("input", undefined),
+		seq(
+			key("animate", undefined),
+			repeat(choice(
+				seq(alias("delay", "arg"), $._expression),
+				seq(alias("loop", "arg"), $._expression),
+				seq(alias("quality", "arg"), $._expression),
+			)),
+		),
+		key("noanimate", undefined, "flag"),
+	];
+}
+
 function key1(aka, ...reg) {
 	const regStr = reg.map((reg) => (reg instanceof RegExp ? reg.source : reg));
 	return alias(new RegExp(regStr.join("")), aka);
