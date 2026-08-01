@@ -4,6 +4,19 @@ All notable changes are documented here. This file is maintained automatically b
 [release-please](https://github.com/googleapis/release-please) from Conventional-Commit
 history; do not edit it by hand.
 
+## [4.1.0](https://github.com/dpezto/tree-sitter-gnuplot/compare/v4.0.1...v4.1.0) (2026-08-01)
+
+
+### Features
+
+* **rust:** ship keywords.json in the crate as KEYWORDS ([#55](https://github.com/dpezto/tree-sitter-gnuplot/issues/55)) ([756d223](https://github.com/dpezto/tree-sitter-gnuplot/commit/756d2237cf684e64e517e809625050aab6f82c5f))
+
+
+### Bug Fixes
+
+* **queries:** capture only the array name, add Sign and lambertw builtins ([#54](https://github.com/dpezto/tree-sitter-gnuplot/issues/54)) ([17941ac](https://github.com/dpezto/tree-sitter-gnuplot/commit/17941acc452e07b60facf556b800552e553786db))
+* **queries:** capture only the array name, and add Sign and lambertw to the builtin list ([17941ac](https://github.com/dpezto/tree-sitter-gnuplot/commit/17941acc452e07b60facf556b800552e553786db))
+
 ## [4.0.1](https://github.com/dpezto/tree-sitter-gnuplot/compare/v4.0.0...v4.0.1) (2026-07-26)
 
 

@@ -381,8 +381,8 @@
     "imag" "int" "log" "log10" "norm" "rand" "real" "round" "sgn" "sin" "sinh" "sqrt" "tan" "tanh"
     ; special functions
     "EllipticK" "EllipticE" "EllipticPi" "erf" "erfc" "expint" "gamma" "ibeta" "igamma" "inverf"
-    "invibeta" "invigamma" "invnorm" "LambertW" "lgamma" "lnGamma" "SynchrotronF" "uigamma" "voigt"
-    "zeta"
+    "invibeta" "invigamma" "invnorm" "LambertW" "lambertw" "lgamma" "lnGamma" "Sign" "SynchrotronF"
+    "uigamma" "voigt" "zeta"
     ; libcerf
     "cerf" "cdawson" "faddeeva" "erfi" "FresnelC" "FresnelS" "VP" "VP_fwhm"
     ; libamos — complex Airy / Bessel
@@ -461,8 +461,10 @@
 (def_array
   "array" @keyword.function)
 
+; the field matters: a fieldless (identifier) here also catches the index
+; expression, so `cnt[i] = 0` painted `i` as a function
 (array
-  (identifier) @function)
+  name: (identifier) @function)
 
 ; -----------------------------------------------------------------------
 ; Literals
