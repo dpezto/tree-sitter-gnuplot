@@ -432,7 +432,9 @@
 ; regex (tree-sitter CLI, Helix, Zed), so it stays portable across engines.
 ;
 ; The `\w+_` prefix is deliberate and must not be narrowed to `STATS_`: the
-; prefix is user-selectable (`stats … prefix "FOO"`, `set fit prefix`).
+; prefix is user-selectable (`stats … name "FOO"`; `prefix` is a synonym).
+; There is no `set fit prefix` (probed on 6.0.4: "unrecognized option");
+; fit parameters are plain variables with no prefix system.
 ; stats: moments — <prefix>_mean/_stddev/_skewness/_kurtosis (+_err) (+_x/_y)
 ((identifier) @variable.builtin
   (#match? @variable.builtin "^\\w+_(mean|stddev|skewness|kurtosis)(_err)?(_x|_y)?$"))

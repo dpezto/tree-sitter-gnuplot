@@ -35,4 +35,18 @@ expression lexing, so the expression can never swallow an attribute keyword,
 and the `function:` field can then take full `_expression` without conflict.
 Medium effort; touches the scanner enum, `externals`, and `plot_element`.
 
+## Same-line gaps the command gate does not cover
+
+The `_gval_sep` gate keeps a command's arguments on the command's own line by
+sitting immediately after the command keyword. Two constructs have no keyword
+in that position and still accept a newline where gnuplot does not.
+
+An assignment (`a =` newline `5`) has no command word at all, so nothing
+anchors the right-hand side to the first line. Gating the `=` operator instead
+was not attempted.
+
+`set for [i=1:3]` followed by a newline still attaches the next line. The gate
+fires once, between `set` and the for_block, and there is no second gate after
+the for_block closes.
+
 Closed items are not listed here; git log records them.
