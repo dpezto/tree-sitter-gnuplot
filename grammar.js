@@ -1578,7 +1578,12 @@ module.exports = grammar({
 				1,
 				seq(
 					key("style", 2, "opt"),
+					// gated like every other option body: without it the parser can
+					// reduce an empty body mid-line and let the next word start a
+					// command, so `set style l 1` read `l` as `load`
 					optional(
+						seq(
+						$._gval_sep,
 						choice(
 							seq(key("arrow", 3, "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
 							seq(alias("boxplot", "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
@@ -1610,6 +1615,7 @@ module.exports = grammar({
 							// tokens valid right after `set style`, letting GOPT rows
 							// (function/rectangle/…) steal the selector heads.
 							fillStyleOpt($),
+						),
 						),
 					),
 				),
@@ -2197,29 +2203,31 @@ module.exports = grammar({
 		// lists are `tuple`.
 		tics_opts: ($) => $._gopts_style,
 
-		line_style: ($) =>
-			prec.left(
+		// `set style line 1` is a complete command: gnuplot defines the style
+		// with its defaults. The attribute list is therefore optional after a
+		// tag, and the two shapes are spelled out rather than made optional
+		// separately so the rule can never match nothing at all.
+		line_style: ($) => {
+			const attr = choice(
+				key("default", 3),
 				seq(
-					optional(field("tag", $._expression)),
-					repeat1(
-						choice(
-							key("default", 3),
-							seq(
-								$._lt,
-								choice($._expression, $.colorspec, "black", "bgnd", "background", alias("nodraw", "mod")),
-							),
-							$._linecolor,
-							$._sa,
-							seq($._pt, $._expression),
-							seq($._ps, $._expression),
-							$._sa,
-							$._sa,
-							seq($._dt, $.dash_opts),
-							key("palette", 3),
-						),
-					),
+					$._lt,
+					choice($._expression, $.colorspec, "black", "bgnd", "background", alias("nodraw", "mod")),
 				),
-			),
+				$._linecolor,
+				$._sa,
+				seq($._pt, $._expression),
+				seq($._ps, $._expression),
+				seq($._dt, $.dash_opts),
+				key("palette", 3),
+			);
+			return prec.left(
+				choice(
+					seq(field("tag", $._expression), repeat(attr)),
+					repeat1(attr),
+				),
+			);
+		},
 
 		fill_style: ($) =>
 			prec.left(

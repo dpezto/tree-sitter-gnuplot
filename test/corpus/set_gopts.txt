@@ -602,3 +602,36 @@ set clip radial
     (clip))
   (cmd_set
     (clip)))
+
+================================================================================
+set style - a one-letter selector is the selector, not a command
+================================================================================
+set style l 1
+set sty l 1 lw 2
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (style
+      (line_style
+        tag: (number))))
+  (cmd_set
+    (style
+      (line_style
+        tag: (number)
+        (number)))))
+
+================================================================================
+set style line - the attribute list is optional after the tag
+================================================================================
+set style line 1
+set style
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (style
+      (line_style
+        tag: (number))))
+  (cmd_set
+    (style)))
