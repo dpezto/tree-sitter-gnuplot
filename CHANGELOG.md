@@ -4,6 +4,20 @@ All notable changes are documented here. This file is maintained automatically b
 [release-please](https://github.com/googleapis/release-please) from Conventional-Commit
 history; do not edit it by hand.
 
+## [4.2.0](https://github.com/dpezto/tree-sitter-gnuplot/compare/v4.1.0...v4.2.0) (2026-08-01)
+
+
+### Features
+
+* **queries:** mark the imaginary unit I as a builtin constant ([#57](https://github.com/dpezto/tree-sitter-gnuplot/issues/57)) ([ac4a3a1](https://github.com/dpezto/tree-sitter-gnuplot/commit/ac4a3a19c90bf419a4b3c24cb57491e26d65cb61))
+
+
+### Bug Fixes
+
+* end a command at newline unless the line is continued ([#53](https://github.com/dpezto/tree-sitter-gnuplot/issues/53)) ([a1fc1dc](https://github.com/dpezto/tree-sitter-gnuplot/commit/a1fc1dc8c6d5f8cad6f214f7e8cd24842b4afab9))
+* **queries:** stop matching stats output variables ([#58](https://github.com/dpezto/tree-sitter-gnuplot/issues/58)) ([2250a83](https://github.com/dpezto/tree-sitter-gnuplot/commit/2250a83ece081838f4b37679c25d6535ec7a3055))
+* read one-letter key position abbreviations as gnuplot does ([#59](https://github.com/dpezto/tree-sitter-gnuplot/issues/59)) ([ac4b9db](https://github.com/dpezto/tree-sitter-gnuplot/commit/ac4b9db9257c3675e981878315776387998f9016))
+
 ## [4.1.0](https://github.com/dpezto/tree-sitter-gnuplot/compare/v4.0.1...v4.1.0) (2026-08-01)
 
 
