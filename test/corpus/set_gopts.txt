@@ -560,3 +560,45 @@ set xtics rotate by 45 nomirror
     (xtics
       (tics_opts
         (number)))))
+
+================================================================================
+set key - one-letter position abbreviations resolve as position words
+================================================================================
+set k t l
+set key top left
+set k b c
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (key))
+  (cmd_set
+    (key))
+  (cmd_set
+    (key)))
+
+================================================================================
+set grid - bare and prefixed axis letters stay the per-axis tics family
+================================================================================
+set grid t
+set grid mx noy
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (grid))
+  (cmd_set
+    (grid)))
+
+================================================================================
+set clip - two keeps gnuplot's two-character minimum beside bare top
+================================================================================
+set clip tw
+set clip radial
+--------------------------------------------------------------------------------
+
+(source_file
+  (cmd_set
+    (clip))
+  (cmd_set
+    (clip)))
