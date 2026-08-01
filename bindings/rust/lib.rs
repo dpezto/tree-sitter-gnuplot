@@ -32,6 +32,12 @@ pub const LANGUAGE: LanguageFn = unsafe { LanguageFn::from_raw(tree_sitter_gnupl
 /// [`node-types.json`]: https://tree-sitter.github.io/tree-sitter/using-parsers/6-static-node-types
 pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 
+/// The keyword dictionary generated from this grammar (`npm run gen:keywords`):
+/// every keyword with its tier, canonical form and minimal abbreviation.
+/// Shipped so downstream tooling reads the copy that matches the compiled
+/// parser instead of vendoring one.
+pub const KEYWORDS: &str = include_str!("../../keywords.json");
+
 #[cfg(with_highlights_query)]
 /// The syntax highlighting query for this grammar.
 pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/highlights.scm");
