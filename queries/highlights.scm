@@ -408,46 +408,30 @@
   (#any-of? @constant.builtin "pi" "NaN" "Inf" "I"))
 
 ; -----------------------------------------------------------------------
-; Built-in variables (stats output, GPVAL_*, ARG*, vfill loop vars)
+; Built-in variables (GPVAL_*, ARG*, vfill loop vars)
 ;
-; REGEX DIALECT / GROUP BUDGET — read before editing any `#match?` here.
+; REGEX DIALECT / GROUP BUDGET — read before editing the `#match?` below.
 ;
 ; Neovim evaluates `#match?` with `vim.regex()`, prepending `\v` (very magic)
-; whenever the pattern does not already start with `\v`/`\m`/`\M`/`\V`. Two
-; consequences, both of which have bitten this file:
+; whenever the pattern does not already start with `\v`/`\m`/`\M`/`\V`. Every
+; bare `(` is then a CAPTURING group, and Vim's NFA engine allows at most 9 of
+; them. A tenth aborts the whole query with `E872: (NFA regexp) Too many '('`,
+; and highlighting stops dead at that predicate, leaving the rest of the buffer
+; unhighlighted. A wider alternation goes in a pattern of its own rather than a
+; tenth group; the query engine ORs separate patterns, so the accepted set is
+; unchanged.
 ;
-;   1. Every bare `(` is a CAPTURING group, and Vim's NFA engine allows at
-;      most 9 of them. A tenth aborts the whole query with
-;      `E872: (NFA regexp) Too many '('` — highlighting then stops dead at
-;      that predicate and the rest of the buffer renders unhighlighted.
-;      A single combined alternation here once used 14 groups. It is now
-;      split into several patterns; the query engine ORs separate patterns,
-;      so the accepted set is unchanged. Keep each pattern well under 9.
-;
-;   2. Write `(`, `|`, `)`, `?` BARE. Do NOT write `\(` / `\|`: under the
-;      auto-prepended `\v` those are LITERAL characters, so the predicate
-;      would compile cleanly and then silently match nothing.
+; Write `(`, `|`, `)`, `?` bare — under the prepended `\v` an escaped `\(` is a
+; LITERAL character, so the predicate compiles cleanly and then matches nothing.
 ;
 ; This bare dialect is read identically by Vim's very-magic mode and by Rust
 ; regex (tree-sitter CLI, Helix, Zed), so it stays portable across engines.
 ;
-; The `\w+_` prefix is deliberate and must not be narrowed to `STATS_`: the
-; prefix is user-selectable (`stats … name "FOO"`; `prefix` is a synonym).
-; There is no `set fit prefix` (probed on 6.0.4: "unrecognized option");
-; fit parameters are plain variables with no prefix system.
-; stats: moments — <prefix>_mean/_stddev/_skewness/_kurtosis (+_err) (+_x/_y)
-((identifier) @variable.builtin
-  (#match? @variable.builtin "^\\w+_(mean|stddev|skewness|kurtosis)(_err)?(_x|_y)?$"))
-
-; stats: distribution summaries (+_x/_y)
-((identifier) @variable.builtin
-  (#match? @variable.builtin "^\\w+_(min|max|sdd|adev|median|sum(sq)?|(lo|up)_quartile)(_x|_y)?$"))
-
-; stats: regression, extents, counts, column metadata
-((identifier) @variable.builtin
-  (#match? @variable.builtin
-    "^\\w+_((slope|intercept)(_err)?|size(_x|_y)|column(s|_header)|records|headers|outofrange|invalid|blank|blocks|correlation|sumxy)$"))
-
+; stats output variables are deliberately not matched here. Their prefix is
+; user-selectable (`stats … name "FOO"`, and `prefix` is a synonym of `name`),
+; so the wildcard prefix this once needed painted every user variable named
+; x_min or t_mean as a built-in. The language server resolves the prefix from
+; the document instead.
 ; GPVAL_* / MOUSE_* / FIT_* / ARG*
 ((identifier) @variable.builtin
   (#match? @variable.builtin "^((GPVAL|MOUSE|FIT)_|ARG)\\w+$"))
