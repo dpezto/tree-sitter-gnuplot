@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(tree-sitter-gnuplot
-        VERSION "4.1.0" # x-release-please-version
+        VERSION "4.2.0" # x-release-please-version
         DESCRIPTION "A tree-sitter grammar for gnuplot"
         HOMEPAGE_URL "https://github.com/dpezto/tree-sitter-gnuplot"
         LANGUAGES C)
