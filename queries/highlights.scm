@@ -405,7 +405,7 @@
 ; -----------------------------------------------------------------------
 ; Built-in constants
 ((identifier) @constant.builtin
-  (#any-of? @constant.builtin "pi" "NaN" "Inf"))
+  (#any-of? @constant.builtin "pi" "NaN" "Inf" "I"))
 
 ; -----------------------------------------------------------------------
 ; Built-in variables (stats output, GPVAL_*, ARG*, vfill loop vars)
