@@ -906,11 +906,12 @@ static bool is_assignment_context(TSLexer* lexer) {
     return lexer->lookahead == '=';
   }
 
-  // Array element assignment p[idx] = expr vs range p [lo:hi] expr:
-  // A range block contains ':', an array index does not.
+  // Array element assignment p[idx] = expr vs range p [lo:hi] expr: only
+  // the assignment has '=' after the closing bracket. A colon inside the
+  // brackets does not decide it, since the index can be a ternary
+  // (`p[1?1:2]=3`).
   if (lexer->lookahead == '[') {
     consume(lexer);
-    bool has_colon = false;
     int depth = 1;
     while (lexer->lookahead != 0 && depth > 0) {
       int32_t c = lexer->lookahead;
@@ -919,13 +920,12 @@ static bool is_assignment_context(TSLexer* lexer) {
         depth++;
       else if (c == ']')
         depth--;
-      else if (c == ':' && depth == 1)
-        has_colon = true;
     }
-    if (has_colon)
-      return false;
     while (lexer->lookahead == ' ' || lexer->lookahead == '\t') consume(lexer);
-    return lexer->lookahead == '=';
+    if (lexer->lookahead != '=')
+      return false;
+    consume(lexer);
+    return lexer->lookahead != '=';  // '=' but not '=='
   }
 
   return false;

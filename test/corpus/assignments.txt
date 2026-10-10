@@ -470,3 +470,34 @@ print 9
       end: (datablock_end)))
   (cmd_print
     (number)))
+
+===========================================================================
+  Array element assignment with a ternary index
+===========================================================================
+array p[2]
+p[1?1:2]=3
+p [0:1] x
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_array
+      (array
+        name: (identifier)
+        (number))))
+  (assignment
+    (def_array
+      (array
+        name: (identifier)
+        (ternary_expression
+          condition: (number)
+          (ternary_op)
+          true: (number)
+          (ternary_op)
+          false: (number)))
+      (number)))
+  (cmd_plot
+    (plot_element
+      sample: (range_block
+        (number)
+        (number))
+      data: (identifier))))
