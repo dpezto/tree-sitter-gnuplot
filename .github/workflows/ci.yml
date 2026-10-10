@@ -63,7 +63,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # Pinned like the npm installs below: the default "latest" picks up each
+      # CLI release the day it ships, and a newer generator rewrites parser.c,
+      # failing the generate-diff check on every open PR at once.
       - uses: tree-sitter/setup-action/cli@v2
+        with:
+          tree-sitter-ref: v0.27.1
       - uses: tree-sitter/parser-test-action@v3
         # This action always runs the generate-diff check + the corpus test
         # (`tree-sitter test`, 107 cases) on every OS; the test-<lang> flags gate
@@ -136,7 +141,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install tree-sitter-cli
-        run: npm install -g tree-sitter-cli@0.26.11
+        run: npm install -g tree-sitter-cli@0.27.1
       - name: Build parser
         # .tsqueryrc.json sets parser_install_directories to ".", matching where
         # this lands. ts_query_ls also resolves the parser without that override
@@ -164,7 +169,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install tree-sitter-cli
-        run: npm install -g tree-sitter-cli@0.26.11
+        run: npm install -g tree-sitter-cli@0.27.1
       - name: Build parser
         run: tree-sitter build --output gnuplot.so .
       - name: Install Neovim
@@ -182,7 +187,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install tree-sitter-cli
-        run: npm install -g tree-sitter-cli@0.26.11
+        run: npm install -g tree-sitter-cli@0.27.1
       - name: Generate parser
         run: tree-sitter generate
       - name: Run tests with coverage instrumentation
@@ -193,7 +198,9 @@ jobs:
         # tree-sitter builds the parser in ~/.cache/tree-sitter/lib; the .gcno
         # files reference src/scanner.c relative to the repo root, so gcov must
         # run from here. parser.c is generated, so only the scanner is reported.
-        run: gcov ~/.cache/tree-sitter/lib/*-scanner.gcda
+        # Since CLI 0.27 the object names start with a dot
+        # (.gnuplot.so.<pid>.ThreadId(1)-scanner.gcda), which a shell glob skips.
+        run: find ~/.cache/tree-sitter/lib -name '*-scanner.gcda' -exec gcov {} +
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7
         with:
