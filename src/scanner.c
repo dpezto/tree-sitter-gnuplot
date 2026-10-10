@@ -4,7 +4,9 @@
 
 #include "tree_sitter/parser.h"
 
-#define MAX_WORD_LENGTH 100
+// Datablock marker capacity, NUL included. Bounded by tree-sitter's 1024-byte
+// serialization buffer, since the open marker is the serialized state.
+#define MAX_WORD_LENGTH 1024
 
 enum TokenType {
   DATABLOCK_START,
@@ -811,15 +813,21 @@ void tree_sitter_gnuplot_external_scanner_deserialize(void* payload, const char*
   s->word[length] = '\0';
 }
 
+// The opening marker is a whole identifier (`EOD`, `E1`, `END_DATA`, `_x`).
+// A marker too long to store fails the scan instead of being cut short, which
+// would leave its tail behind as stray text.
 static bool scan_datablock_start(TSLexer* lexer, Scanner* s) {
-  if (!iswalpha(lexer->lookahead))
+  if (!iswalpha(lexer->lookahead) && lexer->lookahead != '_')
     return false;
-  memset(s->word, 0, sizeof(s->word));
+  char marker[MAX_WORD_LENGTH];
   int i = 0;
-  while (iswalpha(lexer->lookahead) && i < MAX_WORD_LENGTH - 1) {
-    s->word[i++] = lexer->lookahead;
+  while (iswalnum(lexer->lookahead) || lexer->lookahead == '_') {
+    if (i == MAX_WORD_LENGTH - 1)
+      return false;
+    marker[i++] = (char)lexer->lookahead;
     consume(lexer);
   }
+  memcpy(s->word, marker, (size_t)i);
   s->word[i] = '\0';
   return true;
 }
@@ -829,11 +837,11 @@ static bool scan_datablock_end(TSLexer* lexer, Scanner* s) {
   if (s->word[0] == '\0')
     return false;
   int i = 0;
-  while (iswalpha(lexer->lookahead) && s->word[i] != '\0' && lexer->lookahead == s->word[i]) {
+  while (s->word[i] != '\0' && lexer->lookahead == s->word[i]) {
     consume(lexer);
     i++;
   }
-  if (s->word[i] == '\0' && !iswalpha(lexer->lookahead)) {
+  if (s->word[i] == '\0' && !iswalnum(lexer->lookahead) && lexer->lookahead != '_') {
     return true;
   }
   return false;

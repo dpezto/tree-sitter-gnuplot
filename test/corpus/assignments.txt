@@ -398,3 +398,45 @@ lw=3
     (def_var
       (identifier)
       (number))))
+
+===========================================================================
+  Datablock markers with digits, underscores and long names
+===========================================================================
+$A << E1
+1
+E1
+$B << END_DATA
+2
+END_DATA
+$C << _x
+3
+_x
+$D << AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+1
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      end: (datablock_end)))
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      end: (datablock_end)))
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      end: (datablock_end)))
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      end: (datablock_end))))
