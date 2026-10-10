@@ -7,7 +7,11 @@
       "title": "gnuplot",
       "scope": "source.gnuplot",
       "file-types": [
-        "gnuplot"
+        "gnuplot",
+        "gp",
+        "plt",
+        "plot",
+        "gnu"
       ],
       "injection-regex": "^gnuplot$",
       "class-name": "TreeSitterGnuplot"
