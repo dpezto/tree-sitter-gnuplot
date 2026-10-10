@@ -100,6 +100,8 @@ static const KwEntry PLT_STYLE_KWS[] = {
     {"histeps", NULL, 7},
     {"arrows", NULL, 3},
     {"sectors", NULL, 3},
+    {"errorbars", NULL, 1},     // gnuplot "e$rrorbars", same as yerrorbars
+    {"errorlines", NULL, 6},    // gnuplot "errorl$ines", same as yerrorlines
     {"xerrorbars", NULL, 9},    // reg("errorbars", -1): "errorbar(s)?"
     {"yerrorbars", NULL, 9},
     {"xyerrorbars", NULL, 10},

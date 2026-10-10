@@ -341,13 +341,17 @@ set style data errorl
 
 (source_file
   (cmd_set
-    (style))
+    (style
+      (plot_style)))
   (cmd_set
-    (style))
+    (style
+      (plot_style)))
   (cmd_set
-    (style))
+    (style
+      (plot_style)))
   (cmd_set
-    (style)))
+    (style
+      (plot_style))))
 
 ================================================================================
 set pm3d lighting - spec abbreviation of specular

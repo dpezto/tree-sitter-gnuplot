@@ -8873,31 +8873,8 @@
                             "value": "st_opt"
                           },
                           {
-                            "type": "CHOICE",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "plot_style"
-                              },
-                              {
-                                "type": "ALIAS",
-                                "content": {
-                                  "type": "PATTERN",
-                                  "value": "e(r(r(o(r(b(a(r(s)?)?)?)?)?)?)?)?"
-                                },
-                                "named": false,
-                                "value": "plt_st"
-                              },
-                              {
-                                "type": "ALIAS",
-                                "content": {
-                                  "type": "PATTERN",
-                                  "value": "errorl(i(n(e(s)?)?)?)?"
-                                },
-                                "named": false,
-                                "value": "plt_st"
-                              }
-                            ]
+                            "type": "SYMBOL",
+                            "name": "plot_style"
                           }
                         ]
                       },

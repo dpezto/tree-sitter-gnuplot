@@ -1598,19 +1598,7 @@ module.exports = grammar({
 						choice(
 							seq(key("arrow", 3, "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
 							seq(alias("boxplot", "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
-							// data also takes the generic errorbar/errorline names,
-							// which resolve to yerrorbars/yerrorlines at runtime and
-							// are rejected by `set style function` ("style not usable
-							// for function plots"). Probed minima: e(rrorbars) 1,
-							// errorl(ines) 6.
-							seq(
-								key("data", 1, "st_opt"),
-								choice(
-									$.plot_style,
-									key("errorbars", 1, "plt_st"),
-									key("errorlines", 6, "plt_st"),
-								),
-							),
+							seq(key("data", 1, "st_opt"), $.plot_style),
 							seq(key("function", 1, "st_opt"), $.plot_style),
 							seq(key("histogram", 4, "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
 							seq(key("line", 1, "st_opt"), $.line_style),

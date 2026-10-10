@@ -286,3 +286,49 @@ set palette file "c.pal" "%lf"
       filename: (string_literal)
       (string_literal
         (format_specifier)))))
+
+===========================================================================
+  Generic errorbars and errorlines plot styles
+===========================================================================
+plot '+' using 1:1:(0.1) with errorbars, '+' using 1:1:(0.1) with e
+plot '+' using 1:1:(0.1) with errorlines, '+' using 1:1:(0.1) with errorl
+---------------------------------------------------------------------------
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (parenthesized_expression
+            (number))))
+      with: (plot_style))
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (parenthesized_expression
+            (number))))
+      with: (plot_style)))
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (parenthesized_expression
+            (number))))
+      with: (plot_style))
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (parenthesized_expression
+            (number))))
+      with: (plot_style))))
