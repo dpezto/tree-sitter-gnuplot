@@ -1147,6 +1147,8 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
         if ((c >= '0' && c <= '9') || c == '.' || c == '"' || c == '\'' ||
             c == '(' || c == '-' || c == '+' || c == '~' || c == '!' ||
             c == '$' || c == '@' || c == ',' || c == '{' ||
+            // '|' opens a cardinality `|A|`
+            c == '|' ||
             // '[' opens plot_element's leading range_block — cmd_bare tail only
             (c == '[' && SEP == GVAL_TAIL)) {
           lexer->result_symbol = SEP;

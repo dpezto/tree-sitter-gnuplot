@@ -1953,3 +1953,31 @@ print for [i=1:2] i, "-"
       end: (number))
     (identifier)
     (string_literal)))
+
+===========================================================================
+  Cardinality as the first argument
+===========================================================================
+array A[2]
+print |A|
+set samples |A|+10
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_array
+      (array
+        name: (identifier)
+        (number))))
+  (cmd_print
+    (unary_expression
+      (operator)
+      (identifier)
+      (operator)))
+  (cmd_set
+    arg_opts: (samples
+      (binary_expression
+        (unary_expression
+          (operator)
+          (identifier)
+          (operator))
+        (operator)
+        (number)))))
