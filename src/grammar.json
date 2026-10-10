@@ -14887,11 +14887,20 @@
               }
             },
             {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "STRING",
-                "value": "\""
-              }
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "IMMEDIATE_TOKEN",
+                  "content": {
+                    "type": "STRING",
+                    "value": "\""
+                  }
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_string_eol"
+                }
+              ]
             }
           ]
         },
@@ -14962,11 +14971,20 @@
               }
             },
             {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "STRING",
-                "value": "'"
-              }
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "IMMEDIATE_TOKEN",
+                  "content": {
+                    "type": "STRING",
+                    "value": "'"
+                  }
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_string_eol"
+                }
+              ]
             }
           ]
         }
@@ -16121,6 +16139,10 @@
     {
       "type": "SYMBOL",
       "name": "kw_filter_if"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_string_eol"
     }
   ],
   "inline": [],

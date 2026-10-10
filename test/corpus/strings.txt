@@ -147,3 +147,27 @@ print "abc"[1+1] . "x"
           (number)))
       (operator)
       (string_literal))))
+
+===========================================================================
+  String ended by the end of the line
+===========================================================================
+print "a
+print 2
+print 'b
+x = "c %d
+print "d"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (string_literal))
+  (cmd_print
+    (number))
+  (cmd_print
+    (string_literal))
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal
+        (format_specifier))))
+  (cmd_print
+    (string_literal)))

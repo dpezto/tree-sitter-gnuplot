@@ -72,6 +72,9 @@ enum TokenType {
   // `if (cond) <command>` statement on the line AFTER a plot command silently
   // becomes that element's filter.
   KW_FILTER_IF,
+  // Zero-width end of a string literal with no closing quote. gnuplot ends
+  // such a string at the end of the line, so this matches only there.
+  STRING_EOL,
 };
 
 // Keyword table entry for prefix-abbreviation matching.
@@ -1038,6 +1041,15 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
 
 bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, const bool* valid_symbols) {
   Scanner* s = (Scanner*)payload;
+
+  // Unterminated string. Only valid inside a string, where no command keyword
+  // is; during error recovery every symbol is valid, so the check on
+  // CMD_PLOT_KW keeps this from firing at every newline there.
+  if (valid_symbols[STRING_EOL] && !valid_symbols[CMD_PLOT_KW] &&
+      (lexer->lookahead == '\n' || lexer->lookahead == '\r' || lexer->eof(lexer))) {
+    lexer->result_symbol = STRING_EOL;
+    return true;
+  }
 
   // GVAL_SEP/GVAL_BIND: zero-width, same-line only. Must run BEFORE
   // skip_whitespaces (which also skips newlines and ';'). Skips spaces/tabs

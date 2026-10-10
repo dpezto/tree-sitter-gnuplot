@@ -142,6 +142,8 @@ module.exports = grammar({
 		// line as the element (a statement-level `if` on the next line must not
 		// attach as a filter)
 		$.kw_filter_if,
+		// zero-width end of an unterminated string, at end of line or file
+		$._string_eol,
 	],
 
 	extras: ($) => [$.comment, /\s|\\|;/],
@@ -2526,7 +2528,7 @@ module.exports = grammar({
 							token.immediate(prec(0, /%/)), // bare % not starting a specifier
 						),
 					),
-					token.immediate('"'),
+					choice(token.immediate('"'), $._string_eol),
 				),
 				seq(
 					"'",
@@ -2543,7 +2545,7 @@ module.exports = grammar({
 							optional(alias(token.immediate("''"), $.escape_sequence)),
 						),
 					),
-					token.immediate("'"),
+					choice(token.immediate("'"), $._string_eol),
 				),
 			),
 
