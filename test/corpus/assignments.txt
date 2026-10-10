@@ -294,3 +294,83 @@ array X = [x, x*2, sin(0)]
         name: (identifier)
         parameters: (parameter_list
           (number))))))
+
+===========================================================================
+  Operator precedence and associativity
+===========================================================================
+print 2**3**2
+print 2**3!
+print ~1+2
+print 1|2^3
+print 1?0:1?2:3
+print 1<2==1
+print 1==1&3
+print "9"."1"-10
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (binary_expression
+      (number)
+      (operator)
+      (binary_expression
+        (number)
+        (operator)
+        (number))))
+  (cmd_print
+    (binary_expression
+      (number)
+      (operator)
+      (unary_expression
+        (number)
+        (operator))))
+  (cmd_print
+    (binary_expression
+      (unary_expression
+        (operator)
+        (number))
+      (operator)
+      (number)))
+  (cmd_print
+    (binary_expression
+      (number)
+      (operator)
+      (binary_expression
+        (number)
+        (operator)
+        (number))))
+  (cmd_print
+    (ternary_expression
+      (number)
+      (ternary_op)
+      (number)
+      (ternary_op)
+      (ternary_expression
+        (number)
+        (ternary_op)
+        (number)
+        (ternary_op)
+        (number))))
+  (cmd_print
+    (binary_expression
+      (binary_expression
+        (number)
+        (operator)
+        (number))
+      (operator)
+      (number)))
+  (cmd_print
+    (binary_expression
+      (binary_expression
+        (number)
+        (operator)
+        (number))
+      (operator)
+      (number)))
+  (cmd_print
+    (binary_expression
+      (binary_expression
+        (string_literal)
+        (operator)
+        (string_literal))
+      (operator)
+      (number))))

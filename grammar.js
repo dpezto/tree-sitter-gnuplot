@@ -9,21 +9,24 @@
  * */
 
 const PREC = {
+	// Mirrors the recursive-descent levels of gnuplot's own expression parser
+	// (C-like), verified operator pair by operator pair against gnuplot 6.0.5.
 	// assignment/command bind above PAREN conceptually; not modeled in this table
-	PAREN: 14, // (a)
-	POWER: 12, // a**b a!
-	UNARY: 11, // -a +a !a $a |a|
-	TIMES: 10, // a*b a/b a%b
-	PLUS: 9, // a+b a-b
-	CONCAT: 8, // A.B
-	SHIFT: 7, // << >>
+	PAREN: 15, // (a)
+	FACTORIAL: 14, // a!
+	POWER: 13, // a**b (right-associative)
+	UNARY: 12, // -a +a ~a !a $a |a|
+	TIMES: 11, // a*b a/b a%b
+	PLUS: 10, // a+b a-b A.B
+	SHIFT: 9, // << >>
+	RELATIONAL: 8, // a<b a>b a<=b a>=b
+	EQUALITY: 7, // a==b a!=b  A eq B  A ne B
 	BIT_AND: 6, // a&b
-	BIT_NOT: 5, // ~a
-	BIT_OR: 4, // a|b a^b
-	COMPARE: 3, // a==b a!=b a<b a>b a<=b a>=b  A eq B  A ne B
+	BIT_XOR: 5, // a^b
+	BIT_OR: 4, // a|b
 	AND: 2, // a&&b
 	OR: 1, // a||b
-	TERNARY: -1, // a?b:c
+	TERNARY: -1, // a?b:c (right-associative)
 };
 
 const IDENTIFIER = /[A-Za-z_\u00A1-\uFFFF][A-Za-z0-9_\u00A1-\uFFFF′⁀-⁑₀-₉]*/;
@@ -2574,7 +2577,7 @@ module.exports = grammar({
 					// unary and binary +/- share it (−1 token, CST unchanged:
 					// alias keeps node type `operator` with the matched text)
 					[/[-+]/, PREC.UNARY],
-					["~", PREC.BIT_NOT],
+					["~", PREC.UNARY],
 					["!", PREC.UNARY],
 				].map(([operator, precedence]) =>
 					prec.left(
@@ -2582,7 +2585,7 @@ module.exports = grammar({
 						seq(alias(operator, $.operator), $._expression),
 					),
 				),
-				prec.left(PREC.POWER, seq($._expression, alias("!", $.operator))),
+				prec.left(PREC.FACTORIAL, seq($._expression, alias("!", $.operator))),
 				prec.left(
 					PREC.UNARY,
 					seq(alias("$", $.operator), choice($.number, token.immediate("#"))),
@@ -2603,33 +2606,38 @@ module.exports = grammar({
 					// (ranges/array decl), `<<`/`>>` (`<<` shared with
 					// def_datablock), `^`/`|` (`|` doubles as unary cardinality),
 					// `&&`/`||` (different precedence — merge changes parses).
-					["**", PREC.POWER],
 					["*", PREC.TIMES],
 					[/[\/%]/, PREC.TIMES],
 					[/[-+]/, PREC.PLUS],
-					[/==|!=|<=|>=|<|>/, PREC.COMPARE],
+					[/==|!=/, PREC.EQUALITY],
+					[/<=|>=|<|>/, PREC.RELATIONAL],
 					[">>", PREC.SHIFT],
 					["<<", PREC.SHIFT],
 					["&", PREC.BIT_AND],
-					["^", PREC.BIT_OR],
+					["^", PREC.BIT_XOR],
 					["|", PREC.BIT_OR],
 					["&&", PREC.AND],
 					["||", PREC.OR],
 					// comma/"serial" intentionally NOT a binary operator (would
 					// conflict with argument lists and range syntax)
-					[".", PREC.CONCAT],
+					[".", PREC.PLUS],
 				].map(([operator, precedence]) =>
 					prec.left(
 						precedence,
 						seq($._expression, alias(operator, $.operator), $._expression),
 					),
 				),
+				// `**` is right-associative: 2**3**2 is 2**(3**2).
+				prec.right(
+					PREC.POWER,
+					seq($._expression, alias("**", $.operator), $._expression),
+				),
 				...[
 					// eq/ne merged; regex (not strings) opts out of keyword
 					// extraction — safe: the op token is only expected in
 					// after-expression states where identifier is not valid,
 					// and maximal munch keeps `equals`/`next` as identifiers
-					[/eq|ne/, PREC.COMPARE],
+					[/eq|ne/, PREC.EQUALITY],
 				].map(([operator, precedence]) =>
 					prec.left(
 						precedence,
@@ -2639,7 +2647,7 @@ module.exports = grammar({
 			),
 
 		ternary_expression: ($) =>
-			prec.left(
+			prec.right(
 				PREC.TERNARY,
 				seq(
 					field("condition", choice($.assignment, $._expression)),
