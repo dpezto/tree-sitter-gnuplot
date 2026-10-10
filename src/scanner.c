@@ -75,6 +75,9 @@ enum TokenType {
   // Zero-width end of a string literal with no closing quote. gnuplot ends
   // such a string at the end of the line, so this matches only there.
   STRING_EOL,
+  // Postfix factorial `!`. Matched only on the expression's own logical line:
+  // after a newline a `!` opens a shell command (`print 3` then `! ls`).
+  FACTORIAL_BANG,
 };
 
 // Keyword table entry for prefix-abbreviation matching.
@@ -1195,6 +1198,31 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
     if (lexer->lookahead == '\n' || lexer->lookahead == ';' || lexer->lookahead == '#' ||
         lexer->lookahead == 0)
       same_line = false;
+  }
+
+  // Postfix factorial. Like the probe above, skips only spaces, tabs and
+  // \-newline continuations, so a `!` past a raw newline is left to the
+  // grammar's shell command. `!=` is the inequality operator; declining lets
+  // the internal lexer read it. STRING_EOL is valid only inside a string, so
+  // it being valid too means error recovery, where this must not fire.
+  if (valid_symbols[FACTORIAL_BANG] && !valid_symbols[STRING_EOL]) {
+    for (;;) {
+      if (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\r') {
+        skip(lexer);
+      } else if (lexer->lookahead == '\\') {
+        skip(lexer);
+        if (lexer->lookahead == '\r') skip(lexer);
+        if (lexer->lookahead == '\n') skip(lexer);
+      } else {
+        break;
+      }
+    }
+    if (lexer->lookahead == '!') {
+      consume(lexer);
+      if (lexer->lookahead == '=') return false;
+      lexer->result_symbol = FACTORIAL_BANG;
+      return true;
+    }
   }
 
   skip_whitespaces(lexer);

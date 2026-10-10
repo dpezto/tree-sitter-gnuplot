@@ -49,9 +49,6 @@ was not attempted.
 fires once, between `set` and the for_block, and there is no second gate after
 the for_block closes.
 
-A postfix factorial has the same problem. `print 3` followed by `! ls` on
-the next line reads the `!` as `3!` and fails on `ls`.
-
 ## Old-style if bodies with more than one command
 
 gnuplot runs the rest of the line as the body of `if (c) cmd1; cmd2`. The

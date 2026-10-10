@@ -144,6 +144,8 @@ module.exports = grammar({
 		$.kw_filter_if,
 		// zero-width end of an unterminated string, at end of line or file
 		$._string_eol,
+		// postfix factorial `!`, only on the expression's own logical line
+		$._factorial_bang,
 	],
 
 	extras: ($) => [$.comment, /\s|\\|;/],
@@ -152,15 +154,6 @@ module.exports = grammar({
 
 	conflicts: ($) => [
 		[$.plot_element, $.style_opts],
-		// Companion to _plot_data_expr (plot_element's data: branch): an atom
-		// after the plot keyword reduces to _plot_data_expr (data) or to
-		// _expression (feeding a larger expression / the function: branch);
-		// GLR forks and the wrong branch dies on the next token.
-		[$._plot_data_expr, $._expression],
-		// Same shape for the function: branch — a bare function/unary either
-		// completes plot_element or keeps growing as an expression (`-x + 1`);
-		// the wrong fork dies on the following token.
-		[$.plot_element, $._expression],
 		// `with hsteps … offset <expr>`: offset continues the hsteps option
 		// cluster (_hsteps_opts, dynamic 1) or closes plot_style and starts
 		// style_opts' generic offset-position; GLR fork, hsteps side preferred
@@ -2592,7 +2585,7 @@ module.exports = grammar({
 						seq(alias(operator, $.operator), $._expression),
 					),
 				),
-				prec.left(PREC.FACTORIAL, seq($._expression, alias("!", $.operator))),
+				prec.left(PREC.FACTORIAL, seq($._expression, alias($._factorial_bang, $.operator))),
 				prec.left(
 					PREC.UNARY,
 					seq(alias("$", $.operator), choice($.number, token.immediate("#"))),

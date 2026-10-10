@@ -15162,8 +15162,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "STRING",
-                  "value": "!"
+                  "type": "SYMBOL",
+                  "name": "_factorial_bang"
                 },
                 "named": true,
                 "value": "operator"
@@ -15971,14 +15971,6 @@
       "style_opts"
     ],
     [
-      "_plot_data_expr",
-      "_expression"
-    ],
-    [
-      "plot_element",
-      "_expression"
-    ],
-    [
       "plot_style"
     ],
     [
@@ -16143,6 +16135,10 @@
     {
       "type": "SYMBOL",
       "name": "_string_eol"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_factorial_bang"
     }
   ],
   "inline": [],
