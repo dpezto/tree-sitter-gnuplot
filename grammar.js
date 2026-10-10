@@ -522,7 +522,14 @@ module.exports = grammar({
 							$._gval_sep,
 							field("conditions", surround("()", sep(",", choice($.assignment, $._expression)))),
 							choice(
-								repeat1($._statement),
+								// Old-style form: `if (c) cmd; else cmd`. A nested
+								// old-style `if` leaves the `else` to the outer one, as
+								// gnuplot does, unless the outer one already has its own
+								// (an `else if` chain). A braced else cannot follow.
+								seq(
+									repeat1($._statement),
+									optional(seq(alias("else", "kw_cond"), $._statement)),
+								),
 								seq(
 									surround("{}", repeat($._statement)),
 									repeat(
@@ -533,9 +540,9 @@ module.exports = grammar({
 											surround("{}", repeat($._statement)),
 										),
 									),
+									optional(seq(alias("else", "kw_cond"), surround("{}", repeat($._statement)))),
 								),
 							),
-							optional(seq(alias("else", "kw_cond"), surround("{}", repeat($._statement)))),
 						),
 					),
 				),
