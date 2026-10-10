@@ -8746,436 +8746,445 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "CHOICE",
+                "type": "SEQ",
                 "members": [
                   {
-                    "type": "SEQ",
+                    "type": "SYMBOL",
+                    "name": "_gval_sep"
+                  },
+                  {
+                    "type": "CHOICE",
                     "members": [
                       {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "arr(o(w)?)?"
-                        },
-                        "named": false,
-                        "value": "st_opt"
-                      },
-                      {
-                        "type": "CHOICE",
+                        "type": "SEQ",
                         "members": [
                           {
-                            "type": "SEQ",
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "arr(o(w)?)?"
+                            },
+                            "named": false,
+                            "value": "st_opt"
+                          },
+                          {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gval_sep"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gopts_style"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "STRING",
+                              "value": "boxplot"
+                            },
+                            "named": false,
+                            "value": "st_opt"
+                          },
+                          {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gval_sep"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gopts_style"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "d(a(t(a)?)?)?"
+                            },
+                            "named": false,
+                            "value": "st_opt"
+                          },
+                          {
+                            "type": "CHOICE",
                             "members": [
                               {
                                 "type": "SYMBOL",
-                                "name": "_gval_sep"
+                                "name": "plot_style"
                               },
                               {
-                                "type": "SYMBOL",
-                                "name": "_gopts_style"
-                              }
-                            ]
-                          },
-                          {
-                            "type": "BLANK"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "STRING",
-                          "value": "boxplot"
-                        },
-                        "named": false,
-                        "value": "st_opt"
-                      },
-                      {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gval_sep"
+                                "type": "ALIAS",
+                                "content": {
+                                  "type": "PATTERN",
+                                  "value": "e(r(r(o(r(b(a(r(s)?)?)?)?)?)?)?)?"
+                                },
+                                "named": false,
+                                "value": "plt_st"
                               },
                               {
-                                "type": "SYMBOL",
-                                "name": "_gopts_style"
+                                "type": "ALIAS",
+                                "content": {
+                                  "type": "PATTERN",
+                                  "value": "errorl(i(n(e(s)?)?)?)?"
+                                },
+                                "named": false,
+                                "value": "plt_st"
                               }
                             ]
-                          },
-                          {
-                            "type": "BLANK"
                           }
                         ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "d(a(t(a)?)?)?"
-                        },
-                        "named": false,
-                        "value": "st_opt"
                       },
                       {
-                        "type": "CHOICE",
+                        "type": "SEQ",
                         "members": [
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "f(u(n(c(t(i(o(n)?)?)?)?)?)?)?"
+                            },
+                            "named": false,
+                            "value": "st_opt"
+                          },
                           {
                             "type": "SYMBOL",
                             "name": "plot_style"
-                          },
+                          }
+                        ]
+                      },
+                      {
+                        "type": "SEQ",
+                        "members": [
                           {
                             "type": "ALIAS",
                             "content": {
                               "type": "PATTERN",
-                              "value": "e(r(r(o(r(b(a(r(s)?)?)?)?)?)?)?)?"
+                              "value": "hist(o(g(r(a(m)?)?)?)?)?"
                             },
                             "named": false,
-                            "value": "plt_st"
+                            "value": "st_opt"
                           },
+                          {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gval_sep"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gopts_style"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "SEQ",
+                        "members": [
                           {
                             "type": "ALIAS",
                             "content": {
                               "type": "PATTERN",
-                              "value": "errorl(i(n(e(s)?)?)?)?"
+                              "value": "l(i(n(e)?)?)?"
                             },
                             "named": false,
-                            "value": "plt_st"
+                            "value": "st_opt"
+                          },
+                          {
+                            "type": "SYMBOL",
+                            "name": "line_style"
                           }
                         ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "f(u(n(c(t(i(o(n)?)?)?)?)?)?)?"
-                        },
-                        "named": false,
-                        "value": "st_opt"
                       },
                       {
-                        "type": "SYMBOL",
-                        "name": "plot_style"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "hist(o(g(r(a(m)?)?)?)?)?"
-                        },
-                        "named": false,
-                        "value": "st_opt"
-                      },
-                      {
-                        "type": "CHOICE",
+                        "type": "SEQ",
                         "members": [
                           {
-                            "type": "SEQ",
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "circ(l(e)?)?"
+                            },
+                            "named": false,
+                            "value": "st_opt"
+                          },
+                          {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gval_sep"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gopts_style"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "rect(a(n(g(l(e)?)?)?)?)?"
+                            },
+                            "named": false,
+                            "value": "st_opt"
+                          },
+                          {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gval_sep"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gopts_style"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "ell(i(p(s(e)?)?)?)?"
+                            },
+                            "named": false,
+                            "value": "st_opt"
+                          },
+                          {
+                            "type": "CHOICE",
                             "members": [
                               {
                                 "type": "SYMBOL",
-                                "name": "_gval_sep"
+                                "name": "ellipse"
                               },
                               {
-                                "type": "SYMBOL",
-                                "name": "_gopts_style"
+                                "type": "BLANK"
                               }
                             ]
-                          },
-                          {
-                            "type": "BLANK"
                           }
                         ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "l(i(n(e)?)?)?"
-                        },
-                        "named": false,
-                        "value": "st_opt"
                       },
                       {
-                        "type": "SYMBOL",
-                        "name": "line_style"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "circ(l(e)?)?"
-                        },
-                        "named": false,
-                        "value": "st_opt"
-                      },
-                      {
-                        "type": "CHOICE",
+                        "type": "SEQ",
                         "members": [
                           {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gval_sep"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gopts_style"
-                              }
-                            ]
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "parallel(a(x(i(s)?)?)?)?"
+                            },
+                            "named": false,
+                            "value": "st_opt"
                           },
                           {
-                            "type": "BLANK"
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gval_sep"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gopts_style"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
                           }
                         ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "rect(a(n(g(l(e)?)?)?)?)?"
-                        },
-                        "named": false,
-                        "value": "st_opt"
                       },
                       {
-                        "type": "CHOICE",
+                        "type": "SEQ",
                         "members": [
                           {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gval_sep"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gopts_style"
-                              }
-                            ]
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "spider(p(l(o(t)?)?)?)?"
+                            },
+                            "named": false,
+                            "value": "st_opt"
                           },
                           {
-                            "type": "BLANK"
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gval_sep"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gopts_style"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
                           }
                         ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "ell(i(p(s(e)?)?)?)?"
-                        },
-                        "named": false,
-                        "value": "st_opt"
                       },
                       {
-                        "type": "CHOICE",
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "STRING",
+                              "value": "textbox"
+                            },
+                            "named": false,
+                            "value": "st_opt"
+                          },
+                          {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gval_sep"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gopts_style"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "SEQ",
+                        "members": [
+                          {
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "PATTERN",
+                              "value": "watch(p(o(i(n(t)?)?)?)?)?"
+                            },
+                            "named": false,
+                            "value": "st_opt"
+                          },
+                          {
+                            "type": "CHOICE",
+                            "members": [
+                              {
+                                "type": "SEQ",
+                                "members": [
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gval_sep"
+                                  },
+                                  {
+                                    "type": "SYMBOL",
+                                    "name": "_gopts_style"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "BLANK"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "SEQ",
                         "members": [
                           {
                             "type": "SYMBOL",
-                            "name": "ellipse"
+                            "name": "_fs"
                           },
                           {
-                            "type": "BLANK"
+                            "type": "SYMBOL",
+                            "name": "fill_style"
                           }
                         ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "parallel(a(x(i(s)?)?)?)?"
-                        },
-                        "named": false,
-                        "value": "st_opt"
-                      },
-                      {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gval_sep"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gopts_style"
-                              }
-                            ]
-                          },
-                          {
-                            "type": "BLANK"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "spider(p(l(o(t)?)?)?)?"
-                        },
-                        "named": false,
-                        "value": "st_opt"
-                      },
-                      {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gval_sep"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gopts_style"
-                              }
-                            ]
-                          },
-                          {
-                            "type": "BLANK"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "STRING",
-                          "value": "textbox"
-                        },
-                        "named": false,
-                        "value": "st_opt"
-                      },
-                      {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gval_sep"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gopts_style"
-                              }
-                            ]
-                          },
-                          {
-                            "type": "BLANK"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "PATTERN",
-                          "value": "watch(p(o(i(n(t)?)?)?)?)?"
-                        },
-                        "named": false,
-                        "value": "st_opt"
-                      },
-                      {
-                        "type": "CHOICE",
-                        "members": [
-                          {
-                            "type": "SEQ",
-                            "members": [
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gval_sep"
-                              },
-                              {
-                                "type": "SYMBOL",
-                                "name": "_gopts_style"
-                              }
-                            ]
-                          },
-                          {
-                            "type": "BLANK"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "_fs"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "fill_style"
                       }
                     ]
                   }
@@ -12915,10 +12924,10 @@
       "type": "PREC_LEFT",
       "value": 0,
       "content": {
-        "type": "SEQ",
+        "type": "CHOICE",
         "members": [
           {
-            "type": "CHOICE",
+            "type": "SEQ",
             "members": [
               {
                 "type": "FIELD",
@@ -12929,7 +12938,120 @@
                 }
               },
               {
-                "type": "BLANK"
+                "type": "REPEAT",
+                "content": {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "def(a(u(l(t)?)?)?)?"
+                      },
+                      "named": false,
+                      "value": "default"
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_lt"
+                        },
+                        {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "_expression"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "colorspec"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "black"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "bgnd"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "background"
+                            },
+                            {
+                              "type": "ALIAS",
+                              "content": {
+                                "type": "STRING",
+                                "value": "nodraw"
+                              },
+                              "named": false,
+                              "value": "mod"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "_linecolor"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "_sa"
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_pt"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "_expression"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_ps"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "_expression"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_dt"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "dash_opts"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "pal(e(t(t(e)?)?)?)?"
+                      },
+                      "named": false,
+                      "value": "palette"
+                    }
+                  ]
+                }
               }
             ]
           },
@@ -13023,14 +13145,6 @@
                       "name": "_expression"
                     }
                   ]
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_sa"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_sa"
                 },
                 {
                   "type": "SEQ",
