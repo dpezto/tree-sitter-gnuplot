@@ -832,19 +832,23 @@ static bool scan_datablock_start(TSLexer* lexer, Scanner* s) {
   return true;
 }
 
+// gnuplot ends a datablock at the first line that starts with the marker, in
+// column zero, and ignores whatever follows the marker on that line. So
+// `EODxxx` closes an `EOD` block, while ` EOD` and `1 EOD` are data lines.
 static bool scan_datablock_end(TSLexer* lexer, Scanner* s) {
-  // Guard: if no datablock is open, empty word would match any non-alpha pos
+  // Guard: if no datablock is open, an empty marker would match anywhere
   if (s->word[0] == '\0')
     return false;
-  int i = 0;
-  while (s->word[i] != '\0' && lexer->lookahead == s->word[i]) {
+  if (lexer->get_column(lexer) != 0)
+    return false;
+  for (int i = 0; s->word[i] != '\0'; i++) {
+    if (lexer->lookahead != s->word[i])
+      return false;
     consume(lexer);
-    i++;
   }
-  if (s->word[i] == '\0' && !iswalnum(lexer->lookahead) && lexer->lookahead != '_') {
-    return true;
-  }
-  return false;
+  while (lexer->lookahead != '\n' && lexer->lookahead != '\r' && !lexer->eof(lexer))
+    consume(lexer);
+  return true;
 }
 
 static bool is_word_char(int32_t c) {

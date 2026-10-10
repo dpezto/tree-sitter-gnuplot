@@ -440,3 +440,33 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
       start: (datablock_start)
       (number)
       end: (datablock_end))))
+
+===========================================================================
+  Datablock end marker only in column zero, as a line prefix
+===========================================================================
+$D << EOD
+1 EOD
+ EOD
+EOD
+$E << EOD
+2
+EODxxx
+print 9
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      (identifier)
+      (identifier)
+      end: (datablock_end)))
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      end: (datablock_end)))
+  (cmd_print
+    (number)))
