@@ -95,3 +95,79 @@ print sprintf("%8.5g", x)
         (string_literal
           (format_specifier))
         (identifier)))))
+
+===========================================================================
+  Doubled single quote inside a single-quoted string
+===========================================================================
+print 'a''b'
+print 'a'''
+print '', 'x'
+print 'it''s %d''x'
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (string_literal
+      (escape_sequence)))
+  (cmd_print
+    (string_literal
+      (escape_sequence)))
+  (cmd_print
+    (string_literal)
+    (string_literal))
+  (cmd_print
+    (string_literal
+      (escape_sequence)
+      (format_specifier)
+      (escape_sequence))))
+
+===========================================================================
+  Single character of a string literal
+===========================================================================
+print "abc"[2]
+print "abc"[2:3]
+print "abc"[1+1] . "x"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (subscript
+      (string_literal)
+      (number)))
+  (cmd_print
+    (subscript
+      (string_literal)
+      (number)
+      (number)))
+  (cmd_print
+    (binary_expression
+      (subscript
+        (string_literal)
+        (binary_expression
+          (number)
+          (operator)
+          (number)))
+      (operator)
+      (string_literal))))
+
+===========================================================================
+  String ended by the end of the line
+===========================================================================
+print "a
+print 2
+print 'b
+x = "c %d
+print "d"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (string_literal))
+  (cmd_print
+    (number))
+  (cmd_print
+    (string_literal))
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal
+        (format_specifier))))
+  (cmd_print
+    (string_literal)))

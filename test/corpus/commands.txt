@@ -1953,3 +1953,70 @@ print for [i=1:2] i, "-"
       end: (number))
     (identifier)
     (string_literal)))
+
+===========================================================================
+  Cardinality as the first argument
+===========================================================================
+array A[2]
+print |A|
+set samples |A|+10
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_array
+      (array
+        name: (identifier)
+        (number))))
+  (cmd_print
+    (unary_expression
+      (operator)
+      (identifier)
+      (operator)))
+  (cmd_set
+    arg_opts: (samples
+      (binary_expression
+        (unary_expression
+          (operator)
+          (identifier)
+          (operator))
+        (operator)
+        (number)))))
+
+===========================================================================
+  Macro as an operand
+===========================================================================
+s="1"
+print @s
+print @s + 1
+set xrange [@s:5]
+f="x"
+set term unknown
+plot @f with lines
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal)))
+  (cmd_print
+    (macro))
+  (cmd_print
+    (binary_expression
+      (macro)
+      (operator)
+      (number)))
+  (cmd_set
+    (xrange
+      (range_block
+        (macro)
+        (number))))
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal)))
+  (cmd_set
+    (terminal))
+  (cmd_plot
+    (plot_element
+      data: (macro)
+      with: (plot_style))))

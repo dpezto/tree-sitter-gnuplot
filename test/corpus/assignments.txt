@@ -294,3 +294,239 @@ array X = [x, x*2, sin(0)]
         name: (identifier)
         parameters: (parameter_list
           (number))))))
+
+===========================================================================
+  Operator precedence and associativity
+===========================================================================
+print 2**3**2
+print 2**3!
+print ~1+2
+print 1|2^3
+print 1?0:1?2:3
+print 1<2==1
+print 1==1&3
+print "9"."1"-10
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (binary_expression
+      (number)
+      (operator)
+      (binary_expression
+        (number)
+        (operator)
+        (number))))
+  (cmd_print
+    (binary_expression
+      (number)
+      (operator)
+      (unary_expression
+        (number)
+        (operator))))
+  (cmd_print
+    (binary_expression
+      (unary_expression
+        (operator)
+        (number))
+      (operator)
+      (number)))
+  (cmd_print
+    (binary_expression
+      (number)
+      (operator)
+      (binary_expression
+        (number)
+        (operator)
+        (number))))
+  (cmd_print
+    (ternary_expression
+      (number)
+      (ternary_op)
+      (number)
+      (ternary_op)
+      (ternary_expression
+        (number)
+        (ternary_op)
+        (number)
+        (ternary_op)
+        (number))))
+  (cmd_print
+    (binary_expression
+      (binary_expression
+        (number)
+        (operator)
+        (number))
+      (operator)
+      (number)))
+  (cmd_print
+    (binary_expression
+      (binary_expression
+        (number)
+        (operator)
+        (number))
+      (operator)
+      (number)))
+  (cmd_print
+    (binary_expression
+      (binary_expression
+        (string_literal)
+        (operator)
+        (string_literal))
+      (operator)
+      (number))))
+
+===========================================================================
+  Assignment to a keyword name on the line after a command
+===========================================================================
+set samples 5
+offset=3
+plot x
+lw=3
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    arg_opts: (samples
+      (number)))
+  (assignment
+    (def_var
+      (identifier)
+      (number)))
+  (cmd_plot
+    (plot_element
+      data: (identifier)))
+  (assignment
+    (def_var
+      (identifier)
+      (number))))
+
+===========================================================================
+  Datablock markers with digits, underscores and long names
+===========================================================================
+$A << E1
+1
+E1
+$B << END_DATA
+2
+END_DATA
+$C << _x
+3
+_x
+$D << AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+1
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      end: (datablock_end)))
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      end: (datablock_end)))
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      end: (datablock_end)))
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      end: (datablock_end))))
+
+===========================================================================
+  Datablock end marker only in column zero, as a line prefix
+===========================================================================
+$D << EOD
+1 EOD
+ EOD
+EOD
+$E << EOD
+2
+EODxxx
+print 9
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      (identifier)
+      (identifier)
+      end: (datablock_end)))
+  (assignment
+    (def_datablock
+      name: (datablock)
+      start: (datablock_start)
+      (number)
+      end: (datablock_end)))
+  (cmd_print
+    (number)))
+
+===========================================================================
+  Array element assignment with a ternary index
+===========================================================================
+array p[2]
+p[1?1:2]=3
+p [0:1] x
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_array
+      (array
+        name: (identifier)
+        (number))))
+  (assignment
+    (def_array
+      (array
+        name: (identifier)
+        (ternary_expression
+          condition: (number)
+          (ternary_op)
+          true: (number)
+          (ternary_op)
+          false: (number)))
+      (number)))
+  (cmd_plot
+    (plot_element
+      sample: (range_block
+        (number)
+        (number))
+      data: (identifier))))
+
+===========================================================================
+  Factorial stays on its own line
+===========================================================================
+print 3
+! ls
+print 3!
+print 3 \
+!
+print 3 != 4
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (number))
+  (cmd_system
+    (identifier))
+  (cmd_print
+    (unary_expression
+      (number)
+      (operator)))
+  (cmd_print
+    (unary_expression
+      (number)
+      (operator)))
+  (cmd_print
+    (binary_expression
+      (number)
+      (operator)
+      (number))))

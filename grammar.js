@@ -9,21 +9,24 @@
  * */
 
 const PREC = {
+	// Mirrors the recursive-descent levels of gnuplot's own expression parser
+	// (C-like), verified operator pair by operator pair against gnuplot 6.0.5.
 	// assignment/command bind above PAREN conceptually; not modeled in this table
-	PAREN: 14, // (a)
-	POWER: 12, // a**b a!
-	UNARY: 11, // -a +a !a $a |a|
-	TIMES: 10, // a*b a/b a%b
-	PLUS: 9, // a+b a-b
-	CONCAT: 8, // A.B
-	SHIFT: 7, // << >>
+	PAREN: 15, // (a)
+	FACTORIAL: 14, // a!
+	POWER: 13, // a**b (right-associative)
+	UNARY: 12, // -a +a ~a !a $a |a|
+	TIMES: 11, // a*b a/b a%b
+	PLUS: 10, // a+b a-b A.B
+	SHIFT: 9, // << >>
+	RELATIONAL: 8, // a<b a>b a<=b a>=b
+	EQUALITY: 7, // a==b a!=b  A eq B  A ne B
 	BIT_AND: 6, // a&b
-	BIT_NOT: 5, // ~a
-	BIT_OR: 4, // a|b a^b
-	COMPARE: 3, // a==b a!=b a<b a>b a<=b a>=b  A eq B  A ne B
+	BIT_XOR: 5, // a^b
+	BIT_OR: 4, // a|b
 	AND: 2, // a&&b
 	OR: 1, // a||b
-	TERNARY: -1, // a?b:c
+	TERNARY: -1, // a?b:c (right-associative)
 };
 
 const IDENTIFIER = /[A-Za-z_\u00A1-\uFFFF][A-Za-z0-9_\u00A1-\uFFFF′⁀-⁑₀-₉]*/;
@@ -139,6 +142,10 @@ module.exports = grammar({
 		// line as the element (a statement-level `if` on the next line must not
 		// attach as a filter)
 		$.kw_filter_if,
+		// zero-width end of an unterminated string, at end of line or file
+		$._string_eol,
+		// postfix factorial `!`, only on the expression's own logical line
+		$._factorial_bang,
 	],
 
 	extras: ($) => [$.comment, /\s|\\|;/],
@@ -147,15 +154,6 @@ module.exports = grammar({
 
 	conflicts: ($) => [
 		[$.plot_element, $.style_opts],
-		// Companion to _plot_data_expr (plot_element's data: branch): an atom
-		// after the plot keyword reduces to _plot_data_expr (data) or to
-		// _expression (feeding a larger expression / the function: branch);
-		// GLR forks and the wrong branch dies on the next token.
-		[$._plot_data_expr, $._expression],
-		// Same shape for the function: branch — a bare function/unary either
-		// completes plot_element or keeps growing as an expression (`-x + 1`);
-		// the wrong fork dies on the following token.
-		[$.plot_element, $._expression],
 		// `with hsteps … offset <expr>`: offset continues the hsteps option
 		// cluster (_hsteps_opts, dynamic 1) or closes plot_style and starts
 		// style_opts' generic offset-position; GLR fork, hsteps side preferred
@@ -519,7 +517,14 @@ module.exports = grammar({
 							$._gval_sep,
 							field("conditions", surround("()", sep(",", choice($.assignment, $._expression)))),
 							choice(
-								repeat1($._statement),
+								// Old-style form: `if (c) cmd; else cmd`. A nested
+								// old-style `if` leaves the `else` to the outer one, as
+								// gnuplot does, unless the outer one already has its own
+								// (an `else if` chain). A braced else cannot follow.
+								seq(
+									repeat1($._statement),
+									optional(seq(alias("else", "kw_cond"), $._statement)),
+								),
 								seq(
 									surround("{}", repeat($._statement)),
 									repeat(
@@ -530,9 +535,9 @@ module.exports = grammar({
 											surround("{}", repeat($._statement)),
 										),
 									),
+									optional(seq(alias("else", "kw_cond"), surround("{}", repeat($._statement)))),
 								),
 							),
-							optional(seq(alias("else", "kw_cond"), surround("{}", repeat($._statement)))),
 						),
 					),
 				),
@@ -769,6 +774,7 @@ module.exports = grammar({
 			prec.left(
 				choice(
 					$.identifier,
+					$.macro,
 					$.array,
 					$.subscript,
 					$.datablock,
@@ -1587,19 +1593,7 @@ module.exports = grammar({
 						choice(
 							seq(key("arrow", 3, "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
 							seq(alias("boxplot", "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
-							// data also takes the generic errorbar/errorline names,
-							// which resolve to yerrorbars/yerrorlines at runtime and
-							// are rejected by `set style function` ("style not usable
-							// for function plots"). Probed minima: e(rrorbars) 1,
-							// errorl(ines) 6.
-							seq(
-								key("data", 1, "st_opt"),
-								choice(
-									$.plot_style,
-									key("errorbars", 1, "plt_st"),
-									key("errorlines", 6, "plt_st"),
-								),
-							),
+							seq(key("data", 1, "st_opt"), $.plot_style),
 							seq(key("function", 1, "st_opt"), $.plot_style),
 							seq(key("histogram", 4, "st_opt"), optional(seq($._gval_sep, $._gopts_style))),
 							seq(key("line", 1, "st_opt"), $.line_style),
@@ -2338,7 +2332,7 @@ module.exports = grammar({
 		every: ($) =>
 			prec.left(
 				seq(
-					alias("every", "attr"),
+					key("every", 2, "attr"),
 					optional(
 						seq(
 							optional(field("point_incr", $._expression)),
@@ -2435,6 +2429,9 @@ module.exports = grammar({
 			prec.left(
 				choice(
 					$.identifier,
+					// a macro expands to text before the line is parsed; in
+					// operand position it stands for a value (`print @s`)
+					$.macro,
 					$.function,
 					$.array,
 					$.subscript,
@@ -2524,18 +2521,24 @@ module.exports = grammar({
 							token.immediate(prec(0, /%/)), // bare % not starting a specifier
 						),
 					),
-					token.immediate('"'),
+					choice(token.immediate('"'), $._string_eol),
 				),
 				seq(
 					"'",
 					repeat(
-						choice(
-							token.immediate(prec(1, /[^'%\n]+/)),
-							$.format_specifier,
-							token.immediate(prec(0, /%/)), // bare % not starting a specifier
+						seq(
+							choice(
+								token.immediate(prec(1, /[^'%\n]+/)),
+								$.format_specifier,
+								token.immediate(prec(0, /%/)), // bare % not starting a specifier
+							),
+							// `''` after other text is one literal quote. gnuplot does
+							// not read it so at the start or right after another `''`:
+							// there the first quote closes the string.
+							optional(alias(token.immediate("''"), $.escape_sequence)),
 						),
 					),
-					token.immediate("'"),
+					choice(token.immediate("'"), $._string_eol),
 				),
 			),
 
@@ -2574,7 +2577,7 @@ module.exports = grammar({
 					// unary and binary +/- share it (−1 token, CST unchanged:
 					// alias keeps node type `operator` with the matched text)
 					[/[-+]/, PREC.UNARY],
-					["~", PREC.BIT_NOT],
+					["~", PREC.UNARY],
 					["!", PREC.UNARY],
 				].map(([operator, precedence]) =>
 					prec.left(
@@ -2582,7 +2585,7 @@ module.exports = grammar({
 						seq(alias(operator, $.operator), $._expression),
 					),
 				),
-				prec.left(PREC.POWER, seq($._expression, alias("!", $.operator))),
+				prec.left(PREC.FACTORIAL, seq($._expression, alias($._factorial_bang, $.operator))),
 				prec.left(
 					PREC.UNARY,
 					seq(alias("$", $.operator), choice($.number, token.immediate("#"))),
@@ -2603,33 +2606,38 @@ module.exports = grammar({
 					// (ranges/array decl), `<<`/`>>` (`<<` shared with
 					// def_datablock), `^`/`|` (`|` doubles as unary cardinality),
 					// `&&`/`||` (different precedence — merge changes parses).
-					["**", PREC.POWER],
 					["*", PREC.TIMES],
 					[/[\/%]/, PREC.TIMES],
 					[/[-+]/, PREC.PLUS],
-					[/==|!=|<=|>=|<|>/, PREC.COMPARE],
+					[/==|!=/, PREC.EQUALITY],
+					[/<=|>=|<|>/, PREC.RELATIONAL],
 					[">>", PREC.SHIFT],
 					["<<", PREC.SHIFT],
 					["&", PREC.BIT_AND],
-					["^", PREC.BIT_OR],
+					["^", PREC.BIT_XOR],
 					["|", PREC.BIT_OR],
 					["&&", PREC.AND],
 					["||", PREC.OR],
 					// comma/"serial" intentionally NOT a binary operator (would
 					// conflict with argument lists and range syntax)
-					[".", PREC.CONCAT],
+					[".", PREC.PLUS],
 				].map(([operator, precedence]) =>
 					prec.left(
 						precedence,
 						seq($._expression, alias(operator, $.operator), $._expression),
 					),
 				),
+				// `**` is right-associative: 2**3**2 is 2**(3**2).
+				prec.right(
+					PREC.POWER,
+					seq($._expression, alias("**", $.operator), $._expression),
+				),
 				...[
 					// eq/ne merged; regex (not strings) opts out of keyword
 					// extraction — safe: the op token is only expected in
 					// after-expression states where identifier is not valid,
 					// and maximal munch keeps `equals`/`next` as identifiers
-					[/eq|ne/, PREC.COMPARE],
+					[/eq|ne/, PREC.EQUALITY],
 				].map(([operator, precedence]) =>
 					prec.left(
 						precedence,
@@ -2639,7 +2647,7 @@ module.exports = grammar({
 			),
 
 		ternary_expression: ($) =>
-			prec.left(
+			prec.right(
 				PREC.TERNARY,
 				seq(
 					field("condition", choice($.assignment, $._expression)),
@@ -2665,13 +2673,18 @@ module.exports = grammar({
 		subscript: ($) =>
 			prec(
 				2,
-				seq(
-					choice($.identifier, $.string_literal),
-					"[",
-					optional(choice($._expression, "*")),
-					":",
-					optional(choice($._expression, "*")),
-					"]",
+				choice(
+					seq(
+						choice($.identifier, $.string_literal),
+						"[",
+						optional(choice($._expression, "*")),
+						":",
+						optional(choice($._expression, "*")),
+						"]",
+					),
+					// one character of a string literal, `"abc"[2]`; on an
+					// identifier the same shape is an array element (`array`)
+					seq($.string_literal, "[", $._expression, "]"),
 				),
 			),
 

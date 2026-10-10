@@ -4,7 +4,9 @@
 
 #include "tree_sitter/parser.h"
 
-#define MAX_WORD_LENGTH 100
+// Datablock marker capacity, NUL included. Bounded by tree-sitter's 1024-byte
+// serialization buffer, since the open marker is the serialized state.
+#define MAX_WORD_LENGTH 1024
 
 enum TokenType {
   DATABLOCK_START,
@@ -70,6 +72,12 @@ enum TokenType {
   // `if (cond) <command>` statement on the line AFTER a plot command silently
   // becomes that element's filter.
   KW_FILTER_IF,
+  // Zero-width end of a string literal with no closing quote. gnuplot ends
+  // such a string at the end of the line, so this matches only there.
+  STRING_EOL,
+  // Postfix factorial `!`. Matched only on the expression's own logical line:
+  // after a newline a `!` opens a shell command (`print 3` then `! ls`).
+  FACTORIAL_BANG,
 };
 
 // Keyword table entry for prefix-abbreviation matching.
@@ -98,6 +106,8 @@ static const KwEntry PLT_STYLE_KWS[] = {
     {"histeps", NULL, 7},
     {"arrows", NULL, 3},
     {"sectors", NULL, 3},
+    {"errorbars", NULL, 1},     // gnuplot "e$rrorbars", same as yerrorbars
+    {"errorlines", NULL, 6},    // gnuplot "errorl$ines", same as yerrorlines
     {"xerrorbars", NULL, 9},    // reg("errorbars", -1): "errorbar(s)?"
     {"yerrorbars", NULL, 9},
     {"xyerrorbars", NULL, 10},
@@ -811,32 +821,42 @@ void tree_sitter_gnuplot_external_scanner_deserialize(void* payload, const char*
   s->word[length] = '\0';
 }
 
+// The opening marker is a whole identifier (`EOD`, `E1`, `END_DATA`, `_x`).
+// A marker too long to store fails the scan instead of being cut short, which
+// would leave its tail behind as stray text.
 static bool scan_datablock_start(TSLexer* lexer, Scanner* s) {
-  if (!iswalpha(lexer->lookahead))
+  if (!iswalpha(lexer->lookahead) && lexer->lookahead != '_')
     return false;
-  memset(s->word, 0, sizeof(s->word));
+  char marker[MAX_WORD_LENGTH];
   int i = 0;
-  while (iswalpha(lexer->lookahead) && i < MAX_WORD_LENGTH - 1) {
-    s->word[i++] = lexer->lookahead;
+  while (iswalnum(lexer->lookahead) || lexer->lookahead == '_') {
+    if (i == MAX_WORD_LENGTH - 1)
+      return false;
+    marker[i++] = (char)lexer->lookahead;
     consume(lexer);
   }
+  memcpy(s->word, marker, (size_t)i);
   s->word[i] = '\0';
   return true;
 }
 
+// gnuplot ends a datablock at the first line that starts with the marker, in
+// column zero, and ignores whatever follows the marker on that line. So
+// `EODxxx` closes an `EOD` block, while ` EOD` and `1 EOD` are data lines.
 static bool scan_datablock_end(TSLexer* lexer, Scanner* s) {
-  // Guard: if no datablock is open, empty word would match any non-alpha pos
+  // Guard: if no datablock is open, an empty marker would match anywhere
   if (s->word[0] == '\0')
     return false;
-  int i = 0;
-  while (iswalpha(lexer->lookahead) && s->word[i] != '\0' && lexer->lookahead == s->word[i]) {
+  if (lexer->get_column(lexer) != 0)
+    return false;
+  for (int i = 0; s->word[i] != '\0'; i++) {
+    if (lexer->lookahead != s->word[i])
+      return false;
     consume(lexer);
-    i++;
   }
-  if (s->word[i] == '\0' && !iswalpha(lexer->lookahead)) {
-    return true;
-  }
-  return false;
+  while (lexer->lookahead != '\n' && lexer->lookahead != '\r' && !lexer->eof(lexer))
+    consume(lexer);
+  return true;
 }
 
 static bool is_word_char(int32_t c) {
@@ -892,11 +912,12 @@ static bool is_assignment_context(TSLexer* lexer) {
     return lexer->lookahead == '=';
   }
 
-  // Array element assignment p[idx] = expr vs range p [lo:hi] expr:
-  // A range block contains ':', an array index does not.
+  // Array element assignment p[idx] = expr vs range p [lo:hi] expr: only
+  // the assignment has '=' after the closing bracket. A colon inside the
+  // brackets does not decide it, since the index can be a ternary
+  // (`p[1?1:2]=3`).
   if (lexer->lookahead == '[') {
     consume(lexer);
-    bool has_colon = false;
     int depth = 1;
     while (lexer->lookahead != 0 && depth > 0) {
       int32_t c = lexer->lookahead;
@@ -905,13 +926,12 @@ static bool is_assignment_context(TSLexer* lexer) {
         depth++;
       else if (c == ']')
         depth--;
-      else if (c == ':' && depth == 1)
-        has_colon = true;
     }
-    if (has_colon)
-      return false;
     while (lexer->lookahead == ' ' || lexer->lookahead == '\t') consume(lexer);
-    return lexer->lookahead == '=';
+    if (lexer->lookahead != '=')
+      return false;
+    consume(lexer);
+    return lexer->lookahead != '=';  // '=' but not '=='
   }
 
   return false;
@@ -983,6 +1003,13 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
   if (in_generic_body(valid_symbols) && lexer->lookahead == '.')
     return false;
 
+  // A word followed by assignment syntax starts an assignment, not a keyword.
+  // Option bodies and plot elements have no line boundary in the grammar, so
+  // without this `set samples 5` followed by `offset=3` on the next line read
+  // `offset` as one more sub-keyword of the samples body.
+  if (is_assignment_context(lexer))
+    return false;
+
   // Plot style names take priority over style attrs (e.g. "lines" is the style,
   // not linestyle).
   if (valid_symbols[KW_PLT_ST] && match_kw_table(word, word_len, PLT_STYLE_KWS)) {
@@ -1017,6 +1044,15 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
 
 bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, const bool* valid_symbols) {
   Scanner* s = (Scanner*)payload;
+
+  // Unterminated string. Only valid inside a string, where no command keyword
+  // is; during error recovery every symbol is valid, so the check on
+  // CMD_PLOT_KW keeps this from firing at every newline there.
+  if (valid_symbols[STRING_EOL] && !valid_symbols[CMD_PLOT_KW] &&
+      (lexer->lookahead == '\n' || lexer->lookahead == '\r' || lexer->eof(lexer))) {
+    lexer->result_symbol = STRING_EOL;
+    return true;
+  }
 
   // GVAL_SEP/GVAL_BIND: zero-width, same-line only. Must run BEFORE
   // skip_whitespaces (which also skips newlines and ';'). Skips spaces/tabs
@@ -1128,6 +1164,8 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
         if ((c >= '0' && c <= '9') || c == '.' || c == '"' || c == '\'' ||
             c == '(' || c == '-' || c == '+' || c == '~' || c == '!' ||
             c == '$' || c == '@' || c == ',' || c == '{' ||
+            // '|' opens a cardinality `|A|`
+            c == '|' ||
             // '[' opens plot_element's leading range_block — cmd_bare tail only
             (c == '[' && SEP == GVAL_TAIL)) {
           lexer->result_symbol = SEP;
@@ -1160,6 +1198,31 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
     if (lexer->lookahead == '\n' || lexer->lookahead == ';' || lexer->lookahead == '#' ||
         lexer->lookahead == 0)
       same_line = false;
+  }
+
+  // Postfix factorial. Like the probe above, skips only spaces, tabs and
+  // \-newline continuations, so a `!` past a raw newline is left to the
+  // grammar's shell command. `!=` is the inequality operator; declining lets
+  // the internal lexer read it. STRING_EOL is valid only inside a string, so
+  // it being valid too means error recovery, where this must not fire.
+  if (valid_symbols[FACTORIAL_BANG] && !valid_symbols[STRING_EOL]) {
+    for (;;) {
+      if (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\r') {
+        skip(lexer);
+      } else if (lexer->lookahead == '\\') {
+        skip(lexer);
+        if (lexer->lookahead == '\r') skip(lexer);
+        if (lexer->lookahead == '\n') skip(lexer);
+      } else {
+        break;
+      }
+    }
+    if (lexer->lookahead == '!') {
+      consume(lexer);
+      if (lexer->lookahead == '=') return false;
+      lexer->result_symbol = FACTORIAL_BANG;
+      return true;
+    }
   }
 
   skip_whitespaces(lexer);

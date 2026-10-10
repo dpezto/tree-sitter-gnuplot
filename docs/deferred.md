@@ -49,4 +49,36 @@ was not attempted.
 fires once, between `set` and the for_block, and there is no second gate after
 the for_block closes.
 
+## Old-style if bodies with more than one command
+
+gnuplot runs the rest of the line as the body of `if (c) cmd1; cmd2`. The
+grammar takes only `cmd1` into `cmd_if` and leaves `cmd2` unconditional; the
+`; else` branch is supported. A zero-width external separator for `;` inside
+the body was measured at 12104 to 22679 states and 27.2 to 51.8 MB of
+parser.c, the same failure mode as the refuted `_eos` terminator.
+
+## Raw text the grammar still parses as expressions
+
+Datablock lines are parsed as expressions, so data that is not one (`1,2`,
+timestamps, an unmatched quote) is an ERROR. A scanner token for the raw
+lines between the markers would fix it, at the cost of the current
+number/string children, which is a breaking CST change.
+
+Inline plot data after `plot "-"` (data lines and the `e` terminator) has no
+grammar at all and parses as statements. It needs a raw-data token attached
+to plot/splot elements whose source is `"-"`.
+
+`!` passes the rest of the line to the shell, but `cmd_system` takes one
+expression, so `! printf hello` fails at the second word. A raw shell-text
+node for the `!` form changes the CST and the bash injection.
+
+Backtick command substitution (`` print `printf 123` ``) is not an expression
+atom. It would need an opaque node in expression positions.
+
+## gnuplot 6 function blocks
+
+`function $F(x) << EOD` ... `return` ... `EOD` and calls of the form
+`$F(3)` are not supported. They need a definition rule with a `return`
+statement and `$name(...)` calls in expressions.
+
 Closed items are not listed here; git log records them.

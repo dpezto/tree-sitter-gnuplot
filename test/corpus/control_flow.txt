@@ -512,3 +512,36 @@ if (1) { print "a" }
     (cmd_print
       (string_literal))))
 
+
+===========================================================================
+  Old-style if with else
+===========================================================================
+if (0) print 1; else print 2
+if (0) print 3; else if (1) print 4; else print 5
+if (0) if (1) print 6; else print 7
+---------------------------------------------------------------------------
+(source_file
+  (cmd_if
+    conditions: (number)
+    (cmd_print
+      (number))
+    (cmd_print
+      (number)))
+  (cmd_if
+    conditions: (number)
+    (cmd_print
+      (number))
+    (cmd_if
+      conditions: (number)
+      (cmd_print
+        (number))
+      (cmd_print
+        (number))))
+  (cmd_if
+    conditions: (number)
+    (cmd_if
+      conditions: (number)
+      (cmd_print
+        (number)))
+    (cmd_print
+      (number))))

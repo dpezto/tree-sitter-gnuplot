@@ -395,8 +395,8 @@
     "time" "timecolumn" "strftime" "strptime" "tm_hour" "tm_mday" "tm_min" "tm_mon" "tm_sec"
     "tm_wday" "tm_week" "tm_yday" "tm_year" "weekdate_iso" "weekdate_cdc"
     ; using-specifier / plotting
-    "column" "columnhead" "stringcolumn" "strcol" "exists" "valid" "value" "hsv2rgb" "palette"
-    "rgbcolor" "voxel"))
+    "column" "columnhead" "columnheader" "stringcolumn" "strcol" "exists" "valid" "value" "hsv2rgb"
+    "palette" "rgbcolor" "voxel"))
 
 ; bare `title columnheader` (the called form `columnheader(N)` is a (function)
 ; and matches the builtin list above)
