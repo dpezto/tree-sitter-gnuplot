@@ -374,3 +374,27 @@ print "9"."1"-10
         (string_literal))
       (operator)
       (number))))
+
+===========================================================================
+  Assignment to a keyword name on the line after a command
+===========================================================================
+set samples 5
+offset=3
+plot x
+lw=3
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    arg_opts: (samples
+      (number)))
+  (assignment
+    (def_var
+      (identifier)
+      (number)))
+  (cmd_plot
+    (plot_element
+      data: (identifier)))
+  (assignment
+    (def_var
+      (identifier)
+      (number))))

@@ -983,6 +983,13 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
   if (in_generic_body(valid_symbols) && lexer->lookahead == '.')
     return false;
 
+  // A word followed by assignment syntax starts an assignment, not a keyword.
+  // Option bodies and plot elements have no line boundary in the grammar, so
+  // without this `set samples 5` followed by `offset=3` on the next line read
+  // `offset` as one more sub-keyword of the samples body.
+  if (is_assignment_context(lexer))
+    return false;
+
   // Plot style names take priority over style attrs (e.g. "lines" is the style,
   // not linestyle).
   if (valid_symbols[KW_PLT_ST] && match_kw_table(word, word_len, PLT_STYLE_KWS)) {
