@@ -332,3 +332,27 @@ plot '+' using 1:1:(0.1) with errorlines, '+' using 1:1:(0.1) with errorl
           using: (parenthesized_expression
             (number))))
       with: (plot_style))))
+
+===========================================================================
+  Abbreviated every
+===========================================================================
+plot '+' ev 2, '+' every 3, '+' ever 2:1
+---------------------------------------------------------------------------
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (every
+          point_incr: (number))))
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (every
+          point_incr: (number))))
+    (plot_element
+      data: (string_literal)
+      (datafile_modifiers
+        (every
+          point_incr: (number)
+          block_incr: (number))))))

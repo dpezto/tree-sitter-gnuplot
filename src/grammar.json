@@ -13737,8 +13737,8 @@
           {
             "type": "ALIAS",
             "content": {
-              "type": "STRING",
-              "value": "every"
+              "type": "PATTERN",
+              "value": "ev(e(r(y)?)?)?"
             },
             "named": false,
             "value": "attr"

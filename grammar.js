@@ -2337,7 +2337,7 @@ module.exports = grammar({
 		every: ($) =>
 			prec.left(
 				seq(
-					alias("every", "attr"),
+					key("every", 2, "attr"),
 					optional(
 						seq(
 							optional(field("point_incr", $._expression)),
