@@ -123,6 +123,23 @@ for _, case in ipairs(injection_cases) do
   end
 end
 
+-- { snippet, node text, capture that node must receive }
+local highlights_query = query
+local capture_cases = {
+  { "stats $D using (strlen(columnheader(1))) nooutput", "columnheader", "function.builtin" },
+}
+for _, case in ipairs(capture_cases) do
+  local src_text, needle, expected = case[1], case[2], case[3]
+  local found = {}
+  for id, node in highlights_query:iter_captures(root_of(src_text), src_text) do
+    if vim.treesitter.get_node_text(node, src_text) == needle then
+      found[highlights_query.captures[id]] = true
+    end
+  end
+  check(found[expected], ("%s: expected %q on %q, got %s"):format(
+    src_text, "@" .. expected, needle, vim.inspect(vim.tbl_keys(found))))
+end
+
 if #failures > 0 then
   io.stderr:write("query checks failed:\n  " .. table.concat(failures, "\n  ") .. "\n")
   os.exit(1)
