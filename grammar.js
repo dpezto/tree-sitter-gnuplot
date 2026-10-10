@@ -2539,10 +2539,16 @@ module.exports = grammar({
 				seq(
 					"'",
 					repeat(
-						choice(
-							token.immediate(prec(1, /[^'%\n]+/)),
-							$.format_specifier,
-							token.immediate(prec(0, /%/)), // bare % not starting a specifier
+						seq(
+							choice(
+								token.immediate(prec(1, /[^'%\n]+/)),
+								$.format_specifier,
+								token.immediate(prec(0, /%/)), // bare % not starting a specifier
+							),
+							// `''` after other text is one literal quote. gnuplot does
+							// not read it so at the start or right after another `''`:
+							// there the first quote closes the string.
+							optional(alias(token.immediate("''"), $.escape_sequence)),
 						),
 					),
 					token.immediate("'"),

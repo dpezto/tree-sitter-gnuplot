@@ -14920,33 +14920,58 @@
             {
               "type": "REPEAT",
               "content": {
-                "type": "CHOICE",
+                "type": "SEQ",
                 "members": [
                   {
-                    "type": "IMMEDIATE_TOKEN",
-                    "content": {
-                      "type": "PREC",
-                      "value": 1,
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "[^'%\\n]+"
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "IMMEDIATE_TOKEN",
+                        "content": {
+                          "type": "PREC",
+                          "value": 1,
+                          "content": {
+                            "type": "PATTERN",
+                            "value": "[^'%\\n]+"
+                          }
+                        }
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "format_specifier"
+                      },
+                      {
+                        "type": "IMMEDIATE_TOKEN",
+                        "content": {
+                          "type": "PREC",
+                          "value": 0,
+                          "content": {
+                            "type": "PATTERN",
+                            "value": "%"
+                          }
+                        }
                       }
-                    }
+                    ]
                   },
                   {
-                    "type": "SYMBOL",
-                    "name": "format_specifier"
-                  },
-                  {
-                    "type": "IMMEDIATE_TOKEN",
-                    "content": {
-                      "type": "PREC",
-                      "value": 0,
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "%"
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "IMMEDIATE_TOKEN",
+                          "content": {
+                            "type": "STRING",
+                            "value": "''"
+                          }
+                        },
+                        "named": true,
+                        "value": "escape_sequence"
+                      },
+                      {
+                        "type": "BLANK"
                       }
-                    }
+                    ]
                   }
                 ]
               }

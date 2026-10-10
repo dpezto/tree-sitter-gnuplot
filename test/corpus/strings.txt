@@ -95,3 +95,27 @@ print sprintf("%8.5g", x)
         (string_literal
           (format_specifier))
         (identifier)))))
+
+===========================================================================
+  Doubled single quote inside a single-quoted string
+===========================================================================
+print 'a''b'
+print 'a'''
+print '', 'x'
+print 'it''s %d''x'
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (string_literal
+      (escape_sequence)))
+  (cmd_print
+    (string_literal
+      (escape_sequence)))
+  (cmd_print
+    (string_literal)
+    (string_literal))
+  (cmd_print
+    (string_literal
+      (escape_sequence)
+      (format_specifier)
+      (escape_sequence))))
