@@ -119,3 +119,31 @@ print 'it''s %d''x'
       (escape_sequence)
       (format_specifier)
       (escape_sequence))))
+
+===========================================================================
+  Single character of a string literal
+===========================================================================
+print "abc"[2]
+print "abc"[2:3]
+print "abc"[1+1] . "x"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (subscript
+      (string_literal)
+      (number)))
+  (cmd_print
+    (subscript
+      (string_literal)
+      (number)
+      (number)))
+  (cmd_print
+    (binary_expression
+      (subscript
+        (string_literal)
+        (binary_expression
+          (number)
+          (operator)
+          (number)))
+      (operator)
+      (string_literal))))

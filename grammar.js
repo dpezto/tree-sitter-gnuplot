@@ -2678,13 +2678,18 @@ module.exports = grammar({
 		subscript: ($) =>
 			prec(
 				2,
-				seq(
-					choice($.identifier, $.string_literal),
-					"[",
-					optional(choice($._expression, "*")),
-					":",
-					optional(choice($._expression, "*")),
-					"]",
+				choice(
+					seq(
+						choice($.identifier, $.string_literal),
+						"[",
+						optional(choice($._expression, "*")),
+						":",
+						optional(choice($._expression, "*")),
+						"]",
+					),
+					// one character of a string literal, `"abc"[2]`; on an
+					// identifier the same shape is an array element (`array`)
+					seq($.string_literal, "[", $._expression, "]"),
 				),
 			),
 
