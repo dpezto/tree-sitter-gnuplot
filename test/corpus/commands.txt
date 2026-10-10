@@ -1981,3 +1981,42 @@ set samples |A|+10
           (operator))
         (operator)
         (number)))))
+
+===========================================================================
+  Macro as an operand
+===========================================================================
+s="1"
+print @s
+print @s + 1
+set xrange [@s:5]
+f="x"
+set term unknown
+plot @f with lines
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal)))
+  (cmd_print
+    (macro))
+  (cmd_print
+    (binary_expression
+      (macro)
+      (operator)
+      (number)))
+  (cmd_set
+    (xrange
+      (range_block
+        (macro)
+        (number))))
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal)))
+  (cmd_set
+    (terminal))
+  (cmd_plot
+    (plot_element
+      data: (macro)
+      with: (plot_style))))

@@ -3285,6 +3285,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "macro"
+          },
+          {
+            "type": "SYMBOL",
             "name": "array"
           },
           {
@@ -14315,6 +14319,10 @@
           {
             "type": "SYMBOL",
             "name": "identifier"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "macro"
           },
           {
             "type": "SYMBOL",

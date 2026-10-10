@@ -779,6 +779,7 @@ module.exports = grammar({
 			prec.left(
 				choice(
 					$.identifier,
+					$.macro,
 					$.array,
 					$.subscript,
 					$.datablock,
@@ -2445,6 +2446,9 @@ module.exports = grammar({
 			prec.left(
 				choice(
 					$.identifier,
+					// a macro expands to text before the line is parsed; in
+					// operand position it stands for a value (`print @s`)
+					$.macro,
 					$.function,
 					$.array,
 					$.subscript,
