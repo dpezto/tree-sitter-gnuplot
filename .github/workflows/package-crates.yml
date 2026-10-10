@@ -58,6 +58,8 @@ jobs:
       - name: Set up tree-sitter CLI
         if: ${{inputs.generate}}
         uses: tree-sitter/setup-action/cli@v2
+        with:
+          tree-sitter-ref: v0.27.1
       - name: Install dependencies
         run: |-
           if jq -e "$JQ_SCRIPT" package.json >/dev/null; then

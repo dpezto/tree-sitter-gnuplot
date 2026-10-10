@@ -13,7 +13,7 @@ body:
     id: ts
     attributes:
       label: tree-sitter CLI version
-      placeholder: "tree-sitter 0.26.11 (tree-sitter --version)"
+      placeholder: "tree-sitter 0.27.1 (tree-sitter --version)"
     validations:
       required: true
   - type: input
