@@ -103,6 +103,9 @@ local injection_cases = {
   { 'x = system("printf hi")', "printf hi" },
   -- `!` hands the rest of the line to the shell as written, quotes included
   { '! "printf hi"', '"printf hi"' },
+  { "! pwd", "pwd" },
+  -- `system cmd` runs the command stored in the variable `cmd`
+  { 'cmd = "printf hi"\nsystem cmd', nil },
 }
 for _, case in ipairs(injection_cases) do
   local src_text, expected = case[1], case[2]

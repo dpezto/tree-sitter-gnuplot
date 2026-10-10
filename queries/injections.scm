@@ -18,9 +18,12 @@
   (#eq? @_head "!")
   (#set! injection.language "bash"))
 
-; ! ls / system ls → bash (single identifier)
+; ! ls → bash (single word). `system cmd` is not injected: there the
+; identifier is a variable holding the command.
 (cmd_system
+  "cmd" @_head
   (identifier) @injection.content
+  (#eq? @_head "!")
   (#set! injection.language "bash"))
 
 ; system("command") → bash
