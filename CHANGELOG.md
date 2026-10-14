@@ -4,6 +4,13 @@ All notable changes are documented here. This file is maintained automatically b
 [release-please](https://github.com/googleapis/release-please) from Conventional-Commit
 history; do not edit it by hand.
 
+## [4.2.1](https://github.com/dpezto/tree-sitter-gnuplot/compare/v4.2.0...v4.2.1) (2026-10-14)
+
+
+### Bug Fixes
+
+* grammar, scanner and query fixes ([#77](https://github.com/dpezto/tree-sitter-gnuplot/issues/77)) ([49082c8](https://github.com/dpezto/tree-sitter-gnuplot/commit/49082c8a328812290c813b500ec82abe058efb6c))
+
 ## [4.2.0](https://github.com/dpezto/tree-sitter-gnuplot/compare/v4.1.0...v4.2.0) (2026-10-10)
 
 
