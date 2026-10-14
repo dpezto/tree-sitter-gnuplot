@@ -3,6 +3,14 @@ name: release
 on:
   push:
     branches: [main]
+  # Recovery path for a registry publish that failed after the release was cut.
+  # Runs from this file so npm's trusted publisher still matches.
+  workflow_dispatch:
+    inputs:
+      npm:
+        description: Publish the current version to npm
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -45,7 +53,7 @@ jobs:
   # the OIDC id-token.
   npm:
     needs: release-please
-    if: needs.release-please.outputs.release_created == 'true'
+    if: needs.release-please.outputs.release_created == 'true' || (github.event_name == 'workflow_dispatch' && inputs.npm)
     permissions:
       contents: read
       id-token: write
