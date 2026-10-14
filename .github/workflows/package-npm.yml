@@ -81,9 +81,12 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
+        # windows-11-arm is left out: node-gyp on that image fails to locate
+        # Visual Studio (ERR_CHILD_PROCESS_STDIO_MAXBUFFER in its finder), which
+        # cancelled the whole matrix and skipped the 4.2.0 and 4.2.1 publishes.
+        # Windows on ARM installs fall back to building from source.
         os:
           - windows-2022
-          - windows-11-arm
           - ubuntu-24.04
           - ubuntu-24.04-arm
           - macos-15
