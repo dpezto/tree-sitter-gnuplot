@@ -1075,7 +1075,7 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
   }
 
   // GVAL_SEP/GVAL_BIND: zero-width, same-line only. Must run BEFORE
-  // skip_whitespaces (which also skips newlines and ';'). Skips spaces/tabs
+  // skip_whitespaces (which also skips newlines and ';'). Skips inline whitespace
   // and \-newline continuations; succeeds iff the next content is on the
   // same logical line. When both are valid, the body gate (GVAL_SEP) wins.
   // GVAL_TAIL is the cmd_bare variant: same semantics plus '[' opens it.
@@ -1083,7 +1083,8 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
     const int SEP = valid_symbols[GVAL_SEP] ? GVAL_SEP
                   : (valid_symbols[GVAL_BIND] ? GVAL_BIND : GVAL_TAIL);
     for (;;) {
-      if (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\r') {
+      if (lexer->lookahead == ' ' || lexer->lookahead == '\t' || lexer->lookahead == '\r' ||
+          lexer->lookahead == '\f' || lexer->lookahead == '\v') {
         skip(lexer);
       } else if (lexer->lookahead == '\\') {
         skip(lexer);
@@ -1253,7 +1254,8 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
     consume(lexer);
     lexer->mark_end(lexer);
     for (;;) {
-      if (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
+      if (lexer->lookahead == ' ' || lexer->lookahead == '\t' ||
+          lexer->lookahead == '\f' || lexer->lookahead == '\v') {
         consume(lexer);
       } else if (lexer->lookahead == '\\') {
         consume(lexer);

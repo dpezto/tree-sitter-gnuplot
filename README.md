@@ -11,7 +11,7 @@ A tree-sitter grammar for [gnuplot 6.x](http://gnuplot.info).
 
 Supports `.gnuplot`, `.gp`, `.plt`, `.plot`, `.gnu` files. Built with an external
 scanner for command disambiguation, comprehensive syntax highlighting queries, and
-274 corpus tests.
+275 corpus tests.
 
 This project is the next evolution of [gnuplot.vim](https://github.com/dpezto/gnuplot.vim),
 designed for accuracy to gnuplot 6 syntax and long-term maintainability.

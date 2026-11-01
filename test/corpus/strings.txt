@@ -228,3 +228,23 @@ print `printf \
 (source_file
   (cmd_print
     (command_substitution)))
+
+===========================================================================
+  Escaped backquotes remain literal inside double-quoted strings
+===========================================================================
+print "literal \`printf 123\`"
+print "\`"
+print "\` then `printf 1`"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (string_literal
+      (escape_sequence)
+      (escape_sequence)))
+  (cmd_print
+    (string_literal
+      (escape_sequence)))
+  (cmd_print
+    (string_literal
+      (escape_sequence)
+      (command_substitution))))

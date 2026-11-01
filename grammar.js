@@ -2517,7 +2517,8 @@ module.exports = grammar({
 
 		// shortcut: backquotes are opaque atoms; generated syntax needs preprocessing.
 		// gnuplot also closes an unterminated backquote at the end of the line.
-		command_substitution: (_) => token(seq("`", /(?:\\\r?\n|[^`\r\n])*/, optional("`"))),
+		// Escapes must win before extras can skip their leading backslash.
+		command_substitution: (_) => token(prec(-1, seq("`", /(?:\\\r?\n|[^`\r\n])*/, optional("`")))),
 
 		// Alt design: scanner-based string tokens (_string_start/_content/_end);
 		// the inline format_specifier below works, so the scanner path isn't needed.

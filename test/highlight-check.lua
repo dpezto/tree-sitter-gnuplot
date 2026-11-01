@@ -113,6 +113,9 @@ local injection_cases = {
   { "print `printf 123", "printf 123" },
   { 'print "``"', "" },
   { "print `", nil },
+  { 'print "literal \\`printf 123\\`"', nil },
+  { 'print "\\`"', nil },
+  { 'print "\\` then `printf 1`"', "printf 1" },
   { "print 'literal `printf 123`'", nil },
   -- `system cmd` runs the command stored in the variable `cmd`
   { 'cmd = "printf hi"\nsystem cmd', nil },
@@ -133,9 +136,15 @@ for _, case in ipairs(injection_cases) do
   end
 end
 
--- CRLF must preserve the same logical-line boundaries as LF.
+-- Control whitespace must not hide a physical newline.
 for _, case in ipairs({
   { "a =\r\n5\r\n", true },
+  { "a =\f1\n", false },
+  { "a =\v1\n", false },
+  { "a =\f\n1\n", true },
+  { "print for [i=1:2]\vi\n", false },
+  { "print for [i=1:2]\v\ni\n", true },
+  { "print for [i=1:2]\f\ni\n", true },
   { "a = \\\r\n5\r\n", false },
   { "set for [i=1:2]\r\nsamples 5\r\n", true },
   { "set for [i=1:2] \\\r\nsamples 5\r\n", false },
