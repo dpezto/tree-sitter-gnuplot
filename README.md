@@ -11,7 +11,7 @@ A tree-sitter grammar for [gnuplot 6.x](http://gnuplot.info).
 
 Supports `.gnuplot`, `.gp`, `.plt`, `.plot`, `.gnu` files. Built with an external
 scanner for command disambiguation, comprehensive syntax highlighting queries, and
-92 corpus tests.
+275 corpus tests.
 
 This project is the next evolution of [gnuplot.vim](https://github.com/dpezto/gnuplot.vim),
 designed for accuracy to gnuplot 6 syntax and long-term maintainability.
@@ -29,5 +29,15 @@ datablock sources, so a query written as `(plot_element data: (function ...))`
 must become `(plot_element function: (function ...))`. Both fields already
 existed, so `node-types.json` remains backward compatible — only which field the
 parser populates changed.
+
+The `!` shell form now stores the whole logical line in
+`(cmd_system (shell_command))`, replacing its former expression children
+(`identifier`, `string_literal`, etc.). This requires a breaking release for
+consumers of that tree shape. The `system <expression>` form keeps its tree.
+
+Backquotes are opaque `command_substitution` nodes in expressions and
+double-quoted strings; single-quoted strings keep them literal. Both these
+substitutions and `shell_command` inject their shell text as Bash. The parser
+does not expand shell output into generated commands or keywords.
 
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJzdmcyIiB3aWR0aD0iNjQ1IiBoZWlnaHQ9IjU4NSIgdmVyc2lvbj0iMS4wIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPiA8ZyBpZD0ibGF5ZXIxIj4gIDxwYXRoIGlkPSJwYXRoMjQxNyIgZD0ibTI5Ny4zIDU1MC44N2MtMTMuNzc1LTE1LjQzNi00OC4xNzEtNDUuNTMtNzYuNDM1LTY2Ljg3NC04My43NDQtNjMuMjQyLTk1LjE0Mi03Mi4zOTQtMTI5LjE0LTEwMy43LTYyLjY4NS01Ny43Mi04OS4zMDYtMTE1LjcxLTg5LjIxNC0xOTQuMzQgMC4wNDQ1MTItMzguMzg0IDIuNjYwOC01My4xNzIgMTMuNDEtNzUuNzk3IDE4LjIzNy0zOC4zODYgNDUuMS02Ni45MDkgNzkuNDQ1LTg0LjM1NSAyNC4zMjUtMTIuMzU2IDM2LjMyMy0xNy44NDUgNzYuOTQ0LTE4LjA3IDQyLjQ5My0wLjIzNDgzIDUxLjQzOSA0LjcxOTcgNzYuNDM1IDE4LjQ1MiAzMC40MjUgMTYuNzE0IDYxLjc0IDUyLjQzNiA2OC4yMTMgNzcuODExbDMuOTk4MSAxNS42NzIgOS44NTk2LTIxLjU4NWM1NS43MTYtMTIxLjk3IDIzMy42LTEyMC4xNSAyOTUuNSAzLjAzMTYgMTkuNjM4IDM5LjA3NiAyMS43OTQgMTIyLjUxIDQuMzgwMSAxNjkuNTEtMjIuNzE1IDYxLjMwOS02NS4zOCAxMDguMDUtMTY0LjAxIDE3OS42OC02NC42ODEgNDYuOTc0LTEzNy44OCAxMTguMDUtMTQyLjk4IDEyOC4wMy01LjkxNTUgMTEuNTg4LTAuMjgyMTYgMS44MTU5LTI2LjQwOC0yNy40NjF6IiBmaWxsPSIjZGQ1MDRmIi8%2BIDwvZz48L3N2Zz4%3D

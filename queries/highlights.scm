@@ -458,6 +458,11 @@
 
 (string_literal) @string
 
+[
+  (command_substitution)
+  (shell_command)
+] @string.special
+
 (escape_sequence) @string.escape
 
 (format_specifier) @string.special
