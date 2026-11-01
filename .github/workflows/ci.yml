@@ -59,7 +59,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-14, windows-latest]
+        os: [ubuntu-latest, macos-15, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -81,7 +81,7 @@ jobs:
           # loads ABI 15 parsers.
           test-node: true
           test-python: true
-          test-swift: ${{ matrix.os == 'macos-14' }}
+          test-swift: ${{ matrix.os == 'macos-15' }}
       - name: Oracle parse (synthetic full-length script)
         # test/oracle/synthetic.plt mirrors the statement mix of a real-world
         # script and contains exactly one deliberately-invalid line (the
