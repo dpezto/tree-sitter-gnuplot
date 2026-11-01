@@ -23,7 +23,7 @@ Homepage = "https://github.com/dpezto/tree-sitter-gnuplot"
 Funding = "https://github.com/dpezto/tree-sitter-gnuplot"
 
 [project.optional-dependencies]
-core = ["tree-sitter~=0.24"]
+core = ["tree-sitter~=0.26.0"]
 
 [tool.cibuildwheel]
 build = "cp310-*"
