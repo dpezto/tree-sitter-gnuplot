@@ -10,20 +10,20 @@
   (#offset! @injection.content 0 1 0 -1)
   (#set! injection.language "bash"))
 
-; ! "command" → bash. `!` passes the rest of the line as written, quotes
-; included.
-(cmd_system
-  "cmd" @_head
-  (string_literal) @injection.content
-  (#eq? @_head "!")
+; `!` passes the rest of the logical line verbatim, including quotes.
+((shell_command) @injection.content
   (#set! injection.language "bash"))
 
-; ! ls → bash (single word). `system cmd` is not injected: there the
-; identifier is a variable holding the command.
-(cmd_system
-  "cmd" @_head
-  (identifier) @injection.content
-  (#eq? @_head "!")
+((command_substitution) @injection.content
+  (#not-eq? @injection.content "`")
+  (#match? @injection.content "`$")
+  (#offset! @injection.content 0 1 0 -1)
+  (#set! injection.language "bash"))
+
+; An unterminated backquote ends at the line boundary, without a closing byte.
+((command_substitution) @injection.content
+  (#not-match? @injection.content "`$")
+  (#offset! @injection.content 0 1 0 0)
   (#set! injection.language "bash"))
 
 ; system("command") → bash

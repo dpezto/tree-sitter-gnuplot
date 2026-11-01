@@ -993,6 +993,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "_gval_sep"
+          },
+          {
+            "type": "SYMBOL",
             "name": "_var_rhs"
           }
         ]
@@ -3286,6 +3290,10 @@
           {
             "type": "SYMBOL",
             "name": "macro"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "command_substitution"
           },
           {
             "type": "SYMBOL",
@@ -10487,44 +10495,66 @@
       ]
     },
     "cmd_system": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
                 "type": "STRING",
                 "value": "system"
               },
-              {
-                "type": "STRING",
-                "value": "!"
-              }
-            ]
-          },
-          "named": false,
-          "value": "cmd"
+              "named": false,
+              "value": "cmd"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_gval_sep"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    }
+                  ]
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
         },
         {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "SEQ",
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "!"
+              },
+              "named": false,
+              "value": "cmd"
+            },
+            {
+              "type": "CHOICE",
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "_gval_sep"
+                  "name": "shell_command"
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "BLANK"
                 }
               ]
-            },
-            {
-              "type": "BLANK"
             }
           ]
         }
@@ -10999,7 +11029,12 @@
                   ]
                 },
                 {
-                  "type": "STRING",
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_for_close"
+                  },
+                  "named": false,
                   "value": "]"
                 }
               ]
@@ -14303,6 +14338,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "command_substitution"
+          },
+          {
+            "type": "SYMBOL",
             "name": "function"
           },
           {
@@ -14838,6 +14877,34 @@
         }
       ]
     },
+    "command_substitution": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "`"
+          },
+          {
+            "type": "PATTERN",
+            "value": "(?:\\\\\\r?\\n|[^`\\r\\n])*"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "`"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
+    },
     "string_literal": {
       "type": "CHOICE",
       "members": [
@@ -14860,9 +14927,13 @@
                       "value": 1,
                       "content": {
                         "type": "PATTERN",
-                        "value": "[^\"\\\\%\\n]+"
+                        "value": "[^\"\\\\%`\\n]+"
                       }
                     }
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "command_substitution"
                   },
                   {
                     "type": "SYMBOL",
@@ -16139,9 +16210,27 @@
     {
       "type": "SYMBOL",
       "name": "_factorial_bang"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_for_close"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "shell_command"
     }
   ],
-  "inline": [],
+  "inline": [
+    "_sa",
+    "_lt",
+    "_lc",
+    "_dt",
+    "_pt",
+    "_ps",
+    "_fs",
+    "_fc",
+    "_tc"
+  ],
   "supertypes": [],
   "reserved": {}
 }

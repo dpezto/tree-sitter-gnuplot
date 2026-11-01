@@ -146,11 +146,17 @@ module.exports = grammar({
 		$._string_eol,
 		// postfix factorial `!`, only on the expression's own logical line
 		$._factorial_bang,
+		// The iteration body must follow `]` on the same logical line.
+		$._for_close,
+		// Raw text after `!`, before keyword scanning can claim its first word.
+		$.shell_command,
 	],
 
 	extras: ($) => [$.comment, /\s|\\|;/],
 
 	word: ($) => $.identifier,
+
+	inline: ($) => [$._sa, $._lt, $._lc, $._dt, $._pt, $._ps, $._fs, $._fc, $._tc],
 
 	conflicts: ($) => [
 		[$.plot_element, $.style_opts],
@@ -303,7 +309,7 @@ module.exports = grammar({
 		assignment: ($) =>
 			choice($.def_var, $.def_func, $.def_array, $.def_datablock),
 
-		def_var: ($) => prec.right(seq($.identifier, "=", $._var_rhs)),
+		def_var: ($) => prec.right(seq($.identifier, "=", $._gval_sep, $._var_rhs)),
 		_var_rhs: ($) => prec.right(choice($.def_var, $._expression)),
 
 		def_array: ($) =>
@@ -775,6 +781,7 @@ module.exports = grammar({
 				choice(
 					$.identifier,
 					$.macro,
+					$.command_substitution,
 					$.array,
 					$.subscript,
 					$.datablock,
@@ -1826,11 +1833,10 @@ module.exports = grammar({
 				),
 			),
 
-		cmd_system: ($) =>
-			seq(
-				alias(choice("system", "!"), "cmd"),
-				optional(seq($._gval_sep, $._expression)),
-			),
+		cmd_system: ($) => choice(
+			seq(alias("system", "cmd"), optional(seq($._gval_sep, $._expression))),
+			seq(alias("!", "cmd"), optional($.shell_command)),
+		),
 
 		cmd_test: ($) =>
 			prec.left(
@@ -1905,8 +1911,8 @@ module.exports = grammar({
 				repeat1(
 					seq(
 						"for",
-						surround(
-							"[]",
+						seq(
+							"[",
 							choice(
 								seq(field("start", $.identifier), "in", $._expression),
 								seq(
@@ -1916,6 +1922,7 @@ module.exports = grammar({
 									optional(seq(":", field("increment", $._expression))),
 								),
 							),
+							alias($._for_close, "]"),
 						),
 					),
 				),
@@ -2432,6 +2439,7 @@ module.exports = grammar({
 					// a macro expands to text before the line is parsed; in
 					// operand position it stands for a value (`print @s`)
 					$.macro,
+					$.command_substitution,
 					$.function,
 					$.array,
 					$.subscript,
@@ -2507,6 +2515,10 @@ module.exports = grammar({
 				field("Im", $._expression),
 			),
 
+		// shortcut: backquotes are opaque atoms; generated syntax needs preprocessing.
+		// gnuplot also closes an unterminated backquote at the end of the line.
+		command_substitution: (_) => token(seq("`", /(?:\\\r?\n|[^`\r\n])*/, optional("`"))),
+
 		// Alt design: scanner-based string tokens (_string_start/_content/_end);
 		// the inline format_specifier below works, so the scanner path isn't needed.
 		string_literal: ($) =>
@@ -2515,7 +2527,8 @@ module.exports = grammar({
 					'"',
 					repeat(
 						choice(
-							token.immediate(prec(1, /[^"\\%\n]+/)),
+							token.immediate(prec(1, /[^"\\%`\n]+/)),
+							$.command_substitution,
 							$.escape_sequence,
 							$.format_specifier,
 							token.immediate(prec(0, /%/)), // bare % not starting a specifier

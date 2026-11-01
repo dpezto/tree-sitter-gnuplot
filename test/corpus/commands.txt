@@ -2020,3 +2020,275 @@ plot @f with lines
     (plot_element
       data: (macro)
       with: (plot_style))))
+
+===========================================================================
+  Iteration bodies stay on the same logical line
+===========================================================================
+set for [i=1:2] for [j=1:2] samples 5
+unset for [i=1:2] label i
+plot for [i=1:2] [0:1] x
+plot for [i=1:2] for [j=1:2] i*x
+print for [i=1:2] \
+i
+do for [i=1:2] {print i}
+array A[2] = [1,2]
+plot for [i=1:A[2]] sin(x)
+print A[2] + 1
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (for_block
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (number)
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (number))
+    arg_opts: (samples
+      (number)))
+  (cmd_unset
+    (for_block
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (number))
+    (label
+      tag: (identifier)))
+  (cmd_plot
+    (plot_element
+      (for_block
+        start: (assignment
+          (def_var
+            (identifier)
+            (number)))
+        end: (number))
+      sample: (range_block
+        (number)
+        (number))
+      data: (identifier)))
+  (cmd_plot
+    (plot_element
+      (for_block
+        start: (assignment
+          (def_var
+            (identifier)
+            (number)))
+        end: (number)
+        start: (assignment
+          (def_var
+            (identifier)
+            (number)))
+        end: (number))
+      data: (binary_expression
+        (identifier)
+        (operator)
+        (identifier))))
+  (cmd_print
+    (for_block
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (number))
+    (identifier))
+  (cmd_do
+    (for_block
+      start: (assignment
+        (def_var
+          (identifier)
+          (number)))
+      end: (number))
+    (cmd_print
+      (identifier)))
+  (assignment
+    (def_array
+      (array
+        name: (identifier)
+        (number))
+      (number)
+      (number)))
+  (cmd_plot
+    (plot_element
+      (for_block
+        start: (assignment
+          (def_var
+            (identifier)
+            (number)))
+        end: (array
+          name: (identifier)
+          (number)))
+      function: (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))))
+  (cmd_print
+    (binary_expression
+      (array
+        name: (identifier)
+        (number))
+      (operator)
+      (number))))
+
+===========================================================================
+  Iteration rejects a next-line set body
+===========================================================================
+set for [i=1:2]
+samples 5
+---------------------------------------------------------------------------
+(source_file
+  (cmd_set
+    (ERROR
+      (assignment
+        (def_var
+          (identifier)
+          (number)))
+      (number))
+    arg_opts: (samples
+      (number))))
+
+===========================================================================
+  Iteration rejects a next-line unset body
+===========================================================================
+unset for [i=1:2]
+label 1
+---------------------------------------------------------------------------
+(source_file
+  (cmd_unset)
+  (ERROR
+    (assignment
+      (def_var
+        (identifier)
+        (number)))
+    (number)
+    (number)))
+
+===========================================================================
+  Iteration rejects a next-line print body
+===========================================================================
+print for [i=1:2]
+i
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print)
+  (ERROR
+    (assignment
+      (def_var
+        (identifier)
+        (number)))
+    (number)))
+
+===========================================================================
+  Iteration rejects a next-line plot body
+===========================================================================
+plot for [i=1:2]
+x
+---------------------------------------------------------------------------
+(source_file
+  (cmd_plot)
+  (ERROR
+    (assignment
+      (def_var
+        (identifier)
+        (number)))
+    (number)))
+
+===========================================================================
+  Iteration rejects a next-line do body
+===========================================================================
+do for [i=1:2]
+{print i}
+---------------------------------------------------------------------------
+(source_file
+  (cmd_do)
+  (ERROR
+    (assignment
+      (def_var
+        (identifier)
+        (number)))
+    (ERROR
+      (number))
+    (identifier)))
+
+===========================================================================
+  Shell commands consume the full logical line
+===========================================================================
+! printf hello; printf world # shell comment
+print 2
+! "printf" "%s" hello
+! printf \
+hello
+print 3
+! pwd
+---------------------------------------------------------------------------
+(source_file
+  (cmd_system
+    (shell_command))
+  (cmd_print
+    (number))
+  (cmd_system
+    (shell_command))
+  (cmd_system
+    (shell_command))
+  (cmd_print
+    (number))
+  (cmd_system
+    (shell_command)))
+
+===========================================================================
+  Bare shell commands keep the following statement separate
+===========================================================================
+!
+print 1
+! # empty shell comment
+print 2
+---------------------------------------------------------------------------
+(source_file
+  (cmd_system)
+  (cmd_print
+    (number))
+  (cmd_system
+    (shell_command))
+  (cmd_print
+    (number)))
+
+===========================================================================
+  Shell text does not replace system expressions
+===========================================================================
+cmd = "printf hi"
+system cmd
+system "printf hi"
+x = system("printf hi")
+print !0, 3!, 3 != 4
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (string_literal)))
+  (cmd_system
+    (identifier))
+  (cmd_system
+    (string_literal))
+  (assignment
+    (def_var
+      (identifier)
+      (function
+        name: (identifier)
+        parameters: (parameter_list
+          (string_literal)))))
+  (cmd_print
+    (unary_expression
+      (operator)
+      (number))
+    (unary_expression
+      (number)
+      (operator))
+    (binary_expression
+      (number)
+      (operator)
+      (number))))

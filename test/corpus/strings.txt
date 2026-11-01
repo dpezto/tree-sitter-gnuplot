@@ -171,3 +171,60 @@ print "d"
         (format_specifier))))
   (cmd_print
     (string_literal)))
+
+===========================================================================
+  Backquote substitutions are expression atoms
+===========================================================================
+print `printf 123`
+a = `printf 3` + 1
+plot `printf sin\(x\)` with lines
+print "``"
+print `printf 123
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (command_substitution))
+  (assignment
+    (def_var
+      (identifier)
+      (binary_expression
+        (command_substitution)
+        (operator)
+        (number))))
+  (cmd_plot
+    (plot_element
+      data: (command_substitution)
+      with: (plot_style)))
+  (cmd_print
+    (string_literal
+      (command_substitution)))
+  (cmd_print
+    (command_substitution)))
+
+===========================================================================
+  Backquotes expand only inside double-quoted strings
+===========================================================================
+print "value: `printf 123`"
+print 'literal `printf 123`'
+print "`printf 1` and `printf 2`"
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (string_literal
+      (command_substitution)))
+  (cmd_print
+    (string_literal))
+  (cmd_print
+    (string_literal
+      (command_substitution)
+      (command_substitution))))
+
+===========================================================================
+  Backquote substitutions accept line continuations
+===========================================================================
+print `printf \
+123`
+---------------------------------------------------------------------------
+(source_file
+  (cmd_print
+    (command_substitution)))

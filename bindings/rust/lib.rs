@@ -5,6 +5,7 @@
 //!
 //! ```
 //! let code = r#"
+//! plot sin(x) with lines
 //! "#;
 //! let mut parser = tree_sitter::Parser::new();
 //! let language = tree_sitter_gnuplot::LANGUAGE;
@@ -15,7 +16,7 @@
 //! assert!(!tree.root_node().has_error());
 //! ```
 //!
-//! [`Parser`]: https://docs.rs/tree-sitter/0.26.8/tree_sitter/struct.Parser.html
+//! [`Parser`]: https://docs.rs/tree-sitter/0.27.1/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
 use tree_sitter_language::LanguageFn;
@@ -57,10 +58,14 @@ pub const TAGS_QUERY: &str = include_str!("../../queries/tags.scm");
 #[cfg(test)]
 mod tests {
     #[test]
-    fn test_can_load_grammar() {
+    fn test_can_parse_gnuplot() {
         let mut parser = tree_sitter::Parser::new();
         parser
             .set_language(&super::LANGUAGE.into())
             .expect("Error loading Gnuplot parser");
+        let code =
+            "a = \\\n1\nprint `printf 2`\n! pwd; printf hi\nplot for [i=1:2] sin(x) with lines\n";
+        let tree = parser.parse(code, None).unwrap();
+        assert!(!tree.root_node().has_error());
     }
 }

@@ -78,6 +78,8 @@ enum TokenType {
   // Postfix factorial `!`. Matched only on the expression's own logical line:
   // after a newline a `!` opens a shell command (`print 3` then `! ls`).
   FACTORIAL_BANG,
+  FOR_CLOSE,
+  SHELL_COMMAND,
 };
 
 // Keyword table entry for prefix-abbreviation matching.
@@ -1045,6 +1047,24 @@ static bool scan_keywords(TSLexer* lexer, const bool* valid_symbols, bool any_cm
 bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, const bool* valid_symbols) {
   Scanner* s = (Scanner*)payload;
 
+  // Raw shell text must beat command keywords such as `pwd` after `!`.
+  if (valid_symbols[SHELL_COMMAND] && !valid_symbols[STRING_EOL]) {
+    while (lexer->lookahead == ' ' || lexer->lookahead == '\t') skip(lexer);
+    if (lexer->lookahead != '\n' && lexer->lookahead != '\r' && !lexer->eof(lexer)) {
+      while (lexer->lookahead != '\n' && lexer->lookahead != '\r' && !lexer->eof(lexer)) {
+        if (lexer->lookahead == '\\') {
+          consume(lexer);
+          if (lexer->lookahead == '\r') consume(lexer);
+          if (lexer->lookahead == '\n') consume(lexer);
+        } else {
+          consume(lexer);
+        }
+      }
+      lexer->result_symbol = SHELL_COMMAND;
+      return true;
+    }
+  }
+
   // Unterminated string. Only valid inside a string, where no command keyword
   // is; during error recovery every symbol is valid, so the check on
   // CMD_PLOT_KW keeps this from firing at every newline there.
@@ -1163,7 +1183,7 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
         int32_t c = lexer->lookahead;
         if ((c >= '0' && c <= '9') || c == '.' || c == '"' || c == '\'' ||
             c == '(' || c == '-' || c == '+' || c == '~' || c == '!' ||
-            c == '$' || c == '@' || c == ',' || c == '{' ||
+            c == '$' || c == '@' || c == '`' || c == ',' || c == '{' ||
             // '|' opens a cardinality `|A|`
             c == '|' ||
             // '[' opens plot_element's leading range_block — cmd_bare tail only
@@ -1226,6 +1246,28 @@ bool tree_sitter_gnuplot_external_scanner_scan(void* payload, TSLexer* lexer, co
   }
 
   skip_whitespaces(lexer);
+
+  // Gate the bracket itself: a zero-width gate can be inserted invisibly
+  // during recovery, leaving a next-line body with no reported error.
+  if (valid_symbols[FOR_CLOSE] && !valid_symbols[STRING_EOL] && lexer->lookahead == ']') {
+    consume(lexer);
+    lexer->mark_end(lexer);
+    for (;;) {
+      if (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
+        consume(lexer);
+      } else if (lexer->lookahead == '\\') {
+        consume(lexer);
+        if (lexer->lookahead == '\r') consume(lexer);
+        if (lexer->lookahead == '\n') consume(lexer);
+      } else {
+        break;
+      }
+    }
+    if (lexer->lookahead == '\n' || lexer->lookahead == '\r' || lexer->lookahead == ';' ||
+        lexer->lookahead == '#' || lexer->eof(lexer)) return false;
+    lexer->result_symbol = FOR_CLOSE;
+    return true;
+  }
 
   // Datablock end has highest priority: if we're inside an open datablock
   // (s->word non-empty), check for the closing identifier first.

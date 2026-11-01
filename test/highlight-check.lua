@@ -104,6 +104,16 @@ local injection_cases = {
   -- `!` hands the rest of the line to the shell as written, quotes included
   { '! "printf hi"', '"printf hi"' },
   { "! pwd", "pwd" },
+  { "!printf hi; printf bye # shell comment\nprint 2", "printf hi; printf bye # shell comment" },
+  { "! printf \\\nhi\nprint 2", "printf \\\nhi" },
+  -- Backquotes exclude their delimiters, including inside double quotes.
+  { "print `printf 123`", "printf 123" },
+  { 'print "value: `printf 123`"', "printf 123" },
+  { "print `printf \\\n123`", "printf \\\n123" },
+  { "print `printf 123", "printf 123" },
+  { 'print "``"', "" },
+  { "print `", nil },
+  { "print 'literal `printf 123`'", nil },
   -- `system cmd` runs the command stored in the variable `cmd`
   { 'cmd = "printf hi"\nsystem cmd', nil },
 }
@@ -121,6 +131,18 @@ for _, case in ipairs(injection_cases) do
     check(#got == 1 and got[1] == expected,
       ("%s: expected bash injection %q, got %s"):format(src_text, expected, vim.inspect(got)))
   end
+end
+
+-- CRLF must preserve the same logical-line boundaries as LF.
+for _, case in ipairs({
+  { "a =\r\n5\r\n", true },
+  { "a = \\\r\n5\r\n", false },
+  { "set for [i=1:2]\r\nsamples 5\r\n", true },
+  { "set for [i=1:2] \\\r\nsamples 5\r\n", false },
+  { "! pwd\r\nprint 2\r\n", false },
+}) do
+  check(root_of(case[1]):has_error() == case[2],
+    ("unexpected parse status for %q"):format(case[1]))
 end
 
 -- { snippet, node text, capture that node must receive }
