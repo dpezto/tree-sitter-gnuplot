@@ -20,20 +20,27 @@ regardless.
 Refuted alternative (do not revisit): the `_eos` statement-terminator
 redesign — four faithful variants all regressed parser.c +44–48 % states.
 
-## B3 — full expression in `plot_element` `function:` field
+## B3 remainder: plot element data/function labels
 
-The `function:` field accepts only `$.function | $.unary_expression`; full
-`$._expression` creates an LALR conflict where the expression's follow set
-swallows a trailing `title`/`with`/... keyword. In practice most expressions
-already parse through the `data:` branch (which is full `_expression`), so the
-impact is field labeling and edge forms.
+`plot_element` labels its source `data:` or `function:` from the top-level
+node type of the expression (`_plot_data_expr` / `_plot_func_expr`). gnuplot
+decides at run time from the value (a string names a data source), so two
+cases stay mislabeled.
 
-Viable redesign: move the plot-element attribute keywords (`title`, `notitle`,
-`with`, `using`, `every`, `axes`, `smooth`) to external scanner tokens using
-the same word-peek machinery as `_gval_sep`. External tokens win over internal
-expression lexing, so the expression can never swallow an attribute keyword,
-and the `function:` field can then take full `_expression` without conflict.
-Medium effort; touches the scanner enum, `externals`, and `plot_element`.
+Bare variable references (identifier, macro, array element, substring) are
+always `data:`, so `plot x with lines` reads as a data source. The corpus pins
+both readings (`plot x with filledcurves r=10` and `plot x using 1:2:3`), which
+only the value can tell apart.
+
+String-valued computed forms other than a top-level `.` concatenation are
+always `function:`: `plot sprintf("f%d.dat", i) using 1:2` and
+`plot (c ? "a" : "b") using 1:2`.
+
+A data-only modifier (`using`, `index`, `every`, `binary`, `matrix`) after the
+expression would settle most of these, but modifiers come in any order and
+shared ones (`smooth`, `sharpen`) can precede them, so the choice needs a GLR
+fork that merges mid-production, where dynamic precedence cannot pick the
+field. Not attempted.
 
 ## Old-style if bodies with more than one command
 

@@ -293,6 +293,7 @@ set palette file "c.pal" "%lf"
 plot '+' using 1:1:(0.1) with errorbars, '+' using 1:1:(0.1) with e
 plot '+' using 1:1:(0.1) with errorlines, '+' using 1:1:(0.1) with errorl
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element
@@ -338,6 +339,7 @@ plot '+' using 1:1:(0.1) with errorlines, '+' using 1:1:(0.1) with errorl
 ===========================================================================
 plot '+' ev 2, '+' every 3, '+' ever 2:1
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_plot
     (plot_element

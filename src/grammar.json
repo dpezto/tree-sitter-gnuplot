@@ -2652,17 +2652,8 @@
                         "type": "FIELD",
                         "name": "function",
                         "content": {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "SYMBOL",
-                              "name": "function"
-                            },
-                            {
-                              "type": "SYMBOL",
-                              "name": "unary_expression"
-                            }
-                          ]
+                          "type": "SYMBOL",
+                          "name": "_plot_func_expr"
                         }
                       },
                       {
@@ -3278,6 +3269,74 @@
       }
     },
     "_plot_data_expr": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "command_substitution"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "array"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "subscript"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "datablock"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "string_literal"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_plot_concat"
+          },
+          "named": true,
+          "value": "binary_expression"
+        }
+      ]
+    },
+    "_plot_concat": {
+      "type": "PREC_LEFT",
+      "value": 11,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_expression"
+          },
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "STRING",
+              "value": "."
+            },
+            "named": true,
+            "value": "operator"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_expression"
+          }
+        ]
+      }
+    },
+    "_plot_func_expr": {
       "type": "PREC_LEFT",
       "value": 0,
       "content": {
@@ -3285,27 +3344,11 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "function"
           },
           {
             "type": "SYMBOL",
-            "name": "macro"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "command_substitution"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "array"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "subscript"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "datablock"
+            "name": "unary_expression"
           },
           {
             "type": "SYMBOL",
@@ -3314,10 +3357,6 @@
           {
             "type": "SYMBOL",
             "name": "complex"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "string_literal"
           },
           {
             "type": "SYMBOL",
