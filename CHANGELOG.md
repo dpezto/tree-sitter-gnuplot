@@ -4,6 +4,24 @@ All notable changes are documented here. This file is maintained automatically b
 [release-please](https://github.com/googleapis/release-please) from Conventional-Commit
 history; do not edit it by hand.
 
+## [5.0.0](https://github.com/dpezto/tree-sitter-gnuplot/compare/v4.2.1...v5.0.0) (2026-11-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **grammar:** queries that matched computed plot expressions under `data:` must match them under `function:`.
+* **grammar:** ! commands now contain a shell_command child instead of expression children. Consumers matching the old cmd_system structure must update their queries. Backquotes are exposed as command_substitution nodes.
+
+### Features
+
+* **grammar:** support shell commands and backquoted substitutions ([#86](https://github.com/dpezto/tree-sitter-gnuplot/issues/86)) ([856c192](https://github.com/dpezto/tree-sitter-gnuplot/commit/856c19254737afba3835d001656dfea5f3624caa))
+
+
+### Bug Fixes
+
+* **grammar:** keep both coordinates of a plot-element offset ([#92](https://github.com/dpezto/tree-sitter-gnuplot/issues/92)) ([1e60ec7](https://github.com/dpezto/tree-sitter-gnuplot/commit/1e60ec73b9505fa08ea7ef68af3dce8241a11b00))
+* **grammar:** label computed plot expressions as function ([d8b5982](https://github.com/dpezto/tree-sitter-gnuplot/commit/d8b5982d351a924537b443df2e16fd4f3c083218))
+
 ## [4.2.1](https://github.com/dpezto/tree-sitter-gnuplot/compare/v4.2.0...v4.2.1) (2026-10-14)
 
 
