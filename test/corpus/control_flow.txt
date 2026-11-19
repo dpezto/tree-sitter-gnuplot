@@ -326,7 +326,7 @@ splot sin(x)*cos(y) w pm3d, cos(x) w l lw 2
 (source_file
   (cmd_splot
     (plot_element
-      data: (binary_expression
+      function: (binary_expression
         (function
           name: (identifier)
           parameters: (parameter_list
@@ -422,6 +422,7 @@ if (a=1, b>0) { c = 2 }
       (def_var
         (identifier)
         (number)))))
+
 ===========================================================================
   fit 4 - plural error keywords and errors variable list
 ===========================================================================
@@ -512,7 +513,6 @@ if (1) { print "a" }
     (cmd_print
       (string_literal))))
 
-
 ===========================================================================
   Old-style if with else
 ===========================================================================
@@ -520,6 +520,7 @@ if (0) print 1; else print 2
 if (0) print 3; else if (1) print 4; else print 5
 if (0) if (1) print 6; else print 7
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_if
     conditions: (number)

@@ -5,6 +5,7 @@ set multiplot layout 2,2
 plot x
 unset multiplot
 ---------------------------------------------------------------------------
+
 (source_file
   (multiplot_block
     (cmd_set
@@ -27,6 +28,7 @@ set multiplot
 plot y
 unset multiplot
 ---------------------------------------------------------------------------
+
 (source_file
   (multiplot_block
     (cmd_set
@@ -50,6 +52,7 @@ unset multiplot
 ===========================================================================
 unset multiplot
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_unset
     (multiplot)))
@@ -60,6 +63,7 @@ unset multiplot
 set multiplot
 plot x
 ---------------------------------------------------------------------------
+
 (source_file
   (multiplot_block
     (cmd_set
@@ -73,6 +77,7 @@ plot x
 ===========================================================================
 show multiplot
 ---------------------------------------------------------------------------
+
 (source_file
   (cmd_show
     (multiplot)))
@@ -84,6 +89,7 @@ set multiplot layout 2,2 spacing 0 margins 0.05,0.95,0.0,0.85 title "All"
 plot x
 unset multiplot
 ---------------------------------------------------------------------------
+
 (source_file
   (multiplot_block
     (cmd_set

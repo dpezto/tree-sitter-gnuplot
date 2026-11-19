@@ -622,16 +622,15 @@ module.exports = grammar({
 									optional($.datafile_modifiers),
 								),
 								seq(
-									field("function", choice($.function, $.unary_expression)),
+									field("function", $._plot_func_expr),
 									// function plots accept datafile-modifier filters too
-									// (`plot sqrt(sin(x)) sharpen`); before _plot_data_expr
-									// split off the data: branch these rode along there.
+									// (`plot sqrt(sin(x)) sharpen`).
 									optional($.datafile_modifiers),
 								),
 								seq(
-									// p. 177 keyentry. Data takes _expression MINUS bare
-									// function/unary (see _plot_data_expr): those belong to
-									// the function: branch above. With the narrowed
+									// p. 177 keyentry. Data and function split _expression
+									// by top-level node type (see _plot_data_expr and
+									// _plot_func_expr). With the narrowed
 									// prec.left(1) span the old whole-rule marker no longer
 									// settles that overlap statically, and a GLR fork here
 									// merges mid-production (post-merge the reduce's
@@ -773,21 +772,44 @@ module.exports = grammar({
 				),
 			),
 
-		// _expression minus bare function/unary_expression, for plot_element's
-		// data: field only — the two excluded members are the function: branch.
-		// Keep the member list in sync with _expression.
+		// plot_element's data: and function: fields split _expression by its
+		// top-level node type; together the two lists must cover _expression
+		// exactly once. gnuplot itself decides at run time (a string-valued
+		// expression names a data source, anything else is a function), so the
+		// grammar can only approximate: string literals (filenames, '-', '+',
+		// '++', '< cmd' pipes), backquote substitutions and datablocks are
+		// data; bare variable references (identifier, macro, array element,
+		// substring) are data too, because `plot file using 1:2` is the common
+		// case; a top-level `.` concatenation is data; every other computed
+		// form is a function.
 		_plot_data_expr: ($) =>
+			choice(
+				$.identifier,
+				$.macro,
+				$.command_substitution,
+				$.array,
+				$.subscript,
+				$.datablock,
+				$.string_literal,
+				// top-level string concatenation (`plot dir."/f.dat"`); the
+				// higher precedence settles the reduce/reduce against the
+				// plain binary_expression in _plot_func_expr
+				alias($._plot_concat, $.binary_expression),
+			),
+
+		_plot_concat: ($) =>
+			prec.left(
+				PREC.PLUS + 1,
+				seq($._expression, alias(".", $.operator), $._expression),
+			),
+
+		_plot_func_expr: ($) =>
 			prec.left(
 				choice(
-					$.identifier,
-					$.macro,
-					$.command_substitution,
-					$.array,
-					$.subscript,
-					$.datablock,
+					$.function,
+					$.unary_expression,
 					$.number,
 					$.complex,
-					$.string_literal,
 					$.sum_block,
 					$.parenthesized_expression,
 					$.binary_expression,
