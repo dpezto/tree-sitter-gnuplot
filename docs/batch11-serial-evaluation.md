@@ -25,8 +25,9 @@ a remembered one.
 ## What it does
 
 Three call sites move to a shared hidden rule, and the parenthesised-expression
-rule gains a serial form. The construct this fixes is also an error-free
-misparse today: `print (1,2,3)` currently reads as three arguments.
+rule gains a serial form. Rechecked on 2026-10-31 with CLI 0.27.1:
+`print (a=1, a+1)` produces ERROR; `print (1,2,3)` is split into three print
+arguments with a missing `)` and an ERROR. Both are accepted by gnuplot 6.0.6.
 
 ## Provenance and limits
 

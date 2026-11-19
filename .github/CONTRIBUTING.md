@@ -4,11 +4,11 @@ Thanks for helping out. Small, focused PRs merge fastest.
 
 ## Development
 
-The loop is always: edit `grammar.js` → `tree-sitter generate` → `tree-sitter test`.
+Run `npm ci` first. The loop is: edit `grammar.js` → `npx tree-sitter generate` → `npm test`.
 
-- `tree-sitter generate` — regenerate `src/parser.c`, `src/grammar.json`, `src/node-types.json` after any `grammar.js` change. These generated files **are** tracked (downstream parsers such as nvim-treesitter build from them), so commit them together with the `grammar.js` change.
-- `tree-sitter test` — the corpus suite under `test/corpus/`. Add or extend a case for any behavior change.
-- `tree-sitter test --include "name"` — run a subset by partial name match.
+- `npx tree-sitter generate` — regenerate `src/parser.c`, `src/grammar.json`, `src/node-types.json` after any `grammar.js` change. These generated files **are** tracked (downstream parsers such as nvim-treesitter build from them), so commit them together with the `grammar.js` change.
+- `npm test` — the corpus suite under `test/corpus/` and the Node binding test. Add or extend a case for any behavior change.
+- `npx tree-sitter test --include "name"` — run a subset by partial name match.
 - `make` — build the native library.
 
 The external scanner lives in `src/scanner.c`; keep its `externals` list in sync with `grammar.js` (the enum order must match). Scanner line coverage is reported to Codecov in CI.
@@ -24,7 +24,7 @@ Do **not** hand-edit version numbers in the manifests — release-please owns th
 AI assistance (Copilot, Claude, etc.) is welcome, with three rules:
 
 1. **Disclose it** in the PR description (a one-liner is fine).
-2. **You must understand and have tested the change yourself** — run `tree-sitter generate && tree-sitter test` locally. You are the author; "the model wrote it" is not a review response.
+2. **You must understand and have tested the change yourself** — run `npx tree-sitter generate && npm test` locally. You are the author; "the model wrote it" is not a review response.
 3. **No unreviewed dumps.** Large AI-generated diffs with no accompanying reasoning, and AI-generated bug reports without a reproducible parse case, will be closed.
 
 ## Bug reports

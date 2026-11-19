@@ -516,7 +516,7 @@ print 3 != 4
   (cmd_print
     (number))
   (cmd_system
-    (identifier))
+    (shell_command))
   (cmd_print
     (unary_expression
       (number)
@@ -530,3 +530,26 @@ print 3 != 4
       (number)
       (operator)
       (number))))
+
+===========================================================================
+  Assignment values accept explicit continuations
+===========================================================================
+a = \
+5
+---------------------------------------------------------------------------
+(source_file
+  (assignment
+    (def_var
+      (identifier)
+      (number))))
+
+===========================================================================
+  Assignment values cannot start on the next line
+===========================================================================
+a =
+5
+---------------------------------------------------------------------------
+(source_file
+  (ERROR
+    (identifier)
+    (number)))
