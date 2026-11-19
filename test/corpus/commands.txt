@@ -2038,6 +2038,123 @@ plot d using 1:2 with hsteps offset 1 backward
         offset: (number)))))
 
 ===========================================================================
+  with labels offset - x,y position, second comma starts the next element
+===========================================================================
+plot d u 1:2:3 w labels offset 0,1.0 noenhanced, d u 1:2 w p
+plot f(x) w labels offset 0,1, g(x)
+plot d u 1:2:3 w labels offset char 1, graph -0.5 notitle, g(x)
+plot d u 1:2:3 w labels offset 0,1,7
+plot d u 1:2 w hsteps offset 1, g(x)
+set label 1 "a" at 1,2,3 offset first 1, second 2, screen 3
+---------------------------------------------------------------------------
+
+(source_file
+  (cmd_plot
+    (plot_element
+      data: (identifier)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (number)))
+      with: (plot_style)
+      (style_opts
+        (position
+          x: (number)
+          y: (number)))
+      (style_opts))
+    (plot_element
+      data: (identifier)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      with: (plot_style)))
+  (cmd_plot
+    (plot_element
+      function: (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))
+      with: (plot_style)
+      (style_opts
+        (position
+          x: (number)
+          y: (number))))
+    (plot_element
+      function: (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))))
+  (cmd_plot
+    (plot_element
+      data: (identifier)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (number)))
+      with: (plot_style)
+      (style_opts
+        (position
+          (system)
+          x: (number)
+          (system)
+          y: (unary_expression
+            (operator)
+            (number)))))
+    (plot_element
+      function: (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))))
+  (cmd_plot
+    (plot_element
+      data: (identifier)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)
+          using: (number)))
+      with: (plot_style)
+      (style_opts
+        (position
+          x: (number)
+          y: (number))))
+    (plot_element
+      function: (number)))
+  (cmd_plot
+    (plot_element
+      data: (identifier)
+      (datafile_modifiers
+        (using
+          using: (number)
+          using: (number)))
+      with: (plot_style
+        offset: (number)))
+    (plot_element
+      function: (function
+        name: (identifier)
+        parameters: (parameter_list
+          (identifier)))))
+  (cmd_set
+    (label
+      tag: (number)
+      (label_opts
+        label: (string_literal)
+        at: (position
+          x: (number)
+          y: (number)
+          z: (number))
+        offset: (position
+          (system)
+          x: (number)
+          (system)
+          y: (number)
+          (system)
+          z: (number))))))
+
+===========================================================================
   plot title columnheader - call form, bare, trailing at/enhanced
 ===========================================================================
 plot $h using 1:2 title columnheader(2)

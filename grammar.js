@@ -2423,21 +2423,22 @@ module.exports = grammar({
 				)),
 			),
 
-		position: ($) =>
-			prec.left(
-				seq(
-					optional($.system),
-					field("x", $._expression),
-					optional(
-						seq(
-							",",
-							optional($.system),
-							field("y", $._expression),
-							optional(seq(",", optional($.system), field("z", $._expression))),
-						),
-					),
-				),
-			),
+		// Inside a plot element a comma after a coordinate is either the next
+		// coordinate or the next element separator. gnuplot always reads `x,y`
+		// as one position, so the one-coordinate form is right-associative
+		// (shift the comma). A third bare value starts a new element in `plot`
+		// (its label offset is 2D) but is z in `splot`; both share
+		// plot_element, so the two-coordinate form is left-associative and
+		// follows `plot`. Outside plot elements no separator competes and all
+		// three coordinates attach.
+		position: ($) => {
+			const coord = (name) => seq(optional($.system), field(name, $._expression));
+			return choice(
+				prec.right(coord("x")),
+				prec.left(seq(coord("x"), ",", coord("y"))),
+				seq(coord("x"), ",", coord("y"), ",", coord("z")),
+			);
+		},
 
 		// Coordinate systems — all aliased to one `coord` node (capture taxonomy:
 		// @keyword.directive). Adding a coord keyword needs no highlights.scm edit.
